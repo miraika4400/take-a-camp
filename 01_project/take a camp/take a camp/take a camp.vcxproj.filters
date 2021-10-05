@@ -177,9 +177,6 @@
     <ClCompile Include="mouse.cpp">
       <Filter>ソース ファイル\05_Input</Filter>
     </ClCompile>
-    <ClCompile Include="object3d_shader.cpp">
-      <Filter>ソース ファイル\09_Effect</Filter>
-    </ClCompile>
     <ClCompile Include="light.cpp">
       <Filter>ソース ファイル\02_Camera</Filter>
     </ClCompile>
@@ -200,6 +197,9 @@
     </ClCompile>
     <ClCompile Include="sound.cpp">
       <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="object3d_shader.cpp">
+      <Filter>ソース ファイル\01_Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -248,22 +248,13 @@
     <ClInclude Include="polygon.h">
       <Filter>ヘッダー ファイル\04_ModelBse</Filter>
     </ClInclude>
-    <ClInclude Include="billboard.h">
-      <Filter>ヘッダー ファイル\03_Resource</Filter>
-    </ClInclude>
     <ClInclude Include="resource_texture.h">
       <Filter>ヘッダー ファイル\03_Resource</Filter>
     </ClInclude>
     <ClInclude Include="resource_shader.h">
       <Filter>ヘッダー ファイル\03_Resource</Filter>
     </ClInclude>
-    <ClInclude Include="resource_model.h">
-      <Filter>ヘッダー ファイル\09_Effect</Filter>
-    </ClInclude>
     <ClInclude Include="particle.h">
-      <Filter>ヘッダー ファイル\09_Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="object3d_shader.h">
       <Filter>ヘッダー ファイル\09_Effect</Filter>
     </ClInclude>
     <ClInclude Include="collision.h">
@@ -307,6 +298,15 @@
     </ClInclude>
     <ClInclude Include="manager.h">
       <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="object3d_shader.h">
+      <Filter>ヘッダー ファイル\01_Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="resource_model.h">
+      <Filter>ヘッダー ファイル\03_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="billboard.h">
+      <Filter>ヘッダー ファイル\04_ModelBse</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
