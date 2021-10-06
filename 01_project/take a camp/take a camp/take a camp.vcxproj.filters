@@ -201,6 +201,9 @@
     <ClCompile Include="object3d_shader.cpp">
       <Filter>ソース ファイル\01_Scene</Filter>
     </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>ソース ファイル\07_GameModel\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -307,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="billboard.h">
       <Filter>ヘッダー ファイル\04_ModelBse</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -55,7 +55,7 @@ HRESULT CFade::Init(void)
 {
 	// É|ÉäÉSÉìÇÃê∂ê¨
 	m_pPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
-		D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
+		D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f),
 		m_col);
 
 	return S_OK;

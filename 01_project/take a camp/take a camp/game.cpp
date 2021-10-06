@@ -21,6 +21,7 @@
 #include "joypad.h"
 #include "result.h"
 #include "bg.h"
+#include "player.h"
 
 //=============================
 // マクロ定義
@@ -67,9 +68,14 @@ HRESULT CGame::Init(void)
 	// ポーズの初期化
 	CManager::SetActivePause(false);
 
-	CManager::SetCamera(CCamera::Create());
+	CManager::SetCamera(CTpsCamera::Create());
 
+	// 背景の生成
 	CBg::Create();
+
+	// プレイヤー生成
+	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0);
+
 	// ライトクラスの生成
 	m_pLight = new CLight;
 	// ライトクラスの初期化
