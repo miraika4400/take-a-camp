@@ -21,6 +21,8 @@
 #include "joypad.h"
 #include "result.h"
 #include "bg.h"
+#include "stage.h"
+
 
 //=============================
 // マクロ定義
@@ -81,6 +83,14 @@ HRESULT CGame::Init(void)
 		}
 	}
 
+	//ステージ生成
+	CStage *pStage = new CStage;
+	if (pStage != NULL)
+	{
+		pStage->SetPos(D3DXVECTOR3(200.0f,0.0f,-100.0f));
+		pStage->Init();
+	}
+
 	return S_OK;
 }
 
@@ -130,7 +140,6 @@ void CGame::Update(void)
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}
-
 #endif // _DEBUG
 
 }

@@ -22,6 +22,7 @@
 #include "debug_log.h"
 #include "pause.h"
 #include "tutorial.h"
+#include "stage.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -120,7 +121,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 
 	// テクスチャ・モデルの読み込み
 	CPause::Load();    // ポーズ
-
+	//ステージ読み込み
+	CStage::Load();
 
 	// ポーズ状態の時
 	return S_OK;
