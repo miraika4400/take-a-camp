@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="01_">
-      <UniqueIdentifier>{7ab4157d-3e38-4ae6-be19-ba5e2661ccbf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\01_Scene">
       <UniqueIdentifier>{3b09e6b5-261f-4afd-a3f0-f0b78d15ad50}</UniqueIdentifier>
     </Filter>
@@ -204,6 +201,9 @@
     <ClCompile Include="player.cpp">
       <Filter>ソース ファイル\07_GameModel\Player</Filter>
     </ClCompile>
+    <ClCompile Include="stage.cpp">
+      <Filter>ソース ファイル\08_Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -313,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="player.h">
       <Filter>ヘッダー ファイル\07_GameModel\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="stage.h">
+      <Filter>ヘッダー ファイル\08_Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
