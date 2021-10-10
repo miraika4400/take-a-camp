@@ -12,7 +12,7 @@
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define SQUARE_SIZE (50)	//１マス縦横のサイズ
+#define SQUARE_SIZE (20)	//１マス縦横のサイズ
 
 //=============================================================================
 // 静的メンバー変数
@@ -175,7 +175,7 @@ void CStage::MapCreate(void)
 
 					break;
 				case BLOCK_TYPE::BLOCK_TYPE_:		//仮置きタイル
-					CModel::Create(D3DXVECTOR3((float)SQUARE_SIZE * -nBlockX, 0.0f, (float)SQUARE_SIZE * nBlockY) + m_pos, CResourceModel::MODEL_GENERAL_BOX, D3DXVECTOR3(50.0f, 50.0f, 50.0f));
+					CModel::Create(D3DXVECTOR3((float)SQUARE_SIZE * -nBlockX, -SQUARE_SIZE / 4.0f, (float)SQUARE_SIZE * nBlockY) + m_pos, CResourceModel::MODEL_GENERAL_BOX, D3DXVECTOR3(SQUARE_SIZE-1.0f, SQUARE_SIZE/2.0f, SQUARE_SIZE - 1.0f));
 					break;
 				}
 			}

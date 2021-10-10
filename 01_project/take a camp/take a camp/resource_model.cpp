@@ -24,11 +24,11 @@ CResourceModel *CResourceModel::m_pSingle = NULL; //ƒ‚ƒfƒ‹ƒNƒ‰ƒX‚Ìƒ|ƒCƒ“ƒ^*ƒVƒ“ƒ
 // ƒ‚ƒfƒ‹‚ÌƒpƒX
 const std::string CResourceModel::m_aModelPath[CResourceModel::MODEL_MAX]
 {
-	"PATH_NONE_SPHERE",           // ”Ä—pƒ‚ƒfƒ‹(‹…)*xƒtƒ@ƒCƒ‹‚¶‚á‚È‚¢
-	"PATH_NONE_BOX",              // ”Ä—pƒ‚ƒfƒ‹(” )*xƒtƒ@ƒCƒ‹‚¶‚á‚È‚¢
-	"data/Models/bg.x",           // ”wŒiƒ‚ƒfƒ‹
-	"data/Models/player/player.x"
-
+	"PATH_NONE_SPHERE",            // ”Ä—pƒ‚ƒfƒ‹(‹…)*xƒtƒ@ƒCƒ‹‚¶‚á‚È‚¢
+	"PATH_NONE_BOX",               // ”Ä—pƒ‚ƒfƒ‹(” )*xƒtƒ@ƒCƒ‹‚¶‚á‚È‚¢
+	"data/Models/bg.x",            // ”wŒiƒ‚ƒfƒ‹
+	"data/Models/player/player.x", // ƒvƒŒƒCƒ„[
+	"data/Models/stage.x",  // ƒXƒe[ƒW
 };
 
 //===================================
