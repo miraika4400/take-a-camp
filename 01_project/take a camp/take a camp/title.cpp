@@ -72,7 +72,6 @@ HRESULT CTitle::Init(void)
 
 	m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_TITLE));
 	
-
 	return S_OK;
 }
 

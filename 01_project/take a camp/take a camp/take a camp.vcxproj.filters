@@ -204,6 +204,9 @@
     <ClCompile Include="stage.cpp">
       <Filter>ソース ファイル\08_Map</Filter>
     </ClCompile>
+    <ClCompile Include="tile.cpp">
+      <Filter>ソース ファイル\08_Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -315,6 +318,9 @@
       <Filter>ヘッダー ファイル\07_GameModel\Player</Filter>
     </ClInclude>
     <ClInclude Include="stage.h">
+      <Filter>ヘッダー ファイル\08_Map</Filter>
+    </ClInclude>
+    <ClInclude Include="tile.h">
       <Filter>ヘッダー ファイル\08_Map</Filter>
     </ClInclude>
   </ItemGroup>
