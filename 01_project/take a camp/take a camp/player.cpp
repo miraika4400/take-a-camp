@@ -120,15 +120,15 @@ void CPlayer::Update(void)
 
 	if (pKey->GetKeyPress(DIK_NUMPAD1))
 	{
-		m_color = D3DXCOLOR(0.8f, 0.8f, 1.0f, 1.0f);
+		m_color = D3DXCOLOR(1.0f, 0.8f, 0.6f, 1.0f);
 	}
 	if (pKey->GetKeyPress(DIK_NUMPAD2))
 	{
-		m_color = D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f);
+		m_color = D3DXCOLOR(1.0f, 0.7f, 0.4f, 1.0f);
 	}
 	if (pKey->GetKeyPress(DIK_NUMPAD3))
 	{
-		m_color = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
+		m_color = D3DXCOLOR(1.0f, 0.5f, 0.0f, 1.0f);
 	}
 	if (pKey->GetKeyPress(DIK_NUMPAD4))
 	{
