@@ -10,6 +10,8 @@
 // ヘッダファイルのインクルード
 //=============================================================================
 #include "model.h"
+#include "scene.h"
+
 //=============================================================================
 // マクロ定義
 //=============================================================================
@@ -20,7 +22,7 @@
 //=============================================================================
 // クラス定義
 //=============================================================================
-class CStage
+class CStage : public CScene
 {
 public:
 	typedef struct //一行のブロック情報
@@ -45,12 +47,14 @@ public:
 	CStage();
 	~CStage();
 	static void	Load(void);
+	static CStage *Create(D3DXVECTOR3 pos);
 	HRESULT Init(void);
 	void	Uninit(void);
 	void	Draw(void);
 	void	Update(void);
 	void	MapCreate(void);							//マップの生成
 	void	SetPos(D3DXVECTOR3 pos) { m_pos = pos; }	//位置セッター
+	MAP_DATA GetMapData(void) { return m_pMapData; }	//マップ情報ゲッター
 private:
 	static char*		m_pFileName;	// ファイルネーム
 	static MAP_DATA		m_pMapData;		// ステージの情報
