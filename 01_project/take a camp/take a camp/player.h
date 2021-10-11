@@ -16,6 +16,11 @@
 #include "model.h"
 
 //*****************************
+// 前方宣言
+//*****************************
+class CCollision;
+
+//*****************************
 // クラス定義
 //*****************************
 
@@ -33,12 +38,17 @@ public:
 	void Update(void);
 	void Draw(void);
 
+	D3DXCOLOR GetColor(void) { return m_color; }
+	CCollision * GetCollision(void) { return  m_pCollison; }
 private:
 	void Move(void); // 移動処理
 
 	// メンバ変数
 	int m_nPlayerNumber; // プレイヤー番号
 	bool m_bMove;        // 移動可否フラグ
+	D3DXCOLOR m_color;   // 色
+	CCollision * m_pCollison; // 当たり判定
+
 };
 
 #endif

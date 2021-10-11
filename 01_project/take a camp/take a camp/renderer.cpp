@@ -14,6 +14,7 @@
 #include "game.h"
 #include "fade.h"
 #include "pause.h"
+#include "debug_log.h"
 
 //==================================
 //    コンストラクタ
@@ -188,6 +189,7 @@ void CRenderer::Draw(void)
 		DrawFPS();
 #endif
 
+		CDebugLog::Draw();
 		//フェードの描画
 		CManager::GetFade()->Draw();
 

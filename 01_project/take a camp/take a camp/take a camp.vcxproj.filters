@@ -207,6 +207,9 @@
     <ClCompile Include="tile.cpp">
       <Filter>ソース ファイル\08_Map</Filter>
     </ClCompile>
+    <ClCompile Include="color_manager.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -322,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="tile.h">
       <Filter>ヘッダー ファイル\08_Map</Filter>
+    </ClInclude>
+    <ClInclude Include="color_manager.h">
+      <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

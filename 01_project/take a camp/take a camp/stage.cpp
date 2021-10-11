@@ -8,6 +8,7 @@
 // ヘッダファイルのインクルード
 //=============================================================================
 #include "stage.h"
+#include "tile.h"
 
 //=============================================================================
 // マクロ定義
@@ -175,7 +176,7 @@ void CStage::MapCreate(void)
 
 					break;
 				case BLOCK_TYPE::BLOCK_TYPE_:		//仮置きタイル
-					CModel::Create(D3DXVECTOR3((float)SQUARE_SIZE * -nBlockX, -SQUARE_SIZE / 4.0f, (float)SQUARE_SIZE * nBlockY) + m_pos, CResourceModel::MODEL_GENERAL_BOX, D3DXVECTOR3(SQUARE_SIZE-1.0f, SQUARE_SIZE/2.0f, SQUARE_SIZE - 1.0f));
+					CTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_pos);
 					break;
 				}
 			}

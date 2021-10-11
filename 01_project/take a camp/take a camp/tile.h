@@ -16,6 +16,18 @@
 #include "model.h"
 
 //*****************************
+//前方宣言
+//*****************************
+class CCollision;
+
+//*****************************
+//マクロ定義
+//*****************************
+#define TILE_ONE_SIDE 20.0f  // タイルのサイズ*一辺
+#define TILE_SIZE_Y TILE_ONE_SIDE/2
+#define TILE_SIZE D3DXVECTOR3(TILE_ONE_SIDE,TILE_SIZE_Y,TILE_ONE_SIDE)  // タイルのサイズ
+
+//*****************************
 // クラス定義
 //*****************************
 
@@ -34,9 +46,11 @@ public:
 	void Draw(void);
 
 private:
+	void CollisionPlayer(void); // プレイヤーとの当たり判定
 
 	// メンバ変数
-
+	CCollision * m_pCollison; // 当たり判定
+	D3DXCOLOR m_color;
 };
 
 #endif

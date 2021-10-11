@@ -21,7 +21,7 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-
+#define COLLISION_COLOR D3DXCOLOR(0.5f,0.5f,0.5f,1.0f)
 
 //******************************
 // コンストラクタ
@@ -61,6 +61,10 @@ CCollision * CCollision::CreateSphere(D3DXVECTOR3 pos, float fRadius)
 	pCollision->SetPos(pos);
 	pCollision->SetPriority(OBJTYPE_COLLISION); // オブジェクトタイプ
 
+	// モデル割り当て
+	pCollision->BindModel(CResourceModel::GetModel(CResourceModel::MODEL_GENERAL_SPHERE));
+	pCollision->SetSize(D3DXVECTOR3(fRadius, fRadius, fRadius));
+	
 	return pCollision;
 }
 
@@ -121,9 +125,8 @@ HRESULT CCollision::Init(void)
 	}
 #ifdef _DEBUG
 
-	CreateMesh();
-	// モデル割り当て
-	BindModel(CResourceModel::GetModel(CResourceModel::MODEL_GENERAL_SPHERE));
+	//CreateMesh();
+
 
 #endif
 
@@ -166,11 +169,11 @@ void CCollision::Draw(void)
 #ifdef _DEBUG
 
 	// 色の設定
-	D3DXMATERIAL* mat = (D3DXMATERIAL*)m_pBuffMatModel->GetBufferPointer();
-	mat->MatD3D.Ambient = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
-	mat->MatD3D.Diffuse = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
-	mat->MatD3D.Specular = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
-	mat->MatD3D.Emissive = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
+	D3DXMATERIAL* mat =  (D3DXMATERIAL*)GetModelData()->pBuffMat->GetBufferPointer();
+	mat->MatD3D.Ambient = COLLISION_COLOR;
+	mat->MatD3D.Diffuse = COLLISION_COLOR;
+	mat->MatD3D.Specular = COLLISION_COLOR;
+	mat->MatD3D.Emissive = COLLISION_COLOR;
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 

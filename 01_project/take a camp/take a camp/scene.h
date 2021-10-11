@@ -39,16 +39,14 @@ public:
 	{
 		OBJTYPE_NONE = 0,
 		OBJTYPE_BG,            // 背景
+		OBJTYPE_TILE,          // タイル
 		OBJTYPE_PLAYER,        // プレイヤー
 		OBJTYPE_CPU,           // CPU
 		OBJTYPE_MAP,           // マップ
-		OBJTYPE_SEA,           // 海
 		OBJTYPE_PARTICLE,      // パーティクル
 		OBJTYPE_MOTION,        // モーション
 		OBJTYPE_UI,            // UI
 		OBJTYPE_COLLISION,     // コリジョン
-		OBJTYPE_MINIRESULT_SYSTEM, // ミニリザルトシステム
-		OBJTYPE_MINIRESULT_OBJ,    // ミニゲームリザルトのオブジェクト
 		OBJTYPE_SYSTEM,        // システム
 		OBJTYPE_MAX,           // タイプの最大数
 	}OBJTYPE;

@@ -157,6 +157,7 @@
     <ClCompile Include="camera_base.cpp" />
     <ClCompile Include="camera_tps.cpp" />
     <ClCompile Include="collision.cpp" />
+    <ClCompile Include="color_manager.cpp" />
     <ClCompile Include="debug_log.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="camera_base.h" />
     <ClInclude Include="camera_tps.h" />
     <ClInclude Include="collision.h" />
+    <ClInclude Include="color_manager.h" />
     <ClInclude Include="debug_log.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />

@@ -12,11 +12,14 @@
 #include "manager.h"
 #include "keyboard.h"
 #include "joypad.h"
+#include "collision.h"
+#include "debug_log.h"
 
 //*****************************
 // マクロ定義
 //*****************************
 #define MOVE_SPEED 3 
+#define COLLISION_RADIUS 20.0f
 
 //*****************************
 // 静的メンバ変数宣言
@@ -29,6 +32,11 @@ CPlayer::CPlayer() :CModel(OBJTYPE_PLAYER)
 {
 	m_nPlayerNumber = 0;
 	m_bMove = false;
+	m_pCollison = NULL;
+	///////////////////////////////////////////////
+	//仮
+	m_color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+	///////////////////////////////////////////////
 }
 
 //******************************
@@ -39,7 +47,7 @@ CPlayer::~CPlayer()
 }
 
 //******************************
-// クリエイト(球)
+// クラス生成
 //******************************
 CPlayer * CPlayer::Create(D3DXVECTOR3 pos, int nPlayerNumber)
 {
@@ -59,8 +67,6 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, int nPlayerNumber)
 
 	return pPlayer;
 }
-
-
 
 //******************************
 // 初期化処理
@@ -96,6 +102,41 @@ void CPlayer::Update(void)
 {
 	// 移動処理
 	Move();
+
+	// 当たり判定の位置
+	if (m_pCollison == NULL)
+	{
+		m_pCollison = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y + COLLISION_RADIUS / 2, GetPos().z), COLLISION_RADIUS/2);
+	}
+	else
+	{
+		m_pCollison->SetPos(D3DXVECTOR3(GetPos().x, GetPos().y + COLLISION_RADIUS / 2, GetPos().z));
+	}
+
+	// 
+#ifdef _DEBUG
+	// キーボードの取得
+	CInputKeyboard * pKey = CManager::GetKeyboard();
+
+	if (pKey->GetKeyPress(DIK_NUMPAD1))
+	{
+		m_color = D3DXCOLOR(0.8f, 0.8f, 1.0f, 1.0f);
+	}
+	if (pKey->GetKeyPress(DIK_NUMPAD2))
+	{
+		m_color = D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f);
+	}
+	if (pKey->GetKeyPress(DIK_NUMPAD3))
+	{
+		m_color = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
+	}
+	if (pKey->GetKeyPress(DIK_NUMPAD4))
+	{
+		m_color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+	}
+
+#endif // _DEBUG
+
 }
 
 //******************************
