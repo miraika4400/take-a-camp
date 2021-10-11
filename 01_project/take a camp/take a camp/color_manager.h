@@ -46,13 +46,17 @@ public:
 
 	HRESULT Init(void);
 	void Uninit(void);
+	static void Release(void);
+
+	// æ“¾ˆ—
+	static CColorManager*GetColorManager(void) { return m_pInstance; }
 
 private:
 	void LoadText(void);
 
 	// ƒƒ“ƒo•Ï”
 	static CColorManager * m_pInstance;
-	static std::vector<ColorData> m_aColorData;
+	std::vector<ColorData> m_aColorData;
 };
 
 #endif

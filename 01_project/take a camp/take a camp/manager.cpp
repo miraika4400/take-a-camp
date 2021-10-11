@@ -23,6 +23,7 @@
 #include "pause.h"
 #include "tutorial.h"
 #include "stage.h"
+#include "color_manager.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -124,6 +125,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	//ステージ読み込み
 	CStage::Load();
 
+	// カラーマネージャーの生成
+	CColorManager::Create();
+
 	// ポーズ状態の時
 	return S_OK;
 }
@@ -142,6 +146,8 @@ void CManager::Uninit(void)
 	CResourceModel::Release();
 	// シェーダーリソースクラスの破棄
 	CResourceShader::Release();
+	// カラーマーマネージャーの破棄
+	CColorManager::Release();
 
 	// テクスチャのアンロード
 	CPause::Unload();    // ポーズ
