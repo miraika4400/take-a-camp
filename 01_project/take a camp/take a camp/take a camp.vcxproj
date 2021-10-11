@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="act_range.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="camera_base.cpp" />
@@ -193,6 +194,7 @@
     <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="act_range.h" />
     <ClInclude Include="bg.h" />
     <ClInclude Include="billboard.h" />
     <ClInclude Include="camera_base.h" />

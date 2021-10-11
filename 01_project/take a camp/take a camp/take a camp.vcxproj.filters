@@ -210,6 +210,9 @@
     <ClCompile Include="color_manager.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
+    <ClCompile Include="act_range.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -328,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="color_manager.h">
       <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="act_range.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

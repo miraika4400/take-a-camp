@@ -90,12 +90,7 @@ HRESULT CGame::Init(void)
 	}
 
 	//ステージ生成
-	CStage *pStage = new CStage;
-	if (pStage != NULL)
-	{
-		pStage->SetPos(D3DXVECTOR3(200.0f,0.0f,-100.0f));
-		pStage->Init();
-	}
+	pStage = CStage::Create(D3DXVECTOR3(200.0f, 0.0f, -100.0f));
 
 	return S_OK;
 }
@@ -121,7 +116,13 @@ void CGame::Uninit(void)
 		m_pLight = NULL;
 	}
 
-
+	//ステージ
+	if (pStage != NULL)
+	{
+		pStage->Uninit();
+		delete pStage;
+		pStage = NULL;
+	}
 
 	// 開放処理
 	Release();
