@@ -79,6 +79,7 @@ HRESULT CGame::Init(void)
 	m_pStage = CStage::Create(D3DXVECTOR3(200.0f, 0.0f, -100.0f));
 
 	// プレイヤー生成
+
 	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0);
 
 	// ライトクラスの生成

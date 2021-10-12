@@ -55,23 +55,13 @@ void CActRange::PlayerPos(void)
 					&&PlayerPos.z<BlockPos.z + TILE_ONE_SIDE/2)
 				{
 					//位置取得
-					m_PlayerPos.x = nBlockX;
-					m_PlayerPos.z = nBlockY;
+					m_PlayerPos.x = (float)nBlockX;
+					m_PlayerPos.z = (float)nBlockY;
 				}
 			}
 		}
 	}
 
-}
-
-//=============================================================================
-// プレイヤーが移動したか
-//=============================================================================
-void CActRange::PlayerMove(int nMoveX, int nMoveZ)
-{
-	//位置を合わせる
-	m_PlayerPos.x = nMoveX;
-	m_PlayerPos.z = nMoveZ;
 }
 
 //=============================================================================
@@ -149,6 +139,10 @@ void CActRange::Uninit(void)
 //=============================================================================
 void CActRange::Update(void)
 {
+	//最初の位置取得
+	PlayerPos();
+
+	// プレイヤーの移動範囲
 	ActRange();
 }
 
