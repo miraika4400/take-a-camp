@@ -21,6 +21,7 @@
 class CCamera;
 class CLight;
 class CRuleManager;
+class CStage;
 //*****************************
 //マクロ定義
 //*****************************
@@ -61,6 +62,7 @@ private:
 	//*****************************
 	static CLight*m_pLight;              // ライトポインタ
 	static CRuleManager* m_pRuleManager; // ルールマネージャー
+	CStage *pStage;						 // ステージポインタ
 };
 
 #endif
