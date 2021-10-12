@@ -134,7 +134,6 @@ void CPlayer::Update(void)
 	{
 		CInputKeyboard * pKey = CManager::GetKeyboard();
 
-		if (pKey->GetKeyPress(DIK_NUMPAD1))
 		/*if (pKey->GetKeyPress(DIK_NUMPAD1))
 		{
 			m_nColor = 0;
@@ -176,130 +175,19 @@ void CPlayer::Move(void)
 		// キーボードの取得
 		CInputKeyboard * pKey = CManager::GetKeyboard();
 
-		if (m_nPlayerNumber == 0)
-		{
-			if (pKey->GetKeyPress(DIK_W)
-				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
-			{// 前進
-				m_Move.z -= MOVE_DIST;
-				m_bMove = false;
-			}
-			else if (pKey->GetKeyPress(DIK_S)
-				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
-			{// 後退
-				m_Move.z += MOVE_DIST;
-				m_bMove = false;
-			}
-			else if (pKey->GetKeyPress(DIK_A)
-				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
-			{// 左
-				m_Move.x += MOVE_DIST;
-				m_bMove = false;
-			}
-			else if (pKey->GetKeyPress(DIK_D)
-				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
-			{// 右
-				m_Move.x -= MOVE_DIST;
-				m_bMove = false;
-			}
 		if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_PROGRESS])
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
 		{// 前進
 			m_Move.z -= MOVE_DIST;
 			m_bMove = false;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		}
-		else
-		{
-
-			if (pKey->GetKeyPress(DIK_UP)
-				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
-			{// 前進
-				m_Move.z -= MOVE_DIST;
-				m_bMove = false;
-			}
-			else if (pKey->GetKeyPress(DIK_DOWN)
-				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
-			{// 後退
-				m_Move.z += MOVE_DIST;
-				m_bMove = false;
-			}
-			else if (pKey->GetKeyPress(DIK_LEFT)
-				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
-			{// 左
-				m_Move.x += MOVE_DIST;
-				m_bMove = false;
-			}
-			else if (pKey->GetKeyPress(DIK_RIGHT)
-				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
-			{// 右
-				m_Move.x -= MOVE_DIST;
-				m_bMove = false;
-			}
 		else if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RECESSION])
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
 		{// 後退
 			m_Move.z += MOVE_DIST;
 			m_bMove = false;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		}
-		
 		else if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_LEFT])
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
 		{// 左
