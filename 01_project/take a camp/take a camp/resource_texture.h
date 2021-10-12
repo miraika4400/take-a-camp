@@ -27,14 +27,15 @@ public:
 	typedef enum
 	{
 		TEXTURE_TITLE = 0,       // タイトル
-        TEXTURE_TUTORIAL,        // チュートリアル
+		TEXTURE_TUTORIAL,        // チュートリアル
 		TEXTURE_TUTORIAL_FLAG,   // チュートリアル(はたあげ)
-        TEXTURE_TUTORIAL_FRY,    // チュートリアル(連打)
-        TEXTURE_TUTORIAL_REMEMBER,// チュートリアル(記憶)
+		TEXTURE_TUTORIAL_FRY,    // チュートリアル(連打)
+		TEXTURE_TUTORIAL_REMEMBER,// チュートリアル(記憶)
 		TEXTURE_PARTICLE_BOX,    // パーティクル*箱
 		TEXTURE_PARTICLE_TEARS,  // パーティクル*涙
 		TEXTURE_PARTICLE_CIRCLE, // パーティクル*円
 		TEXTURE_NUMBER,          // ナンバー
+		TEXTURE_CROSS_MARK,      // バツマーク
 		TEXTURE_MAX              // テクスチャ数
 	}TEXTURE_TYPE;
 	

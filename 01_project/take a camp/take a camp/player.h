@@ -38,14 +38,16 @@ public:
 	void Update(void);
 	void Draw(void);
 
-	D3DXCOLOR GetColor(void) { return m_color; }
+	int GetColorNumber(void) { return m_nColor; }
 	CCollision * GetCollision(void) { return  m_pCollison; }
+	int GetPlayerNumber(void) { return m_nPlayerNumber; }
 private:
 	void Move(void); // 移動処理
 
 	// メンバ変数
-	int m_nPlayerNumber; // プレイヤー番号
-	bool m_bMove;        // 移動可否フラグ
+	int m_nPlayerNumber;      // プレイヤー番号
+	int m_nColor;             // 色ナンバー
+	bool m_bMove;            // 移動可否フラグ
 	
 	D3DXVECTOR3	 m_Move;		// 移動量
 	int			 m_MoveCoutn;	// 移動時のカウント

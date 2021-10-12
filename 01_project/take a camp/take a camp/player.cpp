@@ -36,13 +36,11 @@ CPlayer::CPlayer() :CModel(OBJTYPE_PLAYER)
 	m_nPlayerNumber = 0;
 	m_bMove = false;
 	m_pCollison = NULL;
+	m_nColor = 0;
 	m_pActRange = NULL;
 	memset(&m_Move, 0, sizeof(D3DXVECTOR3));
 	m_MoveCoutn = 0;
-	///////////////////////////////////////////////
-	//仮
-	m_color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
-	///////////////////////////////////////////////
+
 }
 
 //******************************
@@ -124,23 +122,26 @@ void CPlayer::Update(void)
 	// 
 #ifdef _DEBUG
 	// キーボードの取得
-	CInputKeyboard * pKey = CManager::GetKeyboard();
+	if (m_nPlayerNumber == 0)
+	{
+		CInputKeyboard * pKey = CManager::GetKeyboard();
 
-	if (pKey->GetKeyPress(DIK_NUMPAD1))
-	{
-		m_color = D3DXCOLOR(0.8f, 0.8f, 1.0f, 1.0f);
-	}
-	if (pKey->GetKeyPress(DIK_NUMPAD2))
-	{
-		m_color = D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f);
-	}
-	if (pKey->GetKeyPress(DIK_NUMPAD3))
-	{
-		m_color = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
-	}
-	if (pKey->GetKeyPress(DIK_NUMPAD4))
-	{
-		m_color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+		if (pKey->GetKeyPress(DIK_NUMPAD1))
+		{
+			m_nColor = 0;
+		}
+		if (pKey->GetKeyPress(DIK_NUMPAD2))
+		{
+			m_nColor = 1;
+		}
+		if (pKey->GetKeyPress(DIK_NUMPAD3))
+		{
+			m_nColor = 2;
+		}
+		if (pKey->GetKeyPress(DIK_NUMPAD4))
+		{
+			m_nColor = 3;
+		}
 	}
 
 #endif // _DEBUG
@@ -165,30 +166,62 @@ void CPlayer::Move(void)
 		// キーボードの取得
 		CInputKeyboard * pKey = CManager::GetKeyboard();
 
-		if (pKey->GetKeyPress(DIK_W)
-			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
-		{// 前進
-			m_Move.z -= MOVE_DIST;
-			m_bMove = false;
+		if (m_nPlayerNumber == 0)
+		{
+			if (pKey->GetKeyPress(DIK_W)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
+			{// 前進
+				m_Move.z -= MOVE_DIST;
+				m_bMove = false;
+			}
+			else if (pKey->GetKeyPress(DIK_S)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
+			{// 後退
+				m_Move.z += MOVE_DIST;
+				m_bMove = false;
+			}
+			else if (pKey->GetKeyPress(DIK_A)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
+			{// 左
+				m_Move.x += MOVE_DIST;
+				m_bMove = false;
+			}
+			else if (pKey->GetKeyPress(DIK_D)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
+			{// 右
+				m_Move.x -= MOVE_DIST;
+				m_bMove = false;
+			}
 		}
-		else if (pKey->GetKeyPress(DIK_S)
-			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
-		{// 後退
-			m_Move.z += MOVE_DIST;
-			m_bMove = false;
+		else
+		{
+
+			if (pKey->GetKeyPress(DIK_UP)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
+			{// 前進
+				m_Move.z -= MOVE_DIST;
+				m_bMove = false;
+			}
+			else if (pKey->GetKeyPress(DIK_DOWN)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
+			{// 後退
+				m_Move.z += MOVE_DIST;
+				m_bMove = false;
+			}
+			else if (pKey->GetKeyPress(DIK_LEFT)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
+			{// 左
+				m_Move.x += MOVE_DIST;
+				m_bMove = false;
+			}
+			else if (pKey->GetKeyPress(DIK_RIGHT)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
+			{// 右
+				m_Move.x -= MOVE_DIST;
+				m_bMove = false;
+			}
 		}
-		else if (pKey->GetKeyPress(DIK_A)
-			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
-		{// 左
-			m_Move.x += MOVE_DIST;
-			m_bMove = false;
-		}
-		else if (pKey->GetKeyPress(DIK_D) 
-			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
-		{// 右
-			m_Move.x -= MOVE_DIST;
-			m_bMove = false;
-		}
+		
 	}
 	else
 	{
@@ -197,7 +230,7 @@ void CPlayer::Move(void)
 
 		//移動計算
 		pos += (m_Move - pos) / (float)(MOVE_FRAME - m_MoveCoutn);
-		
+
 		//位置設定
 		SetPos(pos);
 
@@ -205,7 +238,7 @@ void CPlayer::Move(void)
 		m_MoveCoutn++;
 
 		//カウントが一定に達する
-		if (m_MoveCoutn>=MOVE_FRAME)
+		if (m_MoveCoutn >= MOVE_FRAME)
 		{
 			//カウント初期化
 			m_MoveCoutn = 0;
