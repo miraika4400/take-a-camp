@@ -28,6 +28,15 @@ class CActRange;
 class CPlayer : public CModel
 {
 public:
+	typedef enum
+	{
+		KEY_PROGRESS = 0,
+		KEY_RECESSION,
+		KEY_LEFT,
+		KEY_RIGHT,
+		KEY_MAX
+	}CONTROLL_KEY;
+
 	//メンバ関数
 	CPlayer();
 	~CPlayer();
@@ -45,6 +54,8 @@ private:
 	void Move(void); // 移動処理
 
 	// メンバ変数
+	static int m_anControllKey[4][KEY_MAX];
+
 	int m_nPlayerNumber;      // プレイヤー番号
 	int m_nColor;             // 色ナンバー
 	bool m_bMove;            // 移動可否フラグ

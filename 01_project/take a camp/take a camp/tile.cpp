@@ -91,10 +91,10 @@ HRESULT CTile::Init(void)
 	m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 	// アイコン
-	m_pIcon = CScene3d::Create(GetPos(), D3DXVECTOR3(TILE_ONE_SIDE, 0.0f, TILE_ONE_SIDE));
-	m_pIcon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CROSS_MARK));
-	m_pIcon->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-	m_pIcon->SetPriority(OBJTYPE_UI);
+	m_pFrame = CScene3d::Create(GetPos(), D3DXVECTOR3(TILE_ONE_SIDE-2, 0.0f, TILE_ONE_SIDE-2));
+	m_pFrame->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_FRAME));
+	m_pFrame->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+	m_pFrame->SetPriority(OBJTYPE_UI);
 
 	return S_OK;
 }
@@ -117,16 +117,24 @@ void CTile::Update(void)
 		m_pCollison = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y+ TILE_ONE_SIDE/2, GetPos().z), TILE_ONE_SIDE/2);
 	}
 
-
 	// プレイヤーとの当たり判定
 	CollisionPlayer();
 	
 	// アイコンの管理
-	ManageIcon();
+	ManageFrame();
 
 	if (m_nCntStep > 0)
 	{
 		m_nCntStep--;
+	}
+
+	if (m_nStep != 0)
+	{
+		m_pFrame->SetColor(GET_COLORMANAGER->GetStepColor(m_nPrevNum, 2));
+	}
+	else
+	{
+		m_pFrame->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
 	}
 #ifdef _DEBUG
 	// デバッグキー
@@ -135,8 +143,14 @@ void CTile::Update(void)
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 
 	if (pKey->GetKeyPress(DIK_NUMPADENTER))
-	{// 前進
+	{// 盤面リセット
 		m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		
+		// 変数の初期化
+		m_nPrevNum = -1;                             // 今塗られているカラーの番号*デフォルトは-1
+		m_nStep = 0;                                 // 今の塗段階
+		m_nCntStep = 0;                              // 再度塗り可能カウント
+		m_nLastHitPlayerNum = -1;                    // 最後に当たったプレイヤー番号
 	}
 #endif // _DEBUG
 }
@@ -146,7 +160,7 @@ void CTile::Update(void)
 //******************************
 void CTile::Draw(void)
 {
-	/////////////////////////////
+	/////////////////////////////　
 	//仮;
 	// 色の設定
 	D3DXMATERIAL* mat = (D3DXMATERIAL*)GetModelData()->pBuffMat->GetBufferPointer();
@@ -180,15 +194,15 @@ void CTile::CollisionPlayer(void)
 //******************************
 // アイコンの管理
 //******************************
-void CTile::ManageIcon(void)
+void CTile::ManageFrame(void)//そこにあいはあるんか？
 {
 	// 位置の調整
-	D3DXVECTOR3 pos = m_pIcon->GetPos();
+	D3DXVECTOR3 pos = m_pFrame->GetPos();
 	if (pos != D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) +1.0f, GetPos().z))
 	{
 		pos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 1.0f, GetPos().z);
 
-		m_pIcon->SetPos(pos);
+		m_pFrame->SetPos(pos);
 	}
 }
 
@@ -222,9 +236,8 @@ void CTile::Peint(int nColorNumber , int nPlayerNum)
 		{
 			if (m_nStep == 1)
 			{
-				m_nPrevNum = -1;
-				m_color = DEFAULT_COLOR;
-				m_nStep = 0;
+				m_nPrevNum = nColorNumber;
+				m_color = GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep - 1);
 				m_nCntStep = PEINT_COUNT;
 			}
 			else

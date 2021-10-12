@@ -82,6 +82,11 @@ HRESULT CGame::Init(void)
 	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0);
 	// プレイヤー生成
 	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 1);
+	// プレイヤー生成
+	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 2);
+	// プレイヤー生成
+	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 3);
+	
 	// ライトクラスの生成
 	m_pLight = new CLight;
 	// ライトクラスの初期化

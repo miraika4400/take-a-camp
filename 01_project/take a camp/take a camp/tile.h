@@ -48,13 +48,13 @@ public:
 
 private:
 	void CollisionPlayer(void);   // プレイヤーとの当たり判定
-	void ManageIcon(void);        // アイコン管理
+	void ManageFrame(void);        // アイコン管理
 	void Peint(int nColorNumber, int nPlayerNum); // 塗処理
 
 	// メンバ変数
 	CCollision * m_pCollison; // 当たり判定
 	D3DXCOLOR m_color;        // カラー
-	CScene3d *m_pIcon;        // アイコン
+	CScene3d *m_pFrame;        // アイコン
 	int m_nPrevNum;           // 今塗られているカラーの番号*デフォルトは-1
 	int m_nStep;              // 今の塗段階
 	int m_nCntStep;           // 再度塗り可能カウント
