@@ -23,7 +23,7 @@ class CCollision;
 //*****************************
 //マクロ定義
 //*****************************
-#define TILE_ONE_SIDE 20.0f  // タイルのサイズ*一辺
+#define TILE_ONE_SIDE 20.0f			// タイルのサイズ*一辺
 #define TILE_SIZE_Y TILE_ONE_SIDE/2
 #define TILE_SIZE D3DXVECTOR3(TILE_ONE_SIDE,TILE_SIZE_Y,TILE_ONE_SIDE)  // タイルのサイズ
 

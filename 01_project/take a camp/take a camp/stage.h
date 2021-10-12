@@ -27,14 +27,15 @@ class CStage : public CScene
 public:
 	typedef struct //一行のブロック情報
 	{
-		int			nBlockType[MAX_STAGE_SIZE_X];	//ブロックデータ
-		int			nStageSizeX;					//その行のブロック数
+		int			nBlockType[MAX_STAGE_SIZE_X];	// ブロックデータ
+		int			nStageSizeX;					// その行のブロック数
 	}BLOCK_DATA;
 
 	typedef struct	//ステージ情報
 	{
-		BLOCK_DATA	BlockData[MAX_STAGE_SIZE_Y];	//ブロック
-		int			nStageSizeY;					//ブロックの列
+		BLOCK_DATA	BlockData[MAX_STAGE_SIZE_Y];	// ブロック
+		int			nStageSizeY;					// ブロックの列
+		D3DXVECTOR3	m_pos;							// 位置		
 	}MAP_DATA;
 
 	typedef enum	//タイルの種類
@@ -53,11 +54,9 @@ public:
 	void	Draw(void);
 	void	Update(void);
 	void	MapCreate(void);							//マップの生成
-	void	SetPos(D3DXVECTOR3 pos) { m_pos = pos; }	//位置セッター
-	MAP_DATA GetMapData(void) { return m_pMapData; }	//マップ情報ゲッター
+	MAP_DATA GetMapData(void) { return m_MapData; }	//マップ情報ゲッター
 private:
 	static char*		m_pFileName;	// ファイルネーム
-	static MAP_DATA		m_pMapData;		// ステージの情報
-	D3DXVECTOR3			m_pos;			// 位置		
+	static MAP_DATA		m_MapData;		// ステージの情報
 };
 #endif

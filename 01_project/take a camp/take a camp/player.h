@@ -19,7 +19,7 @@
 // 前方宣言
 //*****************************
 class CCollision;
-
+class CActRange;
 //*****************************
 // クラス定義
 //*****************************
@@ -46,9 +46,12 @@ private:
 	// メンバ変数
 	int m_nPlayerNumber; // プレイヤー番号
 	bool m_bMove;        // 移動可否フラグ
-	D3DXCOLOR m_color;   // 色
-	CCollision * m_pCollison; // 当たり判定
-
+	
+	D3DXVECTOR3	 m_Move;		// 移動量
+	int			 m_MoveCoutn;	// 移動時のカウント
+	D3DXCOLOR	 m_color;		// 色
+	CCollision * m_pCollison;	// 当たり判定
+	CActRange *	 m_pActRange;	// 行動判定
 };
 
 #endif
