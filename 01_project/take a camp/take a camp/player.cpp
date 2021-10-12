@@ -21,7 +21,7 @@
 // マクロ定義
 //*****************************
 #define MOVE_DIST (TILE_ONE_SIDE)	// 移動距離
-#define MOVE_FRAME 5				// 移動速度
+#define MOVE_FRAME 8				// 移動速度
 #define COLLISION_RADIUS 20.0f
 
 //*****************************
@@ -111,7 +111,6 @@ void CPlayer::Update(void)
 {
 	// 移動処理
 	Move();
-	m_pActRange->PlayerPos();
 	// 当たり判定の位置
 	if (m_pCollison == NULL)
 	{

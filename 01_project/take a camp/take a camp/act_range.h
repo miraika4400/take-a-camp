@@ -41,7 +41,6 @@ public:
 	CActRange();
 	~CActRange();
 	void PlayerPos(void);					// プレイヤーがどの位置にいるか
-	void PlayerMove(int nMoveX,int nMoveZ);	// プレイヤーが移動したか
 	void ActRange(void);	// プレイヤーの移動範囲
 	static CActRange *Create(CPlayer* pPlayer);
 	HRESULT Init(void);
