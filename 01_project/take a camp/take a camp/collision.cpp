@@ -17,11 +17,14 @@
 //*****************************
 // マクロ定義
 //*****************************
+#define COLLISION_COLOR D3DXCOLOR(0.5f,0.5f,0.5f,1.0f)
 
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-#define COLLISION_COLOR D3DXCOLOR(0.5f,0.5f,0.5f,1.0f)
+#ifdef _DEBUG
+bool CCollision::m_bDraw = true;
+#endif
 
 //******************************
 // コンストラクタ
@@ -167,28 +170,30 @@ void CCollision::Update(void)
 void CCollision::Draw(void)
 {
 #ifdef _DEBUG
+	if (m_bDraw)
+	{
+		// 色の設定
+		D3DXMATERIAL* mat = (D3DXMATERIAL*)GetModelData()->pBuffMat->GetBufferPointer();
+		mat->MatD3D.Ambient = COLLISION_COLOR;
+		mat->MatD3D.Diffuse = COLLISION_COLOR;
+		mat->MatD3D.Specular = COLLISION_COLOR;
+		mat->MatD3D.Emissive = COLLISION_COLOR;
+		// デバイスの取得
+		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	// 色の設定
-	D3DXMATERIAL* mat =  (D3DXMATERIAL*)GetModelData()->pBuffMat->GetBufferPointer();
-	mat->MatD3D.Ambient = COLLISION_COLOR;
-	mat->MatD3D.Diffuse = COLLISION_COLOR;
-	mat->MatD3D.Specular = COLLISION_COLOR;
-	mat->MatD3D.Emissive = COLLISION_COLOR;
-	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+		// カリング
+		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-	// カリング
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+		// ワイヤーフレームで描画
+		pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+		//　描画
+		CModel::Draw();
+		// ワイヤーフレームをもどす
+		pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
-	// ワイヤーフレームで描画
-	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-	//　描画
-	CModel::Draw();
-	// ワイヤーフレームをもどす
-	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-
-	// カリング
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+		// カリング
+		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	}
 
 #endif // _DEBUG
 }

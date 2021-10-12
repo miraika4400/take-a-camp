@@ -24,6 +24,7 @@
 #include "tutorial.h"
 #include "stage.h"
 #include "color_manager.h"
+#include "collision.h"
 
 //=============================
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
@@ -287,6 +288,16 @@ void CManager::Update(void)
 	{
 		m_pFade->Update();
 	}
+
+#ifdef _DEBUG
+	if (m_pInputKeyboard != NULL)
+	{
+		if (m_pInputKeyboard->GetKeyTrigger(DIK_NUMPAD0))
+		{
+			CCollision::SetDrawFlag(true^ CCollision::GetDrawFlag());
+		}
+	}
+#endif
 
 }
 

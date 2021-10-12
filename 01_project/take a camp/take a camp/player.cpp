@@ -33,10 +33,7 @@ CPlayer::CPlayer() :CModel(OBJTYPE_PLAYER)
 	m_nPlayerNumber = 0;
 	m_bMove = false;
 	m_pCollison = NULL;
-	///////////////////////////////////////////////
-	//仮
-	m_color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
-	///////////////////////////////////////////////
+	m_nColor = 0;
 }
 
 //******************************
@@ -116,23 +113,26 @@ void CPlayer::Update(void)
 	// 
 #ifdef _DEBUG
 	// キーボードの取得
-	CInputKeyboard * pKey = CManager::GetKeyboard();
+	if (m_nPlayerNumber == 0)
+	{
+		CInputKeyboard * pKey = CManager::GetKeyboard();
 
-	if (pKey->GetKeyPress(DIK_NUMPAD1))
-	{
-		m_color = D3DXCOLOR(1.0f, 0.8f, 0.6f, 1.0f);
-	}
-	if (pKey->GetKeyPress(DIK_NUMPAD2))
-	{
-		m_color = D3DXCOLOR(1.0f, 0.7f, 0.4f, 1.0f);
-	}
-	if (pKey->GetKeyPress(DIK_NUMPAD3))
-	{
-		m_color = D3DXCOLOR(1.0f, 0.5f, 0.0f, 1.0f);
-	}
-	if (pKey->GetKeyPress(DIK_NUMPAD4))
-	{
-		m_color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+		if (pKey->GetKeyPress(DIK_NUMPAD1))
+		{
+			m_nColor = 0;
+		}
+		if (pKey->GetKeyPress(DIK_NUMPAD2))
+		{
+			m_nColor = 1;
+		}
+		if (pKey->GetKeyPress(DIK_NUMPAD3))
+		{
+			m_nColor = 2;
+		}
+		if (pKey->GetKeyPress(DIK_NUMPAD4))
+		{
+			m_nColor = 3;
+		}
 	}
 
 #endif // _DEBUG
@@ -159,22 +159,44 @@ void CPlayer::Move(void)
 
 		// キーボードの取得
 		CInputKeyboard * pKey = CManager::GetKeyboard();
-
-		if (pKey->GetKeyPress(DIK_W))
-		{// 前進
-			pos.z -= MOVE_SPEED;
+		CInputJoypad * pJoy = CManager::GetJoypad();
+		if (m_nPlayerNumber != 0)
+		{
+			if (pKey->GetKeyPress(DIK_W))
+			{// 前進
+				pos.z -= MOVE_SPEED;
+			}
+			if (pKey->GetKeyPress(DIK_S))
+			{// 後退
+				pos.z += MOVE_SPEED;
+			}
+			if (pKey->GetKeyPress(DIK_A))
+			{// 左
+				pos.x += MOVE_SPEED;
+			}
+			if (pKey->GetKeyPress(DIK_D))
+			{// 右
+				pos.x -= MOVE_SPEED;
+			}
 		}
-		if (pKey->GetKeyPress(DIK_S))
-		{// 後退
-			pos.z += MOVE_SPEED;
-		}
-		if (pKey->GetKeyPress(DIK_A))
-		{// 左
-			pos.x += MOVE_SPEED;
-		}
-		if (pKey->GetKeyPress(DIK_D))
-		{// 右
-			pos.x -= MOVE_SPEED;
+		else
+		{
+			if (pKey->GetKeyPress(DIK_UP))
+			{// 前進
+				pos.z -= MOVE_SPEED;
+			}
+			if (pKey->GetKeyPress(DIK_DOWN))
+			{// 後退
+				pos.z += MOVE_SPEED;
+			}
+			if (pKey->GetKeyPress(DIK_LEFT))
+			{// 左
+				pos.x += MOVE_SPEED;
+			}
+			if (pKey->GetKeyPress(DIK_RIGHT))
+			{// 右
+				pos.x -= MOVE_SPEED;
+			}
 		}
 
 		SetPos(pos);

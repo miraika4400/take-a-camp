@@ -142,7 +142,6 @@ void CColorManager::LoadText(void)
 
 			fscanf(pFile, "%*s %s", chChar);
 		}
-		
 
 		// ファイルクローズ
 		fclose(pFile);

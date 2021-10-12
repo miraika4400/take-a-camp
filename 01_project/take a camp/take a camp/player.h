@@ -38,15 +38,16 @@ public:
 	void Update(void);
 	void Draw(void);
 
-	D3DXCOLOR GetColor(void) { return m_color; }
+	int GetColorNumber(void) { return m_nColor; }
 	CCollision * GetCollision(void) { return  m_pCollison; }
+	int GetPlayerNumber(void) { return m_nPlayerNumber; }
 private:
 	void Move(void); // 移動処理
 
 	// メンバ変数
-	int m_nPlayerNumber; // プレイヤー番号
-	bool m_bMove;        // 移動可否フラグ
-	D3DXCOLOR m_color;   // 色
+	int m_nPlayerNumber;      // プレイヤー番号
+	bool m_bMove;             // 移動可否フラグ
+	int m_nColor;             // 色ナンバー
 	CCollision * m_pCollison; // 当たり判定
 
 };

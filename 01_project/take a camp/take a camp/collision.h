@@ -35,13 +35,19 @@ public:
 	static CCollision *CreateSphere(D3DXVECTOR3 pos, float fRadius);
 	static bool CollisionSphere(CCollision*pCollision1, CCollision*pCollision2);
 	static float OnRange(float fPoint, float fMin, float fMax);
-
+	
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 	D3DXVECTOR3 GetCollisionSize(void) { return m_size; }
 	float GetCollisionRadius(void) { return m_fRadius; }
+
+#ifdef _DEBUG
+	static void SetDrawFlag(bool bDraw) { m_bDraw = bDraw; }
+	static bool GetDrawFlag(void) { return m_bDraw; }
+#endif
+
 private:
 	void CreateMesh(void);
 
@@ -52,6 +58,10 @@ private:
 	COLLISIONTYPE m_type;  // コリジョンのタイプ
 	float m_fRadius;
 	D3DXVECTOR3 m_size;
+
+#ifdef _DEBUG
+	static bool m_bDraw;
+#endif
 };
 
 #endif

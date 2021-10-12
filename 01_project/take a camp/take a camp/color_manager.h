@@ -22,6 +22,7 @@
 //マクロ定義
 //*****************************
 #define COLOR_STEP_NUM 3
+#define GET_COLORMANAGER CColorManager::GetColorManager()
 
 //*****************************
 // クラス定義
@@ -49,15 +50,15 @@ public:
 	static void Release(void);
 
 	// 取得処理
-	CColorManager*GetColorManager(void) { return m_pInstance; }
+	static CColorManager*GetColorManager(void) { return m_pInstance; }
+	D3DXCOLOR GetStepColor(int nIndex, int nStep) { return m_aColorData[nIndex].aCol[nStep]; }
 
 private:
-	void LoadText(void);
+	void LoadText(void); // テキストデータの読み込み
 
 	// メンバ変数
-	static CColorManager * m_pInstance;
-
-	std::vector<ColorData> m_aColorData;
+	static CColorManager * m_pInstance;  // インスタンス
+	std::vector<ColorData> m_aColorData; // カラーデータ
 };
 
 #endif

@@ -77,7 +77,8 @@ HRESULT CGame::Init(void)
 
 	// プレイヤー生成
 	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0);
-
+	// プレイヤー生成
+	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 1);
 	// ライトクラスの生成
 	m_pLight = new CLight;
 	// ライトクラスの初期化
@@ -114,14 +115,6 @@ void CGame::Uninit(void)
 		m_pLight->Uninit();
 		delete m_pLight;
 		m_pLight = NULL;
-	}
-
-	//ステージ
-	if (pStage != NULL)
-	{
-		pStage->Uninit();
-		delete pStage;
-		pStage = NULL;
 	}
 
 	// 開放処理
