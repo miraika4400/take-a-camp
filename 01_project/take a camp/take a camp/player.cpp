@@ -14,11 +14,14 @@
 #include "joypad.h"
 #include "collision.h"
 #include "debug_log.h"
+#include "act_range.h"
+#include "tile.h"
 
 //*****************************
 // マクロ定義
 //*****************************
-#define MOVE_SPEED 3 
+#define MOVE_DIST (TILE_ONE_SIDE)	// 移動距離
+#define MOVE_FRAME 8				// 移動速度
 #define COLLISION_RADIUS 20.0f
 
 //*****************************
@@ -34,6 +37,10 @@ CPlayer::CPlayer() :CModel(OBJTYPE_PLAYER)
 	m_bMove = false;
 	m_pCollison = NULL;
 	m_nColor = 0;
+	m_pActRange = NULL;
+	memset(&m_Move, 0, sizeof(D3DXVECTOR3));
+	m_MoveCoutn = 0;
+
 }
 
 //******************************
@@ -81,6 +88,9 @@ HRESULT CPlayer::Init(void)
 	// 移動フラグの初期化
 	m_bMove = true;
 
+	//移動範囲クラスの生成
+	m_pActRange = CActRange::Create(this);
+
 	return S_OK;
 }
 
@@ -99,7 +109,6 @@ void CPlayer::Update(void)
 {
 	// 移動処理
 	Move();
-
 	// 当たり判定の位置
 	if (m_pCollison == NULL)
 	{
@@ -154,51 +163,87 @@ void CPlayer::Move(void)
 {
 	if (m_bMove)
 	{
-		// 座標の取得
-		D3DXVECTOR3 pos = GetPos();
-
 		// キーボードの取得
 		CInputKeyboard * pKey = CManager::GetKeyboard();
-		CInputJoypad * pJoy = CManager::GetJoypad();
-		if (m_nPlayerNumber != 0)
+
+		if (m_nPlayerNumber == 0)
 		{
-			if (pKey->GetKeyPress(DIK_W))
+			if (pKey->GetKeyPress(DIK_W)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
 			{// 前進
-				pos.z -= MOVE_SPEED;
+				m_Move.z -= MOVE_DIST;
+				m_bMove = false;
 			}
-			if (pKey->GetKeyPress(DIK_S))
+			else if (pKey->GetKeyPress(DIK_S)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
 			{// 後退
-				pos.z += MOVE_SPEED;
+				m_Move.z += MOVE_DIST;
+				m_bMove = false;
 			}
-			if (pKey->GetKeyPress(DIK_A))
+			else if (pKey->GetKeyPress(DIK_A)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
 			{// 左
-				pos.x += MOVE_SPEED;
+				m_Move.x += MOVE_DIST;
+				m_bMove = false;
 			}
-			if (pKey->GetKeyPress(DIK_D))
+			else if (pKey->GetKeyPress(DIK_D)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
 			{// 右
-				pos.x -= MOVE_SPEED;
+				m_Move.x -= MOVE_DIST;
+				m_bMove = false;
 			}
 		}
 		else
 		{
-			if (pKey->GetKeyPress(DIK_UP))
+
+			if (pKey->GetKeyPress(DIK_UP)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
 			{// 前進
-				pos.z -= MOVE_SPEED;
+				m_Move.z -= MOVE_DIST;
+				m_bMove = false;
 			}
-			if (pKey->GetKeyPress(DIK_DOWN))
+			else if (pKey->GetKeyPress(DIK_DOWN)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
 			{// 後退
-				pos.z += MOVE_SPEED;
+				m_Move.z += MOVE_DIST;
+				m_bMove = false;
 			}
-			if (pKey->GetKeyPress(DIK_LEFT))
+			else if (pKey->GetKeyPress(DIK_LEFT)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
 			{// 左
-				pos.x += MOVE_SPEED;
+				m_Move.x += MOVE_DIST;
+				m_bMove = false;
 			}
-			if (pKey->GetKeyPress(DIK_RIGHT))
+			else if (pKey->GetKeyPress(DIK_RIGHT)
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
 			{// 右
-				pos.x -= MOVE_SPEED;
+				m_Move.x -= MOVE_DIST;
+				m_bMove = false;
 			}
 		}
+		
+	}
+	else
+	{
+		// 座標の取得
+		D3DXVECTOR3 pos = GetPos();
 
+		//移動計算
+		pos += (m_Move - pos) / (float)(MOVE_FRAME - m_MoveCoutn);
+
+		//位置設定
 		SetPos(pos);
+
+		//カウントアップ
+		m_MoveCoutn++;
+
+		//カウントが一定に達する
+		if (m_MoveCoutn >= MOVE_FRAME)
+		{
+			//カウント初期化
+			m_MoveCoutn = 0;
+			//移動できるように
+			m_bMove = true;
+		}
 	}
 }

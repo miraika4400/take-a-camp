@@ -19,14 +19,13 @@
 // 静的メンバー変数
 //=============================================================================
 char* CStage::m_pFileName = "data/Text/stage.csv";
-CStage::MAP_DATA CStage::m_pMapData = {};
+CStage::MAP_DATA CStage::m_MapData = {};
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
 CStage::CStage()
 {
-	m_pos = D3DXVECTOR3(0.0f,0.0f,0.0f);
 }
 
 //=============================================================================
@@ -92,10 +91,10 @@ void CStage::Load(void)
 			switch (atoi(cFileString))
 			{
 			case BLOCK_TYPE_NONE:
-				m_pMapData.BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_NONE;
+				m_MapData.BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_NONE;
 				break;
 			case BLOCK_TYPE_:
-				m_pMapData.BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_;
+				m_MapData.BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_;
 				break;
 			}
 			//バッファの初期化
@@ -107,7 +106,7 @@ void CStage::Load(void)
 			if (nFileText == '\n')
 			{
 				//行数保存
-				m_pMapData.BlockData[nRow].nStageSizeX = nCol;
+				m_MapData.BlockData[nRow].nStageSizeX = nCol;
 				//行数初期化
 				nCol = 1;
 				//列の進行
@@ -117,7 +116,7 @@ void CStage::Load(void)
 		}
 	
 	out:								//末尾ならここに跳ぶ
-		m_pMapData.nStageSizeY = nRow;	//ブロック数を保存
+		m_MapData.nStageSizeY = nRow;	//ブロック数を保存
 		fclose(pFile);					//ファイルを閉じる
 	
 	}
@@ -133,7 +132,7 @@ CStage * CStage::Create(D3DXVECTOR3 pos)
 	CStage *pStage;
 	pStage = new CStage;
 
-	pStage->SetPos(pos);
+	pStage->m_MapData.m_pos = pos;	//位置セット
 	pStage->Init();
 
 	return pStage;
@@ -178,20 +177,20 @@ void CStage::Update(void)
 void CStage::MapCreate(void)
 {
 	//マップデータがあるか
-	if (&m_pMapData != NULL)
+	if (&m_MapData != NULL)
 	{
-		for (int nBlockY = 0; nBlockY < m_pMapData.nStageSizeY; nBlockY++)
+		for (int nBlockY = 0; nBlockY < m_MapData.nStageSizeY; nBlockY++)
 		{
-			for (int nBlockX = 0; nBlockX < m_pMapData.BlockData[nBlockY].nStageSizeX; nBlockX++)
+			for (int nBlockX = 0; nBlockX < m_MapData.BlockData[nBlockY].nStageSizeX; nBlockX++)
 			{
 				//マス目のタイプ取得
-				switch (m_pMapData.BlockData[nBlockY].nBlockType[nBlockX])
+				switch (m_MapData.BlockData[nBlockY].nBlockType[nBlockX])
 				{
 				case BLOCK_TYPE::BLOCK_TYPE_NONE:	//なし
 
 					break;
 				case BLOCK_TYPE::BLOCK_TYPE_:		//仮置きタイル
-					CTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_pos);
+					CTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos);
 					break;
 				}
 			}

@@ -197,7 +197,7 @@ void CTile::ManageIcon(void)
 //******************************
 void CTile::Peint(int nColorNumber , int nPlayerNum)
 {
-	if (m_nCntStep <= 0 || nPlayerNum != m_nLastHitPlayerNum)
+	if (m_nCntStep <= 0 || nPlayerNum != m_nLastHitPlayerNum )
 	{
 		m_nLastHitPlayerNum = nPlayerNum;
 

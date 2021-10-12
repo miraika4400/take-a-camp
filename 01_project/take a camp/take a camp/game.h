@@ -54,7 +54,7 @@ public:
 	// 取得処理
 	static CLight*GetLight(void) { return m_pLight; }                    // ライトクラスのポインタ
 	static CRuleManager *GetRuleManager(void) { return m_pRuleManager; } // ルールマネージャーポインタ
-
+	static CStage* GetStage(void) { return m_pStage; }
 private:
 
 	//*****************************
@@ -62,7 +62,7 @@ private:
 	//*****************************
 	static CLight*m_pLight;              // ライトポインタ
 	static CRuleManager* m_pRuleManager; // ルールマネージャー
-	CStage *pStage;						 // ステージポインタ
+	static CStage *m_pStage;			 // ステージポインタ
 };
 
 #endif

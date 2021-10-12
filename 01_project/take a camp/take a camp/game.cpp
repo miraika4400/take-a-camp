@@ -34,7 +34,7 @@
 //=============================
 CLight  *CGame::m_pLight = NULL;      // ライトクラスポインタ
 CRuleManager* CGame::m_pRuleManager = NULL; // ルールマネージャークラス
-
+CStage* CGame::m_pStage = NULL;	//ステージクラスポインタ
 //=============================
 // コンストラクタ
 //=============================
@@ -74,6 +74,9 @@ HRESULT CGame::Init(void)
 
 	// 背景の生成
 	CBg::Create();
+	
+	//ステージ生成
+	m_pStage = CStage::Create(D3DXVECTOR3(200.0f, 0.0f, -100.0f));
 
 	// プレイヤー生成
 	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0);
@@ -90,8 +93,6 @@ HRESULT CGame::Init(void)
 		}
 	}
 
-	//ステージ生成
-	pStage = CStage::Create(D3DXVECTOR3(200.0f, 0.0f, -100.0f));
 
 	return S_OK;
 }
