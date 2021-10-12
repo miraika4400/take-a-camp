@@ -180,25 +180,28 @@ void CPlayer::Move(void)
 		{// ‘Oi
 			m_Move.z -= MOVE_DIST;
 			m_bMove = false;
-
+			m_pActRange->ActMove(0, -1);
 		}
 		else if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RECESSION])
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
 		{// Œã‘Þ
 			m_Move.z += MOVE_DIST;
 			m_bMove = false;
+			m_pActRange->ActMove(0, 1);
 		}
 		else if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_LEFT])
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
 		{// ¶
 			m_Move.x += MOVE_DIST;
 			m_bMove = false;
+			m_pActRange->ActMove(-1, 0);
 		}
 		else if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RIGHT])
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
 		{// ‰E
 			m_Move.x -= MOVE_DIST;
 			m_bMove = false;
+			m_pActRange->ActMove(1, 0);
 		}
 	}
 	else
