@@ -46,6 +46,7 @@ public:
 		OBJTYPE_PARTICLE,      // パーティクル
 		OBJTYPE_MOTION,        // モーション
 		OBJTYPE_UI,            // UI
+		OBJTYPE_ACT_RANGE,	   // 行動範囲
 		OBJTYPE_COLLISION,     // コリジョン
 		OBJTYPE_SYSTEM,        // システム
 		OBJTYPE_MAX,           // タイプの最大数

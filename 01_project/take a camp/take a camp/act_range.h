@@ -15,6 +15,7 @@
 #include "main.h"
 #include "scene.h"
 #include "stage.h"
+#include "game.h"
 
 //*****************************
 // 前方宣言
@@ -36,22 +37,27 @@ public:
 		PLAYER_MOVE_DOWN,	//下
 		PLAYER_MOVE_MAX
 	}PLAYER_MOVE;
+	
 
 	//メンバ関数
 	CActRange();
 	~CActRange();
-	void PlayerPos(void);					// プレイヤーがどの位置にいるか
+	void PlayerPos(void);	// プレイヤーがどの位置にいるか
+	void ActMove(int nMoveX, int nMoveZ);
+	void OtherPlayer(void);	// 他のプレイヤーにぶつかり止まる判定
 	void ActRange(void);	// プレイヤーの移動範囲
 	static CActRange *Create(CPlayer* pPlayer);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	bool GetPlayerMove(int nPlayerMove) { return m_bPlayerMove[nPlayerMove]; }
+	bool GetPlayerMove(int nPlayerMove) { return m_bPlayerMove[nPlayerMove]; }	//プレイヤーの移動できる方向ゲッター
+	D3DXVECTOR3 GetActPos(void) { return m_ActPos; }							//マップ上のプレイヤーの位置ゲッター
 private:
-	CPlayer*		 m_pPlayer;		// プレイヤーポインタ
-	CStage::MAP_DATA m_MapData;		// マップデータ
-	D3DXVECTOR3		 m_PlayerPos;	// マップ上のプレイヤーの位置
+	CPlayer*		 m_pPlayer;			// プレイヤーポインタ
+	CStage::MAP_DATA m_MapData;			// マップデータ
+	D3DXVECTOR3		 m_ActPos;			// マップ上のプレイヤーの位置
+	D3DXVECTOR3		 m_OtherActPos[MAX_PLAYER - 1];	// ほかプレイヤーのマップ上位置(自分以外のため - 1)
 	bool			 m_bPlayerMove[PLAYER_MOVE_MAX]; // プレイヤーが移動できるか
 };
 
