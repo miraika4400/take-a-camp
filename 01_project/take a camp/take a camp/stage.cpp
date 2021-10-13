@@ -9,6 +9,7 @@
 //=============================================================================
 #include "stage.h"
 #include "tile.h"
+#include "player.h"
 
 //=============================================================================
 // マクロ定義
@@ -93,8 +94,20 @@ void CStage::Load(void)
 			case BLOCK_TYPE_NONE:
 				m_MapData.BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_NONE;
 				break;
-			case BLOCK_TYPE_:
-				m_MapData.BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_;
+			case BLOCK_TYPE_1P_START:
+				m_MapData.BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_1P_START;
+				break;
+			case BLOCK_TYPE_2P_START:
+				m_MapData.BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_2P_START;
+				break;
+			case BLOCK_TYPE_3P_START:
+				m_MapData.BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_3P_START;
+				break;
+			case BLOCK_TYPE_4P_START:
+				m_MapData.BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_4P_START;
+				break;
+			case BLOCK_TYPE_BLOCK:
+				m_MapData.BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_BLOCK;
 				break;
 			}
 			//バッファの初期化
@@ -187,9 +200,24 @@ void CStage::MapCreate(void)
 				switch (m_MapData.BlockData[nBlockY].nBlockType[nBlockX])
 				{
 				case BLOCK_TYPE::BLOCK_TYPE_NONE:	//なし
-
 					break;
-				case BLOCK_TYPE::BLOCK_TYPE_:		//仮置きタイル
+				case BLOCK_TYPE::BLOCK_TYPE_1P_START:	//1Pスタート位置
+					CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, 0);
+					CTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos);
+					break;
+				case BLOCK_TYPE::BLOCK_TYPE_2P_START:	//2Pスタート位置
+					CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, 1);
+					CTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos);
+					break;
+				case BLOCK_TYPE::BLOCK_TYPE_3P_START:	//3Pスタート位置
+					CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, 2);
+					CTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos);
+					break;
+				case BLOCK_TYPE::BLOCK_TYPE_4P_START:	//4Pスタート位置
+					CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, 3);
+					CTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos);
+					break;
+				case BLOCK_TYPE::BLOCK_TYPE_BLOCK:	//仮置きタイル
 					CTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos);
 					break;
 				}

@@ -80,7 +80,7 @@ HRESULT CGame::Init(void)
 
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
 	{
-		CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE*nCntPlayer, 0.0f, 0.0f), nCntPlayer);
+		//CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE*nCntPlayer, 0.0f, 0.0f), nCntPlayer);
 	}
 	
 	// ライトクラスの生成
