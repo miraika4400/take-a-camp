@@ -59,6 +59,7 @@ private:
 	int m_nStep;              // 今の塗段階
 	int m_nCntStep;           // 再度塗り可能カウント
 	int m_nLastHitPlayerNum;  // 最後に当たったプレイヤー番号
+	bool m_bHitOld;           // 一個前のフレームで当たっていたか保存するよう
 };
 
 #endif

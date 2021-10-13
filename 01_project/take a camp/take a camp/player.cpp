@@ -23,6 +23,7 @@
 #define MOVE_DIST (TILE_ONE_SIDE)	// 移動距離
 #define MOVE_FRAME 8				// 移動速度
 #define COLLISION_RADIUS 20.0f
+#define MODEL_SIZE D3DXVECTOR3( 0.8f, 1.0f, 0.8f)
 
 //*****************************
 // 静的メンバ変数宣言
@@ -75,6 +76,10 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, int nPlayerNumber)
 	// 各値の代入・セット
 	pPlayer->SetPos(pos);
 	pPlayer->SetPriority(OBJTYPE_PLAYER); // オブジェクトタイプ
+	pPlayer->m_Move = pos;
+
+	//移動範囲クラスの生成
+	pPlayer->m_pActRange = CActRange::Create(pPlayer);
 
 	return pPlayer;
 }
@@ -95,10 +100,11 @@ HRESULT CPlayer::Init(void)
 	// 移動フラグの初期化
 	m_bMove = true;
 
-	//移動範囲クラスの生成
-	m_pActRange = CActRange::Create(this);
-
 	m_nColor = m_nPlayerNumber;
+
+	// モデルのサイズの設定
+	SetSize(MODEL_SIZE);
+
 	return S_OK;
 }
 

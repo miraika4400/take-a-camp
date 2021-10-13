@@ -23,7 +23,7 @@
 #include "bg.h"
 #include "player.h"
 #include "stage.h"
-
+#include "tile.h"
 
 //=============================
 // マクロ定義
@@ -78,14 +78,10 @@ HRESULT CGame::Init(void)
 	//ステージ生成
 	m_pStage = CStage::Create(D3DXVECTOR3(200.0f, 0.0f, -100.0f));
 
-	// プレイヤー生成
-	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0);
-	// プレイヤー生成
-	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 1);
-	// プレイヤー生成
-	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 2);
-	// プレイヤー生成
-	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 3);
+	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
+	{
+		CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE*nCntPlayer, 0.0f, 0.0f), nCntPlayer);
+	}
 	
 	// ライトクラスの生成
 	m_pLight = new CLight;

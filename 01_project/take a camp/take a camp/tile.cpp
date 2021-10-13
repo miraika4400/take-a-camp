@@ -41,6 +41,7 @@ CTile::CTile() :CModel(OBJTYPE_TILE)
 	m_nStep = 0;                                 // 今の塗段階
 	m_nCntStep = 0;                              // 再度塗り可能カウント
 	m_nLastHitPlayerNum = -1;
+	m_bHitOld = false;           // 一個前のフレームで当たっていたか保存するよう 
 }
 
 //******************************
@@ -96,6 +97,8 @@ HRESULT CTile::Init(void)
 	m_pFrame->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
 	m_pFrame->SetPriority(OBJTYPE_UI);
 
+	// フラグの初期化
+	m_bHitOld = false;
 	return S_OK;
 }
 
@@ -122,20 +125,13 @@ void CTile::Update(void)
 	
 	// アイコンの管理
 	ManageFrame();
+	
 
 	if (m_nCntStep > 0)
 	{
 		m_nCntStep--;
 	}
 
-	if (m_nStep != 0)
-	{
-		m_pFrame->SetColor(GET_COLORMANAGER->GetStepColor(m_nPrevNum, 2));
-	}
-	else
-	{
-		m_pFrame->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
-	}
 #ifdef _DEBUG
 	// デバッグキー
 
@@ -151,6 +147,7 @@ void CTile::Update(void)
 		m_nStep = 0;                                 // 今の塗段階
 		m_nCntStep = 0;                              // 再度塗り可能カウント
 		m_nLastHitPlayerNum = -1;                    // 最後に当たったプレイヤー番号
+		m_bHitOld = false;
 	}
 #endif // _DEBUG
 }
@@ -161,7 +158,7 @@ void CTile::Update(void)
 void CTile::Draw(void)
 {
 	/////////////////////////////　
-	//仮;
+	//仮
 	// 色の設定
 	D3DXMATERIAL* mat = (D3DXMATERIAL*)GetModelData()->pBuffMat->GetBufferPointer();
 	mat->MatD3D.Ambient = m_color;
@@ -185,10 +182,21 @@ void CTile::CollisionPlayer(void)
 	{
 		if (CCollision::CollisionSphere(m_pCollison, pPlayer->GetCollision()))
 		{
-			Peint(pPlayer->GetColorNumber(), pPlayer->GetPlayerNumber());
+			if (!m_bHitOld)
+			{
+				Peint(pPlayer->GetColorNumber(), pPlayer->GetPlayerNumber());
+			}
+
+			// ヒットフラグの保存*当たってない
+			m_bHitOld = true;
+			
+			return;
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
+
+	// ヒットフラグの保存*当たってる
+	m_bHitOld = false;
 }
 
 //******************************
@@ -204,6 +212,16 @@ void CTile::ManageFrame(void)//そこにあいはあるんか？
 
 		m_pFrame->SetPos(pos);
 	}
+
+	// 色の設定
+	if (m_nStep != 0)
+	{
+		m_pFrame->SetColor(GET_COLORMANAGER->GetStepColor(m_nPrevNum, 2));
+	}
+	else
+	{
+		m_pFrame->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+	}
 }
 
 //******************************
@@ -213,38 +231,51 @@ void CTile::Peint(int nColorNumber , int nPlayerNum)
 {
 	if (m_nCntStep <= 0 || nPlayerNum != m_nLastHitPlayerNum )
 	{
+		// カウントの初期化
+		m_nCntStep = PEINT_COUNT;
+
+		// 最後に当たったプレイヤーの保存
 		m_nLastHitPlayerNum = nPlayerNum;
 
 		if (m_nPrevNum == -1)
 		{// 今何も塗られていない
+
+			// カラー番号の保存
 			m_nPrevNum = nColorNumber;
+			// 色の取得
 			m_color = GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep);
+			// 色段階を進める
 			m_nStep++;
-			m_nCntStep = PEINT_COUNT;
+			
 		}
 		else if (m_nPrevNum == nColorNumber)
-		{// 今塗られているのとから塗る番号の比較
+		{// 今塗られているのとから塗る番号が一致
+
 			if (m_nStep < COLOR_STEP_NUM)
 			{
+				// 段階を進める
 				m_nStep++;
+				// 色の取得
 				m_color = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep-1);
-				
-				m_nCntStep = PEINT_COUNT;
 			}
 		}
 		else
-		{
+		{// 今塗られてる色と塗る色が違う
+
 			if (m_nStep == 1)
-			{
+			{// 段階が一の時
+				// カラー番号の保存
 				m_nPrevNum = nColorNumber;
+				// カラーの取得
 				m_color = GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep - 1);
-				m_nCntStep = PEINT_COUNT;
 			}
 			else
-			{
+			{// 段階が2以上の時
+
+				// 段階を減らす
 				m_nStep--;
+				// 色の取得
 				m_color = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep-1);
-				m_nCntStep = PEINT_COUNT;
 			}
 		}
 	}
