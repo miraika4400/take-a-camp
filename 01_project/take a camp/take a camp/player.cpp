@@ -110,8 +110,8 @@ HRESULT CPlayer::Init(void)
 	m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 
 	////////////////////////////////////////
-	// 仮	//プレイヤー番号ごとのカラー設定	m_nColor = m_nPlayerNumber;
-
+	// 仮	
+	m_nColor = m_nPlayerNumber;
 	CColorManager::GetColorManager()->SetUsePlayerNum(m_nPlayerNumber, m_nColor);
 	////////////////////////////////////////
 
