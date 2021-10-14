@@ -24,6 +24,8 @@
 #include "player.h"
 #include "stage.h"
 #include "tile.h"
+#include "debug_log.h"
+#include "color_manager.h"
 
 //=============================
 // マクロ定義
@@ -35,6 +37,7 @@
 CLight  *CGame::m_pLight = NULL;      // ライトクラスポインタ
 CRuleManager* CGame::m_pRuleManager = NULL; // ルールマネージャークラス
 CStage* CGame::m_pStage = NULL;	//ステージクラスポインタ
+
 //=============================
 // コンストラクタ
 //=============================
@@ -69,6 +72,9 @@ HRESULT CGame::Init(void)
 {
 	// ポーズの初期化
 	CManager::SetActivePause(false);
+
+	// マネージャーの番号のリセット
+	GET_COLORMANAGER->UseNumReset();
 
 	CManager::SetCamera(CTpsCamera::Create());
 
@@ -142,6 +148,11 @@ void CGame::Update(void)
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}
+
+	CTile::CountColorTile();
+	CDebugLog::Init();
+	CDebugLog::Print("赤:%d\n青:%d\n緑:%d\n橙:%d\n", CTile::GetTileNum(0), CTile::GetTileNum(1), CTile::GetTileNum(2), CTile::GetTileNum(3));
+
 #endif // _DEBUG
 
 }

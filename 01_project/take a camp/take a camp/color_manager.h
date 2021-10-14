@@ -39,6 +39,7 @@ public:
 	{
 		D3DXCOLOR aCol[COLOR_STEP_NUM];
 		D3DXCOLOR iconColor;
+		int       nUsePlayerNum;
 	}ColorData;
 
 	//メンバ関数
@@ -49,9 +50,15 @@ public:
 	void Uninit(void);
 	static void Release(void);
 
+	void UseNumReset(void);
+
 	// 取得処理
 	static CColorManager*GetColorManager(void) { return m_pInstance; }
 	D3DXCOLOR GetStepColor(int nIndex, int nStep) { return m_aColorData[nIndex].aCol[nStep]; }
+	D3DXCOLOR GetIconColor(int nIndex) { return m_aColorData[nIndex].iconColor; }
+	int GetColorNum(void) { return m_aColorData.size(); }
+	void SetUsePlayerNum(int nIndex, int nPlayerNum) { m_aColorData[nIndex].nUsePlayerNum = nPlayerNum; }
+	int GetUsePlayerNum(int nIndex) { return m_aColorData[nIndex].nUsePlayerNum; }
 
 private:
 	void LoadText(void); // テキストデータの読み込み

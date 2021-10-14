@@ -29,6 +29,7 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
+int CTile::m_anTileNum[MAX_TILE_COLOR_NUM] = {};
 
 //******************************
 // コンストラクタ
@@ -37,11 +38,12 @@ CTile::CTile() :CModel(OBJTYPE_TILE)
 {
 	m_pCollison = NULL;                          
 	m_color = DEFAULT_COLOR;
+	m_pFrame = NULL;
 	m_nPrevNum = -1;                             // 今塗られているカラーの番号*デフォルトは-1
 	m_nStep = 0;                                 // 今の塗段階
 	m_nCntStep = 0;                              // 再度塗り可能カウント
 	m_nLastHitPlayerNum = -1;
-	m_bHitOld = false;           // 一個前のフレームで当たっていたか保存するよう 
+	m_bHitOld = false;                           // 一個前のフレームで当たっていたか保存するよう 
 }
 
 //******************************
@@ -70,7 +72,28 @@ CTile * CTile::Create(D3DXVECTOR3 pos)
 	return pTile;
 }
 
+//******************************
+// 色の数を数える
+//******************************
+void CTile::CountColorTile(void)
+{
+	// タイル数の初期化
+	ZeroMemory(&m_anTileNum, sizeof(m_anTileNum));
 
+	CTile*pTile = (CTile*)GetTop(OBJTYPE_TILE);
+
+	while (pTile != NULL)
+	{
+		// ペイント番号の取得
+		int nPeintNum = pTile->GetPeintNum();
+
+		// タイル数の取得
+		m_anTileNum[nPeintNum]++;
+
+		// リストを進める
+		pTile = (CTile*)pTile->GetNext();
+	}
+}
 
 //******************************
 // 初期化処理

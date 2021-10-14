@@ -16,6 +16,7 @@
 #include "debug_log.h"
 #include "act_range.h"
 #include "tile.h"
+#include "color_manager.h"
 
 //*****************************
 // マクロ定義
@@ -100,7 +101,14 @@ HRESULT CPlayer::Init(void)
 	// 移動フラグの初期化
 	m_bMove = true;
 
+	////////////////////////////////////////
+	// 仮
+
 	m_nColor = m_nPlayerNumber;
+
+	CColorManager::GetColorManager()->SetUsePlayerNum(m_nPlayerNumber, m_nColor);
+
+	////////////////////////////////////////
 
 	// モデルのサイズの設定
 	SetSize(MODEL_SIZE);
