@@ -76,7 +76,7 @@ private:
 	D3DXCOLOR	 m_color;		// 色
 	CCollision * m_pCollison;	// 当たり判定
 	CActRange *	 m_pActRange;	// 行動判定
-	D3DXVECTOR3  m_RespawnPoa;	// リスポーン位置
+	D3DXVECTOR3  m_RespawnPos;	// リスポーン位置
 };
 
 #endif

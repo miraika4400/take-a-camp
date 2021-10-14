@@ -83,12 +83,7 @@ HRESULT CGame::Init(void)
 	CBg::Create();
 	
 	//ステージ生成
-	m_pStage = CStage::Create(D3DXVECTOR3(200.0f, 0.0f, -100.0f));
-
-	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
-	{
-		//CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE*nCntPlayer, 0.0f, 0.0f), nCntPlayer);
-	}
+	m_pStage = CStage::Create(D3DXVECTOR3(200.0f, 0.0f, -150.0f));
 	
 	// ライトクラスの生成
 	m_pLight = new CLight;
