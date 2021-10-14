@@ -21,10 +21,11 @@ CActRange::CActRange()
 {
 	//変数初期化
 	m_pPlayer = nullptr;
+	m_bDeath  = false;
 	memset(&m_MapData, 0, sizeof(CStage::MAP_DATA));
 	memset(&m_ActPos, 0, sizeof(D3DXVECTOR3));
 	memset(&m_bPlayerMove, true, sizeof(bool[PLAYER_MOVE_MAX]));
-	memset(&m_OtherActPos, 0, sizeof(D3DXVECTOR3[MAX_PLAYER - 1]));
+	memset(&m_OtherAct, 0, sizeof(OTHER_ACT[PLAYER_MOVE_MAX - 1]));
 }
 
 //=============================================================================
@@ -89,7 +90,9 @@ void CActRange::OtherPlayer(void)
 		if (pActRange != this)
 		{
 			//プレイヤーのマップ位置取得
-			m_OtherActPos[nOtherPlayer] = pActRange->GetActPos();
+			m_OtherAct[nOtherPlayer].OtherActPos = pActRange->GetActPos();
+			//プレイヤーが死んでいるか
+			m_OtherAct[nOtherPlayer].bDeath = pActRange->GetDeath();
 			//次のプレイヤーへ
 			nOtherPlayer++;
 		}
@@ -124,7 +127,7 @@ void CActRange::ActRange(void)
 		{
 			for (int nPlayer = 0; nPlayer<MAX_PLAYER - 1; nPlayer++)
 			{
-				if ((m_ActPos + Range[nMove]) == m_OtherActPos[nPlayer])
+				if ((m_ActPos + Range[nMove]) == m_OtherAct[nPlayer].OtherActPos && !m_OtherAct[nPlayer].bDeath)
 				{
 					//移動できないためfalse
 					m_bPlayerMove[nMove] = false;
