@@ -16,6 +16,7 @@
 #include "debug_log.h"
 #include "act_range.h"
 #include "tile.h"
+#include "color_manager.h"
 
 //*****************************
 // マクロ定義
@@ -108,8 +109,11 @@ HRESULT CPlayer::Init(void)
 	//色設定
 	m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 
-	//プレイヤー番号ごとのカラー設定
-	m_nColor = m_nPlayerNumber;
+	////////////////////////////////////////
+	// 仮	//プレイヤー番号ごとのカラー設定	m_nColor = m_nPlayerNumber;
+
+	CColorManager::GetColorManager()->SetUsePlayerNum(m_nPlayerNumber, m_nColor);
+	////////////////////////////////////////
 
 	// モデルのサイズの設定
 	SetSize(MODEL_SIZE);
