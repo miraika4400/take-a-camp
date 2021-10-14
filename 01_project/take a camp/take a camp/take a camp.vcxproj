@@ -192,6 +192,7 @@
     <ClCompile Include="resource_texture.cpp" />
     <ClCompile Include="stage.cpp" />
     <ClCompile Include="tile.cpp" />
+    <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
@@ -236,6 +237,7 @@
     <ClInclude Include="resource_texture.h" />
     <ClInclude Include="stage.h" />
     <ClInclude Include="tile.h" />
+    <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tutorial.h" />
   </ItemGroup>

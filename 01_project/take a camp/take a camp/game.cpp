@@ -26,6 +26,7 @@
 #include "tile.h"
 #include "debug_log.h"
 #include "color_manager.h"
+#include "time.h"
 
 //=============================
 // É}ÉNÉçíËã`
@@ -100,6 +101,7 @@ HRESULT CGame::Init(void)
 		}
 	}
 
+	CTime::Create();
 
 	return S_OK;
 }
