@@ -213,6 +213,9 @@
     <ClCompile Include="act_range.cpp">
       <Filter>ソース ファイル\07_GameModel\Player</Filter>
     </ClCompile>
+    <ClCompile Include="number_array.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -334,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="act_range.h">
       <Filter>ヘッダー ファイル\07_GameModel\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="number_array.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

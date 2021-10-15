@@ -24,6 +24,7 @@
 #include "player.h"
 #include "stage.h"
 #include "tile.h"
+#include "number_array.h"
 
 //=============================
 // ƒ}ƒNƒ’è‹`
@@ -93,7 +94,6 @@ HRESULT CGame::Init(void)
 			return -1;
 		}
 	}
-
 
 	return S_OK;
 }

@@ -173,6 +173,7 @@
     <ClCompile Include="motion.cpp" />
     <ClCompile Include="mouse.cpp" />
     <ClCompile Include="number.cpp" />
+    <ClCompile Include="number_array.cpp" />
     <ClCompile Include="object3d_shader.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="pause.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="debug_log.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="number_array.h" />
     <ClInclude Include="object3d_shader.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="joypad.h" />

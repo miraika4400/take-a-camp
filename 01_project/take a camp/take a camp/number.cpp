@@ -151,6 +151,23 @@ void CNumber::SetNumber(const int nNumber)
 	m_pVtxBuff->Unlock();
 }
 
+void CNumber::SetPos(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
+{
+	VERTEX_2D *pVtx;// 頂点情報ポインタ
+
+	// ロック
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 頂点座標の設定
+	pVtx[0].pos = D3DXVECTOR3(pos.x - size.x, pos.y - size.y, 0);
+	pVtx[1].pos = D3DXVECTOR3(pos.x + size.x, pos.y - size.y, 0);
+	pVtx[2].pos = D3DXVECTOR3(pos.x - size.x, pos.y + size.y, 0);
+	pVtx[3].pos = D3DXVECTOR3(pos.x + size.x, pos.y + size.y, 0);
+
+	// アンロック
+	m_pVtxBuff->Unlock();
+}
+
 //==================================
 // 色のセット
 //==================================
