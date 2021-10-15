@@ -22,7 +22,7 @@
 // マクロ定義
 //*****************************
 #define MOVE_DIST (TILE_ONE_SIDE)	// 移動距離
-#define MOVE_FRAME 8				// 移動速度
+#define MOVE_FRAME 15				// 移動速度
 #define COLLISION_RADIUS 20.0f
 #define MODL_COLOR D3DXCOLOR(0.3f,0.3f,0.3f,1.0f)
 #define MODEL_SIZE D3DXVECTOR3( 0.8f, 1.0f, 0.8f)	//モデルサイズ
@@ -56,7 +56,7 @@ CPlayer::CPlayer() :CModel(OBJTYPE_PLAYER)
 	m_nColor = 0;
 	m_pActRange = NULL;
 	memset(&m_Move, 0, sizeof(D3DXVECTOR3));
-	memset(&m_RespawnPoa, 0, sizeof(D3DXVECTOR3));
+	memset(&m_RespawnPos, 0, sizeof(D3DXVECTOR3));
 	m_MoveCount = 0;
 }
 
@@ -86,7 +86,7 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, int nPlayerNumber)
 	pPlayer->SetPos(pos);
 	pPlayer->SetPriority(OBJTYPE_PLAYER); // オブジェクトタイプ
 	pPlayer->m_Move = pos;
-	pPlayer->m_RespawnPoa = pos;
+	pPlayer->m_RespawnPos = pos;
 	//移動範囲クラスの生成
 	pPlayer->m_pActRange = CActRange::Create(pPlayer);
 
@@ -314,8 +314,8 @@ void CPlayer::Respawn(void)
 		if (m_nRespawnCount >= RESPAWN_MAX_COUNT)
 		{
 			//位置セット
-			SetPos(m_RespawnPoa);
-			m_Move = m_RespawnPoa;
+			SetPos(m_RespawnPos);
+			m_Move = m_RespawnPos;
 			//行動クラスに通常状態になったフラグを送る
 			m_pActRange->SetDeath(false);
 			//行動クラスに位置設定をするように送る
