@@ -213,6 +213,15 @@
     <ClCompile Include="act_range.cpp">
       <Filter>ソース ファイル\07_GameModel\Player</Filter>
     </ClCompile>
+    <ClCompile Include="gauge.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="result_graph.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="time.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
     <ClCompile Include="number_array.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
@@ -337,6 +346,15 @@
     </ClInclude>
     <ClInclude Include="act_range.h">
       <Filter>ヘッダー ファイル\07_GameModel\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="gauge.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="result_graph.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="time.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
     <ClInclude Include="number_array.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>

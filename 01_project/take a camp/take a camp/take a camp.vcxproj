@@ -162,6 +162,7 @@
     <ClCompile Include="debug_log.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gauge.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="joypad.cpp" />
     <ClCompile Include="keyboard.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="resource_model.cpp" />
     <ClCompile Include="resource_shader.cpp" />
     <ClCompile Include="result.cpp" />
+    <ClCompile Include="result_graph.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="scene2d.cpp" />
     <ClCompile Include="scene3d.cpp" />
@@ -191,6 +193,7 @@
     <ClCompile Include="resource_texture.cpp" />
     <ClCompile Include="stage.cpp" />
     <ClCompile Include="tile.cpp" />
+    <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
@@ -206,6 +209,7 @@
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="number_array.h" />
+    <ClInclude Include="gauge.h" />
     <ClInclude Include="object3d_shader.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="joypad.h" />
@@ -226,6 +230,7 @@
     <ClInclude Include="resource_model.h" />
     <ClInclude Include="resource_shader.h" />
     <ClInclude Include="result.h" />
+    <ClInclude Include="result_graph.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="scene2d.h" />
     <ClInclude Include="scene3d.h" />
@@ -234,6 +239,7 @@
     <ClInclude Include="resource_texture.h" />
     <ClInclude Include="stage.h" />
     <ClInclude Include="tile.h" />
+    <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tutorial.h" />
   </ItemGroup>

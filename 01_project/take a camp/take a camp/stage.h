@@ -45,7 +45,7 @@ public:
 		BLOCK_TYPE_2P_START,	//2Pスタート位置
 		BLOCK_TYPE_3P_START,	//3Pスタート位置
 		BLOCK_TYPE_4P_START,	//4Pスタート位置
-		BLOCK_TYPE_BLOCK,		//仮置き
+		BLOCK_TYPE_BLOCK,		//仮置きブロック
 		
 	}BLOCK_TYPE;
 
@@ -58,7 +58,7 @@ public:
 	void	Uninit(void);
 	void	Draw(void);
 	void	Update(void);
-	void	MapCreate(void);							//マップの生成
+	void	MapCreate(void);						//マップの生成
 	MAP_DATA GetMapData(void) { return m_MapData; }	//マップ情報ゲッター
 private:
 	static char*		m_pFileName;	// ファイルネーム
