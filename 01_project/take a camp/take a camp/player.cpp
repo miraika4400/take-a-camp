@@ -16,6 +16,7 @@
 #include "debug_log.h"
 #include "act_range.h"
 #include "tile.h"
+#include "number_array.h"
 #include "color_manager.h"
 
 //*****************************
@@ -87,6 +88,9 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, int nPlayerNumber)
 	pPlayer->SetPriority(OBJTYPE_PLAYER); // オブジェクトタイプ
 	pPlayer->m_Move = pos;
 	pPlayer->m_RespawnPos = pos;
+	CNumberArray::Create(0, pos, D3DXVECTOR3(10.0f, 10.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), nPlayerNumber);
+
+
 	//移動範囲クラスの生成
 	pPlayer->m_pActRange = CActRange::Create(pPlayer);
 
@@ -123,6 +127,8 @@ HRESULT CPlayer::Init(void)
 
 	// モデルのサイズの設定
 	SetSize(MODEL_SIZE);
+
+	//CNumberArray::Create(10, GetPos() + D3DXVECTOR3(0.0f, 100.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	return S_OK;
 }
