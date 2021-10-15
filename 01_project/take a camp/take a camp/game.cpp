@@ -148,8 +148,10 @@ void CGame::Update(void)
 
 	CTile::CountColorTile();
 	CDebugLog::Init();
-	CDebugLog::Print("赤:%d\n青:%d\n緑:%d\n橙:%d\n", CTile::GetTileNum(0), CTile::GetTileNum(1), CTile::GetTileNum(2), CTile::GetTileNum(3));
-
+	CDebugLog::Print("赤:%d(一:%d,二:%d,三:%d)\n", CTile::GetTileNum(0), CTile::GetTileNum(0, 1), CTile::GetTileNum(0, 2), CTile::GetTileNum(0, 3));
+	CDebugLog::Print("青:%d(一:%d,二:%d,三:%d)\n", CTile::GetTileNum(1), CTile::GetTileNum(1, 1), CTile::GetTileNum(1, 2), CTile::GetTileNum(1, 3));
+	CDebugLog::Print("緑:%d(一:%d,二:%d,三:%d)\n", CTile::GetTileNum(2), CTile::GetTileNum(2, 1), CTile::GetTileNum(2, 2), CTile::GetTileNum(2, 3));
+	CDebugLog::Print("橙:%d(一:%d,二:%d,三:%d)\n", CTile::GetTileNum(3), CTile::GetTileNum(3, 1), CTile::GetTileNum(3, 2), CTile::GetTileNum(3, 3));
 #endif // _DEBUG
 
 }

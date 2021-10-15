@@ -14,7 +14,7 @@
 //*****************************
 #include "main.h"
 #include "model.h"
-
+#include "color_manager.h"
 //*****************************
 //前方宣言
 //*****************************
@@ -43,23 +43,25 @@ public:
 
 	static CTile *Create(D3DXVECTOR3 pos);
 	static void CountColorTile(void); // タイルの数字の数を数える
-	static int GetTileNum(int nIndex) { return m_anTileNum[nIndex]; }
-
+	static int GetTileNum(int nIndex) { return m_anTileNum[nIndex][0]; } // 特定カラーのタイル数
+	static int GetTileNum(int nIndex, int nStep) { return m_anTileNum[nIndex][nStep]; } // 特定カラーの特定段階のタイル数
+	
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
+	int GetPeintNum(void) { return m_nPrevNum; } // 塗られている色の取得
+	int GetStepNum(void) { return m_nStep; }     // ステップの取得
 
-	int GetPeintNum(void) { return m_nPrevNum; }
-
+	void ResetTile(void);
 private:
 	void CollisionPlayer(void);   // プレイヤーとの当たり判定
 	void ManageFrame(void);        // アイコン管理
 	void Peint(int nColorNumber, int nPlayerNum); // 塗処理
 
 	// メンバ変数
-	static int m_anTileNum[MAX_TILE_COLOR_NUM];
+	static int m_anTileNum[MAX_TILE_COLOR_NUM][COLOR_STEP_NUM +1];
 	CCollision * m_pCollison; // 当たり判定
 	D3DXCOLOR m_color;        // カラー
 	CScene3d *m_pFrame;        // 枠

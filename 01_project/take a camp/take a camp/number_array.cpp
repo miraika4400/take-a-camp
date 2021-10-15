@@ -16,6 +16,7 @@
 #include "resource_texture.h"
 #include "renderer.h"
 #include "player.h" 
+#include "tile.h"
 
 //==================================
 // マクロ定義
@@ -48,7 +49,7 @@ CNumberArray::~CNumberArray()
 //==================================
 // クリエイト
 //==================================
-CNumberArray * CNumberArray::Create(const int nNum, const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col, const int nPlayerNum)
+CNumberArray * CNumberArray::Create(const int nNum, const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col, const int nColorNum)
 {
 	// メモリの確保
 	CNumberArray * pNumberArray = new CNumberArray;
@@ -57,7 +58,7 @@ CNumberArray * CNumberArray::Create(const int nNum, const D3DXVECTOR3 pos, const
 	pNumberArray->m_pos = pos;
 	pNumberArray->m_size = size;
 	pNumberArray->m_col = col;
-	pNumberArray->m_nPlayerNum = nPlayerNum;
+	pNumberArray->m_nPlayerNum = nColorNum;
 
 	// 初期化処理
 	pNumberArray->Init();
@@ -102,7 +103,7 @@ void CNumberArray::Update(void)
 	// キーボードの取得
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 
-	if (pKey->GetKeyPress(DIK_UP))
+	/*if (pKey->GetKeyPress(DIK_UP))
 	{
 		m_nNumber += 1;
 	}
@@ -118,7 +119,9 @@ void CNumberArray::Update(void)
 	if (m_nNumber > 99999)
 	{
 		m_nNumber = 99999;
-	}
+	}*/
+
+	m_nNumber = CTile::GetTileNum(m_nPlayerNum);
 
 	for (int nCount = 0; nCount < MAX_ARRAY_NUM; nCount++)
 	{

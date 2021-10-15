@@ -88,7 +88,7 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, int nPlayerNumber)
 	pPlayer->SetPriority(OBJTYPE_PLAYER); // オブジェクトタイプ
 	pPlayer->m_Move = pos;
 	pPlayer->m_RespawnPos = pos;
-	CNumberArray::Create(0, pos, D3DXVECTOR3(10.0f, 10.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), nPlayerNumber);
+	CNumberArray::Create(0, pos, D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(pPlayer->m_nColor), pPlayer->m_nColor);
 
 
 	//移動範囲クラスの生成
