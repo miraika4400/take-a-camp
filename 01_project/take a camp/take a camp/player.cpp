@@ -24,8 +24,10 @@
 #define MOVE_DIST (TILE_ONE_SIDE)	// 移動距離
 #define MOVE_FRAME 8				// 移動速度
 #define COLLISION_RADIUS 20.0f
-#define MODEL_SIZE D3DXVECTOR3( 0.8f, 1.0f, 0.8f)
-#define RESPAWN_MAX_COUTN (60*5)		// リスポーンまでの最大カウント
+#define MODL_COLOR D3DXCOLOR(0.3f,0.3f,0.3f,1.0f)
+#define MODEL_SIZE D3DXVECTOR3( 0.8f, 1.0f, 0.8f)	//モデルサイズ
+#define RESPAWN_MAX_COUNT (60*5)	// リスポーンまでの最大カウント
+#define INVINCIBLE_COUNT (60*2)		// 無敵時間
 
 //*****************************
 // 静的メンバ変数宣言
@@ -46,7 +48,9 @@ CPlayer::CPlayer() :CModel(OBJTYPE_PLAYER)
 	m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	m_nRespawnCount = 0;
 	m_nPlayerNumber = 0;
+	m_nInvincibleCount = 0;
 	m_bMove = false;
+	m_bInvincible = false;
 	m_PlayerState = PLAYER_STATE_NORMAL;
 	m_pCollison = NULL;
 	m_nColor = 0;
@@ -104,10 +108,12 @@ HRESULT CPlayer::Init(void)
 
 	// 移動フラグの初期化
 	m_bMove = true;
+	// 無敵フラグの初期化
+	m_bInvincible = false;
 	//プレイヤーステータス初期化
 	m_PlayerState = PLAYER_STATE_NORMAL;
 	//色設定
-	m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
+	m_color = MODL_COLOR;
 
 	////////////////////////////////////////
 	// 仮	
@@ -139,6 +145,8 @@ void CPlayer::Update(void)
 	case PLAYER_STATE_NORMAL:	//通常状態
 		// 移動処理
 		Move();
+		//無敵処理
+		Invincible();
 		// 当たり判定の位置
 		if (m_pCollison == NULL)
 		{
@@ -148,7 +156,6 @@ void CPlayer::Update(void)
 		{
 			m_pCollison->SetPos(D3DXVECTOR3(GetPos().x, GetPos().y + COLLISION_RADIUS / 2, GetPos().z));
 		}
-
 		break;
 	case PLAYER_STATE_DEATH:	//死亡状態
 		//リスポーン処理
@@ -302,8 +309,9 @@ void CPlayer::Respawn(void)
 	{
 		//カウントアップ
 		m_nRespawnCount++;
+		
 		//カウントが一定までに達したとき
-		if (m_nRespawnCount >= RESPAWN_MAX_COUTN)
+		if (m_nRespawnCount >= RESPAWN_MAX_COUNT)
 		{
 			//位置セット
 			SetPos(m_RespawnPoa);
@@ -312,12 +320,50 @@ void CPlayer::Respawn(void)
 			m_pActRange->SetDeath(false);
 			//行動クラスに位置設定をするように送る
 			m_pActRange->PlayerPos();
+			//無敵処理
+			m_bInvincible = true;
 			//色設定
-			m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
+			m_color = MODL_COLOR;
 			//通常状態に移行
 			SetState(PLAYER_STATE_NORMAL);
 			//カウント初期化
 			m_nRespawnCount = 0;
+		}
+	}
+}
+
+//******************************
+// 無敵処理
+//******************************
+void CPlayer::Invincible(void)
+{
+	//無敵フラグが立っているか
+	if (m_bInvincible)
+	{
+		//無敵カウントアップ
+		m_nInvincibleCount++;
+
+		//5の倍数でカラーを変更（点滅するように）
+		if ((m_nInvincibleCount % 5) == 0)
+		{
+			//点滅
+			if (m_color.a <= 0.0f)
+			{
+				m_color.a = 1.0f;
+			}
+			else
+			{
+				m_color.a = 0.0f;
+			}
+		}
+
+		//カウントが一定になったら
+		if (m_nInvincibleCount >= INVINCIBLE_COUNT)
+		{
+			//初期化
+			m_nInvincibleCount = 0;
+			m_color.a = 1.0f;
+			m_bInvincible = false;
 		}
 	}
 }

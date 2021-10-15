@@ -61,16 +61,19 @@ public:
 	void SetState(PLAYER_STATE PlayerState) {m_PlayerState = PlayerState;}
 	PLAYER_STATE GetState(void) { return m_PlayerState; }
 private:
-	void Move(void);	// 移動処理
-	void Respawn(void);	// リスポーン処理
+	void Move(void);		// 移動処理
+	void Respawn(void);		// リスポーン処理
+	void Invincible(void);	// 無敵処理
 	// メンバ変数
 	static int m_anControllKey[4][KEY_MAX];
 
 	int m_nPlayerNumber;		// プレイヤー番号
 	int m_nColor;				// 色ナンバー
 	bool m_bMove;				// 移動可否フラグ
+	bool m_bInvincible;			// 無敵フラグ
 	PLAYER_STATE m_PlayerState;	// プレイヤーステータス
 	int	m_nRespawnCount;		// リスポーンまでのカウント
+	int m_nInvincibleCount;		// 無敵時間のカウント
 	D3DXVECTOR3	 m_Move;		// 移動量
 	int			 m_MoveCount;	// 移動時のカウント
 	D3DXCOLOR	 m_color;		// 色

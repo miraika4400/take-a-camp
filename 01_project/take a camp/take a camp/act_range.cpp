@@ -118,7 +118,11 @@ void CActRange::ActRange(void)
 	for (int nMove = 0; nMove<PLAYER_MOVE_MAX; nMove++)
 	{
 		//ã‰º¶‰E‚Ìƒ^ƒCƒ‹‚ª‚ ‚é‚©
-		if (m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CStage::BLOCK_TYPE_NONE)
+		if (m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CStage::BLOCK_TYPE_NONE
+			||m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CStage::BLOCK_TYPE_1P_START
+			|| m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CStage::BLOCK_TYPE_2P_START
+			|| m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CStage::BLOCK_TYPE_3P_START
+			|| m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CStage::BLOCK_TYPE_4P_START)
 		{
 			//ˆÚ“®‚Å‚«‚È‚¢‚½‚ßfalse
 			m_bPlayerMove[nMove] = false;
