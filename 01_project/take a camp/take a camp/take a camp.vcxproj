@@ -159,6 +159,7 @@
     <ClCompile Include="camera_tps.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="color_manager.cpp" />
+    <ClCompile Include="color_tile.cpp" />
     <ClCompile Include="debug_log.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
@@ -191,6 +192,7 @@
     <ClCompile Include="score.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="resource_texture.cpp" />
+    <ClCompile Include="spawn_tile.cpp" />
     <ClCompile Include="stage.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="time.cpp" />
@@ -205,6 +207,7 @@
     <ClInclude Include="camera_tps.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="color_manager.h" />
+    <ClInclude Include="color_tile.h" />
     <ClInclude Include="debug_log.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
@@ -237,6 +240,7 @@
     <ClInclude Include="score.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="resource_texture.h" />
+    <ClInclude Include="spawn_tile.h" />
     <ClInclude Include="stage.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="time.h" />

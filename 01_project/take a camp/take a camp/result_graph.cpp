@@ -11,7 +11,7 @@
 #include "result_graph.h"
 #include "gauge.h"
 #include "scene2d.h"
-#include "tile.h"
+#include "color_tile.h"
 #include "color_manager.h"
 
 //**********************************
@@ -80,9 +80,9 @@ HRESULT CResultGraph::Init(void)
 			m_aGauge[nPlayerNum].m_nColorNum = nCntColor;
 
 			// ç≈ëÂêîÇÃï€ä«
-			if (fMaxNum < CTile::GetTileNum(nPlayerNum))
+			if (fMaxNum < CColorTile::GetTileNum(nPlayerNum))
 			{
-				fMaxNum = (float)CTile::GetTileNum(nPlayerNum);
+				fMaxNum = (float)CColorTile::GetTileNum(nPlayerNum);
 			}
 		}
 	}
@@ -117,7 +117,7 @@ void CResultGraph::Update(void)
 {
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
 	{
-		m_aGauge[nCntPlayer].fGraphData += ((CTile::GetTileNum(m_aGauge[nCntPlayer].m_nColorNum)) - m_aGauge[nCntPlayer].fGraphData)*GAUGE_RATE;
+		m_aGauge[nCntPlayer].fGraphData += ((CColorTile::GetTileNum(m_aGauge[nCntPlayer].m_nColorNum)) - m_aGauge[nCntPlayer].fGraphData)*GAUGE_RATE;
 	}
 }
 

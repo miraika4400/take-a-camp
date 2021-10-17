@@ -91,6 +91,12 @@
     <Filter Include="ヘッダー ファイル\System">
       <UniqueIdentifier>{0fdaa48c-563c-48fb-bbef-112aa66e869d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\08_Map\Tile">
+      <UniqueIdentifier>{cc5c98bb-1b8e-4cd0-a177-2500f6984d5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\08_Map\Tile">
+      <UniqueIdentifier>{ba17fb24-9b02-4846-bfc0-48bbd444eb96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bg.cpp">
@@ -204,9 +210,6 @@
     <ClCompile Include="stage.cpp">
       <Filter>ソース ファイル\08_Map</Filter>
     </ClCompile>
-    <ClCompile Include="tile.cpp">
-      <Filter>ソース ファイル\08_Map</Filter>
-    </ClCompile>
     <ClCompile Include="color_manager.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
@@ -224,6 +227,15 @@
     </ClCompile>
     <ClCompile Include="number_array.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="tile.cpp">
+      <Filter>ソース ファイル\08_Map\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="color_tile.cpp">
+      <Filter>ソース ファイル\08_Map\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="spawn_tile.cpp">
+      <Filter>ソース ファイル\08_Map\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -338,9 +350,6 @@
     <ClInclude Include="stage.h">
       <Filter>ヘッダー ファイル\08_Map</Filter>
     </ClInclude>
-    <ClInclude Include="tile.h">
-      <Filter>ヘッダー ファイル\08_Map</Filter>
-    </ClInclude>
     <ClInclude Include="color_manager.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
@@ -358,6 +367,15 @@
     </ClInclude>
     <ClInclude Include="number_array.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="tile.h">
+      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="color_tile.h">
+      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="spawn_tile.h">
+      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

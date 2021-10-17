@@ -32,7 +32,8 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/Tears.png",        // パーティクル*涙
 	"./data/Textures/particle004.png",  // パーティクル*円
 	"./data/Textures/number.png",       // ナンバー
-	"./data/Textures/frame.png",   // バツマーク
+	"./data/Textures/frame.png",        // 枠
+	"./data/Textures/cross_mark.png",   // バツマーク
 };
 
 //===================================

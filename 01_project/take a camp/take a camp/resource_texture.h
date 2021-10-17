@@ -35,7 +35,8 @@ public:
 		TEXTURE_PARTICLE_TEARS,  // パーティクル*涙
 		TEXTURE_PARTICLE_CIRCLE, // パーティクル*円
 		TEXTURE_NUMBER,          // ナンバー
-		TEXTURE_FRAME,      // バツマーク
+		TEXTURE_FRAME,           // 枠
+		TEXTURE_CROSS_MARK,      // ×マーク
 		TEXTURE_MAX              // テクスチャ数
 	}TEXTURE_TYPE;
 	

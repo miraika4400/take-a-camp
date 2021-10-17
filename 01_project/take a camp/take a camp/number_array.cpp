@@ -16,7 +16,7 @@
 #include "resource_texture.h"
 #include "renderer.h"
 #include "player.h" 
-#include "tile.h"
+#include "color_tile.h"
 
 //==================================
 // É}ÉNÉçíËã`
@@ -121,7 +121,7 @@ void CNumberArray::Update(void)
 		m_nNumber = 99999;
 	}*/
 
-	m_nNumber = CTile::GetTileNum(m_nPlayerNum);
+	m_nNumber = CColorTile::GetTileNum(m_nPlayerNum);
 
 	for (int nCount = 0; nCount < MAX_ARRAY_NUM; nCount++)
 	{
