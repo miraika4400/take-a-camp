@@ -41,6 +41,7 @@
 #define ROT_SPEED 0.3f				// 回転速度
 #define ROT_FACING_01 180			// 回転の基準
 #define ROT_FACING_02 360			// 回転向き
+#define RIM_POWER     1.0f          // リムライトの強さ
 
 //*****************************
 // 静的メンバ変数宣言
@@ -469,8 +470,7 @@ void CPlayer::DrawModel(void)
 			shader.pEffect->Begin(&numPass, 0);
 
 			// パス数分描画処理のループ
-			for (int nCntEffect = 0; nCntEffect < (int)numPass; nCntEffect++)
-			{
+			
 				for (int nCntMat = 0; nCntMat < (int)pModelData->nNumMat; nCntMat++)
 				{
 					//マテリアルのアンビエントにディフューズカラーを設定
@@ -480,12 +480,22 @@ void CPlayer::DrawModel(void)
 					pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 					// テクスチャ
 					pDevice->SetTexture(0, pModelData->apTexture[nCntMat]);
+					// テクスチャをシェーダーに送る
+					shader.pEffect->SetTexture("Tex", pModelData->apTexture[nCntMat]);
 
 					// 色の情報を送る
-					shader.pEffect->SetFloatArray("DiffuseColor", (float*)&m_color, 4);
+					shader.pEffect->SetFloatArray("DiffuseColor", (float*)&pMat[nCntMat].MatD3D.Diffuse, 4);
 
-					// シェーダパスの描画開始
-					shader.pEffect->BeginPass(nCntEffect);
+					if (pModelData->apTexture[nCntMat] == NULL)
+					{
+						// シェーダパスの描画開始
+						shader.pEffect->BeginPass(0);
+					}
+					else
+					{
+						// シェーダパスの描画開始
+						shader.pEffect->BeginPass(1);
+					}
 					//モデルパーツの描画
 					pModelData->pMesh->DrawSubset(nCntMat);
 					// シェーダパスの終了
@@ -493,7 +503,6 @@ void CPlayer::DrawModel(void)
 
 					pMat[nCntMat] = pModelData->defMat[nCntMat];
 				}
-			}
 			// シェーダー終了
 			shader.pEffect->End();
 		}
@@ -523,17 +532,13 @@ void CPlayer::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pM
 		// ライトディレクション
 		D3DXVECTOR3 lightDir = LIGHT_DIR_BASE;
 		pEffect->SetFloatArray("LightDirection", (float*)&D3DXVECTOR3(lightDir.x, -lightDir.y, -lightDir.z), 3);
-
 		// 視点位置
 		D3DXVECTOR3 eye = CManager::GetCamera()->GetPos();
 		pEffect->SetFloatArray("Eye", (float*)&D3DXVECTOR3(eye.x, eye.y, eye.z), 3);
-
 		// スペキュラの情報を送る
-		
 		pEffect->SetFloatArray("SpecularColor", (float*)&D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 4);
 		// リムから―の情報を送る
 		pEffect->SetFloatArray("RimColor", (float*)&GET_COLORMANAGER->GetColorDataByPlayerNumber(m_nColor).iconColor, 4);
-
-		
+		pEffect->SetFloat("RimPower", RIM_POWER);
 	}
 }

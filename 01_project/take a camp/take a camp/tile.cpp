@@ -207,7 +207,7 @@ void CTile::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pMod
 		pEffect->SetMatrix("World", &pModelData->mtxWorld);
 		// ライトディレクション
 		D3DXVECTOR3 lightDir = LIGHT_DIR_BASE;
-		pEffect->SetFloatArray("LightDirection", (float*)&D3DXVECTOR3(lightDir.x, -lightDir.y, -lightDir.z), 3);
+		pEffect->SetFloatArray("LightDirection", (float*)&D3DXVECTOR3(lightDir.x, lightDir.y, lightDir.z), 3);
 
 		// 視点位置
 		D3DXVECTOR3 eye = CManager::GetCamera()->GetPos();
