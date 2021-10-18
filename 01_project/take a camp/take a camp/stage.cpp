@@ -18,6 +18,10 @@
 // マクロ定義
 //=============================================================================
 #define SQUARE_SIZE (20)	//１マス縦横のサイズ
+#define COLOR_TILE_PLUS_HEIGHT 0.0f // カラータイル生成時ひとつ生成するたびに生成位置を高くする
+#define COLOR_TILE_INIT_HEIGHT -TILE_SIZE_Y/2 // カラータイル初めの高さ
+//#define COLOR_TILE_PLUS_HEIGHT 150.0f // カラータイル生成時ひとつ生成するたびに生成位置を高くする
+//#define COLOR_TILE_INIT_HEIGHT 1000.0f // カラータイル初めの高さ
 
 //=============================================================================
 // 静的メンバー変数
@@ -195,6 +199,8 @@ void CStage::MapCreate(void)
 	//マップデータがあるか
 	if (&m_MapData != NULL)
 	{
+		float ColorTileHeight = COLOR_TILE_INIT_HEIGHT;
+
 		for (int nBlockY = 0; nBlockY < m_MapData.nStageSizeY; nBlockY++)
 		{
 			for (int nBlockX = 0; nBlockX < m_MapData.BlockData[nBlockY].nStageSizeX; nBlockX++)
@@ -235,7 +241,8 @@ void CStage::MapCreate(void)
 				}
 				case BLOCK_TYPE::BLOCK_TYPE_BLOCK:	//仮置きタイル
 				{
-					CColorTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos);
+					CColorTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, ColorTileHeight, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos);
+					ColorTileHeight += COLOR_TILE_PLUS_HEIGHT;
 					break;
 				}
 				default:

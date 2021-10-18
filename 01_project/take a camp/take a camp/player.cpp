@@ -29,7 +29,7 @@
 //*****************************
 #define MOVE_DIST (TILE_ONE_SIDE)	// 移動距離
 #define MOVE_FRAME 15				// 移動速度
-#define COLLISION_RADIUS 20.0f
+#define COLLISION_RADIUS 18.0f
 #define MODL_COLOR D3DXCOLOR(0.3f,0.3f,0.3f,1.0f)
 #define MODEL_SIZE D3DXVECTOR3( 1.0f, 1.0f, 1.0f)
 #define RESPAWN_MAX_COUNT (60*5)	// リスポーンまでの最大カウント

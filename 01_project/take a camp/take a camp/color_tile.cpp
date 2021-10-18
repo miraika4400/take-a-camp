@@ -25,6 +25,9 @@
 //*****************************
 #define TILE_DEFAULT_COLOR D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 #define PEINT_COUNT 60  // 再度塗れるようになるまでのカウント
+#define TILE_POS_Y -TILE_SIZE_Y/2
+#define POS_Y_RATE 0.1f
+#define HIT_POS_Y TILE_POS_Y - 3.0f
 
 //*****************************
 // 静的メンバ変数宣言
@@ -129,9 +132,21 @@ void CColorTile::Uninit(void)
 //******************************
 void CColorTile::Update(void)
 {
+	// 高さの調整
+	D3DXVECTOR3 pos = GetPos();
+	pos.y += (TILE_POS_Y - pos.y)*POS_Y_RATE;
+	SetPos(pos);
+
 	if (m_pCollison == NULL)
 	{
 		m_pCollison = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z), TILE_ONE_SIDE / 2);
+	}
+	else
+	{
+		if (m_pCollison->GetPos() != D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z))
+		{
+			m_pCollison->SetPos(D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z));
+		}
 	}
 
 	// プレイヤーとの当たり判定
@@ -187,6 +202,11 @@ void CColorTile::CollisionPlayer(void)
 			if (!m_bHitOld)
 			{
 				Peint(pPlayer->GetColorNumber(), pPlayer->GetPlayerNumber());
+				
+				D3DXVECTOR3 pos = GetPos();
+				pos.y = HIT_POS_Y;
+				SetPos(pos);
+
 			}
 
 			// ヒットフラグの保存*当たってない
