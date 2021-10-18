@@ -86,9 +86,9 @@ public:
 private:
 	virtual void SetShaderValue(void); // シェーダーの値セット処理
 
-									   //============
-									   // メンバ変数
-									   //============
+	//============
+	// メンバ変数
+	//============
 	Shader m_shader;    // シェーダー構造体
 	LPDIRECT3DTEXTURE9		m_pTexture;         // テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;         // 頂点バッファへのポインタ

@@ -18,7 +18,7 @@
 #include "tile.h"
 #include "number_array.h"
 #include "color_manager.h"
-
+#include "bullet.h"
 //*****************************
 // マクロ定義
 //*****************************
@@ -26,19 +26,26 @@
 #define MOVE_FRAME 15				// 移動速度
 #define COLLISION_RADIUS 20.0f
 #define MODL_COLOR D3DXCOLOR(0.3f,0.3f,0.3f,1.0f)
-#define MODEL_SIZE D3DXVECTOR3( 0.8f, 1.0f, 0.8f)	//モデルサイズ
+#define MODEL_SIZE D3DXVECTOR3( 1.0f, 1.0f, 1.0f)
 #define RESPAWN_MAX_COUNT (60*5)	// リスポーンまでの最大カウント
 #define INVINCIBLE_COUNT (60*2)		// 無敵時間
+#define ROTDEST_PREVIOUS 270.0f		// 前方向き
+#define ROTDEST_AFTER 90.0f			// 後方向き
+#define ROTDEST_LEFT 180.0f			// 左向き
+#define ROTDEST_RIGHT 0.0f			// 右向き
+#define ROT_SPEED 0.3f				// 回転速度
+#define ROT_FACING_01 180			// 回転の基準
+#define ROT_FACING_02 360			// 回転向き
 
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-int CPlayer::m_anControllKey[4][CPlayer::KEY_MAX] =
+int CPlayer::m_anControllKey[5][CPlayer::KEY_MAX] =
 {
-	{ DIK_W,DIK_S,DIK_A,DIK_D },
-	{ DIK_UP,DIK_DOWN,DIK_LEFT,DIK_RIGHT },
-	{ DIK_U,DIK_J,DIK_H,DIK_K },
-	{ DIK_NUMPAD8,DIK_NUMPAD5,DIK_NUMPAD4,DIK_NUMPAD6 }
+	{ DIK_W,DIK_S,DIK_A,DIK_D,DIK_E },
+	{ DIK_UP,DIK_DOWN,DIK_LEFT,DIK_RIGHT,DIK_NUMPAD1 },
+	{ DIK_U,DIK_J,DIK_H,DIK_K,DIK_I },
+	{ DIK_NUMPAD8,DIK_NUMPAD5,DIK_NUMPAD4,DIK_NUMPAD6,DIK_NUMPAD9 }
 };
 
 //******************************
@@ -71,7 +78,7 @@ CPlayer::~CPlayer()
 //******************************
 // クラス生成
 //******************************
-CPlayer * CPlayer::Create(D3DXVECTOR3 pos, int nPlayerNumber)
+CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 {
 	// メモリの確保
 	CPlayer *pPlayer;
@@ -85,10 +92,11 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, int nPlayerNumber)
 
 	// 各値の代入・セット
 	pPlayer->SetPos(pos);
+	pPlayer->SetRot(rot);
 	pPlayer->SetPriority(OBJTYPE_PLAYER); // オブジェクトタイプ
 	pPlayer->m_Move = pos;
 	pPlayer->m_RespawnPos = pos;
-	CNumberArray::Create(0, pos, D3DXVECTOR3(10.0f, 10.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), nPlayerNumber);
+	CNumberArray::Create(0, pos, D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(pPlayer->m_nColor), pPlayer->m_nColor);
 
 
 	//移動範囲クラスの生成
@@ -129,8 +137,7 @@ HRESULT CPlayer::Init(void)
 	SetSize(MODEL_SIZE);
 
 	//CNumberArray::Create(10, GetPos() + D3DXVECTOR3(0.0f, 100.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-	return S_OK;
+	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);	return S_OK;
 }
 
 //******************************
@@ -169,6 +176,27 @@ void CPlayer::Update(void)
 		break;
 	}
 
+	// 弾の処理
+	Bullet();
+
+	// 向きの取得
+	D3DXVECTOR3 rot = GetRot();
+
+	while (m_rotDest.y - rot.y > D3DXToRadian(ROT_FACING_01))
+	{
+		m_rotDest.y -= D3DXToRadian(ROT_FACING_02);
+	}
+
+	while (m_rotDest.y - rot.y < D3DXToRadian(-ROT_FACING_01))
+	{
+		m_rotDest.y += D3DXToRadian(ROT_FACING_02);
+	}
+
+	// 目標の向きに変える
+	rot += (m_rotDest - rot)*ROT_SPEED;
+
+	// 向き設定
+	SetRot(rot);
 
 	// 
 #ifdef _DEBUG
@@ -257,6 +285,8 @@ void CPlayer::Move(void)
 			m_Move.z -= MOVE_DIST;
 			m_bMove = false;
 			m_pActRange->ActMove(0, -1);
+
+			m_rotDest.y= D3DXToRadian(ROTDEST_PREVIOUS);
 		}
 		else if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RECESSION])
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
@@ -264,6 +294,8 @@ void CPlayer::Move(void)
 			m_Move.z += MOVE_DIST;
 			m_bMove = false;
 			m_pActRange->ActMove(0, 1);
+
+			m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
 		}
 		else if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_LEFT])
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
@@ -271,6 +303,8 @@ void CPlayer::Move(void)
 			m_Move.x += MOVE_DIST;
 			m_bMove = false;
 			m_pActRange->ActMove(-1, 0);
+
+			m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
 		}
 		else if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RIGHT])
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
@@ -278,6 +312,8 @@ void CPlayer::Move(void)
 			m_Move.x -= MOVE_DIST;
 			m_bMove = false;
 			m_pActRange->ActMove(1, 0);
+
+			m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
 		}
 	}
 	else
@@ -303,6 +339,24 @@ void CPlayer::Move(void)
 			m_bMove = true;
 		}
 	}
+}//******************************
+// 弾の処理
+//******************************
+void CPlayer::Bullet(void)
+{
+	CInputKeyboard * pKey = CManager::GetKeyboard();
+
+	// 座標の取得
+	D3DXVECTOR3 pos = GetPos();
+
+	// スペースボタンを押したら
+	if (pKey->GetKeyTrigger(m_anControllKey[m_nPlayerNumber][KEY_BULLET]))
+	{
+		CBullet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z));
+	}
+
+	//位置設定
+	SetPos(pos);
 }
 
 //******************************

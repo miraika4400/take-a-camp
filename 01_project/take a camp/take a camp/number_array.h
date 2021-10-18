@@ -39,7 +39,7 @@ public:
 
 	CNumberArray();
 	~CNumberArray();
-	static CNumberArray *Create(const int nNum, const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col, const int nPlayerNum); // クラス生成
+	static CNumberArray *Create(const int nNum, const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col, const int nColorNum); // クラス生成
 
 	HRESULT Init(void); // 初期化
 	void Uninit(void);	// 終了

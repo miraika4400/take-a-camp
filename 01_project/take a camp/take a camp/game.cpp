@@ -26,7 +26,7 @@
 #include "tile.h"
 #include "debug_log.h"
 #include "color_manager.h"
-#include "time.h"
+#include "color_tile.h"
 
 //=============================
 // マクロ定義
@@ -146,10 +146,12 @@ void CGame::Update(void)
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}
 
-	CTile::CountColorTile();
+	CColorTile::CountColorTile();
 	CDebugLog::Init();
-	CDebugLog::Print("赤:%d\n青:%d\n緑:%d\n橙:%d\n", CTile::GetTileNum(0), CTile::GetTileNum(1), CTile::GetTileNum(2), CTile::GetTileNum(3));
-
+	CDebugLog::Print("赤:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(0), CColorTile::GetTileNum(0, 1), CColorTile::GetTileNum(0, 2), CColorTile::GetTileNum(0, 3));
+	CDebugLog::Print("青:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(1), CColorTile::GetTileNum(1, 1), CColorTile::GetTileNum(1, 2), CColorTile::GetTileNum(1, 3));
+	CDebugLog::Print("緑:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(2), CColorTile::GetTileNum(2, 1), CColorTile::GetTileNum(2, 2), CColorTile::GetTileNum(2, 3));
+	CDebugLog::Print("橙:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(3), CColorTile::GetTileNum(3, 1), CColorTile::GetTileNum(3, 2), CColorTile::GetTileNum(3, 3));
 #endif // _DEBUG
 
 }

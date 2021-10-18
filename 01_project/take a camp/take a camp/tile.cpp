@@ -9,41 +9,31 @@
 // インクルード
 //******************************
 #include "tile.h"
-#include "collision.h"
-#include "player.h"
-#include "color_manager.h"
-#include "scene3d.h"
-#include "resource_texture.h"
+#include "manager.h"
+#include "renderer.h"
+#include "resource_shader.h"
+#include "camera_base.h"
+#include "light.h"
 
 #ifdef _DEBUG
-#include "manager.h"
 #include "keyboard.h"
 #endif
 
 //*****************************
 // マクロ定義
 //*****************************
-#define DEFAULT_COLOR D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 #define PEINT_COUNT 60  // 再度塗れるようになるまでのカウント
 
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-int CTile::m_anTileNum[MAX_TILE_COLOR_NUM] = {};
 
 //******************************
 // コンストラクタ
 //******************************
 CTile::CTile() :CModel(OBJTYPE_TILE)
-{
-	m_pCollison = NULL;                          
-	m_color = DEFAULT_COLOR;
-	m_pFrame = NULL;
-	m_nPrevNum = -1;                             // 今塗られているカラーの番号*デフォルトは-1
-	m_nStep = 0;                                 // 今の塗段階
-	m_nCntStep = 0;                              // 再度塗り可能カウント
-	m_nLastHitPlayerNum = -1;
-	m_bHitOld = false;                           // 一個前のフレームで当たっていたか保存するよう 
+{                       
+	m_color = TILE_DEFAULT_COLOR;
 }
 
 //******************************
@@ -73,29 +63,6 @@ CTile * CTile::Create(D3DXVECTOR3 pos)
 }
 
 //******************************
-// 色の数を数える
-//******************************
-void CTile::CountColorTile(void)
-{
-	// タイル数の初期化
-	ZeroMemory(&m_anTileNum, sizeof(m_anTileNum));
-
-	CTile*pTile = (CTile*)GetTop(OBJTYPE_TILE);
-
-	while (pTile != NULL)
-	{
-		// ペイント番号の取得
-		int nPeintNum = pTile->GetPeintNum();
-
-		// タイル数の取得
-		m_anTileNum[nPeintNum]++;
-
-		// リストを進める
-		pTile = (CTile*)pTile->GetNext();
-	}
-}
-
-//******************************
 // 初期化処理
 //******************************
 HRESULT CTile::Init(void)
@@ -114,14 +81,6 @@ HRESULT CTile::Init(void)
 	// 色の設定
 	m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-	// アイコン
-	m_pFrame = CScene3d::Create(GetPos(), D3DXVECTOR3(TILE_ONE_SIDE-2, 0.0f, TILE_ONE_SIDE-2));
-	m_pFrame->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_FRAME));
-	m_pFrame->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
-	m_pFrame->SetPriority(OBJTYPE_UI);
-
-	// フラグの初期化
-	m_bHitOld = false;
 	return S_OK;
 }
 
@@ -138,41 +97,6 @@ void CTile::Uninit(void)
 //******************************
 void CTile::Update(void)
 {
-	if (m_pCollison == NULL)
-	{
-		m_pCollison = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y+ TILE_ONE_SIDE/2, GetPos().z), TILE_ONE_SIDE/2);
-	}
-
-	// プレイヤーとの当たり判定
-	CollisionPlayer();
-	
-	// アイコンの管理
-	ManageFrame();
-	
-
-	if (m_nCntStep > 0)
-	{
-		m_nCntStep--;
-	}
-
-#ifdef _DEBUG
-	// デバッグキー
-
-	// キーボードの取得
-	CInputKeyboard * pKey = CManager::GetKeyboard();
-
-	if (pKey->GetKeyPress(DIK_NUMPADENTER))
-	{// 盤面リセット
-		m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		
-		// 変数の初期化
-		m_nPrevNum = -1;                             // 今塗られているカラーの番号*デフォルトは-1
-		m_nStep = 0;                                 // 今の塗段階
-		m_nCntStep = 0;                              // 再度塗り可能カウント
-		m_nLastHitPlayerNum = -1;                    // 最後に当たったプレイヤー番号
-		m_bHitOld = false;
-	}
-#endif // _DEBUG
 }
 
 //******************************
@@ -190,117 +114,106 @@ void CTile::Draw(void)
 	mat->MatD3D.Emissive = m_color;
 
 	////////////////////////////
-	
+
 	CModel::Draw();
 }
 
 //******************************
-// プレイヤーとの当たり判定
+// モデル描画処理
 //******************************
-void CTile::CollisionPlayer(void)
+void CTile::DrawModel(void)
 {
-	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+	//デバイス情報の取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	while (pPlayer != NULL)
+	D3DMATERIAL9 matDef; //現在のマテリアル保持用
+	D3DXMATERIAL*pMat;   //マテリアルデータへのポインタ
+
+	// モデルデータの取得
+	CResourceModel::Model * pModelData = GetModelData();
+
+	//ワールドマトリックスの設定
+	pDevice->SetTransform(D3DTS_WORLD, &pModelData->mtxWorld);
+
+	//現在のマテリアルを取得する
+	pDevice->GetMaterial(&matDef);
+
+	// シェーダー情報の取得
+	CResourceShader::Shader shader = CResourceShader::GetShader(CResourceShader::SHADER_TILE);
+	if (shader.pEffect != NULL)
 	{
-		if (CCollision::CollisionSphere(m_pCollison, pPlayer->GetCollision()))
+		// シェーダープログラムに値を送る
+		SetShaderVariable(shader.pEffect, pModelData);
+		if (pModelData->pBuffMat != NULL)
 		{
-			if (!m_bHitOld)
+			//マテリアルデータへのポインタを取得
+			pMat = (D3DXMATERIAL*)pModelData->pBuffMat->GetBufferPointer();
+
+			// パス数の取得
+			UINT numPass = 0;
+			shader.pEffect->Begin(&numPass, 0);
+
+			// パス数分描画処理のループ
+			for (int nCntEffect = 0; nCntEffect < (int)numPass; nCntEffect++)
 			{
-				Peint(pPlayer->GetColorNumber(), pPlayer->GetPlayerNumber());
+				for (int nCntMat = 0; nCntMat < (int)pModelData->nNumMat; nCntMat++)
+				{
+					//マテリアルのアンビエントにディフューズカラーを設定
+					pMat[nCntMat].MatD3D.Ambient = pMat[nCntMat].MatD3D.Diffuse;
+
+					//マテリアルの設定
+					pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+					// テクスチャ
+					pDevice->SetTexture(0, pModelData->apTexture[nCntMat]);
+
+					// 色の情報を送る
+					shader.pEffect->SetFloatArray("DiffuseColor", (float*)&m_color, 4);
+
+					// シェーダパスの描画開始
+					shader.pEffect->BeginPass(nCntEffect);
+					//モデルパーツの描画
+					pModelData->pMesh->DrawSubset(nCntMat);
+					// シェーダパスの終了
+					shader.pEffect->EndPass();
+
+					pMat[nCntMat] = pModelData->defMat[nCntMat];
+				}
 			}
-
-			// ヒットフラグの保存*当たってない
-			m_bHitOld = true;
-			
-			return;
+			// シェーダー終了
+			shader.pEffect->End();
 		}
-		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
-
-	// ヒットフラグの保存*当たってる
-	m_bHitOld = false;
+	//保持していたマテリアルを戻す
+	pDevice->SetMaterial(&matDef);
+	// テクスチャ情報の初期化
+	pDevice->SetTexture(0, 0);
 }
 
-//******************************
-// アイコンの管理
-//******************************
-void CTile::ManageFrame(void)//そこにあいはあるんか？
+
+//=============================
+// シェーダーに値を送る
+//=============================
+void CTile::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData)
 {
-	// 位置の調整
-	D3DXVECTOR3 pos = m_pFrame->GetPos();
-	if (pos != D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) +1.0f, GetPos().z))
+	if (pEffect != NULL)
 	{
-		pos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 1.0f, GetPos().z);
+		// シェーダーに情報を渡す
+		D3DXMATRIX mat;
+		D3DXMatrixIdentity(&mat);
+		mat = pModelData->mtxWorld * (*CManager::GetCamera()->GetViewMtx())* (*CManager::GetCamera()->GetProjectionMtx());
+		// ワールドプロジェクション
+		pEffect->SetMatrix("WorldViewProj", &mat);
+		// ワールド座標
+		pEffect->SetMatrix("World", &pModelData->mtxWorld);
+		// ライトディレクション
+		D3DXVECTOR3 lightDir = LIGHT_DIR_BASE;
+		pEffect->SetFloatArray("LightDirection", (float*)&D3DXVECTOR3(lightDir.x, -lightDir.y, -lightDir.z), 3);
 
-		m_pFrame->SetPos(pos);
+		// 視点位置
+		D3DXVECTOR3 eye = CManager::GetCamera()->GetPos();
+		pEffect->SetFloatArray("Eye", (float*)&D3DXVECTOR3(eye.x, eye.y, -eye.z), 3);
+
+		// スペキュラの情報を送る
+		pEffect->SetFloatArray("SpecularColor", (float*)&D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), 4);
 	}
-
-	// 色の設定
-	if (m_nStep != 0)
-	{
-		m_pFrame->SetColor(GET_COLORMANAGER->GetStepColor(m_nPrevNum, 2));
-	}
-	else
-	{
-		m_pFrame->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
-	}
-}
-
-//******************************
-// 塗処理
-//******************************
-void CTile::Peint(int nColorNumber , int nPlayerNum)
-{
-	if (m_nCntStep <= 0 || nPlayerNum != m_nLastHitPlayerNum )
-	{
-		// カウントの初期化
-		m_nCntStep = PEINT_COUNT;
-
-		// 最後に当たったプレイヤーの保存
-		m_nLastHitPlayerNum = nPlayerNum;
-
-		if (m_nPrevNum == -1)
-		{// 今何も塗られていない
-
-			// カラー番号の保存
-			m_nPrevNum = nColorNumber;
-			// 色の取得
-			m_color = GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep);
-			// 色段階を進める
-			m_nStep++;
-			
-		}
-		else if (m_nPrevNum == nColorNumber)
-		{// 今塗られているのとから塗る番号が一致
-
-			if (m_nStep < COLOR_STEP_NUM)
-			{
-				// 段階を進める
-				m_nStep++;
-				// 色の取得
-				m_color = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep-1);
-			}
-		}
-		else
-		{// 今塗られてる色と塗る色が違う
-
-			if (m_nStep == 1)
-			{// 段階が一の時
-				// カラー番号の保存
-				m_nPrevNum = nColorNumber;
-				// カラーの取得
-				m_color = GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep - 1);
-			}
-			else
-			{// 段階が2以上の時
-
-				// 段階を減らす
-				m_nStep--;
-				// 色の取得
-				m_color = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep-1);
-			}
-		}
-	}
-
 }

@@ -88,10 +88,24 @@ void CColorManager::Release(void)
 //******************************
 void CColorManager::UseNumReset(void)
 {
-	for (int nCnt = 0; nCnt < m_aColorData.size(); nCnt++)
+	for (int nCnt = 0; nCnt < (int)m_aColorData.size(); nCnt++)
 	{
 		m_aColorData[nCnt].nUsePlayerNum = -1;
 	}
+}
+
+CColorManager::ColorData CColorManager::GetColorDataByPlayerNumber(int nPlayerNum)
+{
+	for (int nCnt = 0; nCnt < (int)m_aColorData.size(); nCnt++)
+	{
+		if (m_aColorData[nCnt].nUsePlayerNum == nPlayerNum)
+		{
+			return m_aColorData[nCnt];
+		}
+	}
+
+	// ‘ÎÛ‚ª‚È‚©‚Á‚½ê‡‚Í”z—ñ0”Ô–Ú‚ð•Ô‚·
+	return m_aColorData[0];
 }
 
 //******************************

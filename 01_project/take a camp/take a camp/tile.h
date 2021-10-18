@@ -14,7 +14,7 @@
 //*****************************
 #include "main.h"
 #include "model.h"
-
+#include "color_manager.h"
 //*****************************
 //前方宣言
 //*****************************
@@ -28,6 +28,7 @@ class CScene3d;
 #define TILE_SIZE_Y TILE_ONE_SIDE/2
 #define TILE_SIZE D3DXVECTOR3(TILE_ONE_SIDE,TILE_SIZE_Y,TILE_ONE_SIDE)  // タイルのサイズ
 #define MAX_TILE_COLOR_NUM 16
+#define TILE_DEFAULT_COLOR D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 
 //*****************************
 // クラス定義
@@ -42,32 +43,22 @@ public:
 	~CTile();
 
 	static CTile *Create(D3DXVECTOR3 pos);
-	static void CountColorTile(void); // タイルの数字の数を数える
-	static int GetTileNum(int nIndex) { return m_anTileNum[nIndex]; }
-
+	
 	HRESULT Init(void);
 	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	virtual void Update(void);
+	virtual void Draw(void);
 
-
-	int GetPeintNum(void) { return m_nPrevNum; }
+	// 色のセット/取得
+	void SetColor(D3DXCOLOR col) { m_color = col; }
+	D3DXCOLOR GetColor(void) { return m_color; }
 
 private:
-	void CollisionPlayer(void);   // プレイヤーとの当たり判定
-	void ManageFrame(void);        // アイコン管理
-	void Peint(int nColorNumber, int nPlayerNum); // 塗処理
+	void DrawModel(void);
+	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData);// シェーダに値を送る
 
 	// メンバ変数
-	static int m_anTileNum[MAX_TILE_COLOR_NUM];
-	CCollision * m_pCollison; // 当たり判定
 	D3DXCOLOR m_color;        // カラー
-	CScene3d *m_pFrame;        // 枠
-	int m_nPrevNum;           // 今塗られているカラーの番号*デフォルトは-1
-	int m_nStep;              // 今の塗段階
-	int m_nCntStep;           // 再度塗り可能カウント
-	int m_nLastHitPlayerNum;  // 最後に当たったプレイヤー番号
-	bool m_bHitOld;           // 一個前のフレームで当たっていたか保存するよう
 };
 
 #endif
