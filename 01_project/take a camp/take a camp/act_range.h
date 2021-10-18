@@ -14,7 +14,7 @@
 //*****************************
 #include "main.h"
 #include "scene.h"
-#include "stage.h"
+#include "map.h"
 #include "game.h"
 
 //*****************************
@@ -62,7 +62,7 @@ public:
 	bool GetDeath(void) { return m_bDeath; }
 private:
 	CPlayer*		 m_pPlayer;			// プレイヤーポインタ
-	CStage::MAP_DATA m_MapData;			// マップデータ
+	CMapManager::MAP_DATA m_MapData;			// マップデータ
 	D3DXVECTOR3		 m_ActPos;			// マップ上のプレイヤーの位置
 	OTHER_ACT		 m_OtherAct[PLAYER_MOVE_MAX - 1];	// 他プレイヤーの情報
 	bool			 m_bPlayerMove[PLAYER_MOVE_MAX];	// プレイヤーが移動できるか

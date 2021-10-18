@@ -10,7 +10,7 @@
 #include "act_range.h"
 #include "player.h"
 #include "tile.h"
-#include "stage.h"
+#include "map.h"
 #include "game.h"
 
 
@@ -22,7 +22,7 @@ CActRange::CActRange()
 	//変数初期化
 	m_pPlayer = nullptr;
 	m_bDeath  = false;
-	memset(&m_MapData, 0, sizeof(CStage::MAP_DATA));
+	memset(&m_MapData, 0, sizeof(CMapManager::MAP_DATA));
 	memset(&m_ActPos, 0, sizeof(D3DXVECTOR3));
 	memset(&m_bPlayerMove, true, sizeof(bool[PLAYER_MOVE_MAX]));
 	memset(&m_OtherAct, 0, sizeof(OTHER_ACT[PLAYER_MOVE_MAX - 1]));
@@ -71,7 +71,7 @@ void CActRange::PlayerPos(void)
 //=============================================================================
 void CActRange::ActMove(int nMoveX, int nMoveZ)
 {
-	m_ActPos = D3DXVECTOR3(nMoveX, 0.0f, nMoveZ) + m_ActPos;
+	m_ActPos = D3DXVECTOR3((float)nMoveX, 0.0f, (float)nMoveZ) + m_ActPos;
 }
 
 //=============================================================================
@@ -118,11 +118,11 @@ void CActRange::ActRange(void)
 	for (int nMove = 0; nMove<PLAYER_MOVE_MAX; nMove++)
 	{
 		//上下左右のタイルがあるか
-		if (m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CStage::BLOCK_TYPE_NONE
-			||m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CStage::BLOCK_TYPE_1P_START
-			|| m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CStage::BLOCK_TYPE_2P_START
-			|| m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CStage::BLOCK_TYPE_3P_START
-			|| m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CStage::BLOCK_TYPE_4P_START)
+		if (m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CMapManager::BLOCK_TYPE_NONE
+			||m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CMapManager::BLOCK_TYPE_1P_START
+			|| m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CMapManager::BLOCK_TYPE_2P_START
+			|| m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CMapManager::BLOCK_TYPE_3P_START
+			|| m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CMapManager::BLOCK_TYPE_4P_START)
 		{
 			//移動できないためfalse
 			m_bPlayerMove[nMove] = false;
@@ -173,7 +173,7 @@ CActRange * CActRange::Create(CPlayer * pPlayer)
 HRESULT CActRange::Init(void)
 {
 	//マップ情報取得
-	m_MapData = CGame::GetStage()->GetMapData();
+	m_MapData = CMapManager::GetMapData(CGame::GetMapType());
 
 	//最初の位置取得
 	PlayerPos();

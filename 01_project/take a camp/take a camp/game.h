@@ -14,6 +14,7 @@
 //*****************************
 #include "main.h"
 #include "scene.h"
+#include "map.h"
 
 //=============================
 // 前方宣言
@@ -21,7 +22,7 @@
 class CCamera;
 class CLight;
 class CRuleManager;
-class CStage;
+class CMapManager;
 //*****************************
 //マクロ定義
 //*****************************
@@ -55,7 +56,9 @@ public:
 	// 取得処理
 	static CLight*GetLight(void) { return m_pLight; }                    // ライトクラスのポインタ
 	static CRuleManager *GetRuleManager(void) { return m_pRuleManager; } // ルールマネージャーポインタ
-	static CStage* GetStage(void) { return m_pStage; }
+	static CMap* GetStage(void) { return m_pMap; }
+	static CMapManager::MAP_TYPE GetMapType(void) { return m_MapType; }
+	static void SetMapType(CMapManager::MAP_TYPE MapType) { m_MapType = MapType; }
 private:
 
 	//*****************************
@@ -63,7 +66,8 @@ private:
 	//*****************************
 	static CLight*m_pLight;              // ライトポインタ
 	static CRuleManager* m_pRuleManager; // ルールマネージャー
-	static CStage *m_pStage;			 // ステージポインタ
+	static CMap *m_pMap;			 // ステージポインタ
+	static CMapManager::MAP_TYPE m_MapType;// マップのタイプ
 };
 
 #endif

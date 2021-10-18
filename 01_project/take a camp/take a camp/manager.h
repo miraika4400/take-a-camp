@@ -30,6 +30,7 @@ class CTutorial;
 class CPause;
 class CCamera;
 class CColorManager;
+
 //=============================
 // ƒNƒ‰ƒX’è‹`
 //=============================
