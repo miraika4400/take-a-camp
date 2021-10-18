@@ -37,7 +37,12 @@ public:
 		PLAYER_MOVE_DOWN,	//下
 		PLAYER_MOVE_MAX
 	}PLAYER_MOVE;
-	
+	typedef struct
+	{
+		D3DXVECTOR3 OtherActPos;	//位置
+		bool		bDeath;		//死亡フラグ
+	}OTHER_ACT;
+
 
 	//メンバ関数
 	CActRange();
@@ -53,12 +58,15 @@ public:
 	void Draw(void);
 	bool GetPlayerMove(int nPlayerMove) { return m_bPlayerMove[nPlayerMove]; }	//プレイヤーの移動できる方向ゲッター
 	D3DXVECTOR3 GetActPos(void) { return m_ActPos; }							//マップ上のプレイヤーの位置ゲッター
+	void SetDeath(bool bDeath) { m_bDeath = bDeath; }
+	bool GetDeath(void) { return m_bDeath; }
 private:
 	CPlayer*		 m_pPlayer;			// プレイヤーポインタ
 	CStage::MAP_DATA m_MapData;			// マップデータ
 	D3DXVECTOR3		 m_ActPos;			// マップ上のプレイヤーの位置
-	D3DXVECTOR3		 m_OtherActPos[MAX_PLAYER - 1];	// ほかプレイヤーのマップ上位置(自分以外のため - 1)
-	bool			 m_bPlayerMove[PLAYER_MOVE_MAX]; // プレイヤーが移動できるか
+	OTHER_ACT		 m_OtherAct[PLAYER_MOVE_MAX - 1];	// 他プレイヤーの情報
+	bool			 m_bPlayerMove[PLAYER_MOVE_MAX];	// プレイヤーが移動できるか
+	bool			 m_bDeath;			// 死亡フラグ
 };
 
 #endif

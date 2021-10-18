@@ -35,7 +35,7 @@ public:
 	void Update(void);                                                                // 更新
 	void Draw(void);                                                                  // 描画
 	void SetNumber(const int nNumber);                                                // ナンバーのセット
-
+	void SetPos(const D3DXVECTOR3 pos, const D3DXVECTOR3 size);
 	// カラーのセット、取得
 	void SetColor(const D3DXCOLOR col);
 	D3DXCOLOR GetColor(void) { return m_col; }

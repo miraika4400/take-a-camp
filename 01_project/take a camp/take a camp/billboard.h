@@ -48,6 +48,7 @@ public:
 	D3DXCOLOR GetColor(void) { return m_col; }
 
 	void SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX]); // テクスチャのUV座標のセット
+	void SetTextureManualUV(const int nPattern, const int nNum); // テクスチャのUV座標のセット
 
 	void SetAddMode(bool bBool) { m_bAddMode = bBool; }
 private:

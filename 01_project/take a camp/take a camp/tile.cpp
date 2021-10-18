@@ -29,6 +29,7 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
+int CTile::m_anTileNum[MAX_TILE_COLOR_NUM][COLOR_STEP_NUM + 1] = {};
 
 //******************************
 // コンストラクタ
@@ -37,11 +38,12 @@ CTile::CTile() :CModel(OBJTYPE_TILE)
 {
 	m_pCollison = NULL;                          
 	m_color = DEFAULT_COLOR;
+	m_pFrame = NULL;
 	m_nPrevNum = -1;                             // 今塗られているカラーの番号*デフォルトは-1
 	m_nStep = 0;                                 // 今の塗段階
 	m_nCntStep = 0;                              // 再度塗り可能カウント
 	m_nLastHitPlayerNum = -1;
-	m_bHitOld = false;           // 一個前のフレームで当たっていたか保存するよう 
+	m_bHitOld = false;                           // 一個前のフレームで当たっていたか保存するよう 
 }
 
 //******************************
@@ -70,7 +72,28 @@ CTile * CTile::Create(D3DXVECTOR3 pos)
 	return pTile;
 }
 
+//******************************
+// 色の数を数える
+//******************************
+void CTile::CountColorTile(void)
+{
+	// タイル数の初期化
+	ZeroMemory(&m_anTileNum, sizeof(m_anTileNum));
 
+	CTile*pTile = (CTile*)GetTop(OBJTYPE_TILE);
+
+	while (pTile != NULL)
+	{
+		// ペイント番号の取得
+		int nPeintNum = pTile->GetPeintNum();
+
+		// タイル数の取得
+		m_anTileNum[nPeintNum][0]+= pTile->GetStepNum();
+		m_anTileNum[nPeintNum][pTile->GetStepNum()]++;
+		// リストを進める
+		pTile = (CTile*)pTile->GetNext();
+	}
+}
 
 //******************************
 // 初期化処理
@@ -140,14 +163,7 @@ void CTile::Update(void)
 
 	if (pKey->GetKeyPress(DIK_NUMPADENTER))
 	{// 盤面リセット
-		m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		
-		// 変数の初期化
-		m_nPrevNum = -1;                             // 今塗られているカラーの番号*デフォルトは-1
-		m_nStep = 0;                                 // 今の塗段階
-		m_nCntStep = 0;                              // 再度塗り可能カウント
-		m_nLastHitPlayerNum = -1;                    // 最後に当たったプレイヤー番号
-		m_bHitOld = false;
+		ResetTile();
 	}
 #endif // _DEBUG
 }
@@ -169,6 +185,21 @@ void CTile::Draw(void)
 	////////////////////////////
 	
 	CModel::Draw();
+}
+
+//******************************
+// タイルのリセット処理
+//******************************
+void CTile::ResetTile(void)
+{
+	m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
+	// 変数の初期化
+	m_nPrevNum = -1;                             // 今塗られているカラーの番号*デフォルトは-1
+	m_nStep = 0;                                 // 今の塗段階
+	m_nCntStep = 0;                              // 再度塗り可能カウント
+	m_nLastHitPlayerNum = -1;                    // 最後に当たったプレイヤー番号
+	m_bHitOld = false;
 }
 
 //******************************
@@ -220,7 +251,7 @@ void CTile::ManageFrame(void)//そこにあいはあるんか？
 	}
 	else
 	{
-		m_pFrame->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+		m_pFrame->SetColor(DEFAULT_COLOR);
 	}
 }
 

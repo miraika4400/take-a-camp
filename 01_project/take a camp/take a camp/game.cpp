@@ -24,6 +24,9 @@
 #include "player.h"
 #include "stage.h"
 #include "tile.h"
+#include "debug_log.h"
+#include "color_manager.h"
+#include "time.h"
 
 //=============================
 // マクロ定義
@@ -35,6 +38,7 @@
 CLight  *CGame::m_pLight = NULL;      // ライトクラスポインタ
 CRuleManager* CGame::m_pRuleManager = NULL; // ルールマネージャークラス
 CStage* CGame::m_pStage = NULL;	//ステージクラスポインタ
+
 //=============================
 // コンストラクタ
 //=============================
@@ -70,18 +74,16 @@ HRESULT CGame::Init(void)
 	// ポーズの初期化
 	CManager::SetActivePause(false);
 
+	// マネージャーの番号のリセット
+	GET_COLORMANAGER->UseNumReset();
+
 	CManager::SetCamera(CTpsCamera::Create());
 
 	// 背景の生成
 	CBg::Create();
 	
 	//ステージ生成
-	m_pStage = CStage::Create(D3DXVECTOR3(200.0f, 0.0f, -100.0f));
-
-	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
-	{
-		//CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE*nCntPlayer, 0.0f, 0.0f), nCntPlayer);
-	}
+	m_pStage = CStage::Create(D3DXVECTOR3(200.0f, 0.0f, -150.0f));
 	
 	// ライトクラスの生成
 	m_pLight = new CLight;
@@ -94,6 +96,7 @@ HRESULT CGame::Init(void)
 		}
 	}
 
+	CTime::Create();
 
 	return S_OK;
 }
@@ -142,6 +145,13 @@ void CGame::Update(void)
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}
+
+	CTile::CountColorTile();
+	CDebugLog::Init();
+	CDebugLog::Print("赤:%d(一:%d,二:%d,三:%d)\n", CTile::GetTileNum(0), CTile::GetTileNum(0, 1), CTile::GetTileNum(0, 2), CTile::GetTileNum(0, 3));
+	CDebugLog::Print("青:%d(一:%d,二:%d,三:%d)\n", CTile::GetTileNum(1), CTile::GetTileNum(1, 1), CTile::GetTileNum(1, 2), CTile::GetTileNum(1, 3));
+	CDebugLog::Print("緑:%d(一:%d,二:%d,三:%d)\n", CTile::GetTileNum(2), CTile::GetTileNum(2, 1), CTile::GetTileNum(2, 2), CTile::GetTileNum(2, 3));
+	CDebugLog::Print("橙:%d(一:%d,二:%d,三:%d)\n", CTile::GetTileNum(3), CTile::GetTileNum(3, 1), CTile::GetTileNum(3, 2), CTile::GetTileNum(3, 3));
 #endif // _DEBUG
 
 }

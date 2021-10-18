@@ -16,6 +16,7 @@
 #include "mouse.h"
 #include "joypad.h"
 #include "fade.h"
+#include "result_graph.h"
 
 //**********************************
 // マクロ定義
@@ -40,6 +41,7 @@
 //=============================
 CResult::CResult()
 {
+	m_fFloat = 0.0f;
 }
 
 //=============================
@@ -66,7 +68,9 @@ CResult * CResult::Create(void)
 //=============================
 HRESULT CResult::Init(void)
 {
-	
+	//　グラフの生成
+	CResultGraph::Create();
+
 	return S_OK;
 }
 

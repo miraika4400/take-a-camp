@@ -84,6 +84,17 @@ void CColorManager::Release(void)
 }
 
 //******************************
+// 使っているプレイヤー番号のリセット
+//******************************
+void CColorManager::UseNumReset(void)
+{
+	for (int nCnt = 0; nCnt < m_aColorData.size(); nCnt++)
+	{
+		m_aColorData[nCnt].nUsePlayerNum = -1;
+	}
+}
+
+//******************************
 // テキストデータの読み込み
 //******************************
 void CColorManager::LoadText(void)
@@ -140,6 +151,7 @@ void CColorManager::LoadText(void)
 				                                 &m_aColorData[nIndex].iconColor.b,
 				                                 &m_aColorData[nIndex].iconColor.a);
 
+			m_aColorData[nIndex].nUsePlayerNum = -1;
 			fscanf(pFile, "%*s %s", chChar);
 		}
 
