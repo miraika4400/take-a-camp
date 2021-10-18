@@ -68,6 +68,10 @@ private:
 	void Move(void);		// 移動処理
 	void Respawn(void);		// リスポーン処理
 	void Invincible(void);	// 無敵処理
+
+	void DrawModel(void);
+	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData);// シェーダに値を送る
+
 	// メンバ変数
 	static int m_anControllKey[5][KEY_MAX];
 

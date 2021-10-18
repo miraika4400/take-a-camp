@@ -31,8 +31,9 @@ public:
 	// テクスチャ種類
 	typedef enum
 	{
-		SHADER_TILE = 0,  // プレイヤー
-		SHADER_MAX          // テクスチャ数
+		SHADER_TILE = 0,  // タイル
+		SHADER_PLAYER,    // タイル
+		SHADER_MAX        // テクスチャ数
 	}SHADER_TYPE;
 
 	// シェーダー構造体
