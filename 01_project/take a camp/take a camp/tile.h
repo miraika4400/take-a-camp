@@ -54,6 +54,8 @@ public:
 	D3DXCOLOR GetColor(void) { return m_color; }
 
 private:
+	void DrawModel(void);
+	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData);// シェーダに値を送る
 
 	// メンバ変数
 	D3DXCOLOR m_color;        // カラー

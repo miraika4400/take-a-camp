@@ -97,6 +97,9 @@
     <Filter Include="ヘッダー ファイル\08_Map\Tile">
       <UniqueIdentifier>{ba17fb24-9b02-4846-bfc0-48bbd444eb96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="hlslファイル">
+      <UniqueIdentifier>{bfc01b98-9db7-440f-9869-a456c8baf8f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bg.cpp">
@@ -377,5 +380,10 @@
     <ClInclude Include="spawn_tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="data\HLSL\TileShader.fx">
+      <Filter>hlslファイル</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

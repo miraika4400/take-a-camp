@@ -23,7 +23,8 @@
 #define BG_SIZE    D3DXVECTOR3(SCREEN_WIDTH/2-15,SCREEN_HEIGHT/2-20,0.0f)
 #define BG_COLOR D3DXCOLOR(0.0f,0.0f,0.0f,0.6f)
 #define GAUGE_RATE 0.03f
-
+#define BACK_GAUGE_SIZE 16
+#define BACK_GAUGE_COLOR D3DXCOLOR(1.0f,1.0f,1.0f,1.0f)
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
@@ -76,9 +77,11 @@ HRESULT CResultGraph::Init(void)
 		int nPlayerNum = GET_COLORMANAGER->GetUsePlayerNum(nCntColor);
 		if (nPlayerNum != -1)
 		{
-			// [プレイヤー番号]が使っているカラー番号の保管
-			m_aGauge[nPlayerNum].m_nColorNum = nCntColor;
-
+			for (int nCntGauge = 0; nCntGauge < GAUGE_NUM; nCntGauge++)
+			{
+				// [プレイヤー番号]が使っているカラー番号の保管
+				m_aGauge[nPlayerNum][nCntGauge].m_nColorNum = nCntColor;
+			}
 			// 最大数の保管
 			if (fMaxNum < CColorTile::GetTileNum(nPlayerNum))
 			{
@@ -92,8 +95,30 @@ HRESULT CResultGraph::Init(void)
 
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
 	{
-		m_aGauge[nCntPlayer].pGauge = CGauge::Create(&m_aGauge[nCntPlayer].fGraphData, D3DXVECTOR3(posX, 700.0f, 0.0f), GAUGE_WIDTH, GAUGE_HEIGHT, fMaxNum, GET_COLORMANAGER->GetIconColor(m_aGauge[nCntPlayer].m_nColorNum));
-		m_aGauge[nCntPlayer].fGraphData = 0;
+		for (int nCntGauge = 0; nCntGauge < GAUGE_NUM; nCntGauge++)
+		{
+			if (nCntGauge == 0)
+			{
+				m_aGauge[nCntPlayer][nCntGauge].pGauge = CGauge::Create(&m_aGauge[nCntPlayer][nCntGauge].fGraphData,
+					D3DXVECTOR3(posX, 700.0f, 0.0f),
+					GAUGE_WIDTH + BACK_GAUGE_SIZE,
+					GAUGE_HEIGHT + BACK_GAUGE_SIZE /2,
+					fMaxNum,
+					BACK_GAUGE_COLOR);
+				      
+			}
+			else
+			{
+				m_aGauge[nCntPlayer][nCntGauge].pGauge = CGauge::Create(&m_aGauge[nCntPlayer][nCntGauge].fGraphData,
+					D3DXVECTOR3(posX, 700.0f, 0.0f),
+					GAUGE_WIDTH,
+					GAUGE_HEIGHT,
+					fMaxNum,
+					GET_COLORMANAGER->GetIconColor(m_aGauge[nCntPlayer][nCntGauge].m_nColorNum));
+			}
+
+			m_aGauge[nCntPlayer][nCntGauge].fGraphData = 0;
+		}
 		posX += GAUGE_SPACE;
 	}
 
@@ -117,7 +142,10 @@ void CResultGraph::Update(void)
 {
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
 	{
-		m_aGauge[nCntPlayer].fGraphData += ((CColorTile::GetTileNum(m_aGauge[nCntPlayer].m_nColorNum)) - m_aGauge[nCntPlayer].fGraphData)*GAUGE_RATE;
+		for (int nCntGauge = 0; nCntGauge < GAUGE_NUM; nCntGauge++)
+		{
+			m_aGauge[nCntPlayer][nCntGauge].fGraphData += ((CColorTile::GetTileNum(m_aGauge[nCntPlayer][nCntGauge].m_nColorNum)) - m_aGauge[nCntPlayer][nCntGauge].fGraphData)*GAUGE_RATE;
+		}
 	}
 }
 
