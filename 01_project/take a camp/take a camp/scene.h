@@ -41,6 +41,7 @@ public:
 		OBJTYPE_BG,            // 背景
 		OBJTYPE_TILE,          // タイル
 		OBJTYPE_PLAYER,        // プレイヤー
+		OBJTYPE_BULLET,        // 弾
 		OBJTYPE_CPU,           // CPU
 		OBJTYPE_MAP,           // マップ
 		OBJTYPE_PARTICLE,      // パーティクル

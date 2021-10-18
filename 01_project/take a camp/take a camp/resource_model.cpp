@@ -27,8 +27,9 @@ const std::string CResourceModel::m_aModelPath[CResourceModel::MODEL_MAX]
 	"PATH_NONE_SPHERE",            // 汎用モデル(球)*xファイルじゃない
 	"PATH_NONE_BOX",               // 汎用モデル(箱)*xファイルじゃない
 	"data/Models/bg.x",            // 背景モデル
-	"data/Models/player/player.x", // プレイヤー
+	"data/Models/player/04_yazirusi.x", // プレイヤー
 	"data/Models/stage.x",  // ステージ
+	"data/Models/bullet.x"	// バレット
 };
 
 //===================================

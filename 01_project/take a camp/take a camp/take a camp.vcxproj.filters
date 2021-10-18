@@ -91,6 +91,12 @@
     <Filter Include="ヘッダー ファイル\System">
       <UniqueIdentifier>{0fdaa48c-563c-48fb-bbef-112aa66e869d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\07_GameModel\Bullet">
+      <UniqueIdentifier>{89e7c282-5e3f-477c-8771-f8d4bb89c9a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\07_GameModel\Bullet">
+      <UniqueIdentifier>{ab5f719a-e4a3-4072-b7de-9cedea6e53cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bg.cpp">
@@ -213,6 +219,9 @@
     <ClCompile Include="act_range.cpp">
       <Filter>ソース ファイル\07_GameModel\Player</Filter>
     </ClCompile>
+    <ClCompile Include="bullet.cpp">
+      <Filter>ソース ファイル\07_GameModel\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -334,6 +343,9 @@
     </ClInclude>
     <ClInclude Include="act_range.h">
       <Filter>ヘッダー ファイル\07_GameModel\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -34,13 +34,14 @@ public:
 		KEY_RECESSION,
 		KEY_LEFT,
 		KEY_RIGHT,
+		KEY_BULLET,
 		KEY_MAX
 	}CONTROLL_KEY;
 
 	//メンバ関数
 	CPlayer();
 	~CPlayer();
-	static CPlayer *Create(D3DXVECTOR3 pos, int nPlayerNumber);
+	static CPlayer *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber);
 
 	HRESULT Init(void);
 	void Uninit(void);
@@ -50,11 +51,14 @@ public:
 	int GetColorNumber(void) { return m_nColor; }
 	CCollision * GetCollision(void) { return  m_pCollison; }
 	int GetPlayerNumber(void) { return m_nPlayerNumber; }
+
+	void Bullet(void);	//弾の処理
+
 private:
 	void Move(void); // 移動処理
 
 	// メンバ変数
-	static int m_anControllKey[4][KEY_MAX];
+	static int m_anControllKey[5][KEY_MAX];
 
 	int m_nPlayerNumber;      // プレイヤー番号
 	int m_nColor;             // 色ナンバー
@@ -65,6 +69,7 @@ private:
 	D3DXCOLOR	 m_color;		// 色
 	CCollision * m_pCollison;	// 当たり判定
 	CActRange *	 m_pActRange;	// 行動判定
+	D3DXVECTOR3  m_rotDest;		// 回転(目標の値)
 };
 
 #endif
