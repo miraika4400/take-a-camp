@@ -26,7 +26,8 @@
 #define TILE_DEFAULT_COLOR D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 #define PEINT_COUNT 60  // 再度塗れるようになるまでのカウント
 #define TILE_POS_Y -TILE_SIZE_Y/2
-#define POS_Y_RATE 0.1f
+#define POS_Y_RATE_UP 0.03f
+#define POS_Y_RATE_DOWN 0.03f
 #define HIT_POS_Y TILE_POS_Y - 3.0f
 
 //*****************************
@@ -134,7 +135,14 @@ void CColorTile::Update(void)
 {
 	// 高さの調整
 	D3DXVECTOR3 pos = GetPos();
-	pos.y += (TILE_POS_Y - pos.y)*POS_Y_RATE;
+	if (TILE_POS_Y < pos.y)
+	{
+		pos.y += (TILE_POS_Y - pos.y)*POS_Y_RATE_UP;
+	}
+	else
+	{
+		pos.y += (TILE_POS_Y - pos.y)*POS_Y_RATE_DOWN;
+	}
 	SetPos(pos);
 
 	if (m_pCollison == NULL)
@@ -211,7 +219,6 @@ void CColorTile::CollisionPlayer(void)
 
 			// ヒットフラグの保存*当たってない
 			m_bHitOld = true;
-
 			return;
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
@@ -224,7 +231,7 @@ void CColorTile::CollisionPlayer(void)
 //******************************
 // アイコンの管理
 //******************************
-void CColorTile::ManageFrame(void)//そこにあいはあるんか？
+void CColorTile::ManageFrame(void)
 {
 	// 位置の調整
 	D3DXVECTOR3 pos = m_pFrame->GetPos();

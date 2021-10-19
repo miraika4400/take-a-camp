@@ -13,21 +13,31 @@
 // インクルード
 //*****************************
 #include "main.h"
-#include "model.h"
+#include "model_hierarchy.h"
 
 //*****************************
 // 前方宣言
 //*****************************
 class CCollision;
 class CActRange;
+class CMotion;
+
 //*****************************
 // クラス定義
 //*****************************
 
 // プレイヤークラス
-class CPlayer : public CModel
+class CPlayer : public CModelHierarchy
 {
 public:
+	// 列挙
+	//モーション
+	typedef enum
+	{
+		MOTION_WALK = 0,     // アイドル
+		MOTION_MAX
+	}MOTION_TYPE;
+
 	typedef enum
 	{
 		KEY_PROGRESS = 0,
@@ -48,6 +58,8 @@ public:
 	CPlayer();
 	~CPlayer();
 	static CPlayer *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber);
+	static HRESULT Load(void);
+	static void Unload(void);
 
 	HRESULT Init(void);
 	void Uninit(void);
@@ -74,6 +86,8 @@ private:
 
 	// メンバ変数
 	static int m_anControllKey[5][KEY_MAX];
+	static CResourceModel::Model m_model[MAX_PARTS_NUM]; // モデル構造体
+	static int m_nPartsNum;                              // モデルパーツ数
 
 	int m_nPlayerNumber;		// プレイヤー番号
 	int m_nColor;				// 色ナンバー
@@ -89,6 +103,11 @@ private:
 	CActRange *	 m_pActRange;	// 行動判定
 	D3DXVECTOR3  m_rotDest;		// 回転(目標の値)
 	D3DXVECTOR3  m_RespawnPos;	// リスポーン位置
+
+	// モーション用変数
+	static char m_achAnimPath[MOTION_MAX][64];   // アニメーションテキストのパス格納用
+	CMotion *m_apMotion[MOTION_MAX];  // アニメーションポインタ
+
 };
 
 #endif

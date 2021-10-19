@@ -23,15 +23,17 @@
 #include "resource_shader.h"
 #include "light.h"
 #include "camera_base.h"
+#include "motion.h"
 
 //*****************************
 // マクロ定義
 //*****************************
+#define HIERARCHY_TEXT_PATH1 "./data/Text/hierarchy/pengin00.txt"   // 階層構造テキストのパス
 #define MOVE_DIST (TILE_ONE_SIDE)	// 移動距離
 #define MOVE_FRAME 15				// 移動速度
 #define COLLISION_RADIUS 18.0f
 #define MODL_COLOR D3DXCOLOR(0.3f,0.3f,0.3f,1.0f)
-#define MODEL_SIZE D3DXVECTOR3( 1.0f, 1.0f, 1.0f)
+#define MODEL_SIZE D3DXVECTOR3( 0.3f, 0.3f, 0.3f)
 #define RESPAWN_MAX_COUNT (60*5)	// リスポーンまでの最大カウント
 #define INVINCIBLE_COUNT (60*2)		// 無敵時間
 #define ROTDEST_PREVIOUS 270.0f		// 前方向き
@@ -53,11 +55,17 @@ int CPlayer::m_anControllKey[5][CPlayer::KEY_MAX] =
 	{ DIK_U,DIK_J,DIK_H,DIK_K,DIK_I },
 	{ DIK_NUMPAD8,DIK_NUMPAD5,DIK_NUMPAD4,DIK_NUMPAD6,DIK_NUMPAD9 }
 };
+CResourceModel::Model CPlayer::m_model[MAX_PARTS_NUM] = {};
+int CPlayer::m_nPartsNum = 0;
+char CPlayer::m_achAnimPath[MOTION_MAX][64]
+{
+	{ "data/Text/motion/run.txt" },         // 歩きアニメーション
+};
 
 //******************************
 // コンストラクタ
 //******************************
-CPlayer::CPlayer() :CModel(OBJTYPE_PLAYER)
+CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 {
 	m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	m_nRespawnCount = 0;
@@ -72,6 +80,7 @@ CPlayer::CPlayer() :CModel(OBJTYPE_PLAYER)
 	memset(&m_Move, 0, sizeof(D3DXVECTOR3));
 	memset(&m_RespawnPos, 0, sizeof(D3DXVECTOR3));
 	m_MoveCount = 0;
+	memset(&m_apMotion, 0, sizeof(m_apMotion));
 }
 
 //******************************
@@ -79,6 +88,39 @@ CPlayer::CPlayer() :CModel(OBJTYPE_PLAYER)
 //******************************
 CPlayer::~CPlayer()
 {
+}
+
+//******************************
+// テクスチャのロード
+//******************************
+HRESULT CPlayer::Load(void)
+{
+	// モデルの読み込み
+	LoadModels(HIERARCHY_TEXT_PATH1, &m_model[0], &m_nPartsNum);
+
+	return S_OK;
+}
+
+//******************************
+// テクスチャのアンロード
+//******************************
+void CPlayer::Unload(void)
+{
+	for (int nCnt = 0; nCnt < m_nPartsNum; nCnt++)
+	{
+		//メッシュの破棄
+		if (m_model[nCnt].pMesh != NULL)
+		{
+			m_model[nCnt].pMesh->Release();
+			m_model[nCnt].pMesh = NULL;
+		}
+		//マテリアルの破棄
+		if (m_model[nCnt].pBuffMat != NULL)
+		{
+			m_model[nCnt].pBuffMat->Release();
+			m_model[nCnt].pBuffMat = NULL;
+		}
+	}
 }
 
 //******************************
@@ -116,13 +158,10 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 //******************************
 HRESULT CPlayer::Init(void)
 {
-	if (FAILED(CModel::Init()))
+	if (FAILED(CModelHierarchy::Init(m_nPartsNum, &m_model[0], HIERARCHY_TEXT_PATH1)))
 	{
 		return E_FAIL;
 	}
-
-	// モデル割り当て
-	BindModel(CResourceModel::GetModel(CResourceModel::MODEL_PLAYER01));
 
 	// 移動フラグの初期化
 	m_bMove = true;
@@ -143,7 +182,16 @@ HRESULT CPlayer::Init(void)
 	SetSize(MODEL_SIZE);
 
 	//CNumberArray::Create(10, GetPos() + D3DXVECTOR3(0.0f, 100.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);	return S_OK;
+	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);	
+
+	//for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
+	//{
+	//	m_apMotion[nCntAnim] = CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], GetModelData());
+	//}
+
+	//m_apMotion[MOTION_WALK]->SetActiveMotion(true);
+
+
 }
 
 //******************************
@@ -151,7 +199,7 @@ HRESULT CPlayer::Init(void)
 //******************************
 void CPlayer::Uninit(void)
 {
-	CModel::Uninit();
+	CModelHierarchy::Uninit();
 }
 
 //******************************
@@ -250,7 +298,7 @@ void CPlayer::Draw(void)
 	mat->MatD3D.Specular = m_color;
 	mat->MatD3D.Emissive = m_color;
 
-	CModel::Draw();
+	CModelHierarchy::Draw();
 }
 
 //******************************
@@ -442,75 +490,77 @@ void CPlayer::DrawModel(void)
 	//デバイス情報の取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	D3DMATERIAL9 matDef; //現在のマテリアル保持用
-	D3DXMATERIAL*pMat;   //マテリアルデータへのポインタ
+	D3DMATERIAL9 matDef;	//現在のマテリアル保持用
+	D3DXMATERIAL*pMat;	//マテリアルデータへのポインタ
 
-	// モデルデータの取得
-	CResourceModel::Model * pModelData = GetModelData();
+	CResourceModel::Model *pModelData = GetModelData();
 
-	//ワールドマトリックスの設定
-	pDevice->SetTransform(D3DTS_WORLD, &pModelData->mtxWorld);
-
-	//現在のマテリアルを取得する
-	pDevice->GetMaterial(&matDef);
-
-	// シェーダー情報の取得
-	CResourceShader::Shader shader = CResourceShader::GetShader(CResourceShader::SHADER_PLAYER);
-	if (shader.pEffect != NULL)
+	for (int nCntParts = 0; nCntParts < GetPartsNum(); nCntParts++)
 	{
-		// シェーダープログラムに値を送る
-		SetShaderVariable(shader.pEffect, pModelData);
-		if (pModelData->pBuffMat != NULL)
+		//ワールドマトリックスの設定
+		pDevice->SetTransform(D3DTS_WORLD, &pModelData[nCntParts].mtxWorld);
+
+		//現在のマテリアルを取得する
+		pDevice->GetMaterial(&matDef);
+
+		// シェーダー情報の取得
+		CResourceShader::Shader shader = CResourceShader::GetShader(CResourceShader::SHADER_PLAYER);
+
+		if (shader.pEffect != NULL)
 		{
+			// シェーダープログラムに値を送る
+			SetShaderVariable(shader.pEffect, &pModelData[nCntParts]);
+
 			//マテリアルデータへのポインタを取得
-			pMat = (D3DXMATERIAL*)pModelData->pBuffMat->GetBufferPointer();
+			pMat = (D3DXMATERIAL*)pModelData[nCntParts].pBuffMat->GetBufferPointer();
 
 			// パス数の取得
 			UINT numPass = 0;
 			shader.pEffect->Begin(&numPass, 0);
 
 			// パス数分描画処理のループ
-			
-				for (int nCntMat = 0; nCntMat < (int)pModelData->nNumMat; nCntMat++)
+
+			for (int nCntMat = 0; nCntMat < (int)pModelData[nCntParts].nNumMat; nCntMat++)
+			{
+				//マテリアルのアンビエントにディフューズカラーを設定
+				pMat[nCntMat].MatD3D.Ambient = pMat[nCntMat].MatD3D.Diffuse;
+
+				//マテリアルの設定
+				pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+				// テクスチャ
+				pDevice->SetTexture(0, pModelData[nCntParts].apTexture[nCntMat]);
+
+				// テクスチャをシェーダーに送る
+				shader.pEffect->SetTexture("Tex", pModelData[nCntParts].apTexture[nCntMat]);
+				// 色
+				shader.pEffect->SetFloatArray("DiffuseColor", (float*)&pMat[nCntMat].MatD3D.Diffuse, 4);
+				if (pModelData[nCntParts].apTexture[nCntMat] == NULL)
 				{
-					//マテリアルのアンビエントにディフューズカラーを設定
-					pMat[nCntMat].MatD3D.Ambient = pMat[nCntMat].MatD3D.Diffuse;
-
-					//マテリアルの設定
-					pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
-					// テクスチャ
-					pDevice->SetTexture(0, pModelData->apTexture[nCntMat]);
-					// テクスチャをシェーダーに送る
-					shader.pEffect->SetTexture("Tex", pModelData->apTexture[nCntMat]);
-
-					// 色の情報を送る
-					shader.pEffect->SetFloatArray("DiffuseColor", (float*)&pMat[nCntMat].MatD3D.Diffuse, 4);
-
-					if (pModelData->apTexture[nCntMat] == NULL)
-					{
-						// シェーダパスの描画開始
-						shader.pEffect->BeginPass(0);
-					}
-					else
-					{
-						// シェーダパスの描画開始
-						shader.pEffect->BeginPass(1);
-					}
-					//モデルパーツの描画
-					pModelData->pMesh->DrawSubset(nCntMat);
-					// シェーダパスの終了
-					shader.pEffect->EndPass();
-
-					pMat[nCntMat] = pModelData->defMat[nCntMat];
+					// シェーダパスの描画開始
+					shader.pEffect->BeginPass(0);
 				}
+				else
+				{
+					// シェーダパスの描画開始
+					shader.pEffect->BeginPass(1);
+				}
+				// モデルパーツの描画
+				pModelData[nCntParts].pMesh->DrawSubset(nCntMat);
+				// シェーダパスの終了
+				shader.pEffect->EndPass();
+
+				pMat[nCntMat] = pModelData[nCntParts].defMat[nCntMat];
+
+			}
 			// シェーダー終了
 			shader.pEffect->End();
 		}
+
+		//保持していたマテリアルを戻す
+		pDevice->SetMaterial(&matDef);
+		// テクスチャの初期化
+		pDevice->SetTexture(0, 0);
 	}
-	//保持していたマテリアルを戻す
-	pDevice->SetMaterial(&matDef);
-	// テクスチャ情報の初期化
-	pDevice->SetTexture(0, 0);
 }
 
 
