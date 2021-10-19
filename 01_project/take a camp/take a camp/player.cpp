@@ -330,8 +330,6 @@ void CPlayer::Death(void)
 	m_pActRange->SetDeath(true);
 	//“§–¾‚É‚·‚é
 	m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
-
-
 }
 
 //******************************

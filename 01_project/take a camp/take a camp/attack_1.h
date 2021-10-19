@@ -27,7 +27,8 @@ public:
 	void	Update(void);
 
 private:
-	void	AttackCreate(void);		//UŒ‚¶¬ˆ—
+	void	AttackCreate(void);	//UŒ‚¶¬ˆ—
 	int		m_nAttackCount;		//UŒ‚‚Ü‚Å‚ÌƒJƒEƒ“ƒg
+	CAttackManager::ATTACK_RANGE_TYPE m_Type;
 };
 #endif

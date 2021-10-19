@@ -14,6 +14,8 @@
 //=============================================================================
 // マクロ定義
 //=============================================================================
+#define ATTACK_COUNT (60*0.4f)
+
 #define ATTACK_COUNT_1 (60*0)
 #define ATTACK_COUNT_2 (60*0.4f)
 #define ATTACK_COUNT_3 (60*0.7f)
@@ -25,6 +27,7 @@
 CAttack1::CAttack1()
 {
 	m_nAttackCount = 0;
+	m_Type = CAttackManager::ATTACK_RANGE_HIT_1;
 }
 
 //=============================================================================
@@ -83,29 +86,25 @@ void CAttack1::AttackCreate(void)
 		m_nAttackCount++;
 
 		//カウントが一定になったら
-		if (m_nAttackCount >= ATTACK_COUNT_4)
+		if (m_nAttackCount >= ATTACK_COUNT)
 		{
 			//攻撃処理
-			Attack(CAttackManager::ATTACK_RANGE_HIT_4);
-			//フラグの初期化
-			SetAttackFlag(false);
+			Attack(m_Type);
+
+			if (m_Type == CAttackManager::ATTACK_RANGE_HIT_4)
+			{
+				//フラグの初期化
+				SetAttackFlag(false);
+				//タイプ初期化
+				m_Type = CAttackManager::ATTACK_RANGE_HIT_1;
+			}
+			else
+			{
+				//次の攻撃タイプへ
+				m_Type = (CAttackManager::ATTACK_RANGE_TYPE)(m_Type + 1);
+			}
 			//カウント初期化
 			m_nAttackCount = 0;
 		}
-		else if (m_nAttackCount >= ATTACK_COUNT_3)
-		{
-			//攻撃処理
-			Attack(CAttackManager::ATTACK_RANGE_HIT_3);
-		}
-		else if (m_nAttackCount >= ATTACK_COUNT_2)
-		{
-			//攻撃処理
-			Attack(CAttackManager::ATTACK_RANGE_HIT_2);
-		}
-		else if (m_nAttackCount >= ATTACK_COUNT_1)
-		{
-			//攻撃処理
-			Attack(CAttackManager::ATTACK_RANGE_HIT_1);
-		}			
 	}
 }
