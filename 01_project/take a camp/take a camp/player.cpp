@@ -292,11 +292,14 @@ void CPlayer::Update(void)
 void CPlayer::Draw(void)
 {
 	// F‚ÌÝ’è
-	D3DXMATERIAL* mat = (D3DXMATERIAL*)GetModelData()->pBuffMat->GetBufferPointer();
-	mat->MatD3D.Ambient = m_color;
-	mat->MatD3D.Diffuse = m_color;
-	mat->MatD3D.Specular = m_color;
-	mat->MatD3D.Emissive = m_color;
+	for (int nCntParts = 0; nCntParts < GetPartsNum(); nCntParts++)
+	{
+		D3DXMATERIAL* mat = (D3DXMATERIAL*)GetModelData()[nCntParts].pBuffMat->GetBufferPointer();
+		mat->MatD3D.Ambient = m_color;
+		mat->MatD3D.Diffuse = m_color;
+		mat->MatD3D.Specular = m_color;
+		mat->MatD3D.Emissive = m_color;
+	}
 
 	CModelHierarchy::Draw();
 }

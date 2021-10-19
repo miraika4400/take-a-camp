@@ -41,7 +41,7 @@ public:
 	}TEXTURE_TYPE;
 	
 	// メンバ関数
-	static CResourceTexture * Create(void);                          // クラス生成
+	static CResourceTexture * Create(void);                  // クラス生成
 	static void Release(void);                               // クラス破棄
 	static LPDIRECT3DTEXTURE9 GetTexture(TEXTURE_TYPE type); // テクスチャの取得処理*引数：取得したいテクスチャ
 	
@@ -56,7 +56,7 @@ private:
 
 	// メンバ変数
 	static const std::string m_aTexPath[TEXTURE_MAX]; // テクスチャのパス
-	static CResourceTexture *m_pSingleTex;                    // テクスチャクラスのポインタ*シングルトン用
+	static CResourceTexture *m_pSingleTex;			  // テクスチャクラスのポインタ*シングルトン用
 	LPDIRECT3DTEXTURE9 m_apTexture[TEXTURE_MAX];      // テクスチャのポインタ
 };
 

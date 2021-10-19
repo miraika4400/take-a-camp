@@ -22,7 +22,6 @@
 #include "debug_log.h"
 #include "pause.h"
 #include "tutorial.h"
-#include "stage.h"
 #include "color_manager.h"
 #include "collision.h"
 #include "player.h"
@@ -125,7 +124,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	// テクスチャ・モデルの読み込み
 	CPause::Load();    // ポーズ
 	//ステージ読み込み
-	CStage::Load();
+	CMapManager::Create();
 
 	// プレイヤー階層構造
 	CPlayer::Load();
@@ -144,7 +143,8 @@ void CManager::Uninit(void)
 {
 	// 開放処理
 	CScene::ReleaseAll();
-
+	//マップ管理クラスの破棄
+	CMapManager::Release();
 	// テクスチャクラスの破棄
 	CResourceTexture::Release();
 	// モデルリソースクラスの破棄

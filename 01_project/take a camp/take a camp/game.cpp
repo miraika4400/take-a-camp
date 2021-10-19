@@ -22,7 +22,7 @@
 #include "result.h"
 #include "bg.h"
 #include "player.h"
-#include "stage.h"
+#include "map.h"
 #include "tile.h"
 #include "debug_log.h"
 #include "color_manager.h"
@@ -35,10 +35,10 @@
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CLight  *CGame::m_pLight = NULL;      // ライトクラスポインタ
+CLight  *CGame::m_pLight = NULL;			// ライトクラスポインタ
 CRuleManager* CGame::m_pRuleManager = NULL; // ルールマネージャークラス
-CStage* CGame::m_pStage = NULL;	//ステージクラスポインタ
-
+CMap* CGame::m_pMap = NULL;			// ステージクラスポインタ
+CMapManager::MAP_TYPE CGame::m_MapType = CMapManager::MAP_TYPE_1;// マップタイプ
 //=============================
 // コンストラクタ
 //=============================
@@ -83,8 +83,8 @@ HRESULT CGame::Init(void)
 	CBg::Create();
 	
 	//ステージ生成
-	m_pStage = CStage::Create(D3DXVECTOR3(200.0f, 0.0f, -150.0f));
-	
+	m_pMap = CMap::Create(m_MapType);
+
 	// ライトクラスの生成
 	m_pLight = new CLight;
 	// ライトクラスの初期化
