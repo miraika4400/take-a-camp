@@ -20,6 +20,8 @@
 #include "number_array.h"
 #include "color_manager.h"
 #include "bullet.h"
+#include "attack.h"
+#include "attack_1.h"
 #include "resource_shader.h"
 #include "light.h"
 #include "camera_base.h"
@@ -80,6 +82,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	memset(&m_Move, 0, sizeof(D3DXVECTOR3));
 	memset(&m_RespawnPos, 0, sizeof(D3DXVECTOR3));
 	m_MoveCount = 0;
+	m_pAttack = NULL;
 	memset(&m_apMotion, 0, sizeof(m_apMotion));
 }
 
@@ -146,6 +149,8 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 	pPlayer->m_RespawnPos = pos;
 	CNumberArray::Create(0, pos, D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(pPlayer->m_nColor), pPlayer->m_nColor);
 
+	//攻撃用クラス生成
+	pPlayer->m_pAttack = CAttack1::Create(pPlayer);
 
 	//移動範囲クラスの生成
 	pPlayer->m_pActRange = CActRange::Create(pPlayer);
@@ -262,7 +267,10 @@ void CPlayer::Update(void)
 		{
 			Death();
 		}
-
+		if (pKey->GetKeyPress(DIK_2))
+		{
+			m_pAttack->SetAttackFlag(true);
+		}
 		/*if (pKey->GetKeyPress(DIK_NUMPAD1))
 		{
 			m_nColor = 0;

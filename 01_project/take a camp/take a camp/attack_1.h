@@ -22,11 +22,12 @@ public:
 	//関数定義
 	CAttack1();
 	~CAttack1();
-	static CAttack1 *Create(D3DXVECTOR3 pos);
+	static CAttack1 *Create(CPlayer* pPlayer);
 	HRESULT Init(void);
-	void	Uninit(void);
 	void	Update(void);
-	void	Draw(void);
+
 private:
+	void	AttackCreate(void);		//攻撃生成処理
+	int		m_nAttackCount;		//攻撃までのカウント
 };
 #endif

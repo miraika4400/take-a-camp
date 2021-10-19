@@ -1,11 +1,11 @@
 //=============================================================================
 //
-// 攻撃管理クラス [attack_manager.h]
+// 攻撃範囲読み込みクラス [resource_attack.h]
 // Author : 吉田悠人
 //
 //=============================================================================
-#ifndef _ATTACK_MANAGER_H_
-#define _ATTACK_MANAGER_H_
+#ifndef _RESOURCE_ATTACK_H_
+#define _RESOURCE_ATTACK_H_
 //=============================================================================
 // ヘッダファイルのインクルード
 //=============================================================================
@@ -35,14 +35,30 @@ public:
 		RANGE_DATA	RangeData[MAX_ATTACK_SIZE_Y];	// ブロック
 		int			nAttackRangeY;					// ブロックの列
 		D3DXVECTOR3	m_pos;							// 位置		
-	}ATTACK_DATA;
+	}ATTACK_RANGE_DATA;
+
 
 	typedef enum	//攻撃タイルの種類
 	{
 		ATTACK_RANGE_NONE = 0,	//なし
 		ATTACK_RANGE_CENTER,	//中心
-		ATTACK_RANGE_HIT,		//攻撃
+		ATTACK_RANGE_HIT_1,		//攻撃(数値が上がるほど後に攻撃する)
+		ATTACK_RANGE_HIT_2,
+		ATTACK_RANGE_HIT_3,
+		ATTACK_RANGE_HIT_4
 	}ATTACK_RANGE_TYPE;
+
+	typedef struct	//攻撃マス目情報
+	{
+		ATTACK_RANGE_TYPE	m_RangeType;	//攻撃マスタイプ 
+		D3DXVECTOR3			m_AttackPos;	//攻撃のマス位置
+	}SQUARE_DATA;
+
+	typedef struct	//攻撃マス全体の情報
+	{
+		int			m_nMaxHitRange;										// 最大ヒットマス
+		SQUARE_DATA m_SquareData[MAX_ATTACK_SIZE_Y*MAX_ATTACK_SIZE_X];	// 攻撃のマスデータ[読み込み限界の縦横]
+	}ATTACK_SQUARE_DATA;
 
 	typedef enum	//攻撃の種類
 	{
@@ -58,13 +74,17 @@ public:
 	~CAttackManager();
 	static CAttackManager * Create(void);	// クラス生成
 	static void Release(void);				// クラス破棄
-	static ATTACK_DATA GetAttackData(ATTACK_TYPE Attack);
+	static ATTACK_RANGE_DATA GetAttackData(ATTACK_TYPE Attack);
+	static ATTACK_SQUARE_DATA GetAttack(ATTACK_TYPE AttackType);
 
 private:
 	void	Load(void);		//攻撃範囲読み込み
+	void	PosCalc(void);	//位置計算
 
-	static char*	m_pFileName[ATTACK_TYPE_MAX];	// ファイルネーム
-	static CAttackManager* m_pAttackBasis;				// 攻撃範囲クラスのポインタ
-	ATTACK_DATA	m_AttackData[ATTACK_TYPE_MAX];			// 攻撃の情報
+	static char*			m_pFileName[ATTACK_TYPE_MAX];		// ファイルネーム
+	static CAttackManager*	m_pAttackBasis;						// 攻撃範囲クラスのポインタ
+	ATTACK_RANGE_DATA		m_AttackData[ATTACK_TYPE_MAX];		// 攻撃の情報
+	ATTACK_SQUARE_DATA		m_AttackSwuare[ATTACK_TYPE_MAX];	// 攻撃マスの情報
+
 };
 #endif

@@ -18,6 +18,7 @@
 #include "resource_texture.h"
 #include "resource_model.h"
 #include "resource_shader.h"
+#include "resource_attack.h"
 #include "camera_base.h"
 #include "debug_log.h"
 #include "pause.h"
@@ -29,11 +30,11 @@
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CManager::MODE   CManager::m_mode = MODE_GAME;      // ゲームモード
+CManager::MODE   CManager::m_mode = MODE_GAME;       // ゲームモード
 CRenderer       *CManager::m_pRenderer = NULL;       // レンダラーポインタ
 CInputKeyboard  *CManager::m_pInputKeyboard = NULL;  // キーボード
 CInputJoypad    *CManager::m_pJoypad = NULL;         // ジョイパッド
-CInputMouse     *CManager::m_pInputMouse = NULL;     //　マウス
+CInputMouse     *CManager::m_pInputMouse = NULL;     // マウス
 CSound          *CManager::m_pSound = NULL;          // サウンド
 CGame           *CManager::m_pGame = NULL;           // ゲーム
 CTitle          *CManager::m_pTitle = NULL;          // タイトル
@@ -125,6 +126,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CPause::Load();    // ポーズ
 	//ステージ読み込み
 	CMapManager::Create();
+	//攻撃範囲読み込み
+	CAttackManager::Create();
 
 	// プレイヤー階層構造
 	CPlayer::Load();
@@ -145,6 +148,8 @@ void CManager::Uninit(void)
 	CScene::ReleaseAll();
 	//マップ管理クラスの破棄
 	CMapManager::Release();
+	//攻撃範囲読み込みクラスの破棄
+	CAttackManager::Release();
 	// テクスチャクラスの破棄
 	CResourceTexture::Release();
 	// モデルリソースクラスの破棄
@@ -153,6 +158,7 @@ void CManager::Uninit(void)
 	CResourceShader::Release();
 	// カラーマーマネージャーの破棄
 	CColorManager::Release();
+
 
 	// テクスチャのアンロード
 	CPause::Unload();    // ポーズ

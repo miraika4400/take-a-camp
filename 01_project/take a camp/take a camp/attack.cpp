@@ -9,6 +9,9 @@
 //=============================================================================
 #include "attack.h"
 #include "tile.h"
+#include "resource_attack.h"
+#include "player.h"
+#include "bullet.h"
 
 //=============================================================================
 // コンストラクタ
@@ -18,7 +21,10 @@ CAttackBased::CAttackBased()
 	//初期化処理
 	m_nAttackType = CAttackManager::ATTACK_TYPE_1;
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	memset(&m_AttackData, 0, sizeof(CAttackManager::ATTACK_DATA));
+	memset(&m_AttackSquare, 0, sizeof(CAttackManager::ATTACK_SQUARE_DATA));
+	m_bAttack = false;
+	m_pPlayer = NULL;
+
 }
 
 //=============================================================================
@@ -33,7 +39,8 @@ CAttackBased::~CAttackBased()
 //=============================================================================
 HRESULT CAttackBased::Init(void)
 {
-
+	//攻撃タイプセット
+	m_AttackSquare = CAttackManager::GetAttack(m_nAttackType);
 	return S_OK;
 }
 
@@ -77,6 +84,22 @@ CAttackManager::ATTACK_TYPE CAttackBased::GetAttackType(void)
 }
 
 //=============================================================================
+// 撃マスデータゲッター関数
+//=============================================================================
+void CAttackBased::SetAttackSquare(CAttackManager::ATTACK_SQUARE_DATA AttackSquare)
+{
+	m_AttackSquare = AttackSquare;
+}
+
+//=============================================================================
+// 撃マスデータゲッター関数
+//=============================================================================
+CAttackManager::ATTACK_SQUARE_DATA CAttackBased::GetAttackSquare(void)
+{
+	return m_AttackSquare;
+}
+
+//=============================================================================
 // 位置セッター関数
 //=============================================================================
 void CAttackBased::SetPos(D3DXVECTOR3 pos)
@@ -90,4 +113,77 @@ void CAttackBased::SetPos(D3DXVECTOR3 pos)
 D3DXVECTOR3 CAttackBased::GetPos(void)
 {
 	return m_pos;
+}
+
+//=============================================================================
+// 向きセッター関数
+//=============================================================================
+void CAttackBased::SetRot(D3DXVECTOR3 rot)
+{
+	m_rot = rot;
+}
+
+//=============================================================================
+// 向きゲッター関数
+//=============================================================================
+D3DXVECTOR3 CAttackBased::GetRot(void)
+{
+	return m_rot;
+}
+
+//=============================================================================
+// 攻撃フラグセッター関数
+//=============================================================================
+void CAttackBased::SetAttackFlag(bool bAttack)
+{
+	m_bAttack = bAttack;
+}
+
+//=============================================================================
+// 攻撃フラグゲッター関数
+//=============================================================================
+bool CAttackBased::GetAttackFlag(void)
+{
+	return m_bAttack;
+}
+
+//=============================================================================
+// プレイヤーポインタゲッター関数
+//=============================================================================
+void CAttackBased::SetPlayer(CPlayer * pPlayer)
+{
+	m_pPlayer = pPlayer;
+}
+
+//=============================================================================
+// プレイヤーポインタゲッター関数
+//=============================================================================
+CPlayer * CAttackBased::GetPlayer(void)
+{
+	return m_pPlayer;
+}
+
+//=============================================================================
+// 攻撃関数
+//=============================================================================
+void CAttackBased::Attack(CAttackManager::ATTACK_RANGE_TYPE AttackType)
+{
+	for (int nAttack = 0; nAttack<m_AttackSquare.m_nMaxHitRange; nAttack++)
+	{
+		//タイプが一致しているか
+		if (m_AttackSquare.m_SquareData[nAttack].m_RangeType == AttackType)
+		{
+			//向き
+			D3DXVECTOR3 AttackRot = m_pPlayer->GetRot();
+			//行列計算
+			D3DXVECTOR3 CreatePos;
+			//攻撃位置
+			D3DXVECTOR3 AttackPos = m_AttackSquare.m_SquareData[nAttack].m_AttackPos * TILE_ONE_SIDE;
+			CreatePos.x = ((cosf(AttackRot.y + D3DXToRadian(90.0f))*AttackPos.x) + (sinf(AttackRot.y + D3DXToRadian(90.0f))*AttackPos.z));
+			CreatePos.y = 1 * AttackPos.y;
+			CreatePos.z = ((-sinf(AttackRot.y + D3DXToRadian(90.0f))*AttackPos.x) + (cosf(AttackRot.y + D3DXToRadian(90.0f))*AttackPos.z));
+			//当たり判定生成
+			CBullet::Create(CreatePos + m_pPlayer->GetPos());
+		}
+	}
 }

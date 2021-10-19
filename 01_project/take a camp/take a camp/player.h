@@ -20,7 +20,7 @@
 //*****************************
 class CCollision;
 class CActRange;
-class CMotion;
+class CAttackBased;class CMotion;
 
 //*****************************
 // クラス定義
@@ -89,6 +89,7 @@ private:
 	static CResourceModel::Model m_model[MAX_PARTS_NUM]; // モデル構造体
 	static int m_nPartsNum;                              // モデルパーツ数
 
+	CAttackBased* m_pAttack;	// 攻撃用クラス
 	int m_nPlayerNumber;		// プレイヤー番号
 	int m_nColor;				// 色ナンバー
 	bool m_bMove;				// 移動可否フラグ
