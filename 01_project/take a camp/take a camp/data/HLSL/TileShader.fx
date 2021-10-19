@@ -22,11 +22,11 @@ VS_OUTPUT VS(float3 Position : POSITION, float3 Normal : NORMAL ,float4 Diffuse 
 	Out.Position = mul(float4(Position, 1), WorldViewProj);
 
 	// 法線
-	float3 N = mul(Normal, (float3x3)World);
+	float3 N = mul(-Normal, (float3x3)World);
 	N = normalize(N);
 
 	// スペキュラ
-	float3 H = normalize(normalize(LightDirection) + normalize(Eye - (float3)Out.Position));
+	float3 H = normalize(normalize(LightDirection) + normalize(Eye - mul(World, Position).xyz));
 	Out.Specular = SpecularColor * dot(N, H);
 	Out.Specular = pow(Out.Specular, 8);
 

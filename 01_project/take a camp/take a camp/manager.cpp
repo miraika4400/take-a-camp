@@ -25,6 +25,7 @@
 #include "tutorial.h"
 #include "color_manager.h"
 #include "collision.h"
+#include "player.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -128,6 +129,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	//攻撃範囲読み込み
 	CAttackManager::Create();
 
+	// プレイヤー階層構造
+	CPlayer::Load();
+
 	// カラーマネージャーの生成
 	CColorManager::Create();
 
@@ -158,6 +162,9 @@ void CManager::Uninit(void)
 
 	// テクスチャのアンロード
 	CPause::Unload();    // ポーズ
+
+	// プレイヤー階層構造
+	CPlayer::Unload();
 
 	if (m_pSound != NULL)
 	{
