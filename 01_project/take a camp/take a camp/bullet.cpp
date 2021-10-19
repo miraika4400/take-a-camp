@@ -20,6 +20,8 @@
 #define BULLET_LIFE		(20)	// 弾のライフ
 #define COLLISION_SIZE (D3DXVECTOR3(10.0f,10.0f,10.0f))	// 当たり判定の大きさ
 #define BULLET_ONE_SIDE 20.0f
+#define BULLET_COLLISION_SIZE 10.0f
+
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -112,7 +114,7 @@ void CBullet::Update()
 
 	if (m_pCollision == NULL)
 	{
-		m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(BulletPos.x, BulletPos.y + BULLET_ONE_SIDE / 2, BulletPos.z), BULLET_ONE_SIDE / 2);
+		m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(BulletPos.x, BulletPos.y + BULLET_ONE_SIDE / 2, BulletPos.z), BULLET_COLLISION_SIZE / 2);
 	}
 	else
 	{
