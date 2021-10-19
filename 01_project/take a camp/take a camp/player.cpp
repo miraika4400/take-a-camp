@@ -197,6 +197,9 @@ HRESULT CPlayer::Init(void)
 	//m_apMotion[MOTION_WALK]->SetActiveMotion(true);
 
 
+	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);
+
+	return S_OK;
 }
 
 //******************************
@@ -317,19 +320,22 @@ void CPlayer::Draw(void)
 //******************************
 void CPlayer::Death(void)
 {
-	//死亡状態に移行
-	SetState(PLAYER_STATE_DEATH);
-
-	//当たり判定を消す
-	if (m_pCollison != NULL)
+	if (!m_bInvincible)
 	{
-		m_pCollison->Uninit();
-		m_pCollison = NULL;
+		//死亡状態に移行
+		SetState(PLAYER_STATE_DEATH);
+
+		//当たり判定を消す
+		if (m_pCollison != NULL)
+		{
+			m_pCollison->Uninit();
+			m_pCollison = NULL;
+		}
+		//行動クラスに死亡状態になったフラグを送る
+		m_pActRange->SetDeath(true);
+		//透明にする
+		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 	}
-	//行動クラスに死亡状態になったフラグを送る
-	m_pActRange->SetDeath(true);
-	//透明にする
-	m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 	//位置セット
 	SetPos(m_RespawnPos);
 }
@@ -411,13 +417,22 @@ void CPlayer::Bullet(void)
 {
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 
+	// プレイヤー情報の取得
+	CPlayer *pPlayer;
+
 	// 座標の取得
 	D3DXVECTOR3 pos = GetPos();
 
 	// スペースボタンを押したら
 	if (pKey->GetKeyTrigger(m_anControllKey[m_nPlayerNumber][KEY_BULLET]))
 	{
-		CBullet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z));
+		// 方向指定
+		D3DXVECTOR3 bulletMove;
+		bulletMove.x = cosf(GetRot().y)*-BULLET_MOVE;
+		bulletMove.y = 0.0f;
+		bulletMove.z = sinf(GetRot().y)*BULLET_MOVE;
+		// 弾の生成
+		CBullet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), bulletMove, m_nPlayerNumber);
 	}
 
 	//位置設定

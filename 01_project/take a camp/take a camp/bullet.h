@@ -15,10 +15,12 @@
 //=============================================================================
 // 前方宣言
 //=============================================================================
-
+class CPlayer;
+class CCollision;
 //=============================================================================
 // マクロ定義
 //=============================================================================
+#define BULLET_MOVE 5		// 弾の移動量
 
 //=============================================================================
 // クラス宣言
@@ -29,7 +31,7 @@ public:
 	CBullet();	// コンストラクタ
 	~CBullet();	// デストラクタ
 
-	static CBullet * Create(D3DXVECTOR3 pos);	// 生成処理
+	static CBullet * Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, int nPlayerNum);	// 生成処理
 
 	HRESULT Init(void);				// 初期化処理
 
@@ -37,16 +39,20 @@ public:
 	void Update(void);		// 更新処理
 	void Draw(void);		// 描画処理
 
-							//bool Collision(void);	// 当たり判定
+	void CollisionPlayer(void);	// 当たり判定
 
 private:
 	//=============================================================================
 	// メンバ変数宣言
 	//=============================================================================
-	D3DXVECTOR3 m_move;		// 移動量
-	D3DXVECTOR3 m_size;		// 大きさ
-	int m_nLife;			// ライフ
-	float m_fSpeed;			// 速さ
+	D3DXVECTOR3 m_move;			// 移動量
+	D3DXVECTOR3 m_size;			// 大きさ
+	int m_nLife;				// ライフ
+	float m_fSpeed;				// 速さ
+	CPlayer *m_pPlayer;			// プレイヤーのポインタ
+	CCollision * m_pCollision;	// 当たり判定
+	bool m_bHitOld;				// 1個前のフレームで当たっていたか保存するよう
+	int m_nPlayerNum;
 };
 
 #endif // !_BULLET_H_
