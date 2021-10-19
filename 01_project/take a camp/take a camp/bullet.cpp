@@ -95,6 +95,7 @@ void CBullet::Uninit()
 	{
 		m_pCollision->ReConnection();
 		m_pCollision->Uninit();
+		delete m_pCollision;
 		m_pCollision = NULL;
 	}
 	// I—¹ˆ—

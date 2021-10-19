@@ -23,7 +23,7 @@
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
 //*****************************
 #ifdef _DEBUG
-bool CCollision::m_bDraw = true;
+bool CCollision::m_bDraw = false;
 #endif
 
 //******************************
