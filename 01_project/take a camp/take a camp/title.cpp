@@ -121,9 +121,9 @@ void CTitle::Update(void)
 	m_pPolygon->Update();
 
 	if( CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || 
-		CManager::GetMouse()->GetMouseTrigger(0) || 
+		CManager::GetMouse()->GetMouseTrigger(0) /*|| 
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0)||
-		CManager::GetJoypad()->GetJoystickTrigger(11, 0))
+		CManager::GetJoypad()->GetJoystickTrigger(11, 0)*/)
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
 	}

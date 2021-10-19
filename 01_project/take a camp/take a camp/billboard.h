@@ -20,7 +20,7 @@
 //*****************************
 
 // ビルボードクラス
-class CBillboard
+class CBillboard : public CScene
 {
 public:
 	// メンバ関数

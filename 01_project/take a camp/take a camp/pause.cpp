@@ -153,25 +153,25 @@ void CPause::Update(void)
 		}
 	}
 
-	DIJOYSTATE jy = CManager::GetJoypad()->GetStick(0);
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_W) || CManager::GetKeyboard()->GetKeyTrigger(DIK_UP) || m_bMove && jy.lY <= -600)
+	//DIJOYSTATE jy = CManager::GetJoypad()->GetStick(0);
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_W) || CManager::GetKeyboard()->GetKeyTrigger(DIK_UP) || m_bMove/* && jy.lY <= -600*/)
 	{// ↑
 		m_nMenu--;
 		m_bMove = false;
 
 	}
-	else if (CManager::GetKeyboard()->GetKeyTrigger(DIK_S) || CManager::GetKeyboard()->GetKeyTrigger(DIK_DOWN) || m_bMove && jy.lY >= 600)
+	else if (CManager::GetKeyboard()->GetKeyTrigger(DIK_S) || CManager::GetKeyboard()->GetKeyTrigger(DIK_DOWN) || m_bMove/* && jy.lY >= 600*/)
 	{// ↓
 		m_nMenu++;
 		m_bMove = false;
 
 	}
 
-	// スティック用フラグの初期化
-	if (jy.lY <= 500 && jy.lY >= -500)
-	{
-		m_bMove = true;
-	}
+	//// スティック用フラグの初期化
+	//if (jy.lY <= 500 && jy.lY >= -500)
+	//{
+	//	m_bMove = true;
+	//}
 
 	// 範囲外に行かないように
 	if (m_nMenu > EXIT)
@@ -184,7 +184,7 @@ void CPause::Update(void)
 	}
 
 	// メニューコマンド
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || CManager::GetJoypad()->GetJoystickTrigger(3, 0))
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN)/* || CManager::GetJoypad()->GetJoystickTrigger(3, 0)*/)
 	{
 		switch (m_nMenu)
 		{
