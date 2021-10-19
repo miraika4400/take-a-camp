@@ -24,7 +24,13 @@ class CNumber;
 //マクロ定義
 //*****************************
 #define MAX_TIME_DIGIT 3  // タイムの最大桁数
-#define TIME_UP 60			//時間制限
+
+#ifdef _DEBUG
+#define TIME_UP 999			//時間制限*デバッグ
+#else
+#define TIME_UP 60			//時間制限*リリース
+#endif
+
 //*****************************
 //クラス定義
 //*****************************

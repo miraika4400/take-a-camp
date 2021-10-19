@@ -153,12 +153,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="act_range.cpp" />
+    <ClCompile Include="attack.cpp" />
+    <ClCompile Include="attack_1.cpp" />
+    <ClCompile Include="resource_attack.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="billboard.cpp" />
+    <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camera_base.cpp" />
     <ClCompile Include="camera_tps.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="color_manager.cpp" />
+    <ClCompile Include="color_tile.cpp" />
     <ClCompile Include="debug_log.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
@@ -169,6 +174,7 @@
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
+    <ClCompile Include="resource_map.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="model_hierarchy.cpp" />
     <ClCompile Include="motion.cpp" />
@@ -191,7 +197,8 @@
     <ClCompile Include="score.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="resource_texture.cpp" />
-    <ClCompile Include="stage.cpp" />
+    <ClCompile Include="map.cpp" />
+    <ClCompile Include="spawn_tile.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
@@ -199,15 +206,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="act_range.h" />
+    <ClInclude Include="attack.h" />
+    <ClInclude Include="attack_1.h" />
+    <ClInclude Include="resource_attack.h" />
     <ClInclude Include="bg.h" />
     <ClInclude Include="billboard.h" />
+    <ClInclude Include="bullet.h" />
     <ClInclude Include="camera_base.h" />
     <ClInclude Include="camera_tps.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="color_manager.h" />
+    <ClInclude Include="color_tile.h" />
     <ClInclude Include="debug_log.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="resource_map.h" />
     <ClInclude Include="number_array.h" />
     <ClInclude Include="gauge.h" />
     <ClInclude Include="object3d_shader.h" />
@@ -237,11 +250,23 @@
     <ClInclude Include="score.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="resource_texture.h" />
-    <ClInclude Include="stage.h" />
+    <ClInclude Include="map.h" />
+    <ClInclude Include="spawn_tile.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tutorial.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="data\HLSL\PlayerShader.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="data\HLSL\TileShader.fx">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

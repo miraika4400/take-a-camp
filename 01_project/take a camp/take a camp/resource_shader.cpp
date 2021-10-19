@@ -24,8 +24,8 @@ CResourceShader *CResourceShader::m_pSingleTex = NULL; // shaderƒ|ƒCƒ“ƒ^*ƒVƒ“ƒOƒ
 //shader‚ÌƒpƒX
 const std::string CResourceShader::m_aEffectPath[CResourceShader::SHADER_MAX]
 {
-	"data/HLSL/PlayerShader.fx",       // ƒvƒŒƒCƒ„[
-	
+	"data/HLSL/TileShader.fx",       // ƒ^ƒCƒ‹
+	"data/HLSL/PlayerShader.fx",     // ƒvƒŒƒCƒ„[
 };
 
 // ƒeƒNƒjƒbƒN–¼

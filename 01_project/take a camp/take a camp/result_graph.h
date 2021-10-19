@@ -25,7 +25,7 @@ class CGauge;
 //*****************************
 // マクロ定義
 //*****************************
-
+#define GAUGE_NUM 2
 //*****************************
 //クラス定義
 //*****************************
@@ -66,7 +66,7 @@ public:
 private:
 	// メンバ変数
 	CScene2d * m_pBg;                  // 背景ポリゴン
-	GraphParts m_aGauge[MAX_PLAYER];  // ゲージ
+	GraphParts m_aGauge[MAX_PLAYER][GAUGE_NUM];  // ゲージ
 };
 
 #endif

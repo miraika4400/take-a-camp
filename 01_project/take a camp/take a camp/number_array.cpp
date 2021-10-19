@@ -16,7 +16,7 @@
 #include "resource_texture.h"
 #include "renderer.h"
 #include "player.h" 
-#include "tile.h"
+#include "color_tile.h"
 
 //==================================
 // マクロ定義
@@ -24,8 +24,8 @@
 #define MAX_TEXTURE_PATTARN (10)
 #define KERNING_DIVISION (3.6f)								// 間隔を割る数(間隔をいじるときは個々の数値を変えて)
 #define ODD_NUMBER_DIVISION (2.0f * KERNING_DIVISION)		// 奇数を割る数
-#define EVEN_NUMBER_DIVISION (20.0f * KERNING_DIVISION)	// 偶数を割る数
-
+#define EVEN_NUMBER_DIVISION (20.0f * KERNING_DIVISION)	    // 偶数を割る数
+#define NUMBER_POS_Y 35.0f
 //==================================
 // コンストラクタ
 //==================================
@@ -103,7 +103,7 @@ void CNumberArray::Update(void)
 	// キーボードの取得
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 
-	m_nNumber = CTile::GetTileNum(m_nPlayerNum);
+	m_nNumber = CColorTile::GetTileNum(m_nPlayerNum);
 
 	for (int nCount = 0; nCount < MAX_ARRAY_NUM; nCount++)
 	{
@@ -221,7 +221,7 @@ void CNumberArray::SetNumber(void)
 			// 座標の設定
 			m_apNumber[nIndex]->SetPos(Getpos +
 			D3DXVECTOR3(cosf(fAngle) * (fKerning) + sinf(fAngle2) * (fKerning),
-				25.0f,
+				NUMBER_POS_Y,
 				-cosf(fAngle2) * (fKerning) + sinf(fAngle) * (fKerning)));
 		}
 

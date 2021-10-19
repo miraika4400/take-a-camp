@@ -22,11 +22,11 @@
 #include "result.h"
 #include "bg.h"
 #include "player.h"
-#include "stage.h"
+#include "map.h"
 #include "tile.h"
 #include "debug_log.h"
 #include "color_manager.h"
-#include "time.h"
+#include "color_tile.h"
 
 //=============================
 // マクロ定義
@@ -35,10 +35,10 @@
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CLight  *CGame::m_pLight = NULL;      // ライトクラスポインタ
+CLight  *CGame::m_pLight = NULL;			// ライトクラスポインタ
 CRuleManager* CGame::m_pRuleManager = NULL; // ルールマネージャークラス
-CStage* CGame::m_pStage = NULL;	//ステージクラスポインタ
-
+CMap* CGame::m_pMap = NULL;			// ステージクラスポインタ
+CMapManager::MAP_TYPE CGame::m_MapType = CMapManager::MAP_TYPE_1;// マップタイプ
 //=============================
 // コンストラクタ
 //=============================
@@ -83,8 +83,8 @@ HRESULT CGame::Init(void)
 	CBg::Create();
 	
 	//ステージ生成
-	m_pStage = CStage::Create(D3DXVECTOR3(200.0f, 0.0f, -150.0f));
-	
+	m_pMap = CMap::Create(m_MapType);
+
 	// ライトクラスの生成
 	m_pLight = new CLight;
 	// ライトクラスの初期化
@@ -145,13 +145,21 @@ void CGame::Update(void)
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F2))
+	{
+		CManager::SetCamera(CTpsCamera::Create());
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F3))
+	{
+		CManager::SetCamera(CCamera::Create());
+	}
 
-	CTile::CountColorTile();
+	CColorTile::CountColorTile();
 	CDebugLog::Init();
-	CDebugLog::Print("赤:%d(一:%d,二:%d,三:%d)\n", CTile::GetTileNum(0), CTile::GetTileNum(0, 1), CTile::GetTileNum(0, 2), CTile::GetTileNum(0, 3));
-	CDebugLog::Print("青:%d(一:%d,二:%d,三:%d)\n", CTile::GetTileNum(1), CTile::GetTileNum(1, 1), CTile::GetTileNum(1, 2), CTile::GetTileNum(1, 3));
-	CDebugLog::Print("緑:%d(一:%d,二:%d,三:%d)\n", CTile::GetTileNum(2), CTile::GetTileNum(2, 1), CTile::GetTileNum(2, 2), CTile::GetTileNum(2, 3));
-	CDebugLog::Print("橙:%d(一:%d,二:%d,三:%d)\n", CTile::GetTileNum(3), CTile::GetTileNum(3, 1), CTile::GetTileNum(3, 2), CTile::GetTileNum(3, 3));
+	CDebugLog::Print("赤:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(0), CColorTile::GetTileNum(0, 1), CColorTile::GetTileNum(0, 2), CColorTile::GetTileNum(0, 3));
+	CDebugLog::Print("青:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(1), CColorTile::GetTileNum(1, 1), CColorTile::GetTileNum(1, 2), CColorTile::GetTileNum(1, 3));
+	CDebugLog::Print("緑:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(2), CColorTile::GetTileNum(2, 1), CColorTile::GetTileNum(2, 2), CColorTile::GetTileNum(2, 3));
+	CDebugLog::Print("橙:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(3), CColorTile::GetTileNum(3, 1), CColorTile::GetTileNum(3, 2), CColorTile::GetTileNum(3, 3));
 #endif // _DEBUG
 
 }

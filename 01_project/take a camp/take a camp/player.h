@@ -13,27 +13,38 @@
 // インクルード
 //*****************************
 #include "main.h"
-#include "model.h"
+#include "model_hierarchy.h"
 
 //*****************************
 // 前方宣言
 //*****************************
 class CCollision;
 class CActRange;
+class CAttackBased;class CMotion;
+
 //*****************************
 // クラス定義
 //*****************************
 
 // プレイヤークラス
-class CPlayer : public CModel
+class CPlayer : public CModelHierarchy
 {
 public:
+	// 列挙
+	//モーション
+	typedef enum
+	{
+		MOTION_WALK = 0,     // アイドル
+		MOTION_MAX
+	}MOTION_TYPE;
+
 	typedef enum
 	{
 		KEY_PROGRESS = 0,
 		KEY_RECESSION,
 		KEY_LEFT,
 		KEY_RIGHT,
+		KEY_BULLET,
 		KEY_MAX
 	}CONTROLL_KEY;
 
@@ -46,7 +57,9 @@ public:
 	//メンバ関数
 	CPlayer();
 	~CPlayer();
-	static CPlayer *Create(D3DXVECTOR3 pos, int nPlayerNumber);
+	static CPlayer *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber);
+	static HRESULT Load(void);
+	static void Unload(void);
 
 	HRESULT Init(void);
 	void Uninit(void);
@@ -58,15 +71,25 @@ public:
 	int GetColorNumber(void) { return m_nColor; }
 	CCollision * GetCollision(void) { return  m_pCollison; }
 	int GetPlayerNumber(void) { return m_nPlayerNumber; }
+
+	void Bullet(void);	//弾の処理
+
 	void SetState(PLAYER_STATE PlayerState) {m_PlayerState = PlayerState;}
 	PLAYER_STATE GetState(void) { return m_PlayerState; }
 private:
 	void Move(void);		// 移動処理
 	void Respawn(void);		// リスポーン処理
 	void Invincible(void);	// 無敵処理
-	// メンバ変数
-	static int m_anControllKey[4][KEY_MAX];
 
+	void DrawModel(void);
+	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData);// シェーダに値を送る
+
+	// メンバ変数
+	static int m_anControllKey[5][KEY_MAX];
+	static CResourceModel::Model m_model[MAX_PARTS_NUM]; // モデル構造体
+	static int m_nPartsNum;                              // モデルパーツ数
+
+	CAttackBased* m_pAttack;	// 攻撃用クラス
 	int m_nPlayerNumber;		// プレイヤー番号
 	int m_nColor;				// 色ナンバー
 	bool m_bMove;				// 移動可否フラグ
@@ -79,7 +102,13 @@ private:
 	D3DXCOLOR	 m_color;		// 色
 	CCollision * m_pCollison;	// 当たり判定
 	CActRange *	 m_pActRange;	// 行動判定
+	D3DXVECTOR3  m_rotDest;		// 回転(目標の値)
 	D3DXVECTOR3  m_RespawnPos;	// リスポーン位置
+
+	// モーション用変数
+	static char m_achAnimPath[MOTION_MAX][64];   // アニメーションテキストのパス格納用
+	CMotion *m_apMotion[MOTION_MAX];  // アニメーションポインタ
+
 };
 
 #endif

@@ -3,84 +3,95 @@ float4x4 World :WORLD;
 float3   LightDirection;
 float4   DiffuseColor;
 float3   Eye;
-float    fTexV;
+float4   SpecularColor;
+float3   RimColor;
+float    RimPower;
 
-struct VS_OUTPUT {
-	float4 Posision :POSITION;      // 座標
-	float2 TexCoord :TEXCOORD;      // テクスチャ座標
-	float2 ToonTexCoord :TEXCOORD1;      // テクスチャ座標
-	float4 Color    :COLOR;         // カラー
+struct VS_IN
+{
+	float3 Position : POSITION;
+	float3 Normal   : NORMAL;
+	float4 Color    :COLOR;         // ディフューズ
+	float2 TexCoord :TEXCOORD;     // テクスチャUV
 };
 
-/* テクスチャのサンプラ― */
+struct VS_OUT
+{
+	float4 Position : POSITION;
+	float3 viewDir : TEXCOORD1;
+	float3 normalDir : TEXCOORD2;
+	float4 Color    :COLOR;         // ディフューズ
+	float2 TexCoord :TEXCOORD;     // テクスチャUV
+};
+
 texture Tex;
 sampler Sampler = sampler_state {
 	Texture = Tex;
 	MipFilter = LINEAR;
 	MinFilter = LINEAR;
 	MagFilter = LINEAR;
-
-	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = clamp;
-	AddressV = Wrap;
-	AddressW = Wrap;
-};
-
-/* テクスチャのサンプラ― */
-texture ToonTex;
-sampler ToonSampler = sampler_state {
-	Texture = ToonTex;
-	MipFilter = LINEAR;
-	MinFilter = LINEAR;
-	MagFilter = LINEAR;
-
-	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = clamp;
-	AddressV = Wrap;
-	AddressW = Wrap;
 };
 
 //////////////////////////////////
 /* 頂点シェーダ */
 //////////////////////////////////
-VS_OUTPUT VS(float3 Position : POSITION, float2 TexCoord : TEXCOORD, float4 Diffuse : COLOR, float3 Normal : NORMAL)
+VS_OUT VS(VS_IN In)
 {
-	VS_OUTPUT Out;
+	VS_OUT Out;
 
 	// ワールド座標
-	Out.Posision = mul(float4(Position, 1), WorldViewProj);
-
-	// テクスチャのUV
-	Out.TexCoord = TexCoord;
+	Out.Position = mul(float4(In.Position, 1), WorldViewProj);
 
 	// 法線
-	float3 N = mul(Normal, (float3x3)World);
-	// 正規化
-	N = normalize(N);
-	float3 H = normalize(normalize(mul(LightDirection, (float3x3)World)) + normalize(mul(Eye, (float3x3)World) - Out.Posision));
+	Out.normalDir = mul(In.Normal, (float3x3)World);
+	Out.normalDir = normalize(Out.normalDir);
 
-	// ライトの処理
-	float LightPower = dot(N, LightDirection);
+	// ライティング処理
+	float LightPower = dot(Out.normalDir, LightDirection);
 	LightPower = max(0, LightPower);
-
-	// トゥーンシェーダ―UV
-	Out.ToonTexCoord = float2(LightPower, 0.5f);
-	// カラーの設定
-	Out.Color = DiffuseColor;
 	
+	// カラーの設定
+	Out.Color = DiffuseColor*LightPower;
+	Out.Color.a = 1.0f;
+
+	Out.viewDir = normalize(Eye - mul(World, In.Position).xyz);
+	
+	// UV
+	Out.TexCoord = In.TexCoord;
+
 	return Out;
 }
 
 //////////////////////////////////
 /* ピクセルシェーダ */
 //////////////////////////////////
-float4 PS(VS_OUTPUT In) :COLOR
+float4 PS(VS_OUT In) :COLOR
 {
-	float2 TexCoord = In.TexCoord;
-	TexCoord.y += fTexV;
-	float4 fOut = tex2D(Sampler, TexCoord) * tex2D(ToonSampler, In.ToonTexCoord) * In.Color;
-	fOut.a = 1.0f;
-	return fOut;
+	float4 col = In.Color;
+
+	// リム
+	float rim = 1.0f - abs(dot(In.viewDir, In.normalDir));
+	float3 emission = RimColor * pow(rim, RimPower) * RimPower;
+	col.rgb += emission;
+	col = float4(col.rgb, DiffuseColor.a);
+
+	return col;
+}
+
+//////////////////////////////////
+/* テクスチャピクセルシェーダ */
+//////////////////////////////////
+float4 PS_TEX(VS_OUT In) :COLOR
+{
+	float4 col = tex2D(Sampler, In.TexCoord);
+
+	// リム
+	float rim = 1.0f - abs(dot(In.viewDir, In.normalDir));
+	float3 emission = RimColor * pow(rim, RimPower) * RimPower;
+	col.rgb+= emission;
+	col = float4(col.rgb, DiffuseColor.a);
+
+	return col;
 }
 
 technique Shader
@@ -89,5 +100,11 @@ technique Shader
 	{
 		VertexShader = compile vs_3_0 VS();
 		PixelShader = compile ps_3_0 PS();
+	}
+
+	pass P0
+	{
+		VertexShader = compile vs_3_0 VS();
+		PixelShader = compile ps_3_0 PS_TEX();
 	}
 }
