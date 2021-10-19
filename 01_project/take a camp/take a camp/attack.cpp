@@ -183,7 +183,7 @@ void CAttackBased::Attack(CAttackManager::ATTACK_RANGE_TYPE AttackType)
 			CreatePos.y = 1 * AttackPos.y;
 			CreatePos.z = ((-sinf(AttackRot.y + D3DXToRadian(90.0f))*AttackPos.x) + (cosf(AttackRot.y + D3DXToRadian(90.0f))*AttackPos.z));
 			//“–‚½‚è”»’è¶¬
-			CBullet::Create(CreatePos + m_pPlayer->GetPos());
+			CBullet::Create(CreatePos + m_pPlayer->GetPos(), D3DXVECTOR3(0.0f,0.0f,0.0f), m_pPlayer->GetPlayerNumber());
 		}
 	}
 }

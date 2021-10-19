@@ -90,7 +90,7 @@ void CAttack1::AttackCreate(void)
 		{
 			//攻撃処理
 			Attack(m_Type);
-
+			//タイプが一定になったら
 			if (m_Type == CAttackManager::ATTACK_RANGE_HIT_4)
 			{
 				//フラグの初期化
