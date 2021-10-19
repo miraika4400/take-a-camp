@@ -145,6 +145,14 @@ void CGame::Update(void)
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F2))
+	{
+		CManager::SetCamera(CTpsCamera::Create());
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F3))
+	{
+		CManager::SetCamera(CCamera::Create());
+	}
 
 	CColorTile::CountColorTile();
 	CDebugLog::Init();

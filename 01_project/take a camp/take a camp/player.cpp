@@ -43,7 +43,7 @@
 #define ROT_SPEED 0.3f				// 回転速度
 #define ROT_FACING_01 180			// 回転の基準
 #define ROT_FACING_02 360			// 回転向き
-#define RIM_POWER     1.0f          // リムライトの強さ
+#define RIM_POWER     0.5f          // リムライトの強さ
 
 //*****************************
 // 静的メンバ変数宣言
@@ -322,8 +322,8 @@ void CPlayer::Death(void)
 	m_pActRange->SetDeath(true);
 	//透明にする
 	m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
-
-
+	//位置セット
+	SetPos(m_RespawnPos);
 }
 
 //******************************
