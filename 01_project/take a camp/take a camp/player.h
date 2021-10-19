@@ -20,6 +20,7 @@
 //*****************************
 class CCollision;
 class CActRange;
+class CAttackBased;
 //*****************************
 // クラス定義
 //*****************************
@@ -71,6 +72,7 @@ private:
 	// メンバ変数
 	static int m_anControllKey[5][KEY_MAX];
 
+	CAttackBased* m_pAttack;	// 攻撃用クラス
 	int m_nPlayerNumber;		// プレイヤー番号
 	int m_nColor;				// 色ナンバー
 	bool m_bMove;				// 移動可否フラグ

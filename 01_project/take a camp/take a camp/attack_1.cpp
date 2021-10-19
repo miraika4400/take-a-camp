@@ -9,12 +9,22 @@
 // ヘッダファイルのインクルード
 //=============================================================================
 #include "attack_1.h"
+#include "tile.h"
+#include "player.h"
+//=============================================================================
+// マクロ定義
+//=============================================================================
+#define ATTACK_COUNT_1 (60*0)
+#define ATTACK_COUNT_2 (60*0.4f)
+#define ATTACK_COUNT_3 (60*0.7f)
+#define ATTACK_COUNT_4 (60*1)
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
 CAttack1::CAttack1()
 {
+	m_nAttackCount = 0;
 }
 
 //=============================================================================
@@ -27,7 +37,7 @@ CAttack1::~CAttack1()
 //=============================================================================
 // 生成処理
 //=============================================================================
-CAttack1 * CAttack1::Create(D3DXVECTOR3 pos)
+CAttack1 * CAttack1::Create(CPlayer* pPlayer)
 {
 	//メモリ確保
 	CAttack1* pAttack1 = NULL;
@@ -35,13 +45,13 @@ CAttack1 * CAttack1::Create(D3DXVECTOR3 pos)
 
 	if (pAttack1 != NULL)
 	{
-
-		pAttack1->SetPos(pos);	//位置設定
-		pAttack1->Init();
+		pAttack1->SetPlayer(pPlayer);	//プレイヤークラス取得
+		pAttack1->SetRot(pPlayer->GetRot());	//向き設定
+		pAttack1->SetPos(pPlayer->GetPos());	//位置設定
+		pAttack1->SetAttackType(CAttackManager::ATTACK_TYPE_1);	//タイプセット
+		pAttack1->Init();		//初期化処理
 	}
-
-
-	return nullptr;
+	return pAttack1;
 }
 
 //=============================================================================
@@ -49,14 +59,8 @@ CAttack1 * CAttack1::Create(D3DXVECTOR3 pos)
 //=============================================================================
 HRESULT CAttack1::Init(void)
 {
-	return E_NOTIMPL;
-}
-
-//=============================================================================
-// 終了関数
-//=============================================================================
-void CAttack1::Uninit(void)
-{
+	CAttackBased::Init();
+	return S_OK;
 }
 
 //=============================================================================
@@ -64,11 +68,44 @@ void CAttack1::Uninit(void)
 //=============================================================================
 void CAttack1::Update(void)
 {
+	AttackCreate();
 }
 
 //=============================================================================
-// 描画関数
+// 攻撃生成関数
 //=============================================================================
-void CAttack1::Draw(void)
+void CAttack1::AttackCreate(void)
 {
+	//攻撃フラグが立っているか
+	if (GetAttackFlag())
+	{
+		//カウントアップ
+		m_nAttackCount++;
+
+		//カウントが一定になったら
+		if (m_nAttackCount >= ATTACK_COUNT_4)
+		{
+			//攻撃処理
+			Attack(CAttackManager::ATTACK_RANGE_HIT_4);
+			//フラグの初期化
+			SetAttackFlag(false);
+			//カウント初期化
+			m_nAttackCount = 0;
+		}
+		else if (m_nAttackCount >= ATTACK_COUNT_3)
+		{
+			//攻撃処理
+			Attack(CAttackManager::ATTACK_RANGE_HIT_3);
+		}
+		else if (m_nAttackCount >= ATTACK_COUNT_2)
+		{
+			//攻撃処理
+			Attack(CAttackManager::ATTACK_RANGE_HIT_2);
+		}
+		else if (m_nAttackCount >= ATTACK_COUNT_1)
+		{
+			//攻撃処理
+			Attack(CAttackManager::ATTACK_RANGE_HIT_1);
+		}			
+	}
 }
