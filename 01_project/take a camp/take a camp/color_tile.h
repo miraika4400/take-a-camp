@@ -59,7 +59,6 @@ private:
 
 	// メンバ変数
 	static int m_anTileNum[MAX_TILE_COLOR_NUM][COLOR_STEP_NUM + 1];
-	CCollision * m_pCollison; // 当たり判定
 	CScene3d *m_pFrame;        // 枠
 	int m_nPrevNum;           // 今塗られているカラーの番号*デフォルトは-1
 	int m_nStep;              // 今の塗段階

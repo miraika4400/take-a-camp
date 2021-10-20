@@ -41,6 +41,7 @@ public:
 
 	void CollisionPlayer(void);	// “–‚½‚è”»’è
 
+	CCollision* GetCollision(void) { return m_pCollision; }
 private:
 	//=============================================================================
 	// ƒƒ“ƒo•Ï”éŒ¾

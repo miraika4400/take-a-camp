@@ -274,23 +274,6 @@ void CPlayer::Update(void)
 		{
 			m_pAttack->AttackSwitch();
 		}
-		/*if (pKey->GetKeyPress(DIK_NUMPAD1))
-		{
-			m_nColor = 0;
-		}
-		if (pKey->GetKeyPress(DIK_NUMPAD2))
-		{
-			m_nColor = 1;
-		}
-		if (pKey->GetKeyPress(DIK_NUMPAD3))
-		{
-			m_nColor = 2;
-		}
-		if (pKey->GetKeyPress(DIK_NUMPAD4))
-		{
-			m_nColor = 3;
-		}
-		}*/
 	}
 
 #endif // _DEBUG
@@ -420,16 +403,18 @@ void CPlayer::Bullet(void)
 	// 座標の取得
 	D3DXVECTOR3 pos = GetPos();
 
-	// スペースボタンを押したら
+	// 攻撃ボタンを押したら
 	if (pKey->GetKeyTrigger(m_anControllKey[m_nPlayerNumber][KEY_BULLET]))
 	{
-		// 方向指定
-		D3DXVECTOR3 bulletMove;
-		bulletMove.x = cosf(GetRot().y)*-BULLET_MOVE;
-		bulletMove.y = 0.0f;
-		bulletMove.z = sinf(GetRot().y)*BULLET_MOVE;
-		// 弾の生成
-		CBullet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), bulletMove, m_nPlayerNumber);
+		//// 方向指定
+		//D3DXVECTOR3 bulletMove;
+		//bulletMove.x = cosf(GetRot().y)*-BULLET_MOVE;
+		//bulletMove.y = 0.0f;
+		//bulletMove.z = sinf(GetRot().y)*BULLET_MOVE;
+		//// 弾の生成
+		//CBullet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), bulletMove, m_nPlayerNumber);
+
+		m_pAttack->SetAttackFlag(true);
 	}
 
 	//位置設定
