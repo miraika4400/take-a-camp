@@ -29,6 +29,6 @@ public:
 private:
 	void	AttackCreate(void);	//攻撃生成処理
 	int		m_nAttackCount;		//攻撃までのカウント
-	CAttackManager::ATTACK_RANGE_TYPE m_Type;
+	CAttackManager::ATTACK_RANGE_TYPE m_Type;	//攻撃の間隔用のタイプ
 };
 #endif

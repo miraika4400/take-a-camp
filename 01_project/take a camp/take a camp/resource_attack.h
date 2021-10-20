@@ -17,7 +17,7 @@
 //=============================================================================
 #define MAX_ATTACK_SIZE_X	(10)	//最大ブロック数
 #define MAX_ATTACK_SIZE_Y	(10)	//最大ステージサイズ
-
+#define MAX_ATTACK_LEVEL	(3)
 //=============================================================================
 // クラス定義
 //=============================================================================
@@ -74,8 +74,8 @@ public:
 	~CAttackManager();
 	static CAttackManager * Create(void);	// クラス生成
 	static void Release(void);				// クラス破棄
-	static ATTACK_RANGE_DATA GetAttackData(ATTACK_TYPE Attack);
-	static ATTACK_SQUARE_DATA GetAttack(ATTACK_TYPE AttackType);
+	static ATTACK_RANGE_DATA GetAttackData(ATTACK_TYPE Attack,int nLevel);
+	static ATTACK_SQUARE_DATA GetAttack(ATTACK_TYPE AttackType, int nLevel);
 
 private:
 	void	Load(void);		//攻撃範囲読み込み
@@ -83,8 +83,8 @@ private:
 
 	static char*			m_pFileName[ATTACK_TYPE_MAX];		// ファイルネーム
 	static CAttackManager*	m_pAttackBasis;						// 攻撃範囲クラスのポインタ
-	ATTACK_RANGE_DATA		m_AttackData[ATTACK_TYPE_MAX];		// 攻撃の情報
-	ATTACK_SQUARE_DATA		m_AttackSwuare[ATTACK_TYPE_MAX];	// 攻撃マスの情報
+	ATTACK_RANGE_DATA		m_AttackData[ATTACK_TYPE_MAX][MAX_ATTACK_LEVEL];		// 攻撃の情報
+	ATTACK_SQUARE_DATA		m_AttackSwuare[ATTACK_TYPE_MAX][MAX_ATTACK_LEVEL];	// 攻撃マスの情報
 
 };
 #endif

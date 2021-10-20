@@ -272,7 +272,7 @@ void CPlayer::Update(void)
 		}
 		if (pKey->GetKeyPress(DIK_2))
 		{
-			m_pAttack->SetAttackFlag(true);
+			m_pAttack->AttackSwitch();
 		}
 	}
 
