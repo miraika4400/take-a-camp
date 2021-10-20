@@ -40,7 +40,7 @@ CAttackBased::~CAttackBased()
 HRESULT CAttackBased::Init(void)
 {
 	//攻撃タイプセット
-	m_AttackSquare = CAttackManager::GetAttack(m_nAttackType);
+	m_AttackSquare = CAttackManager::GetAttack(m_nAttackType,0);
 	return S_OK;
 }
 
