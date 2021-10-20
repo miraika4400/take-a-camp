@@ -58,7 +58,7 @@ public:
 	ColorData GetColorDataByPlayerNumber(int nPlayerNum); // プレイヤーが使っているカラーデータの取得
 	D3DXCOLOR GetStepColor(int nIndex, int nStep) { return m_aColorData[nIndex].aCol[nStep]; }
 	D3DXCOLOR GetIconColor(int nIndex) { return m_aColorData[nIndex].iconColor; }
-	int GetColorNum(void) { return m_aColorData.size(); }
+	int GetColorNum(void) { return (int)m_aColorData.size(); }
 	void SetUsePlayerNum(int nIndex, int nPlayerNum) { m_aColorData[nIndex].nUsePlayerNum = nPlayerNum; }
 	int GetUsePlayerNum(int nIndex) { return m_aColorData[nIndex].nUsePlayerNum; }
 

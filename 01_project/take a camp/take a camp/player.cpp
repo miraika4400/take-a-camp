@@ -85,6 +85,9 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_MoveCount = 0;
 	m_pAttack = NULL;
 	memset(&m_apMotion, 0, sizeof(m_apMotion));
+	m_ItemState = ITEM_STATE_NONE;
+	m_nMoveframe = 0;				// 移動速度
+	m_nDashCnt = 1;		//速度アップカウント
 }
 
 //******************************
@@ -200,6 +203,11 @@ HRESULT CPlayer::Init(void)
 
 	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);
 
+	// アイテムステート
+	m_ItemState = ITEM_STATE_NONE;
+
+	m_nMoveframe = MOVE_FRAME;				// 移動速度
+	m_nDashCnt = 1;		//速度アップカウント
 	return S_OK;
 }
 
@@ -273,7 +281,7 @@ void CPlayer::Update(void)
 		}
 		if (pKey->GetKeyPress(DIK_2))
 		{
-			m_pAttack->SetAttackFlag(true);
+			m_pAttack->AttackSwitch();
 		}
 	}
 
@@ -389,7 +397,7 @@ void CPlayer::Move(void)
 		D3DXVECTOR3 pos = GetPos();
 
 		//移動計算
-		pos += (m_Move - pos) / (float)(MOVE_FRAME - m_MoveCount);
+		pos += (m_Move - pos) / (float)(m_nMoveframe - m_MoveCount);
 
 		//位置設定
 		SetPos(pos);
@@ -397,13 +405,44 @@ void CPlayer::Move(void)
 		//カウントアップ
 		m_MoveCount++;
 
-		//カウントが一定に達する
-		if (m_MoveCount >= MOVE_FRAME)
+		////カウントが一定に達する
+		//if (m_MoveCount >= MOVE_FRAME)
+		//{
+		//	//カウント初期化
+		//	m_MoveCount = 0;
+		//	//移動できるように
+		//	m_bMove = true;
+		//}
+
+		switch (m_ItemState)
 		{
-			//カウント初期化
-			m_MoveCount = 0;
-			//移動できるように
-			m_bMove = true;
+		case ITEM_STATE_NONE:
+
+			//カウントが一定に達する
+			if (m_MoveCount >= m_nMoveframe)
+			{
+				//カウント初期化
+				m_MoveCount = 0;
+				//移動できるように
+				m_bMove = true;
+			}
+			break;
+		case ITEM_STATE_DASH:
+			//カウントが一定に達する
+			if (m_MoveCount >= m_nMoveframe / 2)
+			{
+				//ダッシュタイムをカウント
+				m_nDashCnt++;
+				//カウント初期化
+				m_MoveCount = 0;
+				//移動できるように
+				m_bMove = true;
+			}
+			if (m_nDashCnt % 15 == 0)
+			{
+				m_ItemState = ITEM_STATE_NONE;
+			}
+			break;
 		}
 	}
 }//******************************
