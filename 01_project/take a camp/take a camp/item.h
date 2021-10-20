@@ -55,9 +55,11 @@ private:
 	CPlayer *m_pPlayer;		//プレイヤーのポインタ
 
 	int m_nPlayerNum;			//プレイヤーナンバー
+	int m_nItemCnt;			//取得後のタイマー
 
 	bool m_bUp;					//上限判定
 	bool m_bHitOld;				//前フレームのヒット判定
+	bool m_bGet;					//取得フラグ
 	bool m_bDeath;				//死亡フラグ
 };
 

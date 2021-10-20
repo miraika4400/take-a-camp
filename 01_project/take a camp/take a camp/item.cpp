@@ -193,8 +193,8 @@ void CItem::CollisionItem(void)
 			{
 				if (!m_bHitOld)
 				{
-					// アイテムの死亡フラグ
 					m_bDeath = true;
+					pPlayer->SetItemState(CPlayer::ITEM_STATE_DASH);
 				}
 				return;
 			}
