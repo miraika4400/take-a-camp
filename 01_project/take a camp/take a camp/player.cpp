@@ -272,7 +272,7 @@ void CPlayer::Update(void)
 		}
 		if (pKey->GetKeyPress(DIK_2))
 		{
-			m_pAttack->SetAttackFlag(true);
+			m_pAttack->AttackSwitch();
 		}
 		/*if (pKey->GetKeyPress(DIK_NUMPAD1))
 		{
@@ -416,9 +416,6 @@ void CPlayer::Move(void)
 void CPlayer::Bullet(void)
 {
 	CInputKeyboard * pKey = CManager::GetKeyboard();
-
-	// プレイヤー情報の取得
-	CPlayer *pPlayer;
 
 	// 座標の取得
 	D3DXVECTOR3 pos = GetPos();
