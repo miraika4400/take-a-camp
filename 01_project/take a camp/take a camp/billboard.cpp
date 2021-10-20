@@ -123,6 +123,8 @@ void CBillboard::Uninit(void)
 		m_pVtxBuff->Release();
 		m_pVtxBuff = NULL;
 	}
+
+	Release();
 }
 
 //===================================

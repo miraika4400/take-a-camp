@@ -28,7 +28,8 @@
 #define TILE_POS_Y -TILE_SIZE_Y/2
 #define POS_Y_RATE_UP 0.03f
 #define POS_Y_RATE_DOWN 0.03f
-#define HIT_POS_Y TILE_POS_Y - 3.0f
+#define PLAYER_HIT_POS_Y TILE_POS_Y - 3.0f
+#define BULLET_HIT_POS_Y TILE_POS_Y + 6.0f
 
 //*****************************
 // 静的メンバ変数宣言
@@ -40,12 +41,11 @@ int CColorTile::m_anTileNum[MAX_TILE_COLOR_NUM][COLOR_STEP_NUM + 1] = {};
 //******************************
 CColorTile::CColorTile()
 {
-	m_pCollison = NULL;
 	m_pFrame = NULL;
 	m_nPrevNum = -1;                             // 今塗られているカラーの番号*デフォルトは-1
 	m_nStep = 0;                                 // 今の塗段階
 	m_nCntStep = 0;                              // 再度塗り可能カウント
-	m_nLastHitPlayerNum = -1;
+	m_nLastHitPlayerNum = -1;                    // 現在の塗られている番号
 	m_bHitOld = false;                           // 一個前のフレームで当たっていたか保存するよう 
 }
 
@@ -145,17 +145,6 @@ void CColorTile::Update(void)
 	}
 	SetPos(pos);
 
-	if (m_pCollison == NULL)
-	{
-		m_pCollison = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z), TILE_ONE_SIDE / 2);
-	}
-	else
-	{
-		if (m_pCollison->GetPos() != D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z))
-		{
-			m_pCollison->SetPos(D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z));
-		}
-	}
 
 	// プレイヤーとの当たり判定
 	CollisionPlayer();
@@ -167,6 +156,9 @@ void CColorTile::Update(void)
 	{
 		m_nCntStep--;
 	}
+
+	// タイルのアップデート
+	CTile::Update();
 
 #ifdef _DEBUG
 	// デバッグキー
@@ -205,28 +197,29 @@ void CColorTile::CollisionPlayer(void)
 
 	while (pPlayer != NULL)
 	{
-		if (CCollision::CollisionSphere(m_pCollison, pPlayer->GetCollision()))
+		if (CCollision::CollisionSphere(GetCollision(), pPlayer->GetCollision()))
 		{
 			if (!m_bHitOld)
 			{
 				Peint(pPlayer->GetColorNumber(), pPlayer->GetPlayerNumber());
 				
 				D3DXVECTOR3 pos = GetPos();
-				pos.y = HIT_POS_Y;
+				pos.y = PLAYER_HIT_POS_Y;
 				SetPos(pos);
 
 			}
 
-			// ヒットフラグの保存*当たってない
+			// ヒットフラグの保存*当たってる
 			m_bHitOld = true;
 			return;
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
 
-	// ヒットフラグの保存*当たってる
+	// ヒットフラグの保存*当たってない
 	m_bHitOld = false;
 }
+
 
 //******************************
 // アイコンの管理

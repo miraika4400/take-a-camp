@@ -103,24 +103,6 @@ void CNumberArray::Update(void)
 	// キーボードの取得
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 
-	/*if (pKey->GetKeyPress(DIK_UP))
-	{
-		m_nNumber += 1;
-	}
-	if (pKey->GetKeyPress(DIK_DOWN))
-	{
-		m_nNumber -= 1;
-	}
-
-	if (m_nNumber < 0)
-	{
-		m_nNumber = 0;
-	}
-	if (m_nNumber > 99999)
-	{
-		m_nNumber = 99999;
-	}*/
-
 	m_nNumber = CColorTile::GetTileNum(m_nPlayerNum);
 
 	for (int nCount = 0; nCount < MAX_ARRAY_NUM; nCount++)
@@ -216,6 +198,7 @@ void CNumberArray::SetNumber(void)
 		if (m_apNumber[nIndex] == NULL)
 		{
 			m_apNumber[nIndex] = CBillboard::Create(D3DXVECTOR3(m_pos.x + fKerning, m_pos.y, m_pos.z), m_size);
+			m_apNumber[nIndex]->ReConnection();
 			m_apNumber[nIndex]->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_NUMBER));
 		}
 

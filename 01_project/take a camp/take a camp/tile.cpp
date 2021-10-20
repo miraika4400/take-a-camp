@@ -14,7 +14,8 @@
 #include "resource_shader.h"
 #include "camera_base.h"
 #include "light.h"
-
+#include "collision.h"
+#include "bullet.h"
 #ifdef _DEBUG
 #include "keyboard.h"
 #endif
@@ -34,6 +35,7 @@
 CTile::CTile() :CModel(OBJTYPE_TILE)
 {                       
 	m_color = TILE_DEFAULT_COLOR;
+	m_pCollison = NULL;
 }
 
 //******************************
@@ -97,6 +99,20 @@ void CTile::Uninit(void)
 //******************************
 void CTile::Update(void)
 {
+	if (m_pCollison == NULL)
+	{
+		m_pCollison = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z), TILE_ONE_SIDE / 2);
+	}
+	else
+	{
+		if (m_pCollison->GetPos() != D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z))
+		{
+			m_pCollison->SetPos(D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z));
+		}
+	}
+
+	// 弾との当たり判定
+	CollisionBullet();
 }
 
 //******************************
@@ -211,9 +227,27 @@ void CTile::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pMod
 
 		// 視点位置
 		D3DXVECTOR3 eye = CManager::GetCamera()->GetPos();
-		pEffect->SetFloatArray("Eye", (float*)&D3DXVECTOR3(eye.x, eye.y, -eye.z), 3);
+		pEffect->SetFloatArray("Eye", (float*)&D3DXVECTOR3(eye.x, eye.y, eye.z), 3);
 
 		// スペキュラの情報を送る
 		pEffect->SetFloatArray("SpecularColor", (float*)&D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), 4);
+	}
+}
+
+//******************************
+// 弾との当たり判定
+//******************************
+void CTile::CollisionBullet(void)
+{
+	CBullet * pBullet = (CBullet*)GetTop(OBJTYPE_BULLET);
+
+	while (pBullet != NULL)
+	{
+		if (CCollision::CollisionSphere(GetCollision(), pBullet->GetCollision()))
+		{
+
+			return;
+		}
+		pBullet = (CBullet*)pBullet->GetNext();
 	}
 }

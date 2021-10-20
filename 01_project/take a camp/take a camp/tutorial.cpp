@@ -103,8 +103,8 @@ void CTutorial::Update(void)
 	m_pPolygon->Update();
 
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) ||
-		CManager::GetMouse()->GetMouseTrigger(0) ||
-		CManager::GetJoypad()->GetJoystickTrigger(3, 0))
+		CManager::GetMouse()->GetMouseTrigger(0) /*||
+		CManager::GetJoypad()->GetJoystickTrigger(3, 0)*/)
 	{
 		m_nNumTutorial++;
 		if (m_nNumTutorial >= TUTORIAL_NUM)
@@ -116,8 +116,8 @@ void CTutorial::Update(void)
 			m_pPolygon->BindTexture(m_pTexture[m_nNumTutorial]);
 		}
 	}
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_BACKSPACE) ||
-		CManager::GetJoypad()->GetJoystickTrigger(2, 0))
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_BACKSPACE) /*||
+		CManager::GetJoypad()->GetJoystickTrigger(2, 0)*/)
 	{
 		m_nNumTutorial--;
 		if (m_nNumTutorial < 0)
