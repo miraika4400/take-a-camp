@@ -11,6 +11,7 @@
 #include "spawn_tile.h"
 #include "scene3d.h"
 #include "resource_texture.h"
+#include "bullet.h"
 
 //*****************************
 // マクロ定義
@@ -83,4 +84,12 @@ HRESULT CSpawnTile::Init(void)
 void CSpawnTile::Uninit(void)
 {
 	CTile::Uninit();
+}
+
+//******************************
+// 弾と当たったときのアクション
+//******************************
+void CSpawnTile::HitBulletAction(CBullet * pBullet)
+{
+	pBullet->Uninit();
 }

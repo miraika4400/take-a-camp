@@ -81,6 +81,7 @@ public:
 	bool GetButtonState(const WORD pad_state, const BUTTON_PUSH_STATE Push_Stateint, int nJoystickNum = 0);				// ボタンの押し込みの取得
 	bool GetTriggerState(const PAD_TRRIGER_STATE pad_state, const BUTTON_PUSH_STATE Push_State, int nJoystickNum = 0);	// LT、RTの押し込みの取得
 	int GetTriggerPushCondition(const PAD_TRRIGER_STATE pad_state, int nJoystickNum = 0);								// LT、RTの押し込み具合の取得
+	D3DXVECTOR2 GetStickState(const PAD_STICK_STATE Pad_Stick_State, int nJoystickNum = 0);								// スティックの取得
 
 	void EnableVibration(const float L_vib, const float R_vib, int nJoystickNum = 0);	// バイブレーションの開始
 	void DisableVibration(int nJoystickNum = 0);										// バイブレーションの終了
@@ -92,7 +93,6 @@ private:
 
 	// ゲッター
 	DWORD GetPadState(XINPUT_STATE& state, int nJoystickNum = 0);									// ジョイパッドの情報の取得
-	D3DXVECTOR2 GetStickState(const PAD_STICK_STATE Pad_Stick_State, int nJoystickNum = 0);			// スティックの取得
 	bool GetJoystickPress(const WORD wPad_State, const int nPad_Bottan, int nJoystickNum = 0);		// ボタンのプレス情報の取得
 	bool GetJoystickTrigger(const WORD wPad_State, const int nPad_Bottan, int nJoystickNum = 0);	// ボタンのトリガー情報の取得
 	bool GetJoystickRelease(const WORD wPad_State, const int nPad_Bottan, int nJoystickNum = 0);	// ボタンのリリース情報の取得

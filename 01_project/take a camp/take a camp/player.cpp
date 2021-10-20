@@ -46,6 +46,9 @@
 #define ROT_FACING_01 180			// 回転の基準
 #define ROT_FACING_02 360			// 回転向き
 #define RIM_POWER     0.5f          // リムライトの強さ
+#define DASH_FRAME      300
+#define DASH_MOVE_FRAME  MOVE_FRAME*0.8
+#define STICK_DECISION_RANGE (32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
 
 //*****************************
 // 静的メンバ変数宣言
@@ -84,6 +87,9 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_MoveCount = 0;
 	m_pAttack = NULL;
 	memset(&m_apMotion, 0, sizeof(m_apMotion));
+	m_ItemState = ITEM_STATE_NONE;
+	m_nMoveframe = 0;				// 移動速度
+	m_nDashCnt = 1;		//速度アップカウント
 }
 
 //******************************
@@ -199,6 +205,11 @@ HRESULT CPlayer::Init(void)
 
 	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);
 
+	// アイテムステート
+	m_ItemState = ITEM_STATE_NONE;
+
+	m_nMoveframe = MOVE_FRAME;				// 移動速度
+	m_nDashCnt = 1;		//速度アップカウント
 	return S_OK;
 }
 
@@ -330,10 +341,16 @@ void CPlayer::Move(void)
 {
 	if (m_bMove)
 	{
-		// キーボードの取得
+		// キーボードとジョイパッドの取得
 		CInputKeyboard * pKey = CManager::GetKeyboard();
+		CInputJoypad* pJoypad = CManager::GetJoypad();
 
-		if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_PROGRESS])
+		// スティックの座標
+		D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nPlayerNumber);
+
+		if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_PROGRESS])
+			|| (StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
 		{// 前進
 			m_Move.z -= MOVE_DIST;
@@ -342,7 +359,9 @@ void CPlayer::Move(void)
 
 			m_rotDest.y= D3DXToRadian(ROTDEST_PREVIOUS);
 		}
-		else if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RECESSION])
+		else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RECESSION])
+			|| (StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
 		{// 後退
 			m_Move.z += MOVE_DIST;
@@ -351,7 +370,9 @@ void CPlayer::Move(void)
 
 			m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
 		}
-		else if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_LEFT])
+		else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_LEFT])
+			|| (StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
 		{// 左
 			m_Move.x += MOVE_DIST;
@@ -360,7 +381,9 @@ void CPlayer::Move(void)
 
 			m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
 		}
-		else if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RIGHT])
+		else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RIGHT])
+			|| (StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
 		{// 右
 			m_Move.x -= MOVE_DIST;
@@ -376,7 +399,7 @@ void CPlayer::Move(void)
 		D3DXVECTOR3 pos = GetPos();
 
 		//移動計算
-		pos += (m_Move - pos) / (float)(MOVE_FRAME - m_MoveCount);
+		pos += (m_Move - pos) / (float)(m_nMoveframe - m_MoveCount);
 
 		//位置設定
 		SetPos(pos);
@@ -385,12 +408,50 @@ void CPlayer::Move(void)
 		m_MoveCount++;
 
 		//カウントが一定に達する
-		if (m_MoveCount >= MOVE_FRAME)
+		if (m_MoveCount >= m_nMoveframe)
 		{
 			//カウント初期化
 			m_MoveCount = 0;
 			//移動できるように
 			m_bMove = true;
+		}
+
+		switch (m_ItemState)
+		{
+		case ITEM_STATE_NONE:
+
+			//カウントが一定に達する
+			if (m_MoveCount >= m_nMoveframe)
+			{
+				//カウント初期化
+				m_MoveCount = 0;
+				//移動できるように
+				m_bMove = true;
+			}
+			break;
+		case ITEM_STATE_DASH:
+			//カウントが一定に達する
+			//if (m_MoveCount >= m_nMoveframe / 2)
+			//{
+			//	//ダッシュタイムをカウント
+			//	m_nDashCnt++;
+			//	//カウント初期化
+			//	m_MoveCount = 0;
+			//	//移動できるように
+			//	m_bMove = true;
+			//}
+
+			//ダッシュタイムをカウント
+			m_nDashCnt++;
+
+			m_nMoveframe = DASH_MOVE_FRAME;
+
+			if (m_nDashCnt % DASH_FRAME == 0)
+			{
+				m_nMoveframe = MOVE_FRAME;
+				m_ItemState = ITEM_STATE_NONE;
+			}
+			break;
 		}
 	}
 }//******************************
@@ -398,13 +459,16 @@ void CPlayer::Move(void)
 //******************************
 void CPlayer::Bullet(void)
 {
+	// キーボードとジョイパッドの取得
 	CInputKeyboard * pKey = CManager::GetKeyboard();
+	CInputJoypad* pJoypad = CManager::GetJoypad();
 
 	// 座標の取得
 	D3DXVECTOR3 pos = GetPos();
 
 	// 攻撃ボタンを押したら
-	if (pKey->GetKeyTrigger(m_anControllKey[m_nPlayerNumber][KEY_BULLET]))
+	if (pKey->GetKeyTrigger(m_anControllKey[m_nPlayerNumber][KEY_BULLET])
+		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_TRIGGER, m_nPlayerNumber))
 	{
 		//// 方向指定
 		//D3DXVECTOR3 bulletMove;
@@ -414,7 +478,7 @@ void CPlayer::Bullet(void)
 		//// 弾の生成
 		//CBullet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), bulletMove, m_nPlayerNumber);
 
-		m_pAttack->SetAttackFlag(true);
+		m_pAttack->AttackSwitch();
 	}
 
 	//位置設定

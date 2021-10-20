@@ -18,7 +18,7 @@
 //前方宣言
 //*****************************
 class CScene3d;
-
+class CBullet;
 //*****************************
 //マクロ定義
 //*****************************
@@ -40,6 +40,8 @@ public:
 	HRESULT Init(void);
 	void Uninit(void);
 private:
+	void HitBulletAction(CBullet*pBullet);
+
 	// メンバ変数
 	CScene3d *m_pCrossPolygon;        // マーク
 
