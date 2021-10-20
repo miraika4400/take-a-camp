@@ -116,14 +116,14 @@ void CMap::MapCreate(void)
 				{
 					CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, D3DXVECTOR3(0.0f,0.0f,0.0f), 0);
 					D3DXCOLOR tileCol = GET_COLORMANAGER->GetColorDataByPlayerNumber(0).iconColor;
-					CSpawnTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, tileCol);
+					CSpawnTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, TILE_POS_Y, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, tileCol);
 					break;
 				}
 				case CMapManager::BLOCK_TYPE_2P_START:	//2Pスタート位置
 				{
 					CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 1);
 					D3DXCOLOR tileCol = GET_COLORMANAGER->GetColorDataByPlayerNumber(1).iconColor;
-					CSpawnTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, tileCol);
+					CSpawnTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, TILE_POS_Y, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, tileCol);
 					break;
 				}
 				case CMapManager::BLOCK_TYPE_3P_START:	//3Pスタート位置
@@ -131,14 +131,14 @@ void CMap::MapCreate(void)
 			
 					CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 2);
 					D3DXCOLOR tileCol = GET_COLORMANAGER->GetColorDataByPlayerNumber(2).iconColor;
-					CSpawnTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, tileCol);
+					CSpawnTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, TILE_POS_Y, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, tileCol);
 					break;
 				}
 				case CMapManager::BLOCK_TYPE_4P_START:	//4Pスタート位置
 				{
 					CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 3);
 					D3DXCOLOR tileCol = GET_COLORMANAGER->GetColorDataByPlayerNumber(3).iconColor;
-					CSpawnTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, tileCol);
+					CSpawnTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, TILE_POS_Y, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, tileCol);
 					break;
 				}
 				case CMapManager::BLOCK_TYPE_BLOCK:	//仮置きタイル

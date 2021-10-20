@@ -414,7 +414,7 @@ void CPlayer::Bullet(void)
 		//// ’e‚Ì¶¬
 		//CBullet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), bulletMove, m_nPlayerNumber);
 
-		m_pAttack->SetAttackFlag(true);
+		m_pAttack->AttackSwitch();
 	}
 
 	//ˆÊ’uİ’è

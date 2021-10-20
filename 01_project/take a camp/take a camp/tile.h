@@ -20,7 +20,7 @@
 //*****************************
 class CCollision;
 class CScene3d;
-
+class CBullet;
 //*****************************
 //マクロ定義
 //*****************************
@@ -29,6 +29,7 @@ class CScene3d;
 #define TILE_SIZE D3DXVECTOR3(TILE_ONE_SIDE,TILE_SIZE_Y,TILE_ONE_SIDE)  // タイルのサイズ
 #define MAX_TILE_COLOR_NUM 16
 #define TILE_DEFAULT_COLOR D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
+#define TILE_POS_Y -TILE_SIZE_Y/2
 
 //*****************************
 // クラス定義
@@ -49,19 +50,30 @@ public:
 	virtual void Update(void);
 	virtual void Draw(void);
 
-	// 色のセット/取得
+	//セット・取得
+	// 色
 	void SetColor(D3DXCOLOR col) { m_color = col; }
 	D3DXCOLOR GetColor(void) { return m_color; }
-
+	// Y座標の目標値
+	void SetDistPosY(float fDistY) { m_fDistPosY = fDistY; }
+	float GetDistPosY(void) { return m_fDistPosY; }
+	// Y座標の係数
+	void SetDistPosYRate(float fDistYRate) { m_fDistPosYRate = fDistYRate; }
+	float GetDistPosYRate(void) { return m_fDistPosYRate; }
+	// コリジョンの取得
 	CCollision*GetCollision(void) { return m_pCollison; }
+
 private:
 	void DrawModel(void);
-	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData);// シェーダに値を送る
-	void CollisionBullet(void);    // 弾との当たり判定
+	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData); // シェーダに値を送る
+	bool CollisionBullet(void);                                                       // 弾との当たり判定
+	virtual void HitBulletAction(CBullet * pBullet);                                               // 弾と当たったときのアクション
 
 	// メンバ変数
 	D3DXCOLOR m_color;        // カラー
 	CCollision * m_pCollison; // 当たり判定
+	float m_fDistPosY;        // 座標Yの目標値
+	float m_fDistPosYRate;    // 座標Yの変更時の係数
 };
 
 #endif

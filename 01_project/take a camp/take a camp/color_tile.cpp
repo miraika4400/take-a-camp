@@ -25,11 +25,7 @@
 //*****************************
 #define TILE_DEFAULT_COLOR D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 #define PEINT_COUNT 60  // 再度塗れるようになるまでのカウント
-#define TILE_POS_Y -TILE_SIZE_Y/2
-#define POS_Y_RATE_UP 0.03f
-#define POS_Y_RATE_DOWN 0.03f
 #define PLAYER_HIT_POS_Y TILE_POS_Y - 3.0f
-#define BULLET_HIT_POS_Y TILE_POS_Y + 6.0f
 
 //*****************************
 // 静的メンバ変数宣言
@@ -133,18 +129,9 @@ void CColorTile::Uninit(void)
 //******************************
 void CColorTile::Update(void)
 {
-	// 高さの調整
-	D3DXVECTOR3 pos = GetPos();
-	if (TILE_POS_Y < pos.y)
-	{
-		pos.y += (TILE_POS_Y - pos.y)*POS_Y_RATE_UP;
-	}
-	else
-	{
-		pos.y += (TILE_POS_Y - pos.y)*POS_Y_RATE_DOWN;
-	}
-	SetPos(pos);
 
+	// タイルのアップデート
+	CTile::Update();
 
 	// プレイヤーとの当たり判定
 	CollisionPlayer();
@@ -157,8 +144,6 @@ void CColorTile::Update(void)
 		m_nCntStep--;
 	}
 
-	// タイルのアップデート
-	CTile::Update();
 
 #ifdef _DEBUG
 	// デバッグキー
