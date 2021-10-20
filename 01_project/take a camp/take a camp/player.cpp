@@ -48,6 +48,8 @@
 #define RIM_POWER     0.5f          // リムライトの強さ
 #define DASH_FRAME      300
 #define DASH_MOVE_FRAME  MOVE_FRAME*0.8
+#define STICK_DECISION_RANGE (32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
+
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
@@ -339,10 +341,16 @@ void CPlayer::Move(void)
 {
 	if (m_bMove)
 	{
-		// キーボードの取得
+		// キーボードとジョイパッドの取得
 		CInputKeyboard * pKey = CManager::GetKeyboard();
+		CInputJoypad* pJoypad = CManager::GetJoypad();
 
-		if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_PROGRESS])
+		// スティックの座標
+		D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nPlayerNumber);
+
+		if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_PROGRESS])
+			|| (StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
 		{// 前進
 			m_Move.z -= MOVE_DIST;
@@ -351,7 +359,9 @@ void CPlayer::Move(void)
 
 			m_rotDest.y= D3DXToRadian(ROTDEST_PREVIOUS);
 		}
-		else if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RECESSION])
+		else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RECESSION])
+			|| (StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
 		{// 後退
 			m_Move.z += MOVE_DIST;
@@ -360,7 +370,9 @@ void CPlayer::Move(void)
 
 			m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
 		}
-		else if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_LEFT])
+		else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_LEFT])
+			|| (StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
 		{// 左
 			m_Move.x += MOVE_DIST;
@@ -369,7 +381,9 @@ void CPlayer::Move(void)
 
 			m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
 		}
-		else if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RIGHT])
+		else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RIGHT])
+			|| (StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
 		{// 右
 			m_Move.x -= MOVE_DIST;
@@ -445,13 +459,16 @@ void CPlayer::Move(void)
 //******************************
 void CPlayer::Bullet(void)
 {
+	// キーボードとジョイパッドの取得
 	CInputKeyboard * pKey = CManager::GetKeyboard();
+	CInputJoypad* pJoypad = CManager::GetJoypad();
 
 	// 座標の取得
 	D3DXVECTOR3 pos = GetPos();
 
 	// 攻撃ボタンを押したら
-	if (pKey->GetKeyTrigger(m_anControllKey[m_nPlayerNumber][KEY_BULLET]))
+	if (pKey->GetKeyTrigger(m_anControllKey[m_nPlayerNumber][KEY_BULLET])
+		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_TRIGGER, m_nPlayerNumber))
 	{
 		//// 方向指定
 		//D3DXVECTOR3 bulletMove;
