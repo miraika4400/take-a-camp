@@ -56,9 +56,14 @@ void CInputJoypad::Uninit(void)
 //====================================================
 void CInputJoypad::Update(void)
 {
+	// コントローラの情報
 	XINPUT_STATE state;
+
+	// 更新する前に初期化
 	memset(m_aJoyStateTrigger, 0, sizeof(m_aJoyStateTrigger));
 	memset(m_aJoyStateRelease, 0, sizeof(m_aJoyStateRelease));
+	memset(m_aJoyStateTriggerLTRT, 0, sizeof(m_aJoyStateTriggerLTRT));
+	memset(m_aJoyStateReleaseLTRT, 0, sizeof(m_aJoyStateReleaseLTRT));
 
 	for (int nCountJoystick = 0; nCountJoystick < MAX_JOYSTICK_NUM; nCountJoystick++)
 	{
@@ -93,11 +98,11 @@ void CInputJoypad::Update(void)
 				switch ((PAD_TRRIGER_STATE)nCntTrigger)
 				{
 				case PAD_LT: // 左トリガー
-					UpdateTriggerState(state.Gamepad.bLeftTrigger, nCountJoystick, nCntTrigger);
+					UpdateTriggerState(state.Gamepad.bLeftTrigger, nCntTrigger, nCountJoystick);
 					break;
 
 				case PAD_RT: // 右トリガー
-					UpdateTriggerState(state.Gamepad.bRightTrigger, nCountJoystick, nCntTrigger);
+					UpdateTriggerState(state.Gamepad.bRightTrigger, nCntTrigger, nCountJoystick);
 					break;
 
 				default:
@@ -248,7 +253,7 @@ int CInputJoypad::Return_Button(const WORD Xinput_Gamepad)
 
 //====================================================
 // ボタンの取得
-// wButton_State:ボタンの値
+// wButton_State:どのボタンか
 // Push_State:押し込み方
 // nJoystickNum:コントローラの番号
 // 返り値:押されているかの判定
@@ -284,7 +289,7 @@ bool CInputJoypad::GetButtonState(const WORD wButton_State, const BUTTON_PUSH_ST
 
 //====================================================
 // LT、RTの押し込みの取得
-// Pad_Trigger_State:トリガーの番号
+// Pad_Trigger_State:LT、RTどっちか
 // Push_State:押し込み方
 // nJoystickNum:コントローラの番号
 // 返り値:押されているかの判定
@@ -322,7 +327,7 @@ bool CInputJoypad::GetTriggerState(const PAD_TRRIGER_STATE Pad_Trigger_State, co
 
 //====================================================
 // LT、RTの押し込み具合の取得
-// Pad_Trigger_State:トリガーの番号
+// Pad_Trigger_State:LT、RTどっちか
 // nJoystickNum:コントローラの番号
 // 返り値:トリガーの押し込み具合
 //====================================================
@@ -467,9 +472,6 @@ void CInputJoypad::DisableVibration(int nJoystickNum)
 //====================================================
 void CInputJoypad::UpdateTriggerState(const int nTriggerPush, const int nPadTrigger, int nJoystickNum)
 {
-	memset(m_aJoyStateTriggerLTRT, 0, sizeof(m_aJoyStateTriggerLTRT));
-	memset(m_aJoyStateReleaseLTRT, 0, sizeof(m_aJoyStateReleaseLTRT));
-
 	if (nTriggerPush > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 	{
 		//キートリガー

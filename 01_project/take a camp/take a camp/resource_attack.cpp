@@ -30,9 +30,9 @@ CAttackManager* CAttackManager::m_pAttackBasis = NULL;
 //=============================================================================
 CAttackManager::CAttackManager()
 {
-	memset(&m_AttackData, 0, sizeof(ATTACK_RANGE_DATA[ATTACK_TYPE_MAX]));
-	memset(&m_AttackSwuare,0,sizeof(ATTACK_SQUARE_DATA[ATTACK_TYPE_MAX]));
-	
+	memset(&m_AttackData, 0, sizeof(ATTACK_RANGE_DATA[ATTACK_TYPE_MAX][MAX_ATTACK_LEVEL]));
+	memset(&m_AttackSwuare, 0, sizeof(ATTACK_SQUARE_DATA[ATTACK_TYPE_MAX][MAX_ATTACK_LEVEL]));
+
 }
 
 //=============================================================================
@@ -58,13 +58,14 @@ void CAttackManager::Load(void)
 		int nFileText;
 		//列、行
 		int nCol, nRow;
-		//ブロック数
-		int nBlock;
+		//レベル
+		int nLveel = 0;
 		//初期化
 		pFile = NULL;
 		nCol = 1;
 		nRow = 0;
-		nBlock = 0;
+
+		//初期化
 		memset(cFileString, 0, sizeof(cFileString));
 
 		//ファイル読み込み
@@ -101,35 +102,55 @@ void CAttackManager::Load(void)
 				switch (atoi(cFileString))
 				{
 				case ATTACK_RANGE_NONE:
-					m_AttackData[nAttack].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_NONE;
+					m_AttackData[nAttack][nLveel].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_NONE;
 					break;
 				case ATTACK_RANGE_CENTER:
-					m_AttackData[nAttack].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_CENTER;
+					m_AttackData[nAttack][nLveel].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_CENTER;
 					break;
 				case ATTACK_RANGE_HIT_1:
-					m_AttackData[nAttack].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_HIT_1;
+					m_AttackData[nAttack][nLveel].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_HIT_1;
 					break;
 				case ATTACK_RANGE_HIT_2:
-					m_AttackData[nAttack].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_HIT_2;
+					m_AttackData[nAttack][nLveel].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_HIT_2;
 					break;
 				case ATTACK_RANGE_HIT_3:
-					m_AttackData[nAttack].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_HIT_3;
+					m_AttackData[nAttack][nLveel].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_HIT_3;
 					break;
 				case ATTACK_RANGE_HIT_4:
-					m_AttackData[nAttack].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_HIT_4;
+					m_AttackData[nAttack][nLveel].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_HIT_4;
 					break;
-
 				}
+				//攻撃タイプごとの速度
+				if (strcmp(cFileString, "AttackFrame") == 0)
+				{
+					fscanf_s(pFile, "Ⅰ:%d,Ⅱ:%d,Ⅲ:%d,Ⅳ:%d", 
+						&m_AttackData[nAttack][nLveel].nAttackFrame[0],
+						&m_AttackData[nAttack][nLveel].nAttackFrame[1],
+						&m_AttackData[nAttack][nLveel].nAttackFrame[2],
+						&m_AttackData[nAttack][nLveel].nAttackFrame[3]);
+				}
+
+				//LevelUpの文字を読み込んだか
+				if (strcmp(cFileString, "LevelUp") == 0)
+				{
+					//ブロック数を保存
+					m_AttackData[nAttack][nLveel].nAttackRangeY = nRow;
+					nRow = 0;
+					//レベルの段階を上げる
+					nLveel++;
+				}
+
 				//バッファの初期化
 				memset(cFileString, 0, sizeof(cFileString));
 				//列数を足す
 				nCol++;
 
+
 				//もし読み込んだ文字が改行だったら列数を初期化して行数を増やす
 				if (nFileText == '\n')
 				{
 					//行数保存
-					m_AttackData[nAttack].RangeData[nRow].nAttackRangeX = nCol;
+					m_AttackData[nAttack][nLveel].RangeData[nRow].nAttackRangeX = nCol;
 					//行数初期化
 					nCol = 1;
 					//列の進行
@@ -139,7 +160,7 @@ void CAttackManager::Load(void)
 			}
 
 		out:								//末尾ならここに跳ぶ
-			m_AttackData[nAttack].nAttackRangeY = nRow;	//ブロック数を保存
+			m_AttackData[nAttack][nLveel].nAttackRangeY = nRow;	//ブロック数を保存
 			fclose(pFile);					//ファイルを閉じる
 		}
 	}
@@ -153,74 +174,81 @@ void CAttackManager::PosCalc(void)
 {
 	for (int nAttack = 0; nAttack < ATTACK_TYPE_MAX; nAttack++)
 	{
-		//攻撃マス用変数
-		D3DXVECTOR3 RangePos[MAX_ATTACK_SIZE_Y*MAX_ATTACK_SIZE_X] = {};
-		//プレイヤーがいる中心マス用変数
-		D3DXVECTOR3 Center = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-
-		//マップデータがあるか
-		if (&m_AttackData[nAttack] != NULL)
+		for (int nLevel=0; nLevel<MAX_ATTACK_LEVEL; nLevel++)
 		{
-			// 位置取得
-			for (int nBlockY = 0; nBlockY < m_AttackData[nAttack].nAttackRangeY; nBlockY++)
+			//攻撃マス用変数
+			D3DXVECTOR3 RangePos[MAX_ATTACK_SIZE_Y*MAX_ATTACK_SIZE_X] = {};
+			//プレイヤーがいる中心マス用変数
+			D3DXVECTOR3 Center = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+			//マップデータがあるか
+			if (&m_AttackData[nAttack][nLevel] != NULL)
 			{
-				for (int nBlockX = 0; nBlockX < m_AttackData[nAttack].RangeData[nBlockY].nAttackRangeX; nBlockX++)
+				// 位置取得
+				for (int nBlockY = 0; nBlockY < m_AttackData[nAttack][nLevel].nAttackRangeY; nBlockY++)
 				{
-					//マス目のタイプ取得
-					switch (m_AttackData[nAttack].RangeData[nBlockY].nRangeType[nBlockX])
+					for (int nBlockX = 0; nBlockX < m_AttackData[nAttack][nLevel].RangeData[nBlockY].nAttackRangeX; nBlockX++)
 					{
-					case CAttackManager::ATTACK_RANGE_NONE:		//なし
-						break;
-					case CAttackManager::ATTACK_RANGE_CENTER:	//プレイヤーがいる中心ます
-						Center = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
-						break;
-					case CAttackManager::ATTACK_RANGE_HIT_1:	//攻撃範囲
-						//位置取得
-						RangePos[m_AttackSwuare[nAttack].m_nMaxHitRange] = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
-						//マスのタイプ取得
-						m_AttackSwuare[nAttack].m_SquareData[m_AttackSwuare[nAttack].m_nMaxHitRange].m_RangeType = ATTACK_RANGE_HIT_1;
-						//攻撃マスの最大を増やす
-						m_AttackSwuare[nAttack].m_nMaxHitRange++;
-						break;
-					case CAttackManager::ATTACK_RANGE_HIT_2:	//攻撃範囲
-						//位置取得
-						RangePos[m_AttackSwuare[nAttack].m_nMaxHitRange] = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
-						//マスのタイプ取得
-						m_AttackSwuare[nAttack].m_SquareData[m_AttackSwuare[nAttack].m_nMaxHitRange].m_RangeType = ATTACK_RANGE_HIT_2;
-						//攻撃マスの最大を増やす
-						m_AttackSwuare[nAttack].m_nMaxHitRange++;
-						break;
+						//マス目のタイプ取得
+						switch (m_AttackData[nAttack][nLevel].RangeData[nBlockY].nRangeType[nBlockX])
+						{
+						case CAttackManager::ATTACK_RANGE_NONE:		//なし
+							break;
+						case CAttackManager::ATTACK_RANGE_CENTER:	//プレイヤーがいる中心ます
+							Center = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
+							break;
+						case CAttackManager::ATTACK_RANGE_HIT_1:	//攻撃範囲
+							//位置取得
+							RangePos[m_AttackSwuare[nAttack][nLevel].nMaxHitRange] = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
+							//マスのタイプ取得
+							m_AttackSwuare[nAttack][nLevel].SquareData[m_AttackSwuare[nAttack][nLevel].nMaxHitRange].RangeType = ATTACK_RANGE_HIT_1;
+							//攻撃マスの最大を増やす
+							m_AttackSwuare[nAttack][nLevel].nMaxHitRange++;
+							break;
+						case CAttackManager::ATTACK_RANGE_HIT_2:	//攻撃範囲
+							//位置取得
+							RangePos[m_AttackSwuare[nAttack][nLevel].nMaxHitRange] = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
+							//マスのタイプ取得
+							m_AttackSwuare[nAttack][nLevel].SquareData[m_AttackSwuare[nAttack][nLevel].nMaxHitRange].RangeType = ATTACK_RANGE_HIT_2;
+							//攻撃マスの最大を増やす
+							m_AttackSwuare[nAttack][nLevel].nMaxHitRange++;
+							break;
 
-					case CAttackManager::ATTACK_RANGE_HIT_3:	//攻撃範囲
-						//位置取得
-						RangePos[m_AttackSwuare[nAttack].m_nMaxHitRange] = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
-						//マスのタイプ取得
-						m_AttackSwuare[nAttack].m_SquareData[m_AttackSwuare[nAttack].m_nMaxHitRange].m_RangeType = ATTACK_RANGE_HIT_3;
-						//攻撃マスの最大を増やす
-						m_AttackSwuare[nAttack].m_nMaxHitRange++;
-						break;
+						case CAttackManager::ATTACK_RANGE_HIT_3:	//攻撃範囲
+							//位置取得
+							RangePos[m_AttackSwuare[nAttack][nLevel].nMaxHitRange] = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
+							//マスのタイプ取得
+							m_AttackSwuare[nAttack][nLevel].SquareData[m_AttackSwuare[nAttack][nLevel].nMaxHitRange].RangeType = ATTACK_RANGE_HIT_3;
+							//攻撃マスの最大を増やす
+							m_AttackSwuare[nAttack][nLevel].nMaxHitRange++;
+							break;
 
-					case CAttackManager::ATTACK_RANGE_HIT_4:	//攻撃範囲
-						//位置取得
-						RangePos[m_AttackSwuare[nAttack].m_nMaxHitRange] = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
-						//マスのタイプ取得
-						m_AttackSwuare[nAttack].m_SquareData[m_AttackSwuare[nAttack].m_nMaxHitRange].m_RangeType = ATTACK_RANGE_HIT_4;
-						//攻撃マスの最大を増やす
-						m_AttackSwuare[nAttack].m_nMaxHitRange++;
-						break;
-					default:
-						break;
+						case CAttackManager::ATTACK_RANGE_HIT_4:	//攻撃範囲
+							//位置取得
+							RangePos[m_AttackSwuare[nAttack][nLevel].nMaxHitRange] = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
+							//マスのタイプ取得
+							m_AttackSwuare[nAttack][nLevel].SquareData[m_AttackSwuare[nAttack][nLevel].nMaxHitRange].RangeType = ATTACK_RANGE_HIT_4;
+							//攻撃マスの最大を増やす
+							m_AttackSwuare[nAttack][nLevel].nMaxHitRange++;
+							break;
+						default:
+							break;
+						}
 					}
 				}
-			}
+				//攻撃速度の取得
+				for (int nAttackFrame = 0; nAttackFrame < MAX_HIT_TYPE; nAttackFrame++)
+				{
+					m_AttackSwuare[nAttack][nLevel].nAttackFrame[nAttackFrame] = m_AttackData[nAttack][nLevel].nAttackFrame[nAttackFrame];
+				}
 
-			// 位置計算
-			for (int nAttackPos = 0; nAttackPos < m_AttackSwuare[nAttack].m_nMaxHitRange; nAttackPos++)
-			{
-				m_AttackSwuare[nAttack].m_SquareData[nAttackPos].m_AttackPos = RangePos[nAttackPos] - Center;
+				// 位置計算
+				for (int nAttackPos = 0; nAttackPos < m_AttackSwuare[nAttack][nLevel].nMaxHitRange; nAttackPos++)
+				{
+					m_AttackSwuare[nAttack][nLevel].SquareData[nAttackPos].AttackPos = RangePos[nAttackPos] - Center;
+				}
 			}
 		}
-
 	}
 
 }
@@ -269,11 +297,11 @@ void CAttackManager::Release(void)
 //=============================================================================
 // 攻撃範囲ゲッター生成
 //=============================================================================
-CAttackManager::ATTACK_RANGE_DATA CAttackManager::GetAttackData(ATTACK_TYPE Attack)
+CAttackManager::ATTACK_RANGE_DATA CAttackManager::GetAttackData(ATTACK_TYPE Attack, int nLevel)
 {
 	if (m_pAttackBasis != NULL)
 	{
-		return m_pAttackBasis->m_AttackData[Attack];
+		return m_pAttackBasis->m_AttackData[Attack][nLevel];
 	}
 	else
 	{
@@ -284,11 +312,11 @@ CAttackManager::ATTACK_RANGE_DATA CAttackManager::GetAttackData(ATTACK_TYPE Atta
 //=============================================================================
 // 攻撃マス情報ゲッター関数
 //=============================================================================
-CAttackManager::ATTACK_SQUARE_DATA CAttackManager::GetAttack(ATTACK_TYPE AttackType)
+CAttackManager::ATTACK_SQUARE_DATA CAttackManager::GetAttack(ATTACK_TYPE AttackType, int nLevel)
 {
 	if (m_pAttackBasis != NULL)
 	{
-		return m_pAttackBasis->m_AttackSwuare[AttackType];
+		return m_pAttackBasis->m_AttackSwuare[AttackType][nLevel];
 	}
 	else
 	{

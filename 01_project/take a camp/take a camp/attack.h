@@ -44,18 +44,19 @@ public:
 	D3DXVECTOR3 GetPos(void);
 	void		SetRot(D3DXVECTOR3 rot);
 	D3DXVECTOR3 GetRot(void);
-	void		SetAttackFlag(bool bAttack);		
+	void		SetAttackFlag(bool bAttack);	
+	void		AttackSwitch(void);
 	bool		GetAttackFlag(void);
-	void		Attack(CAttackManager::ATTACK_RANGE_TYPE AttackType);
+	void		Attack(int AttackType);
 	void		SetPlayer(CPlayer* pPlayer);
 	CPlayer*	GetPlayer(void);
 	virtual void AttackCreate(void) = 0;//攻撃生成処理 
 private:
 	CPlayer* m_pPlayer;	//プレイヤークラス
-	CAttackManager::ATTACK_TYPE			m_nAttackType;		// 攻撃タイプ
+	CAttackManager::ATTACK_TYPE			m_nAttackType;	// 攻撃タイプ
 	CAttackManager::ATTACK_SQUARE_DATA	m_AttackSquare;	// 攻撃マスデータ
-	D3DXVECTOR3 m_pos;								// 位置
-	D3DXVECTOR3 m_rot;								// 向き
-	bool		m_bAttack;							// 攻撃フラグ
+	D3DXVECTOR3 m_pos;									// 位置
+	D3DXVECTOR3 m_rot;									// 向き
+	bool		m_bAttack;								// 攻撃フラグ
 };
 #endif

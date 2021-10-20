@@ -14,7 +14,8 @@
 #include "resource_shader.h"
 #include "camera_base.h"
 #include "light.h"
-
+#include "collision.h"
+#include "bullet.h"
 #ifdef _DEBUG
 #include "keyboard.h"
 #endif
@@ -22,7 +23,9 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define PEINT_COUNT 60  // 再度塗れるようになるまでのカウント
+#define POS_Y_RATE_BASE   0.03f
+#define POS_Y_RATE_UP     0.1f
+#define BULLET_HIT_POS_Y TILE_POS_Y + 6.0f
 
 //*****************************
 // 静的メンバ変数宣言
@@ -34,6 +37,9 @@
 CTile::CTile() :CModel(OBJTYPE_TILE)
 {                       
 	m_color = TILE_DEFAULT_COLOR;
+	m_pCollison = NULL;
+	m_fDistPosY = TILE_POS_Y;        // 座標Yの目標値
+	m_fDistPosYRate = POS_Y_RATE_BASE;    // 座標Yの変更時の係数
 }
 
 //******************************
@@ -81,6 +87,9 @@ HRESULT CTile::Init(void)
 	// 色の設定
 	m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
+	m_fDistPosY = TILE_POS_Y;        // 座標Yの目標値
+	m_fDistPosYRate = POS_Y_RATE_BASE;    // 座標Yの変更時の係数
+
 	return S_OK;
 }
 
@@ -97,6 +106,29 @@ void CTile::Uninit(void)
 //******************************
 void CTile::Update(void)
 {
+	// 高さの調整
+	D3DXVECTOR3 pos = GetPos();
+	pos.y += (m_fDistPosY - pos.y)*m_fDistPosYRate;
+
+	SetPos(pos);
+
+	m_fDistPosY = TILE_POS_Y;
+	m_fDistPosYRate = POS_Y_RATE_BASE;
+
+	if (m_pCollison == NULL)
+	{
+		m_pCollison = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z), TILE_ONE_SIDE / 2);
+	}
+	else
+	{
+		if (m_pCollison->GetPos() != D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z))
+		{
+			m_pCollison->SetPos(D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z));
+		}
+	}
+
+	// 弾との当たり判定
+	CollisionBullet();
 }
 
 //******************************
@@ -211,9 +243,38 @@ void CTile::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pMod
 
 		// 視点位置
 		D3DXVECTOR3 eye = CManager::GetCamera()->GetPos();
-		pEffect->SetFloatArray("Eye", (float*)&D3DXVECTOR3(eye.x, eye.y, -eye.z), 3);
+		pEffect->SetFloatArray("Eye", (float*)&D3DXVECTOR3(eye.x, eye.y, eye.z), 3);
 
 		// スペキュラの情報を送る
 		pEffect->SetFloatArray("SpecularColor", (float*)&D3DXCOLOR(1.0f,1.0f,1.0f,1.0f), 4);
 	}
+}
+
+//******************************
+// 弾との当たり判定
+//******************************
+bool CTile::CollisionBullet(void)
+{
+	CBullet * pBullet = (CBullet*)GetTop(OBJTYPE_BULLET);
+
+	while (pBullet != NULL)
+	{
+		if (CCollision::CollisionSphere(GetCollision(), pBullet->GetCollision()))
+		{
+			HitBulletAction(pBullet);
+			return true;
+		}
+		pBullet = (CBullet*)pBullet->GetNext();
+	}
+
+	return false;
+}
+
+//******************************
+// 弾と当たったときのアクション
+//******************************
+void CTile::HitBulletAction(CBullet * pBullet)
+{
+	m_fDistPosY = BULLET_HIT_POS_Y;
+	m_fDistPosYRate = POS_Y_RATE_UP;
 }

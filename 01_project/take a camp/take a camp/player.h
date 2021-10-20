@@ -54,6 +54,13 @@ public:
 		PLAYER_STATE_DEATH			//死亡状態
 	}PLAYER_STATE;
 
+	typedef enum
+	{
+		ITEM_STATE_NONE = 0,	//通常
+		ITEM_STATE_DASH,		//加速
+		ITEM_STATE_MAX
+	}ITEM_STATE;
+
 	//メンバ関数
 	CPlayer();
 	~CPlayer();
@@ -78,6 +85,8 @@ public:
 	PLAYER_STATE GetState(void) { return m_PlayerState; }
 
 	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }
+	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }
+	ITEM_STATE GetItemState(void) { return m_ItemState; }
 private:
 	void Move(void);		// 移動処理
 	void Respawn(void);		// リスポーン処理
@@ -90,6 +99,9 @@ private:
 	static int m_anControllKey[5][KEY_MAX];
 	static CResourceModel::Model m_model[MAX_PARTS_NUM]; // モデル構造体
 	static int m_nPartsNum;                              // モデルパーツ数
+	ITEM_STATE m_ItemState;			//アイテムステータス
+	int m_nMoveframe;				// 移動速度
+	int m_nDashCnt;				//速度アップカウント
 
 	CAttackBased* m_pAttack;	// 攻撃用クラス
 	int m_nPlayerNumber;		// プレイヤー番号

@@ -40,7 +40,7 @@ CAttackBased::~CAttackBased()
 HRESULT CAttackBased::Init(void)
 {
 	//攻撃タイプセット
-	m_AttackSquare = CAttackManager::GetAttack(m_nAttackType);
+	m_AttackSquare = CAttackManager::GetAttack(m_nAttackType,1);
 	return S_OK;
 }
 
@@ -140,6 +140,23 @@ void CAttackBased::SetAttackFlag(bool bAttack)
 }
 
 //=============================================================================
+// 攻撃スイッチ関数
+//=============================================================================
+void CAttackBased::AttackSwitch(void)
+{
+	//攻撃されていなかったら
+	if (!m_bAttack)
+	{
+		//フラグオン
+		SetAttackFlag(true);
+		//位置取得
+		SetPos(m_pPlayer->GetPos());
+		//向き取得
+		SetRot(m_pPlayer->GetRot());
+	}
+}
+
+//=============================================================================
 // 攻撃フラグゲッター関数
 //=============================================================================
 bool CAttackBased::GetAttackFlag(void)
@@ -166,24 +183,22 @@ CPlayer * CAttackBased::GetPlayer(void)
 //=============================================================================
 // 攻撃関数
 //=============================================================================
-void CAttackBased::Attack(CAttackManager::ATTACK_RANGE_TYPE AttackType)
+void CAttackBased::Attack(int AttackType)
 {
-	for (int nAttack = 0; nAttack<m_AttackSquare.m_nMaxHitRange; nAttack++)
+	for (int nAttack = 0; nAttack<m_AttackSquare.nMaxHitRange; nAttack++)
 	{
 		//タイプが一致しているか
-		if (m_AttackSquare.m_SquareData[nAttack].m_RangeType == AttackType)
+		if (m_AttackSquare.SquareData[nAttack].RangeType == AttackType + (int)CAttackManager::ATTACK_RANGE_HIT_1)
 		{
-			//向き
-			D3DXVECTOR3 AttackRot = m_pPlayer->GetRot();
 			//行列計算
 			D3DXVECTOR3 CreatePos;
 			//攻撃位置
-			D3DXVECTOR3 AttackPos = m_AttackSquare.m_SquareData[nAttack].m_AttackPos * TILE_ONE_SIDE;
-			CreatePos.x = ((cosf(AttackRot.y + D3DXToRadian(90.0f))*AttackPos.x) + (sinf(AttackRot.y + D3DXToRadian(90.0f))*AttackPos.z));
+			D3DXVECTOR3 AttackPos = m_AttackSquare.SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
+			CreatePos.x = ((cosf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.x) + (sinf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.z));
 			CreatePos.y = 1 * AttackPos.y;
-			CreatePos.z = ((-sinf(AttackRot.y + D3DXToRadian(90.0f))*AttackPos.x) + (cosf(AttackRot.y + D3DXToRadian(90.0f))*AttackPos.z));
+			CreatePos.z = ((-sinf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.x) + (cosf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.z));
 			//当たり判定生成
-			CBullet::Create(CreatePos + m_pPlayer->GetPos(), D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_pPlayer->GetPlayerNumber());
+			CBullet::Create(CreatePos + m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_pPlayer->GetPlayerNumber());
 		}
 	}
 }

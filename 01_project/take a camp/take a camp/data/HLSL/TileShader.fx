@@ -27,7 +27,7 @@ VS_OUTPUT VS(float3 Position : POSITION, float3 Normal : NORMAL ,float4 Diffuse 
 
 	// スペキュラ
 	float3 H = normalize(normalize(LightDirection) + normalize(Eye - mul(World, Position).xyz));
-	Out.Specular = SpecularColor * dot(N, H);
+	Out.Specular = SpecularColor * dot(mul(Normal, (float3x3)World), H);
 	Out.Specular = pow(Out.Specular, 8);
 
 	// ライティング処理

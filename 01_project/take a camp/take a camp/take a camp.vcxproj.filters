@@ -261,6 +261,9 @@
     <ClCompile Include="attack_1.cpp">
       <Filter>ソース ファイル\07_GameModel\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="item.cpp">
+      <Filter>ソース ファイル\07_GameModel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -415,6 +418,9 @@
     </ClInclude>
     <ClInclude Include="bullet.h">
       <Filter>ヘッダー ファイル\07_GameModel\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="item.h">
+      <Filter>ヘッダー ファイル\07_GameModel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
