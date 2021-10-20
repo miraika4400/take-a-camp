@@ -27,7 +27,7 @@
 CAttack1::CAttack1()
 {
 	m_nAttackCount = 0;
-	m_Type = CAttackManager::ATTACK_RANGE_HIT_1;
+	m_nType = 0;
 }
 
 //=============================================================================
@@ -86,22 +86,22 @@ void CAttack1::AttackCreate(void)
 		m_nAttackCount++;
 
 		//カウントが一定になったら
-		if (m_nAttackCount >= ATTACK_COUNT)
+		if (m_nAttackCount >= GetAttackSquare().nAttackFrame[m_nType])
 		{
 			//攻撃処理
-			Attack(m_Type);
+			Attack(m_nType);
 			//タイプが一定になったら
-			if (m_Type == CAttackManager::ATTACK_RANGE_HIT_4)
+			if (m_nType == MAX_HIT_TYPE)
 			{
 				//フラグの初期化
 				SetAttackFlag(false);
 				//タイプ初期化
-				m_Type = CAttackManager::ATTACK_RANGE_HIT_1;
+				m_nType = 0;
 			}
 			else
 			{
 				//次の攻撃タイプへ
-				m_Type = (CAttackManager::ATTACK_RANGE_TYPE)(m_Type + 1);
+				m_nType++;
 			}
 			//カウント初期化
 			m_nAttackCount = 0;

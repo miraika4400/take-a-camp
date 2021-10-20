@@ -40,7 +40,7 @@ CAttackBased::~CAttackBased()
 HRESULT CAttackBased::Init(void)
 {
 	//攻撃タイプセット
-	m_AttackSquare = CAttackManager::GetAttack(m_nAttackType,0);
+	m_AttackSquare = CAttackManager::GetAttack(m_nAttackType,1);
 	return S_OK;
 }
 
@@ -183,17 +183,17 @@ CPlayer * CAttackBased::GetPlayer(void)
 //=============================================================================
 // 攻撃関数
 //=============================================================================
-void CAttackBased::Attack(CAttackManager::ATTACK_RANGE_TYPE AttackType)
+void CAttackBased::Attack(int AttackType)
 {
-	for (int nAttack = 0; nAttack<m_AttackSquare.m_nMaxHitRange; nAttack++)
+	for (int nAttack = 0; nAttack<m_AttackSquare.nMaxHitRange; nAttack++)
 	{
 		//タイプが一致しているか
-		if (m_AttackSquare.m_SquareData[nAttack].m_RangeType == AttackType)
+		if (m_AttackSquare.SquareData[nAttack].RangeType == AttackType + (int)CAttackManager::ATTACK_RANGE_HIT_1)
 		{
 			//行列計算
 			D3DXVECTOR3 CreatePos;
 			//攻撃位置
-			D3DXVECTOR3 AttackPos = m_AttackSquare.m_SquareData[nAttack].m_AttackPos * TILE_ONE_SIDE;
+			D3DXVECTOR3 AttackPos = m_AttackSquare.SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
 			CreatePos.x = ((cosf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.x) + (sinf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.z));
 			CreatePos.y = 1 * AttackPos.y;
 			CreatePos.z = ((-sinf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.x) + (cosf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.z));

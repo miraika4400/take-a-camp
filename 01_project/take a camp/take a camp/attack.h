@@ -47,7 +47,7 @@ public:
 	void		SetAttackFlag(bool bAttack);	
 	void		AttackSwitch(void);
 	bool		GetAttackFlag(void);
-	void		Attack(CAttackManager::ATTACK_RANGE_TYPE AttackType);
+	void		Attack(int AttackType);
 	void		SetPlayer(CPlayer* pPlayer);
 	CPlayer*	GetPlayer(void);
 	virtual void AttackCreate(void) = 0;//UŒ‚¶¬ˆ— 
