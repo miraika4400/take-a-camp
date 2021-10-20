@@ -46,7 +46,8 @@
 #define ROT_FACING_01 180			// 回転の基準
 #define ROT_FACING_02 360			// 回転向き
 #define RIM_POWER     0.5f          // リムライトの強さ
-
+#define DASH_FRAME      300
+#define DASH_MOVE_FRAME  MOVE_FRAME*0.8
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
@@ -392,14 +393,14 @@ void CPlayer::Move(void)
 		//カウントアップ
 		m_MoveCount++;
 
-		////カウントが一定に達する
-		//if (m_MoveCount >= MOVE_FRAME)
-		//{
-		//	//カウント初期化
-		//	m_MoveCount = 0;
-		//	//移動できるように
-		//	m_bMove = true;
-		//}
+		//カウントが一定に達する
+		if (m_MoveCount >= m_nMoveframe)
+		{
+			//カウント初期化
+			m_MoveCount = 0;
+			//移動できるように
+			m_bMove = true;
+		}
 
 		switch (m_ItemState)
 		{
@@ -416,17 +417,24 @@ void CPlayer::Move(void)
 			break;
 		case ITEM_STATE_DASH:
 			//カウントが一定に達する
-			if (m_MoveCount >= m_nMoveframe / 2)
+			//if (m_MoveCount >= m_nMoveframe / 2)
+			//{
+			//	//ダッシュタイムをカウント
+			//	m_nDashCnt++;
+			//	//カウント初期化
+			//	m_MoveCount = 0;
+			//	//移動できるように
+			//	m_bMove = true;
+			//}
+
+			//ダッシュタイムをカウント
+			m_nDashCnt++;
+
+			m_nMoveframe = DASH_MOVE_FRAME;
+
+			if (m_nDashCnt % DASH_FRAME == 0)
 			{
-				//ダッシュタイムをカウント
-				m_nDashCnt++;
-				//カウント初期化
-				m_MoveCount = 0;
-				//移動できるように
-				m_bMove = true;
-			}
-			if (m_nDashCnt % 15 == 0)
-			{
+				m_nMoveframe = MOVE_FRAME;
 				m_ItemState = ITEM_STATE_NONE;
 			}
 			break;
