@@ -155,6 +155,7 @@
     <ClCompile Include="act_range.cpp" />
     <ClCompile Include="attack.cpp" />
     <ClCompile Include="attack_1.cpp" />
+    <ClCompile Include="item.cpp" />
     <ClCompile Include="resource_attack.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="billboard.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="act_range.h" />
     <ClInclude Include="attack.h" />
     <ClInclude Include="attack_1.h" />
+    <ClInclude Include="item.h" />
     <ClInclude Include="resource_attack.h" />
     <ClInclude Include="bg.h" />
     <ClInclude Include="billboard.h" />
@@ -261,11 +263,13 @@
     <FxCompile Include="data\HLSL\PlayerShader.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="data\HLSL\TileShader.fx">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
