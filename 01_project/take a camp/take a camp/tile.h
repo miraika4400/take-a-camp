@@ -53,12 +53,15 @@ public:
 	void SetColor(D3DXCOLOR col) { m_color = col; }
 	D3DXCOLOR GetColor(void) { return m_color; }
 
+	CCollision*GetCollision(void) { return m_pCollison; }
 private:
 	void DrawModel(void);
 	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData);// シェーダに値を送る
+	void CollisionBullet(void);    // 弾との当たり判定
 
 	// メンバ変数
 	D3DXCOLOR m_color;        // カラー
+	CCollision * m_pCollison; // 当たり判定
 };
 
 #endif
