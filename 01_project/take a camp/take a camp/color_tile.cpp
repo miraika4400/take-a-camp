@@ -86,9 +86,13 @@ void CColorTile::CountColorTile(void)
 		// ペイント番号の取得
 		int nPeintNum = pTile->GetPeintNum();
 
-		// タイル数の取得
-		m_anTileNum[nPeintNum][0] += pTile->GetStepNum();
-		m_anTileNum[nPeintNum][pTile->GetStepNum()]++;
+		if (nPeintNum >= 0)
+		{
+			// タイル数の取得
+			m_anTileNum[nPeintNum][0] += pTile->GetStepNum();
+			m_anTileNum[nPeintNum][pTile->GetStepNum()]++;
+		}
+		
 		// リストを進める
 		pTile = (CColorTile*)pTile->GetNext();
 	}
@@ -110,8 +114,12 @@ HRESULT CColorTile::Init(void)
 	m_pFrame->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
 	m_pFrame->SetPriority(OBJTYPE_UI);
 
-	// フラグの初期化
-	m_bHitOld = false;
+	// 変数の初期化
+	m_nPrevNum = -1;                             // 今塗られているカラーの番号*デフォルトは-1
+	m_nStep = 0;                                 // 今の塗段階
+	m_nCntStep = 0;                              // 再度塗り可能カウント
+	m_nLastHitPlayerNum = -1;                    // 現在の塗られている番号
+	m_bHitOld = false;                           // 一個前のフレームで当たっていたか保存するよう 
 
 	return S_OK;
 }
@@ -247,7 +255,7 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 		if (m_nPrevNum == -1)
 		{// 今何も塗られていない
 
-		 // カラー番号の保存
+			 // カラー番号の保存
 			m_nPrevNum = nColorNumber;
 			// 色の取得
 			SetColor(GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep));

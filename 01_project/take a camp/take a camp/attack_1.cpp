@@ -63,6 +63,9 @@ CAttack1 * CAttack1::Create(CPlayer* pPlayer)
 HRESULT CAttack1::Init(void)
 {
 	CAttackBased::Init();
+
+	m_nAttackCount = 0;
+	m_nType = 0;
 	return S_OK;
 }
 

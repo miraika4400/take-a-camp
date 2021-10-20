@@ -81,9 +81,6 @@ HRESULT CBullet::Init(void)
 	
 	// ライフ
 	m_nLife = BULLET_LIFE;
-	
-	// フラグの初期化
-	m_bHitOld = false;
 
 	return S_OK;
 }
@@ -163,21 +160,12 @@ void CBullet::CollisionPlayer(void)
 		{
 			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 			{
-				if (!m_bHitOld)
-				{
-					// 死亡状態にする
-					pPlayer->Death();
-				}
-
-				// ヒットフラグの保存*当たってない
-				m_bHitOld = true;
+				// 死亡状態にする
+				pPlayer->Death();
 
 				return;
 			}
 		}
 			pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
-
-	// ヒットフラグの保存*当たってる
-	m_bHitOld = false;
 }
