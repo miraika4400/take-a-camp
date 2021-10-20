@@ -191,7 +191,7 @@ void CAttackBased::Attack(int AttackType)
 		if (m_AttackSquare.SquareData[nAttack].RangeType == AttackType + (int)CAttackManager::ATTACK_RANGE_HIT_1)
 		{
 			//çsóÒåvéZ
-			D3DXVECTOR3 CreatePos;
+			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 			//çUåÇà íu
 			D3DXVECTOR3 AttackPos = m_AttackSquare.SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
 			CreatePos.x = ((cosf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.x) + (sinf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.z));
