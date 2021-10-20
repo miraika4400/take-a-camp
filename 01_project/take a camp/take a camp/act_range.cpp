@@ -22,10 +22,10 @@ CActRange::CActRange()
 	//ïœêîèâä˙âª
 	m_pPlayer = nullptr;
 	m_bDeath  = false;
-	memset(&m_MapData, 0, sizeof(CMapManager::MAP_DATA));
-	memset(&m_ActPos, 0, sizeof(D3DXVECTOR3));
-	memset(&m_bPlayerMove, true, sizeof(bool[PLAYER_MOVE_MAX]));
-	memset(&m_OtherAct, 0, sizeof(OTHER_ACT[PLAYER_MOVE_MAX - 1]));
+	memset(&m_MapData, 0, sizeof(m_MapData));
+	memset(&m_ActPos, 0, sizeof(m_ActPos));
+	memset(&m_bPlayerMove, true, sizeof(m_bPlayerMove));
+	memset(&m_OtherAct, 0, sizeof(m_OtherAct));
 }
 
 //=============================================================================

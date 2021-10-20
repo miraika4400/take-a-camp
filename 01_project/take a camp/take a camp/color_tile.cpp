@@ -86,9 +86,13 @@ void CColorTile::CountColorTile(void)
 		// ペイント番号の取得
 		int nPeintNum = pTile->GetPeintNum();
 
-		// タイル数の取得
-		m_anTileNum[nPeintNum][0] += pTile->GetStepNum();
-		m_anTileNum[nPeintNum][pTile->GetStepNum()]++;
+		if (nPeintNum >= 0)
+		{
+			// タイル数の取得
+			m_anTileNum[nPeintNum][0] += pTile->GetStepNum();
+			m_anTileNum[nPeintNum][pTile->GetStepNum()]++;
+		}
+		
 		// リストを進める
 		pTile = (CColorTile*)pTile->GetNext();
 	}
