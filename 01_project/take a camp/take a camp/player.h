@@ -76,6 +76,8 @@ public:
 
 	void SetState(PLAYER_STATE PlayerState) {m_PlayerState = PlayerState;}
 	PLAYER_STATE GetState(void) { return m_PlayerState; }
+
+	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }
 private:
 	void Move(void);		// ˆÚ“®ˆ—
 	void Respawn(void);		// ƒŠƒXƒ|[ƒ“ˆ—

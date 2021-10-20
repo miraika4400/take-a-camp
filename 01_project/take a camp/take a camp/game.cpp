@@ -35,7 +35,6 @@
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CLight  *CGame::m_pLight = NULL;			// ライトクラスポインタ
 CRuleManager* CGame::m_pRuleManager = NULL; // ルールマネージャークラス
 CMap* CGame::m_pMap = NULL;			// ステージクラスポインタ
 CMapManager::MAP_TYPE CGame::m_MapType = CMapManager::MAP_TYPE_1;// マップタイプ
@@ -86,15 +85,7 @@ HRESULT CGame::Init(void)
 	m_pMap = CMap::Create(m_MapType);
 
 	// ライトクラスの生成
-	m_pLight = new CLight;
-	// ライトクラスの初期化
-	if (m_pLight != NULL)
-	{
-		if (FAILED(m_pLight->Init()))
-		{
-			return -1;
-		}
-	}
+	CManager::SetLight();
 
 	CTime::Create();
 
@@ -114,12 +105,16 @@ void CGame::Uninit(void)
 		pCamera = NULL;
 	}
 	
-	// ライト
-	if (m_pLight != NULL)
+	// ライトクラスの解放処理
+	CLight * pLight = CManager::GetLight();
+	if (pLight != NULL)
 	{
-		m_pLight->Uninit();
-		delete m_pLight;
-		m_pLight = NULL;
+		// ライトの終了処理
+		pLight->Uninit();
+
+		// メモリの解放
+		delete pLight;
+		pLight = NULL;
 	}
 
 	// 開放処理

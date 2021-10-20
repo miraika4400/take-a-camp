@@ -30,7 +30,7 @@ class CTutorial;
 class CPause;
 class CCamera;
 class CColorManager;
-
+class CLight;
 //=============================
 // クラス定義
 //=============================
@@ -80,6 +80,8 @@ public:
 
 	static CCamera *GetCamera(void) { return m_pCamera; }                   // カメラポインタ
 	static void SetCamera(CCamera * pCamera);                               // カメラクラスのセット処理
+	static CLight *GetLight(void) { return m_pLight; }						// ライトポインタ
+	static HRESULT SetLight(void);
 private:
 	//============
 	// メンバ変数
@@ -98,6 +100,7 @@ private:
 	static CTutorial*m_pTutorial;            // チュートリアル
 	static CPause*m_pPause;                  // ポーズポインタ
 	static CCamera*m_pCamera;                // カメラ
+	static CLight*m_pLight;					 // ライト
 	static bool m_bPause;                    // ポーズフラグ
 };
 	
