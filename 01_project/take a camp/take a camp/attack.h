@@ -44,7 +44,8 @@ public:
 	D3DXVECTOR3 GetPos(void);
 	void		SetRot(D3DXVECTOR3 rot);
 	D3DXVECTOR3 GetRot(void);
-	void		SetAttackFlag(bool bAttack);		
+	void		SetAttackFlag(bool bAttack);	
+	void		AttackSwitch(void);
 	bool		GetAttackFlag(void);
 	void		Attack(CAttackManager::ATTACK_RANGE_TYPE AttackType);
 	void		SetPlayer(CPlayer* pPlayer);
