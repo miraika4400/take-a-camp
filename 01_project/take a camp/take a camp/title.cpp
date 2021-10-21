@@ -20,7 +20,8 @@
 #include "sound.h"
 #include "resource_texture.h"
 #include "camera_base.h"
-
+#include "bg.h"
+#include "light.h"
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
@@ -72,6 +73,15 @@ HRESULT CTitle::Init(void)
 
 	m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_TITLE));
 	
+	// カメラ生成
+	CManager::SetCamera(CCamera::Create());
+
+	// 背景の設定
+	CBg::Create();
+
+	// ライトクラスの生成
+	CManager::SetLight();
+
 	return S_OK;
 }
 
@@ -96,6 +106,18 @@ void CTitle::Uninit(void)
 		// メモリの解放
 		delete m_pPolygon;
 		m_pPolygon = NULL;
+	}
+
+	// ライトクラスの解放処理
+	CLight * pLight = CManager::GetLight();
+	if (pLight != NULL)
+	{
+		// ライトの終了処理
+		pLight->Uninit();
+
+		// メモリの解放
+		delete pLight;
+		pLight = NULL;
 	}
 
 	// 開放処理

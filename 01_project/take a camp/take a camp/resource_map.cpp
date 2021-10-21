@@ -32,7 +32,7 @@ CMapManager *CMapManager::m_pMapBasis = NULL;
 //=============================================================================
 CMapManager::CMapManager()
 {
-	memset(&m_MapData, 0, sizeof(MAP_DATA));
+	memset(&m_MapData, 0, sizeof(m_MapData));
 }
 
 //=============================================================================

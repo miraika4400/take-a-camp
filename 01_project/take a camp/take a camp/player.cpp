@@ -30,7 +30,7 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define HIERARCHY_TEXT_PATH1 "./data/Text/hierarchy/pengin00.txt"   // 階層構造テキストのパス
+#define HIERARCHY_TEXT_PATH1 "data/Text/hierarchy/pengin00.txt"   // 階層構造テキストのパス
 #define MOVE_DIST (TILE_ONE_SIDE)	// 移動距離
 #define MOVE_FRAME 15				// 移動速度
 #define COLLISION_RADIUS 18.0f
@@ -47,13 +47,13 @@
 #define ROT_FACING_02 360			// 回転向き
 #define RIM_POWER     0.5f          // リムライトの強さ
 #define DASH_FRAME      300
-#define DASH_MOVE_FRAME  MOVE_FRAME*0.8
+#define DASH_MOVE_FRAME  MOVE_FRAME*0.8f
 #define STICK_DECISION_RANGE (32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
 
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-int CPlayer::m_anControllKey[5][CPlayer::KEY_MAX] =
+int CPlayer::m_anControllKey[4][CPlayer::KEY_MAX] =
 {
 	{ DIK_W,DIK_S,DIK_A,DIK_D,DIK_E },
 	{ DIK_UP,DIK_DOWN,DIK_LEFT,DIK_RIGHT,DIK_NUMPAD1 },
@@ -79,7 +79,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_bMove = false;
 	m_bInvincible = false;
 	m_PlayerState = PLAYER_STATE_NORMAL;
-	m_pCollison = NULL;
+	m_pCollision = NULL;
 	m_nColor = 0;
 	m_pActRange = NULL;
 	memset(&m_Move, 0, sizeof(D3DXVECTOR3));
@@ -218,6 +218,14 @@ HRESULT CPlayer::Init(void)
 //******************************
 void CPlayer::Uninit(void)
 {
+	if (m_pCollision != NULL)
+	{
+		m_pCollision->ReConnection();
+		m_pCollision->Uninit();
+		delete m_pCollision;
+		m_pCollision = NULL;
+	}
+
 	CModelHierarchy::Uninit();
 }
 
@@ -234,13 +242,13 @@ void CPlayer::Update(void)
 		//無敵処理
 		Invincible();
 		// 当たり判定の位置
-		if (m_pCollison == NULL)
+		if (m_pCollision == NULL)
 		{
-			m_pCollison = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y + COLLISION_RADIUS / 2, GetPos().z), COLLISION_RADIUS / 2);
+			m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y + COLLISION_RADIUS / 2, GetPos().z), COLLISION_RADIUS / 2);
 		}
 		else
 		{
-			m_pCollison->SetPos(D3DXVECTOR3(GetPos().x, GetPos().y + COLLISION_RADIUS / 2, GetPos().z));
+			m_pCollision->SetPos(D3DXVECTOR3(GetPos().x, GetPos().y + COLLISION_RADIUS / 2, GetPos().z));
 		}
 		break;
 	case PLAYER_STATE_DEATH:	//死亡状態
@@ -320,11 +328,14 @@ void CPlayer::Death(void)
 		SetState(PLAYER_STATE_DEATH);
 
 		//当たり判定を消す
-		if (m_pCollison != NULL)
+		if (m_pCollision != NULL)
 		{
-			m_pCollison->Uninit();
-			m_pCollison = NULL;
+			m_pCollision->ReConnection();
+			m_pCollision->Uninit();
+			delete m_pCollision;
+			m_pCollision = NULL;
 		}
+
 		//行動クラスに死亡状態になったフラグを送る
 		m_pActRange->SetDeath(true);
 		//透明にする
@@ -444,10 +455,11 @@ void CPlayer::Move(void)
 			//ダッシュタイムをカウント
 			m_nDashCnt++;
 
-			m_nMoveframe = DASH_MOVE_FRAME;
+			m_nMoveframe = (int)DASH_MOVE_FRAME;
 
 			if (m_nDashCnt % DASH_FRAME == 0)
 			{
+				m_nDashCnt = 0;
 				m_nMoveframe = MOVE_FRAME;
 				m_ItemState = ITEM_STATE_NONE;
 			}

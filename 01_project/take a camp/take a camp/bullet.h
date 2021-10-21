@@ -52,7 +52,6 @@ private:
 	float m_fSpeed;				// 速さ
 	CPlayer *m_pPlayer;			// プレイヤーのポインタ
 	CCollision * m_pCollision;	// 当たり判定
-	bool m_bHitOld;				// 1個前のフレームで当たっていたか保存するよう
 	int m_nPlayerNum;
 };
 

@@ -152,7 +152,7 @@ void CAttackBased::AttackSwitch(void)
 		//位置取得
 		SetPos(m_pPlayer->GetPos());
 		//向き取得
-		SetRot(m_pPlayer->GetRot());
+		SetRot(m_pPlayer->GetRotDest());
 	}
 }
 
@@ -191,7 +191,7 @@ void CAttackBased::Attack(int AttackType)
 		if (m_AttackSquare.SquareData[nAttack].RangeType == AttackType + (int)CAttackManager::ATTACK_RANGE_HIT_1)
 		{
 			//行列計算
-			D3DXVECTOR3 CreatePos;
+			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 			//攻撃位置
 			D3DXVECTOR3 AttackPos = m_AttackSquare.SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
 			CreatePos.x = ((cosf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.x) + (sinf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.z));

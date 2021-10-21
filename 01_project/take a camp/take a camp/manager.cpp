@@ -26,6 +26,7 @@
 #include "color_manager.h"
 #include "collision.h"
 #include "player.h"
+#include "light.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -43,6 +44,7 @@ CFade           *CManager::m_pFade = NULL;           // フェード
 CTutorial       *CManager::m_pTutorial = NULL;       // チュートリアル
 CPause          *CManager::m_pPause = NULL;          // ポーズポインタ
 CCamera         *CManager::m_pCamera = NULL;         // カメラクラス
+CLight			*CManager::m_pLight = NULL;			 // ライトクラス
 bool             CManager::m_bPause = false;         // ポーズフラグ
 
 //=============================
@@ -414,4 +416,22 @@ void CManager::SetCamera(CCamera * pCamera)
 
 	// セット
 	m_pCamera = pCamera;
+}
+
+//=============================
+// ライトのセット処理
+//=============================
+HRESULT CManager::SetLight(void)
+{
+	// ライトクラスの生成
+	m_pLight = new CLight;
+	// ライトクラスの初期化
+	if (m_pLight != NULL)
+	{
+		if (FAILED(m_pLight->Init()))
+		{
+			return -1;
+		}
+	}
+	return S_OK;
 }

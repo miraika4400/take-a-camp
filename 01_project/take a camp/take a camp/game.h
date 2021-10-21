@@ -20,7 +20,6 @@
 // 前方宣言
 //=============================
 class CCamera;
-class CLight;
 class CRuleManager;
 class CMapManager;
 //*****************************
@@ -54,7 +53,6 @@ public:
 	void Draw(void);    // 描画
 
 	// 取得処理
-	static CLight*GetLight(void) { return m_pLight; }                    // ライトクラスのポインタ
 	static CRuleManager *GetRuleManager(void) { return m_pRuleManager; } // ルールマネージャーポインタ
 	static CMap* GetStage(void) { return m_pMap; }
 	static CMapManager::MAP_TYPE GetMapType(void) { return m_MapType; }
@@ -64,7 +62,6 @@ private:
 	//*****************************
 	// メンバ変数
 	//*****************************
-	static CLight*m_pLight;              // ライトポインタ
 	static CRuleManager* m_pRuleManager; // ルールマネージャー
 	static CMap *m_pMap;			 // ステージポインタ
 	static CMapManager::MAP_TYPE m_MapType;// マップのタイプ

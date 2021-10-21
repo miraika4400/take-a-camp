@@ -22,7 +22,7 @@
 //******************************
 // コンストラクタ
 //******************************
-CItem::CItem()
+CItem::CItem() : CModel(OBJTYPE_ITEM)
 {
 	m_rot = D3DXVECTOR3(0.0f, 0.05f, 0.0f);//角度
 	m_move = D3DXVECTOR3(0.0f, 0.1f, 0.0f);//移動
@@ -31,7 +31,6 @@ CItem::CItem()
 	m_pPlayer = NULL;		//プレイヤーのポインタ
 
 	m_bUp = false;			//上限判定
-	m_bHitOld = false;		//前フレームのヒット判定
 	m_bDeath = false;		//死亡フラグ
 }
 
@@ -90,6 +89,7 @@ void CItem::Uninit(void)
 		delete m_pCollision;
 		m_pCollision = NULL;
 	}
+
 	//モデルの終了処理
 	CModel::Uninit();
 }
@@ -191,16 +191,12 @@ void CItem::CollisionItem(void)
 		{
 			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 			{
-				if (!m_bHitOld)
-				{
-					m_bDeath = true;
-					pPlayer->SetItemState(CPlayer::ITEM_STATE_DASH);
-				}
+
+				m_bDeath = true;
+				pPlayer->SetItemState(CPlayer::ITEM_STATE_DASH);
 				return;
 			}
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
-
-	m_bHitOld = false;
 }

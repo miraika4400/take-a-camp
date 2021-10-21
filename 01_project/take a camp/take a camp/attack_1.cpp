@@ -12,16 +12,6 @@
 #include "tile.h"
 #include "player.h"
 //=============================================================================
-// マクロ定義
-//=============================================================================
-#define ATTACK_COUNT (60*0.4f)
-
-#define ATTACK_COUNT_1 (60*0)
-#define ATTACK_COUNT_2 (60*0.4f)
-#define ATTACK_COUNT_3 (60*0.7f)
-#define ATTACK_COUNT_4 (60*1)
-
-//=============================================================================
 // コンストラクタ
 //=============================================================================
 CAttack1::CAttack1()
@@ -63,7 +53,15 @@ CAttack1 * CAttack1::Create(CPlayer* pPlayer)
 HRESULT CAttack1::Init(void)
 {
 	CAttackBased::Init();
+
+	m_nAttackCount = 0;
+	m_nType = 0;
 	return S_OK;
+}
+
+void CAttack1::Uninit(void)
+{
+	CAttackBased::Uninit();
 }
 
 //=============================================================================
@@ -72,6 +70,11 @@ HRESULT CAttack1::Init(void)
 void CAttack1::Update(void)
 {
 	AttackCreate();
+}
+
+void CAttack1::Draw(void)
+{
+	CAttackBased::Draw();
 }
 
 //=============================================================================

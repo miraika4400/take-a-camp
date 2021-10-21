@@ -56,6 +56,8 @@ public:
 	static CColorManager*GetColorManager(void) { return m_pInstance; }
 	ColorData GetColorData(int nIndex) { m_aColorData[nIndex]; }
 	ColorData GetColorDataByPlayerNumber(int nPlayerNum); // プレイヤーが使っているカラーデータの取得
+
+
 	D3DXCOLOR GetStepColor(int nIndex, int nStep) { return m_aColorData[nIndex].aCol[nStep]; }
 	D3DXCOLOR GetIconColor(int nIndex) { return m_aColorData[nIndex].iconColor; }
 	int GetColorNum(void) { return (int)m_aColorData.size(); }

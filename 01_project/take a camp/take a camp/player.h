@@ -76,13 +76,15 @@ public:
 	void Death(void);	// 死亡処理関数
 
 	int GetColorNumber(void) { return m_nColor; }
-	CCollision * GetCollision(void) { return  m_pCollison; }
+	CCollision * GetCollision(void) { return  m_pCollision; }
 	int GetPlayerNumber(void) { return m_nPlayerNumber; }
 
 	void Bullet(void);	//弾の処理
 
 	void SetState(PLAYER_STATE PlayerState) {m_PlayerState = PlayerState;}
 	PLAYER_STATE GetState(void) { return m_PlayerState; }
+
+	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }
 	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }
 	ITEM_STATE GetItemState(void) { return m_ItemState; }
 private:
@@ -94,7 +96,7 @@ private:
 	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData);// シェーダに値を送る
 
 	// メンバ変数
-	static int m_anControllKey[5][KEY_MAX];
+	static int m_anControllKey[4][KEY_MAX];
 	static CResourceModel::Model m_model[MAX_PARTS_NUM]; // モデル構造体
 	static int m_nPartsNum;                              // モデルパーツ数
 	ITEM_STATE m_ItemState;			//アイテムステータス
@@ -112,7 +114,7 @@ private:
 	D3DXVECTOR3	 m_Move;		// 移動量
 	int			 m_MoveCount;	// 移動時のカウント
 	D3DXCOLOR	 m_color;		// 色
-	CCollision * m_pCollison;	// 当たり判定
+	CCollision * m_pCollision;	// 当たり判定
 	CActRange *	 m_pActRange;	// 行動判定
 	D3DXVECTOR3  m_rotDest;		// 回転(目標の値)
 	D3DXVECTOR3  m_RespawnPos;	// リスポーン位置
