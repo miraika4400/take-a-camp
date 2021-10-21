@@ -20,7 +20,8 @@
 //*****************************
 class CCollision;
 class CActRange;
-class CAttackBased;class CMotion;
+class CAttackBased;
+class CMotion;
 
 //*****************************
 // ƒNƒ‰ƒX’è‹`

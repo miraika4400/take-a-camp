@@ -29,7 +29,8 @@ const std::string CResourceModel::m_aModelPath[CResourceModel::MODEL_MAX]
 	"data/Models/bg.x",            // 背景モデル
 	"data/Models/player/04_yazirusi.x", // プレイヤー
 	"data/Models/stage.x",  // ステージ
-	"data/Models/bullet.x"	// バレット
+	"data/Models/bullet.x",	// バレット
+	"data/Models/needle.x",	// とげ
 };
 
 //===================================

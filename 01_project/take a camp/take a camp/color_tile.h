@@ -53,7 +53,7 @@ public:
 	void ResetTile(void);
 
 private:
-	void CollisionPlayer(void);    // プレイヤーとの当たり判定
+	void HitPlayerActionTrigger(CPlayer * pPlayer);  // 弾と当たったときのアクション*トリガー
 	void ManageFrame(void);        // アイコン管理
 	void Peint(int nColorNumber, int nPlayerNum); // 塗処理
 
@@ -64,7 +64,7 @@ private:
 	int m_nStep;              // 今の塗段階
 	int m_nCntStep;           // 再度塗り可能カウント
 	int m_nLastHitPlayerNum;  // 最後に当たったプレイヤー番号
-	bool m_bHitOld;           // 一個前のフレームで当たっていたか保存するよう
+
 };
 
 #endif

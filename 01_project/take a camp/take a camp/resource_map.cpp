@@ -176,6 +176,9 @@ void CMapManager::Load(void)
 				case BLOCK_TYPE_BLOCK:
 					m_MapData[nMap].BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_BLOCK;
 					break;
+				case BLOCK_TYPE_NEEDLE_BLOCK:
+					m_MapData[nMap].BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_NEEDLE_BLOCK;
+					break;
 				}
 				//バッファの初期化
 				memset(cFileString, 0, sizeof(cFileString));

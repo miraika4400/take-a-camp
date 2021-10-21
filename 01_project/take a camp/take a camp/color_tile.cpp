@@ -42,7 +42,6 @@ CColorTile::CColorTile()
 	m_nStep = 0;                                 // 今の塗段階
 	m_nCntStep = 0;                              // 再度塗り可能カウント
 	m_nLastHitPlayerNum = -1;                    // 現在の塗られている番号
-	m_bHitOld = false;                           // 一個前のフレームで当たっていたか保存するよう 
 }
 
 //******************************
@@ -119,7 +118,6 @@ HRESULT CColorTile::Init(void)
 	m_nStep = 0;                                 // 今の塗段階
 	m_nCntStep = 0;                              // 再度塗り可能カウント
 	m_nLastHitPlayerNum = -1;                    // 現在の塗られている番号
-	m_bHitOld = false;                           // 一個前のフレームで当たっていたか保存するよう 
 
 	return S_OK;
 }
@@ -140,9 +138,6 @@ void CColorTile::Update(void)
 
 	// タイルのアップデート
 	CTile::Update();
-
-	// プレイヤーとの当たり判定
-	CollisionPlayer();
 
 	// アイコンの管理
 	ManageFrame();
@@ -178,41 +173,20 @@ void CColorTile::ResetTile(void)
 	m_nStep = 0;                                 // 今の塗段階
 	m_nCntStep = 0;                              // 再度塗り可能カウント
 	m_nLastHitPlayerNum = -1;                    // 最後に当たったプレイヤー番号
-	m_bHitOld = false;
+	
 }
 
 //******************************
-// プレイヤーとの当たり判定
+// 弾と当たったときのアクション*トリガー
 //******************************
-void CColorTile::CollisionPlayer(void)
+void CColorTile::HitPlayerActionTrigger(CPlayer * pPlayer)
 {
-	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+	Peint(pPlayer->GetColorNumber(), pPlayer->GetPlayerNumber());
 
-	while (pPlayer != NULL)
-	{
-		if (CCollision::CollisionSphere(GetCollision(), pPlayer->GetCollision()))
-		{
-			if (!m_bHitOld)
-			{
-				Peint(pPlayer->GetColorNumber(), pPlayer->GetPlayerNumber());
-				
-				D3DXVECTOR3 pos = GetPos();
-				pos.y = PLAYER_HIT_POS_Y;
-				SetPos(pos);
-
-			}
-
-			// ヒットフラグの保存*当たってる
-			m_bHitOld = true;
-			return;
-		}
-		pPlayer = (CPlayer*)pPlayer->GetNext();
-	}
-
-	// ヒットフラグの保存*当たってない
-	m_bHitOld = false;
+	D3DXVECTOR3 pos = GetPos();
+	pos.y = PLAYER_HIT_POS_Y;
+	SetPos(pos);
 }
-
 
 //******************************
 // アイコンの管理

@@ -85,11 +85,3 @@ void CSpawnTile::Uninit(void)
 {
 	CTile::Uninit();
 }
-
-//******************************
-// ’e‚Æ“–‚½‚Á‚½‚Æ‚«‚ÌƒAƒNƒVƒ‡ƒ“
-//******************************
-void CSpawnTile::HitBulletAction(CBullet * pBullet)
-{
-	pBullet->Uninit();
-}

@@ -34,6 +34,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/number.png",       // ナンバー
 	"./data/Textures/frame.png",        // 枠
 	"./data/Textures/cross_mark.png",   // バツマーク
+	"./data/Textures/needle_hole.png",  // とげ穴
 };
 
 //===================================
