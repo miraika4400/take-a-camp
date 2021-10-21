@@ -26,6 +26,7 @@
 #include "light.h"
 #include "camera_base.h"
 #include "motion.h"
+#include "resource_texture.h"
 
 //*****************************
 // マクロ定義
@@ -46,7 +47,7 @@
 #define ROT_SPEED 0.3f				// 回転速度
 #define ROT_FACING_01 180			// 回転の基準
 #define ROT_FACING_02 360			// 回転向き
-#define RIM_POWER     0.5f          // リムライトの強さ
+#define RIM_POWER     2.5f          // リムライトの強さ
 #define DASH_FRAME      300
 #define DASH_MOVE_FRAME  MOVE_FRAME*0.8f
 #define STICK_DECISION_RANGE (32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
@@ -308,11 +309,14 @@ void CPlayer::Draw(void)
 	// 色の設定
 	for (int nCntParts = 0; nCntParts < GetPartsNum(); nCntParts++)
 	{
-		D3DXMATERIAL* mat = (D3DXMATERIAL*)GetModelData()[nCntParts].pBuffMat->GetBufferPointer();
-		mat->MatD3D.Ambient = m_color;
-		mat->MatD3D.Diffuse = m_color;
-		mat->MatD3D.Specular = m_color;
-		mat->MatD3D.Emissive = m_color;
+		for (int nCntMat = 0; nCntMat < GetModelData()[nCntParts].nNumMat; nCntMat++)
+		{
+			D3DXMATERIAL* mat = (D3DXMATERIAL*)GetModelData()[nCntParts].pBuffMat->GetBufferPointer();
+			mat[nCntMat].MatD3D.Ambient = m_color;
+			mat[nCntMat].MatD3D.Diffuse = m_color;
+			mat[nCntMat].MatD3D.Specular = m_color;
+			mat[nCntMat].MatD3D.Emissive = m_color;
+		}
 	}
 
 	CModelHierarchy::Draw();
@@ -677,5 +681,7 @@ void CPlayer::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pM
 		// リムから―の情報を送る
 		pEffect->SetFloatArray("RimColor", (float*)&GET_COLORMANAGER->GetColorDataByPlayerNumber(m_nColor).iconColor, 4);
 		pEffect->SetFloat("RimPower", RIM_POWER);
+		// キューブテクスチャ
+		pEffect->SetTexture("CubeTex", CResourceTexture::GetCubeTexture(CResourceTexture::TECTURE_CUBE_SLY));
 	}
 }
