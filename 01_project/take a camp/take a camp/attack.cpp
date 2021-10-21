@@ -152,7 +152,7 @@ void CAttackBased::AttackSwitch(void)
 		//ˆÊ’uŽæ“¾
 		SetPos(m_pPlayer->GetPos());
 		//Œü‚«Žæ“¾
-		SetRot(m_pPlayer->GetRot());
+		SetRot(m_pPlayer->GetRotDest());
 	}
 }
 
