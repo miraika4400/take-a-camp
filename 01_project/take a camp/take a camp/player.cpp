@@ -31,23 +31,23 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define HIERARCHY_TEXT_PATH1 "data/Text/hierarchy/pengin00.txt"   // 階層構造テキストのパス
+#define HIERARCHY_TEXT_PATH1 "data/Text/hierarchy/knight.txt"   // 階層構造テキストのパス
 #define MOVE_DIST (TILE_ONE_SIDE)	// 移動距離
 #define MOVE_FRAME 15				// 移動速度
 #define COLLISION_RADIUS 18.0f
 #define MODL_COLOR D3DXCOLOR(0.3f,0.3f,0.3f,1.0f)
-#define MODEL_SIZE D3DXVECTOR3( 0.3f, 0.3f, 0.3f)
-//#define MODEL_SIZE D3DXVECTOR3( 1.0f, 1.0f, 1.0f)
+//#define MODEL_SIZE D3DXVECTOR3( 0.3f, 0.3f, 0.3f)
+#define MODEL_SIZE D3DXVECTOR3( 1.0f, 1.0f, 1.0f)
 #define RESPAWN_MAX_COUNT (60*5)	// リスポーンまでの最大カウント
 #define INVINCIBLE_COUNT (60*2)		// 無敵時間
-#define ROTDEST_PREVIOUS 270.0f		// 前方向き
-#define ROTDEST_AFTER 90.0f			// 後方向き
-#define ROTDEST_LEFT 180.0f			// 左向き
-#define ROTDEST_RIGHT 0.0f			// 右向き
+#define ROTDEST_PREVIOUS 0.0f		// 前方向き
+#define ROTDEST_AFTER 	180.0f		// 後方向き
+#define ROTDEST_LEFT 270.0f			// 左向き
+#define ROTDEST_RIGHT 90.0f			// 右向き
 #define ROT_SPEED 0.3f				// 回転速度
 #define ROT_FACING_01 180			// 回転の基準
 #define ROT_FACING_02 360			// 回転向き
-#define RIM_POWER     2.5f          // リムライトの強さ
+#define RIM_POWER     0.5f          // リムライトの強さ
 #define DASH_FRAME      300
 #define DASH_MOVE_FRAME  MOVE_FRAME*0.8f
 #define STICK_DECISION_RANGE (32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
