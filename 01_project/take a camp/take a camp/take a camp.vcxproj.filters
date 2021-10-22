@@ -264,6 +264,9 @@
     <ClCompile Include="item.cpp">
       <Filter>ソース ファイル\07_GameModel</Filter>
     </ClCompile>
+    <ClCompile Include="needle_tile.cpp">
+      <Filter>ソース ファイル\08_Map\Tile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -421,6 +424,9 @@
     </ClInclude>
     <ClInclude Include="item.h">
       <Filter>ヘッダー ファイル\07_GameModel</Filter>
+    </ClInclude>
+    <ClInclude Include="needle_tile.h">
+      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

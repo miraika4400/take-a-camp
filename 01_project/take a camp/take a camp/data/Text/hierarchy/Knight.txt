@@ -1,0 +1,154 @@
+#==============================================================================
+#
+# 『モーションビューワ』スクリプトファイル [motion.txt]
+# Author : 伊藤陽梧
+#
+#==============================================================================
+SCRIPT			# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# モデル数
+#------------------------------------------------------------------------------
+NUM_MODEL = 16
+
+#------------------------------------------------------------------------------
+# モデルファイル名
+#------------------------------------------------------------------------------
+MODEL_FILENAME = data/Models/player/00_knight/00_karada.x			# [00]体
+MODEL_FILENAME = data/Models/player/00_knight/01_kosi.x			# [01]腰
+MODEL_FILENAME = data/Models/player/00_knight/02_atama.x			# [02]頭
+MODEL_FILENAME = data/Models/player/00_knight/03_migikata.x		# [03]右上腕
+MODEL_FILENAME = data/Models/player/00_knight/04_migiude.x		# [04]右前腕
+MODEL_FILENAME = data/Models/player/00_knight/05_migite.x			# [05]右手
+MODEL_FILENAME = data/Models/player/00_knight/06_hidarikata.x		# [06]左上腕
+MODEL_FILENAME = data/Models/player/00_knight/07_hidariude.x		# [07]左前腕
+MODEL_FILENAME = data/Models/player/00_knight/08_hidarite.x		# [08]左手
+MODEL_FILENAME = data/Models/player/00_knight/09_migihutomomo.x	# [09]右もも
+MODEL_FILENAME = data/Models/player/00_knight/10_migileg.x		# [10]右ふくらはぎ
+MODEL_FILENAME = data/Models/player/00_knight/11_migiasi.x		# [11]右足
+MODEL_FILENAME = data/Models/player/00_knight/12_hidarihutomomo.x	# [12]左もも
+MODEL_FILENAME = data/Models/player/00_knight/13_hidarileg.x		# [13]左ふくらはぎ
+MODEL_FILENAME = data/Models/player/00_knight/14_hidariasi.x		# [14]左足
+MODEL_FILENAME = data/Models/player/00_knight/15_dodai.x			# [15]土台
+
+#------------------------------------------------------------------------------
+# キャラクター情報
+#------------------------------------------------------------------------------
+CHARACTERSET
+	MOVE = 3.0						# 移動量
+	JUMP = 10.25					# ジャンプ量
+	RADIUS = 20.0					# 半径
+	NUM_PARTS = 16					# パーツ数
+
+	PARTSSET
+		INDEX = 0					# 体
+		PARENT = 15					# (親)NULL
+		POS = 0.0 14.3 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 1					# 腰
+		PARENT = 0					# (親)腰
+		POS = 0.0 0.5 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 2					# 頭
+		PARENT = 0					# (親)上半身
+		POS = 0.0 5.5 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 3					# 右上腕
+		PARENT = 0					# (親)腹
+		POS = -3.5 5.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 4					# 右前腕
+		PARENT = 3					# (親)右上腕
+		POS = -3.0 0.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 5					# 右手
+		PARENT = 4					# (親)右前腕
+		POS = -4.0 0.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 6					# 左上腕
+		PARENT = 0					# (親)腹
+		POS = 3.5 5.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 7					# 左前腕
+		PARENT = 6					# (親)左上腕
+		POS = 3.0 0.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 8					# 左手
+		PARENT = 7					# (親)左前腕
+		POS = 4.0 0.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 9					# 右もも
+		PARENT = 1					# (親)腰
+		POS = -1.0 -1.5 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+
+	PARTSSET
+		INDEX = 10					# 右ふくらはぎ
+		PARENT = 9					# (親)右もも
+		POS = 0.0 -3.5 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 11					# 右足
+		PARENT = 10					# (親)右ふくらはぎ
+		POS = 0.0 -5.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 12					# 左もも
+		PARENT = 1					# (親)腰
+		POS = 1.0 -1.5 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 13					# 左ふくらはぎ
+		PARENT = 12					# (親)左もも
+		POS = 0.0 -3.5 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+		PARTSSET
+		INDEX = 14					# 左足
+		PARENT = 13					# (親)左ふくらはぎ
+		POS = 0.0 -5.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+	
+		PARTSSET
+		INDEX = 15					# 土台
+		PARENT = -1					# (親)右上腕
+		POS = 0.0 0.0 0.0
+		ROT = 0.00 0.00 0.00
+	END_PARTSSET
+END_CHARACTERSET

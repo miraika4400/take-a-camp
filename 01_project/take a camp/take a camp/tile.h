@@ -21,6 +21,8 @@
 class CCollision;
 class CScene3d;
 class CBullet;
+class CPlayer;
+
 //*****************************
 //マクロ定義
 //*****************************
@@ -45,8 +47,8 @@ public:
 
 	static CTile *Create(D3DXVECTOR3 pos);
 	
-	HRESULT Init(void);
-	void Uninit(void);
+	virtual HRESULT Init(void);
+	virtual void Uninit(void);
 	virtual void Update(void);
 	virtual void Draw(void);
 
@@ -63,9 +65,17 @@ public:
 	// コリジョンの取得
 	CCollision*GetCollision(void) { return m_pCollison; }
 
+	// ヒットフラグ
+	bool GetHitPlayerFlag(void) { return m_bHitPlayer; }
+	bool GetHitBulletFlag(void) { return m_bHitBullet; }
+
 private:
 	void DrawModel(void);
 	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData); // シェーダに値を送る
+
+	bool CollisionPlayer(void);                       // プレイヤーとの当たり判定
+	virtual void HitPlayerAction(CPlayer * pPlayer);         // 弾と当たったときのアクション*プレス
+	virtual void HitPlayerActionTrigger(CPlayer * pPlayer);  // 弾と当たったときのアクション*トリガー
 	bool CollisionBullet(void);                                                       // 弾との当たり判定
 	virtual void HitBulletAction(CBullet * pBullet);                                               // 弾と当たったときのアクション
 
@@ -74,6 +84,9 @@ private:
 	CCollision * m_pCollison; // 当たり判定
 	float m_fDistPosY;        // 座標Yの目標値
 	float m_fDistPosYRate;    // 座標Yの変更時の係数
+	bool m_bHitOld;           // 一個前のフレームで当たっていたか保存するよう
+	bool m_bHitPlayer;        // プレイヤーが当たっているフラグ
+	bool m_bHitBullet;        // 弾が当たっているフラグ
 };
 
 #endif

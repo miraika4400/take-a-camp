@@ -16,6 +16,8 @@
 #include "light.h"
 #include "collision.h"
 #include "bullet.h"
+#include "player.h"
+
 #ifdef _DEBUG
 #include "keyboard.h"
 #endif
@@ -40,6 +42,9 @@ CTile::CTile() :CModel(OBJTYPE_TILE)
 	m_pCollison = NULL;
 	m_fDistPosY = TILE_POS_Y;        // 座標Yの目標値
 	m_fDistPosYRate = POS_Y_RATE_BASE;    // 座標Yの変更時の係数
+	m_bHitOld = false;
+	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
+	m_bHitBullet = false;        // 弾が当たっているフラグ
 }
 
 //******************************
@@ -84,12 +89,18 @@ HRESULT CTile::Init(void)
 	// サイズの設定
 	SetSize(TILE_SIZE);
 
-	// 色の設定
-	m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
+	// 変数の初期化
+	m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f); // 色
 	m_fDistPosY = TILE_POS_Y;        // 座標Yの目標値
 	m_fDistPosYRate = POS_Y_RATE_BASE;    // 座標Yの変更時の係数
+	m_bHitOld = false;                           // 一個前のフレームで当たっていたか保存するよう 
+	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
+	m_bHitBullet = false;        // 弾が当たっているフラグ
 
+	if (m_pCollison == NULL)
+	{
+		m_pCollison = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z), TILE_ONE_SIDE / 2);
+	}
 	return S_OK;
 }
 
@@ -114,21 +125,17 @@ void CTile::Update(void)
 
 	m_fDistPosY = TILE_POS_Y;
 	m_fDistPosYRate = POS_Y_RATE_BASE;
+	
+	if (m_pCollison->GetPos() != D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z))
+	{
+		m_pCollison->SetPos(D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z));
+	}
 
-	if (m_pCollison == NULL)
-	{
-		m_pCollison = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z), TILE_ONE_SIDE / 2);
-	}
-	else
-	{
-		if (m_pCollison->GetPos() != D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z))
-		{
-			m_pCollison->SetPos(D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z));
-		}
-	}
+	// プレイヤーとの当たり判定
+	m_bHitPlayer = CollisionPlayer();
 
 	// 弾との当たり判定
-	CollisionBullet();
+	m_bHitBullet = CollisionBullet();
 }
 
 //******************************
@@ -251,6 +258,48 @@ void CTile::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pMod
 }
 
 //******************************
+// プレイヤーとの当たり判定
+//******************************
+bool CTile::CollisionPlayer(void)
+{
+	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+
+	while (pPlayer != NULL)
+	{
+		if (CCollision::CollisionSphere(m_pCollison, pPlayer->GetCollision()))
+		{
+			if (!m_bHitOld)
+			{
+				HitPlayerActionTrigger(pPlayer);
+			}
+			HitPlayerAction(pPlayer);
+			// ヒットフラグの保存*当たってる
+			m_bHitOld = true;
+			return true;
+		}
+		pPlayer = (CPlayer*)pPlayer->GetNext();
+	}
+
+	// ヒットフラグの保存*当たってない
+	m_bHitOld = false;
+	return false;
+}
+
+//******************************
+// 弾と当たったときのアクション*プレス
+//******************************
+void CTile::HitPlayerAction(CPlayer * pPlayer)
+{
+}
+
+//******************************
+// 弾と当たったときのアクション*トリガー
+//******************************
+void CTile::HitPlayerActionTrigger(CPlayer * pPlayer)
+{
+}
+
+//******************************
 // 弾との当たり判定
 //******************************
 bool CTile::CollisionBullet(void)
@@ -259,7 +308,7 @@ bool CTile::CollisionBullet(void)
 
 	while (pBullet != NULL)
 	{
-		if (CCollision::CollisionSphere(GetCollision(), pBullet->GetCollision()))
+		if (CCollision::CollisionSphere(m_pCollison, pBullet->GetCollision()))
 		{
 			HitBulletAction(pBullet);
 			return true;

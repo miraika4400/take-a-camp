@@ -36,6 +36,7 @@
 #define COLLISION_RADIUS 18.0f
 #define MODL_COLOR D3DXCOLOR(0.3f,0.3f,0.3f,1.0f)
 #define MODEL_SIZE D3DXVECTOR3( 0.3f, 0.3f, 0.3f)
+//#define MODEL_SIZE D3DXVECTOR3( 1.0f, 1.0f, 1.0f)
 #define RESPAWN_MAX_COUNT (60*5)	// リスポーンまでの最大カウント
 #define INVINCIBLE_COUNT (60*2)		// 無敵時間
 #define ROTDEST_PREVIOUS 270.0f		// 前方向き
@@ -344,9 +345,11 @@ void CPlayer::Death(void)
 		m_pActRange->SetDeath(true);
 		//透明にする
 		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+
+		//位置セット
+		SetPos(m_RespawnPos);
 	}
-	//位置セット
-	SetPos(m_RespawnPos);
+
 }
 
 //******************************

@@ -57,6 +57,7 @@ public:
 		MODEL_PLAYER01,           // プレイヤーモデル01
 		MODEL_STAGE01,            // ステージモデル01
 		MODEL_BULLET01,			  // バレットモデル01
+		MODEL_NEEDLE,             // とげ
 		MODEL_MAX        // モデル数
 	}MODEL_TYPE;
 

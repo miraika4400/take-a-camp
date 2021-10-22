@@ -13,9 +13,9 @@
 #include "player.h"
 #include "spawn_tile.h"
 #include "color_manager.h"
+#include "needle_tile.h"
 #include "item.h"
 #include <time.h>
-
 //=============================================================================
 // マクロ定義
 //=============================================================================
@@ -149,6 +149,12 @@ void CMap::MapCreate(void)
 				case CMapManager::BLOCK_TYPE_BLOCK:	//仮置きタイル
 				{
 					CColorTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, ColorTileHeight, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos);
+					ColorTileHeight += COLOR_TILE_PLUS_HEIGHT;
+					break;
+				}
+				case CMapManager::BLOCK_TYPE_NEEDLE_BLOCK:
+				{
+					CNeedleTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, ColorTileHeight, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos);
 					ColorTileHeight += COLOR_TILE_PLUS_HEIGHT;
 					break;
 				}

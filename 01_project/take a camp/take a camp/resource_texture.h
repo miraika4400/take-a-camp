@@ -37,6 +37,7 @@ public:
 		TEXTURE_NUMBER,          // ナンバー
 		TEXTURE_FRAME,           // 枠
 		TEXTURE_CROSS_MARK,      // ×マーク
+		TEXTURE_NEEDLE,          // とげ穴
 		TEXTURE_MAX              // テクスチャ数
 	}TEXTURE_TYPE;
 	

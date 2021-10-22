@@ -156,6 +156,7 @@
     <ClCompile Include="attack.cpp" />
     <ClCompile Include="attack_1.cpp" />
     <ClCompile Include="item.cpp" />
+    <ClCompile Include="needle_tile.cpp" />
     <ClCompile Include="resource_attack.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="billboard.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="attack.h" />
     <ClInclude Include="attack_1.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="needle_tile.h" />
     <ClInclude Include="resource_attack.h" />
     <ClInclude Include="bg.h" />
     <ClInclude Include="billboard.h" />
