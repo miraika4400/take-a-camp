@@ -200,9 +200,9 @@ void CAttackBased::Attack(int AttackType)
 			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 			//UŒ‚ˆÊ’u
 			D3DXVECTOR3 AttackPos = m_AttackSquare[m_nLevel].SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
-			CreatePos.x = ((cosf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.x) + (sinf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.z));
+			CreatePos.x = ((cosf(m_rot.y)*AttackPos.x) + (sinf(m_rot.y)*AttackPos.z));
 			CreatePos.y = 1 * AttackPos.y;
-			CreatePos.z = ((-sinf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.x) + (cosf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.z));
+			CreatePos.z = ((-sinf(m_rot.y)*AttackPos.x) + (cosf(m_rot.y)*AttackPos.z));
 			//“–‚½‚è”»’è¶¬
 			CBullet::Create(CreatePos + m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_pPlayer->GetPlayerNumber());
 		}
