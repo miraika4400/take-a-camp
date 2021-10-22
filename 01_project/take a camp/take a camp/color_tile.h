@@ -43,6 +43,8 @@ public:
 	static int GetTileNum(int nIndex) { return m_anTileNum[nIndex][0]; } // 特定カラーのタイル数
 	static int GetTileNum(int nIndex, int nStep) { return m_anTileNum[nIndex][nStep]; } // 特定カラーの特定段階のタイル数
 
+	static CColorTile*GetHitColorTile(D3DXVECTOR3 pos); // 指定座標とぶつかっているタイルの取得処理
+
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
@@ -50,12 +52,14 @@ public:
 	int GetPeintNum(void) { return m_nPrevNum; } // 塗られている色の取得
 	int GetStepNum(void) { return m_nStep; }     // ステップの取得
 
-	void ResetTile(void);
+	void ResetTile(void); // タイルのリセット
+	
+	void Peint(int nColorNumber, int nPlayerNum); // 塗処理
 
 private:
-	void CollisionPlayer(void);    // プレイヤーとの当たり判定
+	void HitPlayerActionTrigger(CPlayer * pPlayer);  // 弾と当たったときのアクション*トリガー
 	void ManageFrame(void);        // アイコン管理
-	void Peint(int nColorNumber, int nPlayerNum); // 塗処理
+	
 
 	// メンバ変数
 	static int m_anTileNum[MAX_TILE_COLOR_NUM][COLOR_STEP_NUM + 1];
@@ -64,7 +68,7 @@ private:
 	int m_nStep;              // 今の塗段階
 	int m_nCntStep;           // 再度塗り可能カウント
 	int m_nLastHitPlayerNum;  // 最後に当たったプレイヤー番号
-	bool m_bHitOld;           // 一個前のフレームで当たっていたか保存するよう
+
 };
 
 #endif

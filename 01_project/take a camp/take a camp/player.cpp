@@ -26,26 +26,29 @@
 #include "light.h"
 #include "camera_base.h"
 #include "motion.h"
+#include "resource_texture.h"
+#include "color_tile.h"
 
 //*****************************
 // マクロ定義
 //*****************************
-#define HIERARCHY_TEXT_PATH1 "data/Text/hierarchy/pengin00.txt"   // 階層構造テキストのパス
+#define HIERARCHY_TEXT_PATH1 "data/Text/hierarchy/knight.txt"   // 階層構造テキストのパス
 #define MOVE_DIST (TILE_ONE_SIDE)	// 移動距離
 #define MOVE_FRAME 15				// 移動速度
 #define COLLISION_RADIUS 18.0f
 #define MODL_COLOR D3DXCOLOR(0.3f,0.3f,0.3f,1.0f)
-#define MODEL_SIZE D3DXVECTOR3( 0.3f, 0.3f, 0.3f)
+//#define MODEL_SIZE D3DXVECTOR3( 0.3f, 0.3f, 0.3f)
+#define MODEL_SIZE D3DXVECTOR3( 1.0f, 1.0f, 1.0f)
 #define RESPAWN_MAX_COUNT (60*5)	// リスポーンまでの最大カウント
 #define INVINCIBLE_COUNT (60*2)		// 無敵時間
-#define ROTDEST_PREVIOUS 270.0f		// 前方向き
-#define ROTDEST_AFTER 90.0f			// 後方向き
-#define ROTDEST_LEFT 180.0f			// 左向き
-#define ROTDEST_RIGHT 0.0f			// 右向き
+#define ROTDEST_PREVIOUS 0.0f		// 前方向き
+#define ROTDEST_AFTER 	180.0f		// 後方向き
+#define ROTDEST_LEFT 270.0f			// 左向き
+#define ROTDEST_RIGHT 90.0f			// 右向き
 #define ROT_SPEED 0.3f				// 回転速度
 #define ROT_FACING_01 180			// 回転の基準
 #define ROT_FACING_02 360			// 回転向き
-#define RIM_POWER     0.5f          // リムライトの強さ
+#define RIM_POWER     2.5f          // リムライトの強さ
 #define DASH_FRAME      300
 #define DASH_MOVE_FRAME  MOVE_FRAME*0.8f
 #define STICK_DECISION_RANGE (32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
@@ -258,7 +261,7 @@ void CPlayer::Update(void)
 	}
 
 	// 弾の処理
-	Bullet();
+	Attack();
 
 	// 向きの取得
 	D3DXVECTOR3 rot = GetRot();
@@ -291,7 +294,11 @@ void CPlayer::Update(void)
 		}
 		if (pKey->GetKeyPress(DIK_2))
 		{
-			m_pAttack->AttackSwitch();
+			m_pAttack->AttackSwitch(0);
+		}
+		if (pKey->GetKeyPress(DIK_3))
+		{
+			m_pAttack->AttackSwitch(1);
 		}
 	}
 
@@ -307,11 +314,14 @@ void CPlayer::Draw(void)
 	// 色の設定
 	for (int nCntParts = 0; nCntParts < GetPartsNum(); nCntParts++)
 	{
-		D3DXMATERIAL* mat = (D3DXMATERIAL*)GetModelData()[nCntParts].pBuffMat->GetBufferPointer();
-		mat->MatD3D.Ambient = m_color;
-		mat->MatD3D.Diffuse = m_color;
-		mat->MatD3D.Specular = m_color;
-		mat->MatD3D.Emissive = m_color;
+		for (int nCntMat = 0; nCntMat < GetModelData()[nCntParts].nNumMat; nCntMat++)
+		{
+			D3DXMATERIAL* mat = (D3DXMATERIAL*)GetModelData()[nCntParts].pBuffMat->GetBufferPointer();
+			mat[nCntMat].MatD3D.Ambient = m_color;
+			mat[nCntMat].MatD3D.Diffuse = m_color;
+			mat[nCntMat].MatD3D.Specular = m_color;
+			mat[nCntMat].MatD3D.Emissive = m_color;
+		}
 	}
 
 	CModelHierarchy::Draw();
@@ -340,9 +350,11 @@ void CPlayer::Death(void)
 		m_pActRange->SetDeath(true);
 		//透明にする
 		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+
+		//位置セット
+		SetPos(m_RespawnPos);
 	}
-	//位置セット
-	SetPos(m_RespawnPos);
+
 }
 
 //******************************
@@ -469,7 +481,7 @@ void CPlayer::Move(void)
 }//******************************
 // 弾の処理
 //******************************
-void CPlayer::Bullet(void)
+void CPlayer::Attack(void)
 {
 	// キーボードとジョイパッドの取得
 	CInputKeyboard * pKey = CManager::GetKeyboard();
@@ -523,7 +535,15 @@ void CPlayer::Bullet(void)
 	if (pKey->GetKeyRelease(m_anControllKey[m_nPlayerNumber][KEY_BULLET])
 		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nPlayerNumber))
 	{
-		m_pAttack->AttackSwitch();
+		// 当たっているタイルの取得
+		CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
+
+		if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor && !m_pAttack->GetAttackFlag())
+		{
+			m_pAttack->AttackSwitch(pHitTile->GetStepNum() - 1);
+			pHitTile->ResetTile();
+		}
+		
 	}
 
 	//位置設定
@@ -707,5 +727,7 @@ void CPlayer::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pM
 		// リムから―の情報を送る
 		pEffect->SetFloatArray("RimColor", (float*)&GET_COLORMANAGER->GetColorDataByPlayerNumber(m_nColor).iconColor, 4);
 		pEffect->SetFloat("RimPower", RIM_POWER);
+		// キューブテクスチャ
+		pEffect->SetTexture("CubeTex", CResourceTexture::GetCubeTexture(CResourceTexture::TECTURE_CUBE_SLY));
 	}
 }

@@ -34,6 +34,12 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/number.png",       // ナンバー
 	"./data/Textures/frame.png",        // 枠
 	"./data/Textures/cross_mark.png",   // バツマーク
+	"./data/Textures/needle_hole.png",  // とげ穴
+};
+// テクスチャのパス
+const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]
+{
+	"./data/Textures/cube_sky.dds",     // キューブテクスチャ空
 };
 
 //===================================
@@ -106,6 +112,18 @@ LPDIRECT3DTEXTURE9 CResourceTexture::GetTexture(TEXTURE_TYPE type)
 	}
 }
 
+LPDIRECT3DCUBETEXTURE9 CResourceTexture::GetCubeTexture(TEXTURE_CUBE_TYPE type)
+{
+	if (m_pSingleTex != NULL)
+	{
+		return m_pSingleTex->m_apCubeTexture[type];
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
 //===================================
 // テクスチャ読み込み
 //===================================
@@ -119,6 +137,13 @@ void CResourceTexture::Load(void)
 	{
 		// テクスチャの生成
 		D3DXCreateTextureFromFile(pDevice, m_aTexPath[nCnt].c_str(), &m_apTexture[nCnt]);
+	}
+
+	// テクスチャ数分ループ
+	for (int nCnt = 0; nCnt < TEXTURE_CUBE_MAX; nCnt++)
+	{
+		// テクスチャの生成
+		D3DXCreateCubeTextureFromFile(pDevice, m_aCubeTexPath[nCnt].c_str(), &m_apCubeTexture[nCnt]);
 	}
 	int n = 0;
 }

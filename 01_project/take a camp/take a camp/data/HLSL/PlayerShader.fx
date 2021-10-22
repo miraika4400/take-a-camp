@@ -17,16 +17,26 @@ struct VS_IN
 
 struct VS_OUT
 {
-	float4 Position : POSITION;
-	float3 viewDir : TEXCOORD1;
-	float3 normalDir : TEXCOORD2;
-	float4 Color    :COLOR;         // ディフューズ
-	float2 TexCoord :TEXCOORD;     // テクスチャUV
+	float4 Position     : POSITION;
+	float4 Color        : COLOR;         // ディフューズ
+	float4 Specular     : COLOR1;
+	float2 TexCoord     : TEXCOORD;     // テクスチャUV
+	float3 viewDir      : TEXCOORD1;
+	float3 normalDir    : TEXCOORD2;
+	float3 CubeTexCoord : TEXCOORD3; // キューブテクスチャTEX
 };
 
 texture Tex;
 sampler Sampler = sampler_state {
 	Texture = Tex;
+	MipFilter = LINEAR;
+	MinFilter = LINEAR;
+	MagFilter = LINEAR;
+};
+
+texture CubeTex;
+samplerCUBE SamplerCube = sampler_state {
+	Texture = CubeTex;
 	MipFilter = LINEAR;
 	MinFilter = LINEAR;
 	MagFilter = LINEAR;
@@ -53,12 +63,21 @@ VS_OUT VS(VS_IN In)
 	// カラーの設定
 	Out.Color = DiffuseColor*LightPower;
 	Out.Color.a = 1.0f;
+	
+	// スペキュラ
+	float3 H = normalize(normalize(LightDirection) + normalize(Eye - mul(World, In.Position)));
+	Out.Specular = SpecularColor * dot(Out.normalDir, H);
+	Out.Specular = pow(Out.Specular, 8);
 
+	// viewベクトル
 	Out.viewDir = normalize(Eye - mul(World, In.Position).xyz);
 	
 	// UV
 	Out.TexCoord = In.TexCoord;
 
+	// キューブテクスチャ
+    Out.CubeTexCoord = reflect(mul(World, In.Position).xyz - Eye, Out.normalDir);
+	
 	return Out;
 }
 
@@ -67,7 +86,7 @@ VS_OUT VS(VS_IN In)
 //////////////////////////////////
 float4 PS(VS_OUT In) :COLOR
 {
-	float4 col = In.Color;
+	float4 col = texCUBE(SamplerCube, In.CubeTexCoord)*In.Color + In.Specular;
 
 	// リム
 	float rim = 1.0f - abs(dot(In.viewDir, In.normalDir));
@@ -83,7 +102,7 @@ float4 PS(VS_OUT In) :COLOR
 //////////////////////////////////
 float4 PS_TEX(VS_OUT In) :COLOR
 {
-	float4 col = tex2D(Sampler, In.TexCoord);
+	float4 col = tex2D(Sampler, In.TexCoord)*texCUBE(SamplerCube, In.CubeTexCoord) + In.Specular;
 
 	// リム
 	float rim = 1.0f - abs(dot(In.viewDir, In.normalDir));

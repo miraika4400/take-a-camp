@@ -27,7 +27,7 @@ class CBullet;
 // クラス定義
 //*****************************
 
-// リスポーンタイルクラス
+// スポーンタイルクラス
 class CSpawnTile : public CTile
 {
 public:
@@ -40,7 +40,6 @@ public:
 	HRESULT Init(void);
 	void Uninit(void);
 private:
-	void HitBulletAction(CBullet*pBullet);
 
 	// メンバ変数
 	CScene3d *m_pCrossPolygon;        // マーク

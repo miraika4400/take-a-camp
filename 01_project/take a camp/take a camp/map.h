@@ -33,6 +33,8 @@ public:
 	void SetMapData(CMapManager::MAP_DATA MapData);
 	CMapManager::MAP_DATA GetMapData(void);
 private:
+	void	ItemSpawn(void);		//アイテムの生成処理
+	int		m_nItemSpawnCount;		//アイテムスポーンまでのカウント		
 	CMapManager::MAP_DATA m_MapData;
 	CMapManager::MAP_TYPE m_MapType;
 };

@@ -24,7 +24,6 @@ CAttackBased::CAttackBased()
 	memset(&m_AttackSquare, 0, sizeof(CAttackManager::ATTACK_SQUARE_DATA));
 	m_bAttack = false;
 	m_pPlayer = NULL;
-
 }
 
 //=============================================================================
@@ -40,7 +39,11 @@ CAttackBased::~CAttackBased()
 HRESULT CAttackBased::Init(void)
 {
 	//攻撃タイプセット
-	m_AttackSquare = CAttackManager::GetAttack(m_nAttackType,1);
+	for (int nLevel = 0; nLevel < MAX_ATTACK_LEVEL; nLevel++)
+	{
+		m_AttackSquare[nLevel] = CAttackManager::GetAttack(m_nAttackType, nLevel);
+
+	}
 	return S_OK;
 }
 
@@ -58,6 +61,7 @@ void CAttackBased::Uninit(void)
 //=============================================================================
 void CAttackBased::Update(void)
 {
+	AttackCreate();
 }
 
 //=============================================================================
@@ -84,19 +88,19 @@ CAttackManager::ATTACK_TYPE CAttackBased::GetAttackType(void)
 }
 
 //=============================================================================
-// 撃マスデータゲッター関数
+// 攻撃マスデータゲッター関数
 //=============================================================================
 void CAttackBased::SetAttackSquare(CAttackManager::ATTACK_SQUARE_DATA AttackSquare)
 {
-	m_AttackSquare = AttackSquare;
+	m_AttackSquare[m_nLevel] = AttackSquare;
 }
 
 //=============================================================================
-// 撃マスデータゲッター関数
+// 攻撃マスデータゲッター関数
 //=============================================================================
-CAttackManager::ATTACK_SQUARE_DATA CAttackBased::GetAttackSquare(void)
+CAttackManager::ATTACK_SQUARE_DATA CAttackBased::GetAttackSquare()
 {
-	return m_AttackSquare;
+	return m_AttackSquare[m_nLevel];
 }
 
 //=============================================================================
@@ -142,7 +146,7 @@ void CAttackBased::SetAttackFlag(bool bAttack)
 //=============================================================================
 // 攻撃スイッチ関数
 //=============================================================================
-void CAttackBased::AttackSwitch(void)
+void CAttackBased::AttackSwitch(int nLevel)
 {
 	//攻撃されていなかったら
 	if (!m_bAttack)
@@ -152,7 +156,9 @@ void CAttackBased::AttackSwitch(void)
 		//位置取得
 		SetPos(m_pPlayer->GetPos());
 		//向き取得
-		SetRot(m_pPlayer->GetRot());
+		SetRot(m_pPlayer->GetRotDest());
+		//レベル取得
+		m_nLevel = nLevel;
 	}
 }
 
@@ -185,18 +191,18 @@ CPlayer * CAttackBased::GetPlayer(void)
 //=============================================================================
 void CAttackBased::Attack(int AttackType)
 {
-	for (int nAttack = 0; nAttack<m_AttackSquare.nMaxHitRange; nAttack++)
+	for (int nAttack = 0; nAttack<m_AttackSquare[m_nLevel].nMaxHitRange; nAttack++)
 	{
 		//タイプが一致しているか
-		if (m_AttackSquare.SquareData[nAttack].RangeType == AttackType + (int)CAttackManager::ATTACK_RANGE_HIT_1)
+		if (m_AttackSquare[m_nLevel].SquareData[nAttack].RangeType == AttackType + (int)CAttackManager::ATTACK_RANGE_HIT_1)
 		{
 			//行列計算
 			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 			//攻撃位置
-			D3DXVECTOR3 AttackPos = m_AttackSquare.SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
-			CreatePos.x = ((cosf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.x) + (sinf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.z));
+			D3DXVECTOR3 AttackPos = m_AttackSquare[m_nLevel].SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
+			CreatePos.x = ((cosf(m_rot.y)*AttackPos.x) + (sinf(m_rot.y)*AttackPos.z));
 			CreatePos.y = 1 * AttackPos.y;
-			CreatePos.z = ((-sinf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.x) + (cosf(m_rot.y + D3DXToRadian(90.0f))*AttackPos.z));
+			CreatePos.z = ((-sinf(m_rot.y)*AttackPos.x) + (cosf(m_rot.y)*AttackPos.z));
 			//当たり判定生成
 			CBullet::Create(CreatePos + m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_pPlayer->GetPlayerNumber());
 		}
