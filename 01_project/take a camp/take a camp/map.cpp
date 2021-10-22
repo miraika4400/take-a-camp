@@ -13,6 +13,8 @@
 #include "player.h"
 #include "spawn_tile.h"
 #include "color_manager.h"
+#include "item.h"
+#include <time.h>
 
 //=============================================================================
 // マクロ定義
@@ -21,6 +23,7 @@
 #define COLOR_TILE_INIT_HEIGHT -TILE_SIZE_Y/2 // カラータイル初めの高さ
 //#define COLOR_TILE_PLUS_HEIGHT 50.0f // カラータイル生成時ひとつ生成するたびに生成位置を高くする
 //#define COLOR_TILE_INIT_HEIGHT 500.0f // カラータイル初めの高さ
+#define MAX_ITEM_SPAWN_COUNT (60*10)	//アイテムスポーンの最大カウント
 
 //=============================================================================
 // 静的メンバー変数
@@ -31,6 +34,7 @@
 //=============================================================================
 CMap::CMap()
 {
+	m_nItemSpawnCount = 0;
 	memset(&m_MapData, 0, sizeof(m_MapData));
 }
 
@@ -84,6 +88,7 @@ void CMap::Uninit(void)
 //=============================================================================
 void CMap::Update(void)
 {
+	ItemSpawn();
 }
 
 //=============================================================================
@@ -155,12 +160,50 @@ void CMap::MapCreate(void)
 	}
 }
 
+//=============================================================================
+// マップデータセッター関数
+//=============================================================================
 void CMap::SetMapData(CMapManager::MAP_DATA MapData)
 {
 	m_MapData = MapData;
 }
 
+//=============================================================================
+// マップデータゲッター関数
+//=============================================================================
 CMapManager::MAP_DATA CMap::GetMapData(void)
 {
 	return m_MapData;
+}
+
+//=============================================================================
+// アイテムスポーン処理関数
+//=============================================================================
+void CMap::ItemSpawn(void)
+{
+	//カウントアップ
+	m_nItemSpawnCount++;
+	//カウントが一定になったら
+	if (m_nItemSpawnCount >= MAX_ITEM_SPAWN_COUNT)
+	{
+		//アイテムのスポーン位置
+		D3DXVECTOR3 ItemPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		//ランダム関数の初期化
+		srand((unsigned int)time(NULL));
+		int nPosY = rand() % m_MapData.nStageSizeY;
+		int nPosX = rand()% m_MapData.BlockData[nPosY].nStageSizeX;
+		//ランダムに決めたマス目に移動できるか
+		while (m_MapData.BlockData[nPosY].nBlockType[nPosX] != CMapManager::BLOCK_TYPE_BLOCK)
+		{
+			nPosY = rand() % m_MapData.nStageSizeY;
+			nPosX = rand() % m_MapData.BlockData[nPosY].nStageSizeX;
+		}
+		
+		//アイテム生成位置設定
+		ItemPos = D3DXVECTOR3(TILE_ONE_SIDE*-nPosX, 3.0f, TILE_ONE_SIDE*nPosY);
+		//アイテム生成
+		CItem::Create(ItemPos + m_MapData.m_pos);
+		//カウント初期化
+		m_nItemSpawnCount = 0;
+	}
 }

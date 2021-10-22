@@ -291,7 +291,11 @@ void CPlayer::Update(void)
 		}
 		if (pKey->GetKeyPress(DIK_2))
 		{
-			m_pAttack->AttackSwitch();
+			m_pAttack->AttackSwitch(0);
+		}
+		if (pKey->GetKeyPress(DIK_3))
+		{
+			m_pAttack->AttackSwitch(1);
 		}
 	}
 
@@ -490,7 +494,7 @@ void CPlayer::Bullet(void)
 		//// ’e‚Ì¶¬
 		//CBullet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), bulletMove, m_nPlayerNumber);
 
-		m_pAttack->AttackSwitch();
+		m_pAttack->AttackSwitch(0);
 	}
 
 	//ˆÊ’uİ’è
