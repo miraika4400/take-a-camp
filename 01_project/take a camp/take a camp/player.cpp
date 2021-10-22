@@ -493,59 +493,58 @@ void CPlayer::Attack(void)
 	// 座標の取得
 	D3DXVECTOR3 pos = GetPos();
 
+	// 当たっているタイルの取得
+	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
+
 	// 攻撃ボタンを押したら
 	if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_BULLET])
 		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
 	{
-		// 移動不可に
-		m_bMove = false;
+		if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor && !m_pAttack->GetAttackFlag())
+		{
+			// 移動不可に
+			m_bMove = false;
 
-		// 向いてる方向を変える
-		if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_PROGRESS])
-			|| (StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
-			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
-		{// 前
-			m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
-		}
-		else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RECESSION])
-			|| (StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
-			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
-		{// 後
-			m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
-		}
-		else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_LEFT])
-			|| (StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
-			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
-		{// 左
-			m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
-		}
-		else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RIGHT])
-			|| (StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
-			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
-		{// 右
-			m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
+			// 向いてる方向を変える
+			if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_PROGRESS])
+				|| (StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
+			{// 前
+				m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
+			}
+			else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RECESSION])
+				|| (StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
+			{// 後
+				m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
+			}
+			else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_LEFT])
+				|| (StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
+			{// 左
+				m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
+			}
+			else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RIGHT])
+				|| (StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
+			{// 右
+				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
+			}
+
 		}
 	}
-
 	// 離したら弾がでるように
 	if (pKey->GetKeyRelease(m_anControllKey[m_nPlayerNumber][KEY_BULLET])
 		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nPlayerNumber))
 	{
-		// 当たっているタイルの取得
-		CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 
-		if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor && !m_pAttack->GetAttackFlag())
-		{
-			m_pAttack->AttackSwitch(pHitTile->GetStepNum() - 1);
-			pHitTile->ResetTile();
-		}
-		
+		m_pAttack->AttackSwitch(pHitTile->GetStepNum() - 1);
+		pHitTile->ResetTile();
 	}
-
 	//位置設定
 	SetPos(pos);
 }
