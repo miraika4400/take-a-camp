@@ -495,13 +495,13 @@ void CPlayer::Attack(void)
 
 	// 当たっているタイルの取得
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
-
-	// 攻撃ボタンを押したら
-	if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_BULLET])
-		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
+	if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor && !m_pAttack->GetAttackFlag())
 	{
-		if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor && !m_pAttack->GetAttackFlag())
+		// 攻撃ボタンを押したら
+		if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_BULLET])
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
 		{
+
 			// 移動不可に
 			m_bMove = false;
 
@@ -536,14 +536,15 @@ void CPlayer::Attack(void)
 			}
 
 		}
-	}
-	// 離したら弾がでるように
-	if (pKey->GetKeyRelease(m_anControllKey[m_nPlayerNumber][KEY_BULLET])
-		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nPlayerNumber))
-	{
 
-		m_pAttack->AttackSwitch(pHitTile->GetStepNum() - 1);
-		pHitTile->ResetTile();
+		// 離したら弾がでるように
+		if (pKey->GetKeyRelease(m_anControllKey[m_nPlayerNumber][KEY_BULLET])
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nPlayerNumber))
+		{
+
+			m_pAttack->AttackSwitch(pHitTile->GetStepNum() - 1);
+			pHitTile->ResetTile();
+		}
 	}
 	//位置設定
 	SetPos(pos);

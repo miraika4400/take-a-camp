@@ -110,11 +110,28 @@ CColorTile * CColorTile::GetHitColorTile(D3DXVECTOR3 pos)
 	{
 		if (CCollision::CollisionSphere(pCollision,pTile->GetCollision()))
 		{
+			if (pCollision != NULL)
+			{
+				pCollision->ReConnection();
+				pCollision->Uninit();
+				delete pCollision;
+				pCollision = NULL;
+			}
+
 			return pTile;
 		}
 		// ƒŠƒXƒg‚ði‚ß‚é
 		pTile = (CColorTile*)pTile->GetNext();
 	}
+
+	if (pCollision != NULL)
+	{
+		pCollision->ReConnection();
+		pCollision->Uninit();
+		delete pCollision;
+		pCollision = NULL;
+	}
+
 	return NULL;
 }
 
