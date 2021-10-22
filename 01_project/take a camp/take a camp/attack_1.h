@@ -24,9 +24,6 @@ public:
 	~CAttack1();
 	static CAttack1 *Create(CPlayer* pPlayer);
 	HRESULT Init(void);
-	void	Uninit(void);
-	void	Update(void);
-	void	Draw(void);
 
 private:
 	void	AttackCreate(void);	//UŒ‚¶¬ˆ—

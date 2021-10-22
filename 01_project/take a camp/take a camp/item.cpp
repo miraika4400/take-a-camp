@@ -11,7 +11,7 @@
 #include "item.h"
 #include "manager.h"
 #include "player.h"
-#include	"collision.h"
+#include"collision.h"
 
 //*****************************
 // ƒ}ƒNƒ’è‹`
