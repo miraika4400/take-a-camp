@@ -22,10 +22,12 @@
 #include "camera_base.h"
 #include "bg.h"
 #include "light.h"
+#include "map.h"
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
-
+CMap* CTitle::m_pMap = NULL;	// ステージクラスのポインタ
+CMapManager::MAP_TYPE CTitle::m_MapType = CMapManager::MAP_TYPE_1;	// マップタイプ
 //**********************************
 // マクロ定義
 //**********************************
@@ -78,6 +80,9 @@ HRESULT CTitle::Init(void)
 
 	// 背景の設定
 	CBg::Create();
+	
+	// ステージ生成
+	m_pMap = CMap::Create(m_MapType);
 
 	// ライトクラスの生成
 	CManager::SetLight();
