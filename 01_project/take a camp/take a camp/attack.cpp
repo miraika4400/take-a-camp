@@ -238,6 +238,7 @@ void CAttackBased::ChangeFrameColor()
 			if (pTile != NULL)
 			{
 				pTile->GetFrame()->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
+				//pTile->GetFrame()->SetPos(pTile->GetFrame()->GetPos() + D3DXVECTOR3(0.0f, 10.0f, 0.0f));
 			}
 		}
 	}
@@ -262,9 +263,9 @@ void CAttackBased::ChangeFrameColor()
 				if (pTile != NULL)
 				{
 					pTile->GetFrame()->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
+					//pTile->GetFrame()->SetPos(pTile->GetFrame()->GetPos() + D3DXVECTOR3(0.0f, 10.0f, 0.0f));
 				}
 			}
 		}
-		
 	}
 }

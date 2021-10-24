@@ -234,9 +234,9 @@ void CColorTile::ManageFrame(void)
 {
 	// ˆÊ’u‚Ì’²®
 	D3DXVECTOR3 pos = m_pFrame->GetPos();
-	if (pos != D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 1.0f, GetPos().z))
+	if (pos != D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z))
 	{
-		pos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 1.0f, GetPos().z);
+		pos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z);
 
 		m_pFrame->SetPos(pos);
 	}

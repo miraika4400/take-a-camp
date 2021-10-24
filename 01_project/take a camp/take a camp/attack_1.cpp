@@ -75,6 +75,8 @@ void CAttack1::AttackCreate(void)
 		//カウントアップ
 		m_nAttackCount++;
 
+		// 攻撃範囲の可視化
+		ChangeFrameColor();
 		//カウントが一定になったら
 		if (m_nAttackCount >= GetAttackSquare().nAttackFrame[m_nType])
 		{
@@ -96,26 +98,5 @@ void CAttack1::AttackCreate(void)
 			//カウント初期化
 			m_nAttackCount = 0;
 		}
-		
-		//else
-		//{
-		//	//タイプが一致しているか
-		//	for (int nAttack = 0; nAttack < GetAttackSquare().nMaxHitRange; nAttack++)
-		//	{
-		//		//行列計算
-		//		D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		//		//攻撃位置
-		//		D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
-		//		CreatePos.x = ((cosf(GetRot().y)*AttackPos.x) + (sinf(GetRot().y)*AttackPos.z));
-		//		CreatePos.y = 1 * AttackPos.y;
-		//		CreatePos.z = ((-sinf(GetRot().y)*AttackPos.x) + (cosf(GetRot().y)*AttackPos.z));
-		//		
-		//		CColorTile*pTile = CColorTile::GetHitColorTile(CreatePos + GetPos());
-		//		if (pTile != NULL)
-		//		{
-		//			pTile->GetFrame()->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
-		//		}
-		//	}
-		//}
 	}
 }
