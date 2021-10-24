@@ -12,11 +12,13 @@
 #include "resource_attack.h"
 #include "player.h"
 #include "bullet.h"
+#include "color_tile.h"
+#include "scene3d.h"
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CAttackBased::CAttackBased()
+CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 {
 	//初期化処理
 	m_nAttackType = CAttackManager::ATTACK_TYPE_1;
@@ -24,6 +26,7 @@ CAttackBased::CAttackBased()
 	memset(&m_AttackSquare, 0, sizeof(CAttackManager::ATTACK_SQUARE_DATA));
 	m_bAttack = false;
 	m_pPlayer = NULL;
+	m_nLevel = 0;
 }
 
 //=============================================================================
@@ -191,7 +194,7 @@ CPlayer * CAttackBased::GetPlayer(void)
 //=============================================================================
 void CAttackBased::Attack(int AttackType)
 {
-	for (int nAttack = 0; nAttack<m_AttackSquare[m_nLevel].nMaxHitRange; nAttack++)
+	for (int nAttack = 0; nAttack < m_AttackSquare[m_nLevel].nMaxHitRange; nAttack++)
 	{
 		//タイプが一致しているか
 		if (m_AttackSquare[m_nLevel].SquareData[nAttack].RangeType == AttackType + (int)CAttackManager::ATTACK_RANGE_HIT_1)
@@ -206,5 +209,62 @@ void CAttackBased::Attack(int AttackType)
 			//当たり判定生成
 			CBullet::Create(CreatePos + m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_pPlayer->GetPlayerNumber());
 		}
+
+	}
+}
+
+
+//=============================================================================
+// 攻撃範囲の枠の色を変える処理
+// Akuthor: 増澤 未来
+//=============================================================================
+void CAttackBased::ChangeFrameColor()
+{
+	//攻撃フラグが立っているか
+	if (GetAttackFlag())
+	{
+		//タイプが一致しているか
+		for (int nAttack = 0; nAttack < GetAttackSquare().nMaxHitRange; nAttack++)
+		{
+			//行列計算
+			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			//攻撃位置
+			D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
+			CreatePos.x = ((cosf(GetRot().y)*AttackPos.x) + (sinf(GetRot().y)*AttackPos.z));
+			CreatePos.y = 1 * AttackPos.y;
+			CreatePos.z = ((-sinf(GetRot().y)*AttackPos.x) + (cosf(GetRot().y)*AttackPos.z));
+
+			CColorTile*pTile = CColorTile::GetHitColorTile(CreatePos + GetPos());
+			if (pTile != NULL)
+			{
+				pTile->GetFrame()->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
+			}
+		}
+	}
+	else
+	{
+		CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPlayer()->GetPos());
+		if (pHitTile != NULL)
+		{
+			m_nLevel = pHitTile->GetStepNum() - 1;
+			//タイプが一致しているか
+			for (int nAttack = 0; nAttack < GetAttackSquare().nMaxHitRange; nAttack++)
+			{
+				//行列計算
+				D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+				//攻撃位置
+				D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
+				CreatePos.x = ((cosf(GetPlayer()->GetRotDest().y)*AttackPos.x) + (sinf(GetPlayer()->GetRotDest().y)*AttackPos.z));
+				CreatePos.y = 1 * AttackPos.y;
+				CreatePos.z = ((-sinf(GetPlayer()->GetRotDest().y)*AttackPos.x) + (cosf(GetPlayer()->GetRotDest().y)*AttackPos.z));
+
+				CColorTile*pTile = CColorTile::GetHitColorTile(CreatePos + GetPlayer()->GetPos());
+				if (pTile != NULL)
+				{
+					pTile->GetFrame()->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
+				}
+			}
+		}
+		
 	}
 }

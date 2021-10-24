@@ -27,7 +27,6 @@
 #include "debug_log.h"
 #include "color_manager.h"
 #include "color_tile.h"
-#include "item.h"
 
 //=============================
 // É}ÉNÉçíËã`
@@ -89,7 +88,7 @@ HRESULT CGame::Init(void)
 	CManager::SetLight();
 
 	CTime::Create();
-	CItem::Create(D3DXVECTOR3(0.0f, 3.0f, 0.0f));
+
 	return S_OK;
 }
 

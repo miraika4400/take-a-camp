@@ -62,7 +62,6 @@ CNeedleTile * CNeedleTile::Create(D3DXVECTOR3 pos)
 
 	// 各値の代入・セット
 	pTile->SetPos(pos);
-	pTile->SetPriority(OBJTYPE_TILE); // オブジェクトタイプ
 
 	// とげブロックの生成
 	pTile->m_pNeedleModel = CModel::Create(D3DXVECTOR3(pos.x, pos.y + (TILE_SIZE_Y / 4), pos.z), CResourceModel::MODEL_NEEDLE);

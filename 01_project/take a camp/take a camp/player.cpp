@@ -508,40 +508,36 @@ void CPlayer::Attack(void)
 			// Œü‚¢‚Ä‚é•ûŒü‚ð•Ï‚¦‚é
 			if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_PROGRESS])
 				|| (StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
-				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nPlayerNumber)))
 			{// ‘O
 				m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
 			}
 			else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RECESSION])
 				|| (StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
-				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nPlayerNumber)))
 			{// Œã
 				m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
 			}
 			else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_LEFT])
 				|| (StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
-				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nPlayerNumber)))
 			{// ¶
 				m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
 			}
 			else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RIGHT])
 				|| (StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
-				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nPlayerNumber)))
 			{// ‰E
 				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
 			}
 
+			m_pAttack->ChangeFrameColor();
 		}
 
 		// —£‚µ‚½‚ç’e‚ª‚Å‚é‚æ‚¤‚É
 		if (pKey->GetKeyRelease(m_anControllKey[m_nPlayerNumber][KEY_BULLET])
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nPlayerNumber))
 		{
-
 			m_pAttack->AttackSwitch(pHitTile->GetStepNum() - 1);
 			pHitTile->ResetTile();
 		}
