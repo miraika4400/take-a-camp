@@ -164,6 +164,7 @@ void CBillboard::Draw(void)
 	D3DXMatrixScaling(&mtxScail, 1.0f, 1.0f, 1.0f);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxScail);
 
+# if 1
 	// Œü‚«‚ð”½‰f
 	// ƒJƒƒ‰‚ÌŒü‚«‚ÉŒü‚¯‚é
 	pDevice->GetTransform(D3DTS_VIEW, &mtxRot);
@@ -172,6 +173,14 @@ void CBillboard::Draw(void)
 	m_mtxWorld._41 = 0;
 	m_mtxWorld._42 = 0;
 	m_mtxWorld._43 = 0;
+
+#else
+
+	// Œü‚«‚ð”½‰f
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, 0.0f, 0.0f, 0.0f);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+
+#endif
 
 	// ˆÊ’u‚ð”½‰f
 	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);

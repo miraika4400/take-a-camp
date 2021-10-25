@@ -28,7 +28,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/tutorial_1.png",   // チュートリアル
     "./data/Textures/tutorial_2.png",   // チュートリアル
     "./data/Textures/tutorial_3.png",   // チュートリアル
-	"./data/Textures/effect/kirakira.png",		// パーティクル*四角
+	"./data/Textures/particle001.png",  // パーティクル*箱
 	"./data/Textures/Tears.png",        // パーティクル*涙
 	"./data/Textures/particle004.png",  // パーティクル*円
 	"./data/Textures/number.png",       // ナンバー
