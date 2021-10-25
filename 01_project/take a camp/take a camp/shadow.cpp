@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// 影（ポリゴン）の処理 [shadow.h]
+// 影（ポリゴン）の処理 [shadow.cpp]
 // Author : 吉田悠人
 //
 //=============================================================================
@@ -35,21 +35,13 @@ CShadow * CShadow::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 
 	if (pShadow != NULL)
 	{
-		pShadow->Init();
-		pShadow->SetPos(pos);
-		pShadow->SetSize(size);
-		pShadow->SetAngle(0.0f);
-		pShadow->SetColor(D3DXCOLOR(0.2f, 0.2f, 0.2f, 0.3f));
-		pShadow->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SHADOW));
+		pShadow->Init();					//初期化処理
+		pShadow->SetPos(pos);				//位置設定
+		pShadow->SetSize(size);				//サイズ設定
+		pShadow->SetAngle(0.0f);			//向き設定
+		pShadow->SetColor(D3DXCOLOR(0.2f, 0.2f, 0.2f, 0.3f));	//カラー設定
+		pShadow->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SHADOW));	//テクスチャ設定
 
 	}
 	return pShadow;
-}
-
-//=============================================================================
-// 更新処理
-//=============================================================================
-void CShadow::Update(void)
-{
-	CScene3d::Update();
 }

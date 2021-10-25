@@ -48,6 +48,7 @@ private:
 	//=============================================================================
 	D3DXVECTOR3 m_move;			// 移動量
 	D3DXVECTOR3 m_size;			// 大きさ
+	D3DXCOLOR	m_color;		// 色
 	int m_nLife;				// ライフ
 	float m_fSpeed;				// 速さ
 	CPlayer *m_pPlayer;			// プレイヤーのポインタ

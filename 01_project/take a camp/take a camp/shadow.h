@@ -22,12 +22,10 @@ public:
 	~CShadow();	// デストラクタ
 
 	static CShadow * Create(D3DXVECTOR3 pos, D3DXVECTOR3 size);	// 生成処理
-	void Update(void);		// 更新処理
 private:
 	//=============================================================================
 	// メンバ変数宣言
 	//=============================================================================
-	D3DXVECTOR3 m_move;		//移動
 };
 
 #endif // !_SHADOW_H_
