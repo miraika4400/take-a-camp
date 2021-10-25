@@ -1,24 +1,24 @@
 //=============================================================================
 //
-// chara_slectヘッダ [chara_slect.h]
+// chara_slect_uiヘッダ [chara_slect_ui.h]
 // Author : 増澤 未来
 //
 //=============================================================================
 
 //二重インクルード防止
-#ifndef _CHARA_SELECT_H_
-#define _CHARA_SELECT_H_
+#ifndef _CHARA_SELECT_UI_H_
+#define _CHARA_SELECT_UI_H_
 
 //*****************************
 //インクルード
 //*****************************
 #include "scene.h"
 #include "game.h"
-#include "player.h"
 
 //=============================
 // 前方宣言
 //=============================
+class CScene2d;
 
 //*****************************
 //マクロ定義
@@ -29,7 +29,7 @@
 //*****************************
 
 //ゲームクラス
-class CCharaSelect : public CScene
+class CCharaSelectUi : public CScene
 {
 public:
 	//*****************************
@@ -39,38 +39,34 @@ public:
 	//*****************************
 	// 構造体定義
 	//*****************************
-	struct Entry_Data
+	struct CharaSelect_UI
 	{
-		int nControllNum; // コントローラー番号
-		bool bController; // コントローラーフラグ*trueならコントローラーfalseならキーボード
-		int nColorNum;    // カラー番号
-		CPlayer::CHARA_TYPE charaType; // キャラタイプ
-		bool bEntry;      // エントリー状態
+		CScene2d * pBack;         // 背景
+		CScene2d * pPlayerNumber; // プレイヤー番号
+		CScene2d * pControllIcon; // コントローラータイプアイコン
+		D3DXVECTOR3 pos;          // 座標
 	};
-
 	//*****************************
 	// メンバ関数
 	//*****************************
-	CCharaSelect();
-	~CCharaSelect();
+	CCharaSelectUi();
+	~CCharaSelectUi();
 
-	static CCharaSelect *Create(void); // クラス生成
+	static CCharaSelectUi *Create(void); // クラス生成
 
 	HRESULT Init(void); // 初期化
 	void Uninit(void);  // 終了
 	void Update(void);  // 更新
 	void Draw(void);    // 描画
-	static Entry_Data GetEntryData(int nIndex) { return m_aEntryData[nIndex]; }
-	static int GetEntryPlayerNum(void) { return m_nEntryPlayerNum; }
 private:
-	void EntryPlayer(void);
-	void CountEntryPlayerNum(void);
+
 	//*****************************
 	// メンバ変数
 	//*****************************
-	static Entry_Data m_aEntryData[MAX_PLAYER]; // エントリーデータ
-	static int m_nEntryPlayerNum;               // エントリー人数
-	bool m_abUseControll[MAX_PLAYER];           // 使っているコントローラーのフラグ
+	CharaSelect_UI m_aPolygon[MAX_PLAYER];
+
+	int m_nCntAnim;       // アニメーションカウント
+	int m_nAnimY;         // アニメーションY軸
 };
 
 #endif

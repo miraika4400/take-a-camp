@@ -29,13 +29,18 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/tutorial_2.png",   // チュートリアル
     "./data/Textures/tutorial_3.png",   // チュートリアル
 	"./data/Textures/effect/kirakira.png",		// パーティクル*四角
-	"./data/Textures/Tears.png",        // パーティクル*涙
-	"./data/Textures/particle004.png",  // パーティクル*円
-	"./data/Textures/number.png",       // ナンバー
-	"./data/Textures/frame.png",        // 枠
-	"./data/Textures/cross_mark.png",   // バツマーク
-	"./data/Textures/needle_hole.png",  // とげ穴
-	"./data/Textures/shadow.png",		// 影
+	"./data/Textures/Tears.png",              // パーティクル*涙
+	"./data/Textures/particle004.png",        // パーティクル*円
+	"./data/Textures/number.png",             // ナンバー
+	"./data/Textures/frame.png",              // 枠
+	"./data/Textures/cross_mark.png",         // バツマーク
+	"./data/Textures/needle_hole.png",        // とげ穴
+	"./data/Textures/shadow.png",		      // 影
+	"./data/Textures/player_number.png",      // プレイヤー番号
+	"./data/Textures/none_logo.png",	      // NONE
+	"./data/Textures/joypad.png",		      // コントローラーアイコン
+	"./data/Textures/keyboars.png",		      // キーボードアイコン
+	"./data/Textures/chara_select_frame.png", // キャラ選択背景
 
 };
 // テクスチャのパス

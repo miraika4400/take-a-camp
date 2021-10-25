@@ -13,6 +13,7 @@
 #include "scene2d.h"
 #include "color_tile.h"
 #include "color_manager.h"
+#include "chara_select.h"
 
 //**********************************
 // マクロ定義
@@ -20,7 +21,7 @@
 #define GAUGE_WIDTH  50.0f   // ゲージの幅
 #define GAUGE_HEIGHT 500.0f  // ゲージの高さ*最大値
 #define GAUGE_SPACE  150.0f  // 各ゲージの間隔
-#define BG_SIZE    D3DXVECTOR3(SCREEN_WIDTH/2-15,SCREEN_HEIGHT/2-20,0.0f)
+#define BG_SIZE    D3DXVECTOR3(SCREEN_WIDTH-15,SCREEN_HEIGHT-20,0.0f)
 #define BG_COLOR D3DXCOLOR(0.0f,0.0f,0.0f,0.6f)
 #define GAUGE_RATE 0.03f
 #define BACK_GAUGE_SIZE 16
