@@ -268,7 +268,7 @@
       <Filter>ソース ファイル\08_Map\Tile</Filter>
     </ClCompile>
     <ClCompile Include="shadow.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\07_GameModel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -43,7 +43,7 @@ public:
 		OBJTYPE_COLOR_TILE,    // 色付きタイル
 		OBJTYPE_PLAYER,        // プレイヤー
 		OBJTYPE_BULLET,        // 弾
-		OBJTYPE_ITEM,          // iアイテム
+		OBJTYPE_ITEM,          // アイテム
 		OBJTYPE_MAP,           // マップ
 		OBJTYPE_PARTICLE,      // パーティクル
 		OBJTYPE_MOTION,        // モーション
