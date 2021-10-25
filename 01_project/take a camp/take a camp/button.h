@@ -1,59 +1,46 @@
 //=============================================================================
 //
-// 弾の処理 [Bullet.h]
+// ボタンの処理 [button.h]
 // Author : 佐藤颯紀
 //
 //=============================================================================
-#ifndef _BULLET_H_
-#define _BULLET_H_
+#ifndef  _BUTTON_H_
+#define  _BUTTON_H_
 
 //=============================================================================
 // インクルードファイル
 //=============================================================================
-#include "model.h"
-
+#include "scene2d.h"
 //=============================================================================
 // 前方宣言
 //=============================================================================
-class CPlayer;
-class CCollision;
+
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define BULLET_MOVE 5		// 弾の移動量
 
 //=============================================================================
 // クラス宣言
 //=============================================================================
-class CBullet : public CModel
+class CButton : public CScene2d
 {
 public:
-	CBullet();	// コンストラクタ
-	~CBullet();	// デストラクタ
+	CButton();
+	~CButton();
 
-	static CBullet * Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, int nPlayerNum);	// 生成処理
+	static CButton * Create(D3DXVECTOR3 pos);	// 生成処理
 
-	HRESULT Init(void);				// 初期化処理
-
+	HRESULT Init(void);		// 初期化処理
 	void Uninit(void);		// 終了処理
 	void Update(void);		// 更新処理
 	void Draw(void);		// 描画処理
 
-	void CollisionPlayer(void);	// 当たり判定
-
-	CCollision* GetCollision(void) { return m_pCollision; }
+	void Select(void);		// 選択中の処理
+	void NotSelect(void);	// 選択されてない時の処理
 private:
 	//=============================================================================
 	// メンバ変数宣言
 	//=============================================================================
-	D3DXVECTOR3 m_move;			// 移動量
-	D3DXVECTOR3 m_size;			// 大きさ
-	D3DXCOLOR	m_color;		// 色
-	int m_nLife;				// ライフ
-	float m_fSpeed;				// 速さ
-	CPlayer *m_pPlayer;			// プレイヤーのポインタ
-	CCollision * m_pCollision;	// 当たり判定
-	int m_nPlayerNum;
+	D3DXCOLOR m_color;		// 色
 };
-
-#endif // !_BULLET_H_
+#endif // ! _BUTTON_H_
