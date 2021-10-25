@@ -31,13 +31,14 @@ public:
 		TEXTURE_TUTORIAL_FLAG,   // チュートリアル(はたあげ)
 		TEXTURE_TUTORIAL_FRY,    // チュートリアル(連打)
 		TEXTURE_TUTORIAL_REMEMBER,// チュートリアル(記憶)
-		TEXTURE_PARTICLE_BOX,    // パーティクル*箱
+		TEXTURE_PARTICLE_SQUARE,    // パーティクル*箱
 		TEXTURE_PARTICLE_TEARS,  // パーティクル*涙
 		TEXTURE_PARTICLE_CIRCLE, // パーティクル*円
 		TEXTURE_NUMBER,          // ナンバー
 		TEXTURE_FRAME,           // 枠
 		TEXTURE_CROSS_MARK,      // ×マーク
 		TEXTURE_NEEDLE,          // とげ穴
+		TEXTURE_SHADOW,			 // 影
 		TEXTURE_MAX              // テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類

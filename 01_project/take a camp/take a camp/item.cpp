@@ -11,7 +11,8 @@
 #include "item.h"
 #include "manager.h"
 #include "player.h"
-#include"collision.h"
+#include "collision.h"
+#include "shadow.h"
 
 //*****************************
 // マクロ定義
@@ -29,6 +30,7 @@ CItem::CItem() : CModel(OBJTYPE_ITEM)
 
 	m_pCollision = NULL;	//コリジョンのポインタ
 	m_pPlayer = NULL;		//プレイヤーのポインタ
+	m_pShadow = NULL;		//影のポインタ
 
 	m_bUp = false;			//上限判定
 	m_bDeath = false;		//死亡フラグ
@@ -55,6 +57,9 @@ CItem * CItem::Create(D3DXVECTOR3 pos)
 
 	//位置セット
 	pItem->SetPos(pos);
+
+	//影生成
+	pItem->m_pShadow = CShadow::Create(D3DXVECTOR3(pos.x, 0.2f, pos.z), D3DXVECTOR3(8.0f, 0.0f, 8.0f));
 
 	return pItem;
 }
@@ -89,6 +94,7 @@ void CItem::Uninit(void)
 		delete m_pCollision;
 		m_pCollision = NULL;
 	}
+
 
 	//モデルの終了処理
 	CModel::Uninit();
@@ -181,6 +187,9 @@ void CItem::RotUpdate(void)
 	SetRot(ItemRot);
 }
 
+//******************************
+// アイテム当たり判定処理
+//******************************
 void CItem::CollisionItem(void)
 {
 	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
@@ -194,6 +203,13 @@ void CItem::CollisionItem(void)
 
 				m_bDeath = true;
 				pPlayer->SetItemState(CPlayer::ITEM_STATE_DASH);
+				//影の終了処理
+				if (m_pShadow != NULL)
+				{
+					m_pShadow->Uninit();
+					m_pShadow = NULL;
+				}
+
 				return;
 			}
 		}

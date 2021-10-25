@@ -14,6 +14,7 @@
 #include "color_manager.h"
 #include "scene3d.h"
 #include "resource_texture.h"
+#include "particle.h"
 
 #ifdef _DEBUG
 #include "manager.h"
@@ -274,7 +275,6 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 			SetColor(GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep));
 			// F’iŠK‚ði‚ß‚é
 			m_nStep++;
-
 		}
 		else if (m_nPrevNum == nColorNumber)
 		{// ¡“h‚ç‚ê‚Ä‚¢‚é‚Ì‚Æ‚©‚ç“h‚é”Ô†‚ªˆê’v
@@ -285,6 +285,12 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 				m_nStep++;
 				// F‚ÌŽæ“¾
 				SetColor(GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1));
+
+				if (m_nStep == 2)
+				{
+					D3DXVECTOR3 pos = m_pFrame->GetPos();
+					CParticle::Create(D3DXVECTOR3(pos.x, pos.y + 5.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(10.0f, 10.0f, 10.0f), 500, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_SQUARE);
+				}
 			}
 		}
 		else

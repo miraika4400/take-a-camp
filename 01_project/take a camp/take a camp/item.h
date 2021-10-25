@@ -17,6 +17,7 @@
 //=============================================================================
 class CCollision;
 class CPlayer;
+class CShadow;
 
 //=============================================================================
 // マクロ定義
@@ -33,13 +34,13 @@ public:
 
 	static CItem * Create(D3DXVECTOR3 pos);	// 生成処理
 
-	HRESULT Init(void);				// 初期化処理
+	HRESULT Init(void);		// 初期化処理
 	void Uninit(void);		// 終了処理
 	void Update(void);		// 更新処理
 	void Draw(void);		// 描画処理
 
 	void MoveUpdate(void);	//移動更新
-	void RotUpdate(void);		//角度更新
+	void RotUpdate(void);	//角度更新
 
 	void CollisionItem(void);	//当たり判定
 
@@ -47,19 +48,19 @@ private:
 	//=============================================================================
 	// メンバ変数宣言
 	//=============================================================================
-	D3DXVECTOR3 m_size;		// 大きさ
+	D3DXVECTOR3 m_size;		//大きさ
 	D3DXVECTOR3 m_rot;		//角度
 	D3DXVECTOR3 m_move;		//移動
 
 	CCollision *m_pCollision;	//コリジョンのポインタ
-	CPlayer *m_pPlayer;		//プレイヤーのポインタ
-
-	int m_nPlayerNum;			//プレイヤーナンバー
+	CPlayer *m_pPlayer;			//プレイヤーのポインタ
+	CShadow *m_pShadow;			//影のポインタ
+	int m_nPlayerNum;		//プレイヤーナンバー
 	int m_nItemCnt;			//取得後のタイマー
 
-	bool m_bUp;					//上限判定
-	bool m_bGet;					//取得フラグ
-	bool m_bDeath;				//死亡フラグ
+	bool m_bUp;				//上限判定
+	bool m_bGet;			//取得フラグ
+	bool m_bDeath;			//死亡フラグ
 };
 
 #endif // !_ITEM_H_
