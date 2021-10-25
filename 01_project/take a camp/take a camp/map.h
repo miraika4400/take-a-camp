@@ -13,7 +13,10 @@
 #include "model.h"
 #include "scene.h"
 #include "resource_map.h"
-
+//=============================================================================
+// 前方宣言
+//=============================================================================
+class CItem;
 //=============================================================================
 // クラス定義
 //=============================================================================
@@ -33,8 +36,9 @@ public:
 	void SetMapData(CMapManager::MAP_DATA MapData);
 	CMapManager::MAP_DATA GetMapData(void);
 private:
-	void	ItemSpawn(void);		//アイテムの生成処理
-	int		m_nItemSpawnCount;		//アイテムスポーンまでのカウント		
+	void	ItemSpawn(void);		// アイテムの生成処理
+	int		m_nItemSpawnCount;		// アイテムスポーンまでのカウント
+	//CItem * m_pItem;				// アイテムのポインタ
 	CMapManager::MAP_DATA m_MapData;
 	CMapManager::MAP_TYPE m_MapType;
 };

@@ -314,7 +314,7 @@ void CPlayer::Draw(void)
 	// 色の設定
 	for (int nCntParts = 0; nCntParts < GetPartsNum(); nCntParts++)
 	{
-		for (int nCntMat = 0; nCntMat < GetModelData()[nCntParts].nNumMat; nCntMat++)
+		for (int nCntMat = 0; nCntMat < (int)GetModelData()[nCntParts].nNumMat; nCntMat++)
 		{
 			D3DXMATERIAL* mat = (D3DXMATERIAL*)GetModelData()[nCntParts].pBuffMat->GetBufferPointer();
 			mat[nCntMat].MatD3D.Ambient = m_color;
@@ -467,7 +467,7 @@ void CPlayer::Move(void)
 			//ダッシュタイムをカウント
 			m_nDashCnt++;
 
-			m_nMoveframe = (int)DASH_MOVE_FRAME;
+			m_nMoveframe = ((int)DASH_MOVE_FRAME);
 
 			if (m_nDashCnt % DASH_FRAME == 0)
 			{

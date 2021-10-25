@@ -19,11 +19,12 @@
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define COLOR_TILE_PLUS_HEIGHT 0.0f // カラータイル生成時ひとつ生成するたびに生成位置を高くする
-#define COLOR_TILE_INIT_HEIGHT -TILE_SIZE_Y/2 // カラータイル初めの高さ
+#define COLOR_TILE_PLUS_HEIGHT 0.0f				// カラータイル生成時ひとつ生成するたびに生成位置を高くする
+#define COLOR_TILE_INIT_HEIGHT -TILE_SIZE_Y/2	// カラータイル初めの高さ
 //#define COLOR_TILE_PLUS_HEIGHT 50.0f // カラータイル生成時ひとつ生成するたびに生成位置を高くする
 //#define COLOR_TILE_INIT_HEIGHT 500.0f // カラータイル初めの高さ
-#define MAX_ITEM_SPAWN_COUNT (60*10)	//アイテムスポーンの最大カウント
+#define MAX_ITEM_SPAWN_COUNT (60*10)	// アイテムスポーンの最大カウント
+#define MAX_ITEM (3)					// マップ上の最大個数
 
 //=============================================================================
 // 静的メンバー変数
@@ -192,23 +193,80 @@ void CMap::ItemSpawn(void)
 	//カウントが一定になったら
 	if (m_nItemSpawnCount >= MAX_ITEM_SPAWN_COUNT)
 	{
-		//アイテムのスポーン位置
-		D3DXVECTOR3 ItemPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		//ランダム関数の初期化
-		srand((unsigned int)time(NULL));
-		int nPosY = rand() % m_MapData.nStageSizeY;
-		int nPosX = rand()% m_MapData.BlockData[nPosY].nStageSizeX;
-		//ランダムに決めたマス目に移動できるか
-		while (m_MapData.BlockData[nPosY].nBlockType[nPosX] != CMapManager::BLOCK_TYPE_BLOCK)
-		{
-			nPosY = rand() % m_MapData.nStageSizeY;
-			nPosX = rand() % m_MapData.BlockData[nPosY].nStageSizeX;
-		}
+		//既存のアイテム位置
+		D3DXVECTOR3 OtherItem[MAX_ITEM];
+		memset(&OtherItem, 0, sizeof(OtherItem));
+		//アイテムポインタ取得
+		CItem * pItem = (CItem*)GetTop(OBJTYPE_ITEM);
+		//アイテムの個数カウント変数
+		int nItemCount = 0;
 		
-		//アイテム生成位置設定
-		ItemPos = D3DXVECTOR3(TILE_ONE_SIDE*-nPosX, 3.0f, TILE_ONE_SIDE*nPosY);
-		//アイテム生成
-		CItem::Create(ItemPos + m_MapData.m_pos);
+		//他のアイテムのポインタを取得
+		while (pItem != NULL)
+		{
+			if (nItemCount<MAX_ITEM)
+			{
+				//他のアイテムの位置取得
+				OtherItem[nItemCount] = pItem->GetPos();
+				//アイテムカウント
+				nItemCount++;
+			}
+			pItem = (CItem*)pItem->GetNext();
+		}
+
+		//マップ上のアイテムが限界を超えていないか
+		if (nItemCount < MAX_ITEM)
+		{
+			//アイテムのスポーン位置
+			D3DXVECTOR3 ItemPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			//位置決め用の変数
+			int nPosY, nPosX;
+			//生成できるかのフラグ変数
+			bool bItem = false;
+			//ランダム関数の初期化
+			srand((unsigned int)time(NULL));
+
+			while (!bItem)
+			{
+				//ループ用にフラグを立てる
+				bItem = true;
+
+				//ランダムにマップ上の位置を決める
+				nPosY = rand() % m_MapData.nStageSizeY;
+				nPosX = rand() % m_MapData.BlockData[nPosY].nStageSizeX;
+
+				//ランダムに決めたマス目が生成できるマス目か
+				if (m_MapData.BlockData[nPosY].nBlockType[nPosX] == CMapManager::BLOCK_TYPE_BLOCK)
+				{
+					//生成位置
+					ItemPos = D3DXVECTOR3(TILE_ONE_SIDE*-nPosX, 3.0f, TILE_ONE_SIDE*nPosY) + m_MapData.m_pos;
+					
+					//他アイテムとかぶらないように
+					for (int nOtherItem = 0; nOtherItem < nItemCount; nOtherItem++)
+					{
+						//同じ場所にアイテムがあるか
+						if (ItemPos.x <= (OtherItem[nOtherItem].x + 5.0f)
+							&& ItemPos.x >= (OtherItem[nOtherItem].x - 5.0f)
+							&& ItemPos.z <= (OtherItem[nOtherItem].z + 5.0f)
+							&& ItemPos.z >= (OtherItem[nOtherItem].z - 5.0f))
+						{
+							//ループを続ける
+							bItem = false;
+							break;
+						}
+					}
+				}
+				//ランダムに決めたマスが生成できない時
+				else
+				{
+					//ループを続ける
+					bItem = false;
+				}
+			}
+			//アイテム生成
+			CItem::Create(ItemPos);
+		}
+	
 		//カウント初期化
 		m_nItemSpawnCount = 0;
 	}

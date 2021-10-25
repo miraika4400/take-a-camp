@@ -28,13 +28,15 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/tutorial_1.png",   // チュートリアル
     "./data/Textures/tutorial_2.png",   // チュートリアル
     "./data/Textures/tutorial_3.png",   // チュートリアル
-	"./data/Textures/particle001.png",  // パーティクル*箱
+	"./data/Textures/effect/kirakira.png",		// パーティクル*四角
 	"./data/Textures/Tears.png",        // パーティクル*涙
 	"./data/Textures/particle004.png",  // パーティクル*円
 	"./data/Textures/number.png",       // ナンバー
 	"./data/Textures/frame.png",        // 枠
 	"./data/Textures/cross_mark.png",   // バツマーク
 	"./data/Textures/needle_hole.png",  // とげ穴
+	"./data/Textures/shadow.png",		// 影
+
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]
