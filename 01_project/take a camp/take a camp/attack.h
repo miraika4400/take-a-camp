@@ -61,4 +61,5 @@ private:
 	int			m_nLevel;			//UŒ‚‚ÌƒŒƒxƒ‹
 
 };
+
 #endif

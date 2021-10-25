@@ -14,11 +14,13 @@
 //*****************************
 #include "main.h"
 #include "scene.h"
+#include "map.h"
 
 //=============================
 // 前方宣言
 //=============================
 class CPolygon;
+class CMapManager;
 //*****************************
 //クラス定義
 //*****************************
@@ -44,7 +46,9 @@ private:
 	//============
 	// メンバ変数
 	//============
-	CPolygon *m_pPolygon;                 // ポリゴン
+	CPolygon *m_pPolygon;					// ポリゴン
+	static CMap *m_pMap;					// ステージのポインタ
+	static CMapManager::MAP_TYPE m_MapType;	// マップのタイプ
 };
 
 #endif

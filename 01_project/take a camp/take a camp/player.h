@@ -80,7 +80,7 @@ public:
 	CCollision * GetCollision(void) { return  m_pCollision; }
 	int GetPlayerNumber(void) { return m_nPlayerNumber; }
 
-	void Bullet(void);	//’e‚Ìˆ—
+	void Attack(void);	//’e‚Ìˆ—
 
 	void SetState(PLAYER_STATE PlayerState) {m_PlayerState = PlayerState;}
 	PLAYER_STATE GetState(void) { return m_PlayerState; }

@@ -27,6 +27,7 @@
 #include "camera_base.h"
 #include "motion.h"
 #include "resource_texture.h"
+#include "color_tile.h"
 
 //*****************************
 // マクロ定義
@@ -47,7 +48,7 @@
 #define ROT_SPEED 0.3f				// 回転速度
 #define ROT_FACING_01 180			// 回転の基準
 #define ROT_FACING_02 360			// 回転向き
-#define RIM_POWER     0.5f          // リムライトの強さ
+#define RIM_POWER     2.5f          // リムライトの強さ
 #define DASH_FRAME      300
 #define DASH_MOVE_FRAME  MOVE_FRAME*0.8f
 #define STICK_DECISION_RANGE (32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
@@ -260,7 +261,7 @@ void CPlayer::Update(void)
 	}
 
 	// 弾の処理
-	Bullet();
+	Attack();
 
 	// 向きの取得
 	D3DXVECTOR3 rot = GetRot();
@@ -480,30 +481,71 @@ void CPlayer::Move(void)
 }//******************************
 // 弾の処理
 //******************************
-void CPlayer::Bullet(void)
+void CPlayer::Attack(void)
 {
 	// キーボードとジョイパッドの取得
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 	CInputJoypad* pJoypad = CManager::GetJoypad();
 
+	// スティックの座標
+	D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nPlayerNumber);
+
 	// 座標の取得
 	D3DXVECTOR3 pos = GetPos();
 
-	// 攻撃ボタンを押したら
-	if (pKey->GetKeyTrigger(m_anControllKey[m_nPlayerNumber][KEY_BULLET])
-		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_TRIGGER, m_nPlayerNumber))
+	// 当たっているタイルの取得
+	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
+	if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor && !m_pAttack->GetAttackFlag())
 	{
-		//// 方向指定
-		//D3DXVECTOR3 bulletMove;
-		//bulletMove.x = cosf(GetRot().y)*-BULLET_MOVE;
-		//bulletMove.y = 0.0f;
-		//bulletMove.z = sinf(GetRot().y)*BULLET_MOVE;
-		//// 弾の生成
-		//CBullet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), bulletMove, m_nPlayerNumber);
+		// 攻撃ボタンを押したら
+		if (pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_BULLET])
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
+		{
 
-		m_pAttack->AttackSwitch(0);
+			// 移動不可に
+			m_bMove = false;
+
+			// 向いてる方向を変える
+			if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_PROGRESS])
+				|| (StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
+			{// 前
+				m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
+			}
+			else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RECESSION])
+				|| (StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
+			{// 後
+				m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
+			}
+			else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_LEFT])
+				|| (StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
+			{// 左
+				m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
+			}
+			else if ((pKey->GetKeyPress(m_anControllKey[m_nPlayerNumber][KEY_RIGHT])
+				|| (StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nPlayerNumber))
+				&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
+			{// 右
+				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
+			}
+
+		}
+
+		// 離したら弾がでるように
+		if (pKey->GetKeyRelease(m_anControllKey[m_nPlayerNumber][KEY_BULLET])
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nPlayerNumber))
+		{
+
+			m_pAttack->AttackSwitch(pHitTile->GetStepNum() - 1);
+			pHitTile->ResetTile();
+		}
 	}
-
 	//位置設定
 	SetPos(pos);
 }

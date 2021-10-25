@@ -98,6 +98,44 @@ void CColorTile::CountColorTile(void)
 }
 
 //******************************
+// 指定座標とぶつかっているタイルの取得処理
+//******************************
+CColorTile * CColorTile::GetHitColorTile(D3DXVECTOR3 pos)
+{
+	CCollision*pCollision = CCollision::CreateSphere(pos, TILE_ONE_SIDE / 4);
+
+	CColorTile*pTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
+
+	while (pTile != NULL)
+	{
+		if (CCollision::CollisionSphere(pCollision,pTile->GetCollision()))
+		{
+			if (pCollision != NULL)
+			{
+				pCollision->ReConnection();
+				pCollision->Uninit();
+				delete pCollision;
+				pCollision = NULL;
+			}
+
+			return pTile;
+		}
+		// リストを進める
+		pTile = (CColorTile*)pTile->GetNext();
+	}
+
+	if (pCollision != NULL)
+	{
+		pCollision->ReConnection();
+		pCollision->Uninit();
+		delete pCollision;
+		pCollision = NULL;
+	}
+
+	return NULL;
+}
+
+//******************************
 // 初期化処理
 //******************************
 HRESULT CColorTile::Init(void)
