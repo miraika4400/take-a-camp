@@ -40,9 +40,6 @@
     <Filter Include="ソース ファイル\09_Effect">
       <UniqueIdentifier>{df64da78-0095-4ca2-a8b8-b27d66dcbf50}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\10_Ui">
-      <UniqueIdentifier>{1d71ec2f-55c1-4788-81a4-2e83ccb026e1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\07_GameModel">
       <UniqueIdentifier>{1fb1fdf6-ff6f-452d-8053-09a2a3970254}</UniqueIdentifier>
     </Filter>
@@ -106,6 +103,9 @@
     <Filter Include="ヘッダー ファイル\07_GameModel\Bullet">
       <UniqueIdentifier>{ab5f719a-e4a3-4072-b7de-9cedea6e53cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\09_Effect\10_Ui">
+      <UniqueIdentifier>{1d71ec2f-55c1-4788-81a4-2e83ccb026e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bg.cpp">
@@ -151,10 +151,10 @@
       <Filter>ソース ファイル\04_ModelBase</Filter>
     </ClCompile>
     <ClCompile Include="score.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="number.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="joypad.cpp">
       <Filter>ソース ファイル\05_Input</Filter>
@@ -226,16 +226,16 @@
       <Filter>ソース ファイル\07_GameModel\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="gauge.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="result_graph.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="time.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="number_array.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="map.cpp">
       <Filter>ソース ファイル\08_Map</Filter>
