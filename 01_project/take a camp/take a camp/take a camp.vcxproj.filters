@@ -267,6 +267,9 @@
     <ClCompile Include="needle_tile.cpp">
       <Filter>ソース ファイル\08_Map\Tile</Filter>
     </ClCompile>
+    <ClCompile Include="chara_select.cpp">
+      <Filter>ソース ファイル\06_GameScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -427,6 +430,9 @@
     </ClInclude>
     <ClInclude Include="needle_tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="chara_select.h">
+      <Filter>ヘッダー ファイル\06_GameScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
