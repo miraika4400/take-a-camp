@@ -16,6 +16,13 @@
 #include "billboard.h"
 
 //*****************************
+//マクロ定義
+//*****************************
+#define EFFECT_DEFAULT_FADE_OUT_RATE 0.006f                               // フェードアウト割合
+
+
+
+//*****************************
 // クラス定義
 //*****************************
 
@@ -29,7 +36,7 @@ public:
 	// パーティクルタイプ
 	typedef enum
 	{
-		PARTICLE_BOX = 0, // 四角
+		PARTICLE_SQUARE = 0, // 四角
 		PARTICLE_TEARS,   // 涙
 		PARTICLE_CIRCLE,  // 丸
 		PARTICLE_MAX,     // タイプの最大数
@@ -43,7 +50,7 @@ public:
 
 	// static
 	static CParticle *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, const D3DXVECTOR3 size, const int nLife,
-		const D3DCOLOR col, const PARTICLE_TYPE type = PARTICLE_BOX); // クラス生成
+		const D3DXCOLOR col,const float fadeout, const PARTICLE_TYPE type = PARTICLE_SQUARE); // クラス生成
 
 	HRESULT Init(void); // 初期化
 	void Uninit(void);  // 終了
@@ -59,9 +66,14 @@ private:
 	// メンバ変数
 	//============
 	LPDIRECT3DTEXTURE9 m_apTexture[PARTICLE_MAX]; // テクスチャ
-	D3DXVECTOR3   m_move;  // 移動量
-	int           m_nLife; // 寿命
-	PARTICLE_TYPE m_type;  // パーティクルの種類
+	D3DXVECTOR3   m_move;	 	  // 移動量
+	D3DXVECTOR3   m_size;		  // 大きさ
+	int           m_nLife;	  	  // 寿命
+	float		  m_fRotAngle;	  // 回転角度
+	float		  m_fFadeout;	  // フェードアウト　
+	bool		  m_bFadeoutFlag; // フェードアウトの7フラグ
+	D3DXCOLOR	  m_col;		  // 色
+	PARTICLE_TYPE m_type;		  // パーティクルの種類
 };
 
 #endif
