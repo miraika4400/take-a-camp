@@ -19,6 +19,7 @@
 #define MODEL_SIZE D3DXVECTOR3(0.5f, 0.5f, 0.5f)	// サイズ
 #define BULLET_LIFE		(20)	// 弾のライフ
 #define COLLISION_SIZE (D3DXVECTOR3(10.0f,10.0f,10.0f))	// 当たり判定の大きさ
+#define BULLET_COLOR D3DXCOLOR(0.0f,0.0f,0.0f,0.0f)
 #define BULLET_ONE_SIDE 20.0f
 #define BULLET_COLLISION_SIZE 10.0f
 
@@ -32,6 +33,7 @@ CBullet::CBullet() :CModel(OBJTYPE_BULLET)
 	m_nLife = 0;			// ライフ
 	m_fSpeed = 0.0f;		// 速さ
 	m_pCollision = NULL;	// 当たり判定
+	m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
 //=============================================================================
 // デストラクタ
@@ -75,6 +77,9 @@ HRESULT CBullet::Init(void)
 
 	// サイズの設定
 	SetSize(MODEL_SIZE);
+
+	// カラーの設定
+	m_color = BULLET_COLOR;
 
 	// モデル割り当て
 	BindModel(CResourceModel::GetModel(CResourceModel::MODEL_BULLET01));
@@ -135,7 +140,6 @@ void CBullet::Update()
 		// 終了処理
 		Uninit();
 	}
-
 }
 
 //=============================================================================
@@ -143,6 +147,13 @@ void CBullet::Update()
 //=============================================================================
 void CBullet::Draw()
 {
+	// 色の設定
+	D3DXMATERIAL* mat = (D3DXMATERIAL*)GetModelData()->pBuffMat->GetBufferPointer();
+	mat->MatD3D.Ambient = m_color;
+	mat->MatD3D.Diffuse = m_color;
+	mat->MatD3D.Specular = m_color;
+	mat->MatD3D.Emissive = m_color;
+
 	// 描画処理
 	CModel::Draw();
 }

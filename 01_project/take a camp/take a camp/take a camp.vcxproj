@@ -155,6 +155,7 @@
     <ClCompile Include="act_range.cpp" />
     <ClCompile Include="attack.cpp" />
     <ClCompile Include="attack_1.cpp" />
+    <ClCompile Include="button.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="needle_tile.cpp" />
     <ClCompile Include="resource_attack.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="act_range.h" />
     <ClInclude Include="attack.h" />
     <ClInclude Include="attack_1.h" />
+    <ClInclude Include="button.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="needle_tile.h" />
     <ClInclude Include="resource_attack.h" />
