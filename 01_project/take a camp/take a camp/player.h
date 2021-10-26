@@ -96,6 +96,8 @@ public:
 	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }
 	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }
 	ITEM_STATE GetItemState(void) { return m_ItemState; }
+
+	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 private:
 	void Move(void);		// 移動処理
 	void Respawn(void);		// リスポーン処理
@@ -115,7 +117,8 @@ private:
 	CAttackBased* m_pAttack;	// 攻撃用クラス
 	int m_nPlayerNumber;		// プレイヤー番号
 	int m_nColor;				// 色ナンバー
-	int m_nControllerNum;       // コントローラー番号
+	int m_nControllNum;         // コントロール番号
+	bool m_bController;         // コントローラー捜査課キーボード操作か
 	bool m_bMove;				// 移動可否フラグ
 	bool m_bInvincible;			// 無敵フラグ
 	PLAYER_STATE m_PlayerState;	// プレイヤーステータス

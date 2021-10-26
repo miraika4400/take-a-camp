@@ -29,6 +29,7 @@
 #include "resource_texture.h"
 #include "color_tile.h"
 #include "chara_select.h"
+
 //*****************************
 // マクロ定義
 //*****************************
@@ -52,7 +53,6 @@
 #define DASH_FRAME      300
 #define DASH_MOVE_FRAME  MOVE_FRAME*0.8f
 #define STICK_DECISION_RANGE (32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
-
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
@@ -79,7 +79,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_nRespawnCount = 0;
 	m_nPlayerNumber = 0;
 	m_nInvincibleCount = 0;
-	m_nControllerNum = 0;
+	m_nControllNum = 0;
 	m_bMove = false;
 	m_bInvincible = false;
 	m_PlayerState = PLAYER_STATE_NORMAL;
@@ -94,6 +94,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_ItemState = ITEM_STATE_NONE;
 	m_nMoveframe = 0;				// 移動速度
 	m_nDashCnt = 1;		//速度アップカウント
+	m_bController = false;
 }
 
 //******************************
@@ -186,8 +187,9 @@ HRESULT CPlayer::Init(void)
 	m_PlayerState = PLAYER_STATE_NORMAL;
 	//色設定
 	m_color = MODL_COLOR;
-	// コントローラー番号
-	m_nControllerNum = CCharaSelect::GetEntryData(m_nPlayerNumber).nControllNum;
+	// コントロール番号
+	m_nControllNum = CCharaSelect::GetEntryData(m_nPlayerNumber).nControllNum;
+	m_bController = CCharaSelect::GetEntryData(m_nPlayerNumber).bController;
 
 	////////////////////////////////////////
 	// 仮	
@@ -372,22 +374,22 @@ void CPlayer::Move(void)
 		CInputJoypad* pJoypad = CManager::GetJoypad();
 
 		// スティックの座標
-		D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllerNum);
+		D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
 
-		if ((pKey->GetKeyPress(m_anControllKey[m_nControllerNum][KEY_PROGRESS])
-			|| (StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllerNum))
+		if ((!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
+			|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
 		{// 前進
 			m_Move.z -= MOVE_DIST;
 			m_bMove = false;
 			m_pActRange->ActMove(0, -1);
 
-			m_rotDest.y= D3DXToRadian(ROTDEST_PREVIOUS);
+			m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
 		}
-		else if ((pKey->GetKeyPress(m_anControllKey[m_nControllerNum][KEY_RECESSION])
-			|| (StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllerNum))
+		else if ((!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
+			|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
 		{// 後退
 			m_Move.z += MOVE_DIST;
@@ -396,9 +398,9 @@ void CPlayer::Move(void)
 
 			m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
 		}
-		else if ((pKey->GetKeyPress(m_anControllKey[m_nControllerNum][KEY_LEFT])
-			|| (StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllerNum))
+		else if ((!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
+			|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
 		{// 左
 			m_Move.x += MOVE_DIST;
@@ -407,9 +409,9 @@ void CPlayer::Move(void)
 
 			m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
 		}
-		else if ((pKey->GetKeyPress(m_anControllKey[m_nControllerNum][KEY_RIGHT])
-			|| (StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllerNum))
+		else if ((!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
+			|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			&& m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
 		{// 右
 			m_Move.x -= MOVE_DIST;
@@ -456,16 +458,6 @@ void CPlayer::Move(void)
 			}
 			break;
 		case ITEM_STATE_DASH:
-			//カウントが一定に達する
-			//if (m_MoveCount >= m_nMoveframe / 2)
-			//{
-			//	//ダッシュタイムをカウント
-			//	m_nDashCnt++;
-			//	//カウント初期化
-			//	m_MoveCount = 0;
-			//	//移動できるように
-			//	m_bMove = true;
-			//}
 
 			//ダッシュタイムをカウント
 			m_nDashCnt++;
@@ -491,7 +483,7 @@ void CPlayer::Attack(void)
 	CInputJoypad* pJoypad = CManager::GetJoypad();
 
 	// スティックの座標
-	D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllerNum);
+	D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
 
 	// 座標の取得
 	D3DXVECTOR3 pos = GetPos();
@@ -501,35 +493,35 @@ void CPlayer::Attack(void)
 	if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor && !m_pAttack->GetAttackFlag())
 	{
 		// 攻撃ボタンを押したら
-		if (pKey->GetKeyPress(m_anControllKey[m_nControllerNum][KEY_BULLET])
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllerNum))
+		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
+			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
 		{
 
 			// 移動不可に
 			m_bMove = false;
 
 			// 向いてる方向を変える
-			if ((pKey->GetKeyPress(m_anControllKey[m_nControllerNum][KEY_PROGRESS])
-				|| (StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllerNum)))
+			if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
+				|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			{// 前
 				m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
 			}
-			else if ((pKey->GetKeyPress(m_anControllKey[m_nControllerNum][KEY_RECESSION])
-				|| (StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllerNum)))
+			else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
+				|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			{// 後
 				m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
 			}
-			else if ((pKey->GetKeyPress(m_anControllKey[m_nControllerNum][KEY_LEFT])
-				|| (StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllerNum)))
+			else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
+				|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			{// 左
 				m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
 			}
-			else if ((pKey->GetKeyPress(m_anControllKey[m_nControllerNum][KEY_RIGHT])
-				|| (StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllerNum)))
+			else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
+				|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			{// 右
 				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
 			}
@@ -538,8 +530,8 @@ void CPlayer::Attack(void)
 		}
 
 		// 離したら弾がでるように
-		if (pKey->GetKeyRelease(m_anControllKey[m_nControllerNum][KEY_BULLET])
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllerNum))
+		if (  !m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
+			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
 		{
 			m_pAttack->AttackSwitch(pHitTile->GetStepNum() - 1);
 			pHitTile->ResetTile();

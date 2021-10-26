@@ -70,7 +70,8 @@ private:
 	//*****************************
 	static Entry_Data m_aEntryData[MAX_PLAYER]; // エントリーデータ
 	static int m_nEntryPlayerNum;               // エントリー人数
-	bool m_abUseControll[MAX_PLAYER];           // 使っているコントローラーのフラグ
+	bool m_abUseJoy[MAX_PLAYER];           // 使っているコントローラーのフラグ
+	bool m_abUseKey[MAX_PLAYER];           // 使っているコントローラーのフラグ
 };
 
 #endif

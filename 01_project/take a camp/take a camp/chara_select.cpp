@@ -32,7 +32,8 @@ int CCharaSelect::m_nEntryPlayerNum = 0;
 CCharaSelect::CCharaSelect()
 {
 	// 変数のクリア
-	ZeroMemory(&m_abUseControll, sizeof(m_abUseControll));
+	ZeroMemory(&m_abUseJoy, sizeof(m_abUseJoy));
+	ZeroMemory(&m_abUseKey, sizeof(m_abUseKey));
 }
 
 //=============================
@@ -67,7 +68,8 @@ HRESULT CCharaSelect::Init(void)
 		m_aEntryData[nCntData].nColorNum = nCntData; // 仮
 		m_aEntryData[nCntData].nControllNum = -1;
 		m_aEntryData[nCntData].charaType = CPlayer::CHARA_TYPE_FIGHTER;
-		m_abUseControll[nCntData] = false;
+		m_abUseJoy[nCntData] = false;
+		m_abUseKey[nCntData] = false;
 	}
 
 	CCharaSelectUi::Create();
@@ -117,24 +119,47 @@ void CCharaSelect::Draw(void)
 //=============================
 void CCharaSelect::EntryPlayer(void)
 {
+	// エントリー
+	auto EntryPlayer = [this](int nCntData, int nCntJoy, bool bController)
+	{
+		// エントリー状態にする
+		m_aEntryData[nCntData].bEntry = true;
+		// コントローラーフラグ
+		m_aEntryData[nCntData].bController = bController;
+		// コントローラー番号のセット
+		m_aEntryData[nCntData].nControllNum = nCntJoy;
+		// コントローラーを使用状態に
+		if (bController) m_abUseJoy[nCntJoy] = true;
+		else m_abUseKey[nCntJoy] = true;
+	};
+
+	// エントリー解除処理
+	auto EntryCancelPlayer = [this](int nCntData)
+	{
+		// エントリー状態にする
+		m_aEntryData[nCntData].bEntry = false;
+		// コントローラー・キーボードを非使用状態に
+		if (m_aEntryData[nCntData].bController) m_abUseJoy[m_aEntryData[nCntData].nControllNum] = false;
+		else m_abUseKey[m_aEntryData[nCntData].nControllNum] = false;
+
+		// コントローラーフラグ
+		m_aEntryData[nCntData].bController = false;
+		// コントローラー番号のセット
+		m_aEntryData[nCntData].nControllNum = -1;
+	};
+
 	CInputJoypad * pJoy = CManager::GetJoypad();
+	CInputKeyboard *pKey = CManager::GetKeyboard();
 
 	for (int nCntData = 0; nCntData < MAX_PLAYER; nCntData++)
 	{
-
 		if (m_aEntryData[nCntData].bEntry)
 		{
 			// エントリー解除処理
-			if (pJoy->GetButtonState(XINPUT_GAMEPAD_START, CInputJoypad::BUTTON_TRIGGER, m_aEntryData[nCntData].nControllNum))
+			if (   m_aEntryData[nCntData].bController && pJoy->GetButtonState(XINPUT_GAMEPAD_START, CInputJoypad::BUTTON_TRIGGER, m_aEntryData[nCntData].nControllNum)
+				||!m_aEntryData[nCntData].bController && pKey->GetKeyTrigger(CPlayer::GetPlayerControllKey(m_aEntryData[nCntData].nControllNum, CPlayer::KEY_PROGRESS)))
 			{
-				// エントリー状態にする
-				m_aEntryData[nCntData].bEntry = false;
-				// コントローラーフラグ
-				m_aEntryData[nCntData].bController = false;
-				// コントローラーを非使用状態に
-				m_abUseControll[m_aEntryData[nCntData].nControllNum] = false;
-				// コントローラー番号のセット
-				m_aEntryData[nCntData].nControllNum = -1;
+				EntryCancelPlayer(nCntData);
 				break;
 			}
 		}
@@ -142,18 +167,19 @@ void CCharaSelect::EntryPlayer(void)
 		for (int nCntJoy = 0; nCntJoy < MAX_PLAYER; nCntJoy++)
 		{
 			// エントリー処理
-			if (!m_aEntryData[nCntData].bEntry && !m_abUseControll[nCntJoy])
+			if (!m_aEntryData[nCntData].bEntry)
 			{// エントリー状態じゃないとき
-				if (pJoy->GetButtonState(XINPUT_GAMEPAD_START, CInputJoypad::BUTTON_TRIGGER, nCntJoy))
-				{
-					// エントリー状態にする
-					m_aEntryData[nCntData].bEntry = true;
-					// コントローラーフラグ
-					m_aEntryData[nCntData].bController = true;
-					// コントローラー番号のセット
-					m_aEntryData[nCntData].nControllNum = nCntJoy;
-					// コントローラーを使用状態に
-					m_abUseControll[nCntJoy] = true;
+				if (!m_abUseJoy[nCntJoy] && pJoy->GetButtonState(XINPUT_GAMEPAD_START, CInputJoypad::BUTTON_TRIGGER, nCntJoy))
+				{// コントローラーでエントリー
+					EntryPlayer(nCntData, nCntJoy, true);
+					break;
+				}
+
+				// エントリーキーの取得*前進キー
+				int nEntryKey = CPlayer::GetPlayerControllKey(nCntJoy, CPlayer::KEY_PROGRESS);
+				if (!m_abUseKey[nCntJoy] && pKey->GetKeyTrigger(CPlayer::GetPlayerControllKey(nCntJoy, CPlayer::KEY_PROGRESS)))
+				{// キーボードでエントリー
+					EntryPlayer(nCntData, nCntJoy, false);
 					break;
 				}
 			}
