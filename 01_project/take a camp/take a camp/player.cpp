@@ -89,10 +89,10 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	memset(&m_RespawnPos, 0, sizeof(D3DXVECTOR3));
 	m_MoveCount = 0;
 	m_pAttack = NULL;
-	memset(&m_apMotion, 0, sizeof(m_apMotion));
-	m_ItemState = ITEM_STATE_NONE;
+	memset(&m_apMotion, 0, sizeof(m_apMotion));	// アニメーションポインタ
+	m_ItemState = ITEM_STATE_NONE;	// アイテム用ステート
 	m_nMoveframe = 0;				// 移動速度
-	m_nDashCnt = 1;		//速度アップカウント
+	m_nDashCnt = 1;					// 速度アップカウント
 }
 
 //******************************
@@ -355,6 +355,36 @@ void CPlayer::Death(void)
 		SetPos(m_RespawnPos);
 	}
 
+}
+
+//******************************
+// スキルでの死亡処理
+//******************************
+void CPlayer::SkillDeath(void)
+{
+	if (!m_bInvincible)
+	{
+		//死亡状態に移行
+		SetState(PLAYER_STATE_DEATH);
+
+		//当たり判定を消す
+		if (m_pCollision != NULL)
+		{
+			m_pCollision->ReConnection();
+			m_pCollision->Uninit();
+			delete m_pCollision;
+			m_pCollision = NULL;
+		}
+
+		//行動クラスに死亡状態になったフラグを送る
+		m_pActRange->SetDeath(true);
+		//透明にする
+		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+
+		//位置セット
+		SetPos(m_RespawnPos);
+
+	}
 }
 
 //******************************

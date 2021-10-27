@@ -22,7 +22,7 @@ class CCollision;
 class CScene3d;
 class CBullet;
 class CPlayer;
-
+class CPeintCollision;
 //*****************************
 //マクロ定義
 //*****************************
@@ -73,12 +73,13 @@ private:
 	void DrawModel(void);
 	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData); // シェーダに値を送る
 
-	bool CollisionPlayer(void);                       // プレイヤーとの当たり判定
-	virtual void HitPlayerAction(CPlayer * pPlayer);         // 弾と当たったときのアクション*プレス
-	virtual void HitPlayerActionTrigger(CPlayer * pPlayer);  // 弾と当たったときのアクション*トリガー
-	bool CollisionBullet(void);                                                       // 弾との当たり判定
-	virtual void HitBulletAction(CBullet * pBullet);                                               // 弾と当たったときのアクション
-
+	bool CollisionPlayer(void);								// プレイヤーとの当たり判定
+	virtual void HitPlayerAction(CPlayer * pPlayer);        // 弾と当たったときのアクション*プレス
+	virtual void HitPlayerActionTrigger(CPlayer * pPlayer); // 弾と当たったときのアクション*トリガー
+	bool CollisionBullet(void);								// 弾との当たり判定
+	virtual void HitBulletAction(CBullet * pBullet);		// 弾と当たったときのアクション
+	bool CollisionPeint(void);								// 塗り判定に当たった時
+	virtual void HItPeint(CPeintCollision * pPeint);		// 塗り判定と当たった時のアクション
 	// メンバ変数
 	D3DXCOLOR m_color;        // カラー
 	CCollision * m_pCollison; // 当たり判定

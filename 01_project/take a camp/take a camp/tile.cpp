@@ -17,6 +17,7 @@
 #include "collision.h"
 #include "bullet.h"
 #include "player.h"
+#include "peint_collision.h"
 
 #ifdef _DEBUG
 #include "keyboard.h"
@@ -136,6 +137,9 @@ void CTile::Update(void)
 
 	// ’e‚Æ‚Ì“–‚½‚è”»’è
 	m_bHitBullet = CollisionBullet();
+	
+	//“h‚è”»’è‚Æ‚Ì“–‚½‚è”»’è
+	CollisionPeint();
 }
 
 //******************************
@@ -317,6 +321,31 @@ bool CTile::CollisionBullet(void)
 	}
 
 	return false;
+}
+//******************************
+// “h‚è”»’è‚É“–‚½‚Á‚½Žž
+//******************************
+bool CTile::CollisionPeint(void)
+{
+	CPeintCollision * pPeint = (CPeintCollision*)GetTop(OBJTYPE_PEINT);
+
+	while (pPeint != NULL)
+	{
+		if (CCollision::CollisionSphere(m_pCollison, pPeint->GetCollision()))
+		{
+			HItPeint(pPeint);
+			return true;
+		}
+		pPeint = (CPeintCollision*)pPeint->GetNext();
+	}
+	return false;
+}
+
+//******************************
+// “h‚è”»’è‚Æ“–‚½‚Á‚½Žž‚ÌƒAƒNƒVƒ‡ƒ“
+//******************************
+void CTile::HItPeint(CPeintCollision * pPeint)
+{
 }
 
 //******************************
