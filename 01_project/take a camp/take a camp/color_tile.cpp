@@ -43,7 +43,8 @@ CColorTile::CColorTile()
 	m_nPrevNum = -1;                             // 今塗られているカラーの番号*デフォルトは-1
 	m_nStep = 0;                                 // 今の塗段階
 	m_nCntStep = 0;                              // 再度塗り可能カウント
-	m_nLastHitPlayerNum = -1;                    // 現在の塗られている番号
+	m_nLastHitPlayerNum = -1;                    // 現在の塗られている番号4
+	m_nCntFrem = 0;
 }
 
 //******************************
@@ -175,6 +176,8 @@ void CColorTile::Uninit(void)
 //******************************
 void CColorTile::Update(void)
 {
+	//プレイヤーのポインター所得
+	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
 
 	// タイルのアップデート
 	CTile::Update();
@@ -187,6 +190,18 @@ void CColorTile::Update(void)
 		m_nCntStep--;
 	}
 
+	if (m_nStep == 3)
+	{
+		m_nCntFrem++;
+
+		if(m_nCntFrem % 10 <= 0)
+		{
+
+			D3DXVECTOR3 pos = m_pFrame->GetPos();
+			CParticle::Create(D3DXVECTOR3(pos.x + (float)(rand() % 16 -8), pos.y, pos.z + (float)(rand() % 16 - 8)), D3DXVECTOR3(0.0f, 0.25f, 0.0f), D3DXVECTOR3(3.0f, 3.0f, 3.0f), 500, GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_SQUARE);
+			
+		}
+	}
 
 #ifdef _DEBUG
 	// デバッグキー
@@ -269,6 +284,7 @@ void CColorTile::ManageFrame(void)
 //******************************
 void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 {
+
 	if (m_nCntStep <= 0 || nPlayerNum != m_nLastHitPlayerNum)
 	{
 		// カウントの初期化
@@ -296,12 +312,6 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 				m_nStep++;
 				// 色の取得
 				SetColor(GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1));
-
-				if (m_nStep == 2)
-				{
-					D3DXVECTOR3 pos = m_pFrame->GetPos();
-					CParticle::Create(D3DXVECTOR3(pos.x, pos.y + 5.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(10.0f, 10.0f, 10.0f), 500, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_SQUARE);
-				}
 			}
 		}
 		else
