@@ -55,7 +55,8 @@ public:
 	void ResetTile(void); // タイルのリセット
 	
 	void Peint(int nColorNumber, int nPlayerNum); // 塗処理
-
+	
+	CScene3d *GetFrame(void) { return m_pFrame; }
 private:
 	void HitPlayerActionTrigger(CPlayer * pPlayer);  // 弾と当たったときのアクション*トリガー
 	void HItPeint(CPeintCollision * pPeint);		 // 塗り判定と当たった時のアクション
@@ -64,7 +65,7 @@ private:
 
 	// メンバ変数
 	static int m_anTileNum[MAX_TILE_COLOR_NUM][COLOR_STEP_NUM + 1];
-	CScene3d *m_pFrame;        // 枠
+	CScene3d *m_pFrame;       // 枠
 	int m_nPrevNum;           // 今塗られているカラーの番号*デフォルトは-1
 	int m_nStep;              // 今の塗段階
 	int m_nCntStep;           // 再度塗り可能カウント

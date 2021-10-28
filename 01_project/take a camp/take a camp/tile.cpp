@@ -18,7 +18,7 @@
 #include "bullet.h"
 #include "player.h"
 #include "peint_collision.h"
-
+#include "color_tile.h"
 #ifdef _DEBUG
 #include "keyboard.h"
 #endif
@@ -33,6 +33,11 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
+std::vector<CTile::SENTENCE_FUNC> CTile::m_CreateSentence =
+{
+		&CTile::Create,
+		//&CColorTile::Create
+};
 
 //******************************
 // コンストラクタ

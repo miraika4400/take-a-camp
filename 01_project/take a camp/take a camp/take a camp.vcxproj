@@ -155,7 +155,8 @@
     <ClCompile Include="act_range.cpp" />
     <ClCompile Include="attack.cpp" />
     <ClCompile Include="attack_1.cpp" />
-    <ClCompile Include="button.cpp" />
+    <ClCompile Include="chara_select.cpp" />
+    <ClCompile Include="chara_select_ui.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="needle_tile.cpp" />
     <ClCompile Include="peint_collision.cpp" />
@@ -213,6 +214,8 @@
     <ClInclude Include="act_range.h" />
     <ClInclude Include="attack.h" />
     <ClInclude Include="attack_1.h" />
+    <ClInclude Include="chara_select.h" />
+    <ClInclude Include="chara_select_ui.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="needle_tile.h" />

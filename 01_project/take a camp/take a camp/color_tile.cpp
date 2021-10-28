@@ -68,7 +68,6 @@ CColorTile * CColorTile::Create(D3DXVECTOR3 pos)
 
 	// 各値の代入・セット
 	pTile->SetPos(pos);
-	pTile->SetPriority(OBJTYPE_COLOR_TILE); // オブジェクトタイプ
 
 	return pTile;
 }
@@ -151,7 +150,7 @@ HRESULT CColorTile::Init(void)
 	// アイコン
 	m_pFrame = CScene3d::Create(GetPos(), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
 	m_pFrame->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_FRAME));
-	m_pFrame->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+	m_pFrame->SetColor(TILE_DEFAULT_COLOR);
 	m_pFrame->SetPriority(OBJTYPE_UI);
 
 	// 変数の初期化
@@ -159,6 +158,8 @@ HRESULT CColorTile::Init(void)
 	m_nStep = 0;                                 // 今の塗段階
 	m_nCntStep = 0;                              // 再度塗り可能カウント
 	m_nLastHitPlayerNum = -1;                    // 現在の塗られている番号
+	
+	SetPriority(OBJTYPE_COLOR_TILE); // オブジェクトタイプ
 
 	return S_OK;
 }
@@ -261,9 +262,9 @@ void CColorTile::ManageFrame(void)
 {
 	// 位置の調整
 	D3DXVECTOR3 pos = m_pFrame->GetPos();
-	if (pos != D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 1.0f, GetPos().z))
+	if (pos != D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z))
 	{
-		pos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 1.0f, GetPos().z);
+		pos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z);
 
 		m_pFrame->SetPos(pos);
 	}

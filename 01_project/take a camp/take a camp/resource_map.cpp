@@ -21,7 +21,7 @@
 //=============================================================================
 char* CMapManager::m_pFileName[MAP_TYPE_MAX] =
 {
-	"data/Text/stage02.csv" ,
+	"data/Text/stage04.csv" ,
 	"",
 	"",
 	""
@@ -128,11 +128,11 @@ void CMapManager::Load(void)
 		if (pFile != NULL)
 		{
 			//中心値の取得用変数
-			int nCneterX, nCneterY;
+			int nCneterX, nCneterY, nCneterZ;
 			//生成位置読み込み
-			fscanf_s(pFile, "CENTER_POS,%d,%d", &nCneterX,  &nCneterY);
+			fscanf_s(pFile, "CENTER_POS,%d,%d,%d", &nCneterX, &nCneterY, &nCneterZ);
 			//生成位置修正
-			m_MapData[nMap].m_pos = D3DXVECTOR3(TILE_ONE_SIDE * nCneterX,0.0f, TILE_ONE_SIDE * -nCneterY);
+			m_MapData[nMap].m_pos = D3DXVECTOR3(TILE_ONE_SIDE * nCneterX, TILE_ONE_SIDE * nCneterY, TILE_ONE_SIDE * -nCneterZ);
 			//ヘッダー読み飛ばし
 			while (fgetc(pFile) != '\n');
 

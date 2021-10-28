@@ -23,6 +23,7 @@ class CScene3d;
 class CBullet;
 class CPlayer;
 class CPeintCollision;
+
 //*****************************
 //マクロ定義
 //*****************************
@@ -46,7 +47,7 @@ public:
 	~CTile();
 
 	static CTile *Create(D3DXVECTOR3 pos);
-	
+	static void Create1(void)  { return; }
 	virtual HRESULT Init(void);
 	virtual void Uninit(void);
 	virtual void Update(void);
@@ -64,10 +65,27 @@ public:
 	float GetDistPosYRate(void) { return m_fDistPosYRate; }
 	// コリジョンの取得
 	CCollision*GetCollision(void) { return m_pCollison; }
-
+	static void CreateSentence0() { return ; }
 	// ヒットフラグ
 	bool GetHitPlayerFlag(void) { return m_bHitPlayer; }
 	bool GetHitBulletFlag(void) { return m_bHitBullet; }
+	typedef CTile*(*CTile::SENTENCE_FUNC)(D3DXVECTOR3);
+	static std::vector<SENTENCE_FUNC>m_CreateSentence;
+	
+	//static void aaa(void)
+	//{
+	//	//std::function<>fnc = CTile::Create1;
+	//	m_CreateSentence.push_back();
+	//	m_CreateSentence.push_back(&CTile::Create);
+	//	m_CreateSentence[1](D3DXVECTOR3(100.0f,1000.0f,0.0f));
+	//}
+
+	template <typename T> static void aiueo(D3DXVECTOR3 pos, T data)
+	{
+		return T::Create(pos);
+	//	aFunc(D3DXVECTOR3(0.0f,100.0f,0.0f));
+	}
+
 
 private:
 	void DrawModel(void);
@@ -89,5 +107,7 @@ private:
 	bool m_bHitPlayer;        // プレイヤーが当たっているフラグ
 	bool m_bHitBullet;        // 弾が当たっているフラグ
 };
+
+
 
 #endif

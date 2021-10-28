@@ -38,7 +38,7 @@ public:
 		MOTION_WALK = 0,     // アイドル
 		MOTION_MAX
 	}MOTION_TYPE;
-
+	// キー
 	typedef enum
 	{
 		KEY_PROGRESS = 0,
@@ -48,19 +48,27 @@ public:
 		KEY_BULLET,
 		KEY_MAX
 	}CONTROLL_KEY;
-
+	// ステート
 	typedef enum
 	{
 		PLAYER_STATE_NORMAL = 0,	//通常状態
 		PLAYER_STATE_DEATH			//死亡状態
 	}PLAYER_STATE;
-
+	// アイテムステート
 	typedef enum
 	{
 		ITEM_STATE_NONE = 0,	//通常
 		ITEM_STATE_DASH,		//加速
 		ITEM_STATE_MAX
 	}ITEM_STATE;
+	// キャラタイプ
+	typedef enum
+	{
+		CHARA_TYPE_FIGHTER = 0, // 戦士
+		CHARA_TYPE_LANCER,      // 槍使い
+		CHARA_TYPE_WIZARD,      // 魔法使い
+		CHARA_TYPE_MAX
+	}CHARA_TYPE;
 
 	//メンバ関数
 	CPlayer();
@@ -89,6 +97,8 @@ public:
 	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }
 	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }
 	ITEM_STATE GetItemState(void) { return m_ItemState; }
+
+	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 private:
 	void Move(void);		// 移動処理
 	void Respawn(void);		// リスポーン処理
@@ -108,6 +118,8 @@ private:
 	CAttackBased* m_pAttack;	// 攻撃用クラス
 	int m_nPlayerNumber;		// プレイヤー番号
 	int m_nColor;				// 色ナンバー
+	int m_nControllNum;         // コントロール番号
+	bool m_bController;         // コントローラー捜査課キーボード操作か
 	bool m_bMove;				// 移動可否フラグ
 	bool m_bInvincible;			// 無敵フラグ
 	PLAYER_STATE m_PlayerState;	// プレイヤーステータス
