@@ -82,7 +82,8 @@ public:
 	void Update(void);
 	void Draw(void);
 
-	void Death(void);	// €–Sˆ—ŠÖ”
+	void Death(void);		// €–Sˆ—ŠÖ”
+	void SkillDeath(void);	// ƒXƒLƒ‹‚Å‚Ì€–Sˆ—ŠÖ”
 
 	int GetColorNumber(void) { return m_nColor; }
 	CCollision * GetCollision(void) { return  m_pCollision; }

@@ -17,7 +17,8 @@
 #include "collision.h"
 #include "bullet.h"
 #include "player.h"
-
+#include "peint_collision.h"
+#include "color_tile.h"
 #ifdef _DEBUG
 #include "keyboard.h"
 #endif
@@ -32,6 +33,11 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
+std::vector<CTile::SENTENCE_FUNC> CTile::m_CreateSentence =
+{
+		&CTile::Create,
+		//&CColorTile::Create
+};
 
 //******************************
 // コンストラクタ
@@ -136,6 +142,9 @@ void CTile::Update(void)
 
 	// 弾との当たり判定
 	m_bHitBullet = CollisionBullet();
+	
+	//塗り判定との当たり判定
+	CollisionPeint();
 }
 
 //******************************
@@ -317,6 +326,31 @@ bool CTile::CollisionBullet(void)
 	}
 
 	return false;
+}
+//******************************
+// 塗り判定に当たった時
+//******************************
+bool CTile::CollisionPeint(void)
+{
+	CPeintCollision * pPeint = (CPeintCollision*)GetTop(OBJTYPE_PEINT);
+
+	while (pPeint != NULL)
+	{
+		if (CCollision::CollisionSphere(m_pCollison, pPeint->GetCollision()))
+		{
+			HItPeint(pPeint);
+			return true;
+		}
+		pPeint = (CPeintCollision*)pPeint->GetNext();
+	}
+	return false;
+}
+
+//******************************
+// 塗り判定と当たった時のアクション
+//******************************
+void CTile::HItPeint(CPeintCollision * pPeint)
+{
 }
 
 //******************************

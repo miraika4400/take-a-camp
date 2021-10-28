@@ -59,6 +59,7 @@ public:
 	CScene3d *GetFrame(void) { return m_pFrame; }
 private:
 	void HitPlayerActionTrigger(CPlayer * pPlayer);  // 弾と当たったときのアクション*トリガー
+	void HItPeint(CPeintCollision * pPeint);		 // 塗り判定と当たった時のアクション
 	void ManageFrame(void);        // アイコン管理
 	
 

@@ -53,6 +53,7 @@
 #define DASH_FRAME      300
 #define DASH_MOVE_FRAME  MOVE_FRAME*0.8f
 #define STICK_DECISION_RANGE (32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
+
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
@@ -90,10 +91,10 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	memset(&m_RespawnPos, 0, sizeof(D3DXVECTOR3));
 	m_MoveCount = 0;
 	m_pAttack = NULL;
-	memset(&m_apMotion, 0, sizeof(m_apMotion));
-	m_ItemState = ITEM_STATE_NONE;
+	memset(&m_apMotion, 0, sizeof(m_apMotion));	// アニメーションポインタ
+	m_ItemState = ITEM_STATE_NONE;	// アイテム用ステート
 	m_nMoveframe = 0;				// 移動速度
-	m_nDashCnt = 1;		//速度アップカウント
+	m_nDashCnt = 1;					// 速度アップカウント
 	m_bController = false;
 }
 
@@ -360,6 +361,36 @@ void CPlayer::Death(void)
 		SetPos(m_RespawnPos);
 	}
 
+}
+
+//******************************
+// スキルでの死亡処理
+//******************************
+void CPlayer::SkillDeath(void)
+{
+	if (!m_bInvincible)
+	{
+		//死亡状態に移行
+		SetState(PLAYER_STATE_DEATH);
+
+		//当たり判定を消す
+		if (m_pCollision != NULL)
+		{
+			m_pCollision->ReConnection();
+			m_pCollision->Uninit();
+			delete m_pCollision;
+			m_pCollision = NULL;
+		}
+
+		//行動クラスに死亡状態になったフラグを送る
+		m_pActRange->SetDeath(true);
+		//透明にする
+		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+
+		//位置セット
+		SetPos(m_RespawnPos);
+
+	}
 }
 
 //******************************
@@ -647,7 +678,6 @@ void CPlayer::DrawModel(void)
 			shader.pEffect->Begin(&numPass, 0);
 
 			// パス数分描画処理のループ
-
 			for (int nCntMat = 0; nCntMat < (int)pModelData[nCntParts].nNumMat; nCntMat++)
 			{
 				//マテリアルのアンビエントにディフューズカラーを設定
@@ -657,11 +687,11 @@ void CPlayer::DrawModel(void)
 				pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 				// テクスチャ
 				pDevice->SetTexture(0, pModelData[nCntParts].apTexture[nCntMat]);
-
 				// テクスチャをシェーダーに送る
 				shader.pEffect->SetTexture("Tex", pModelData[nCntParts].apTexture[nCntMat]);
 				// 色
 				shader.pEffect->SetFloatArray("DiffuseColor", (float*)&pMat[nCntMat].MatD3D.Diffuse, 4);
+
 				if (pModelData[nCntParts].apTexture[nCntMat] == NULL)
 				{
 					// シェーダパスの描画開始
@@ -672,6 +702,7 @@ void CPlayer::DrawModel(void)
 					// シェーダパスの描画開始
 					shader.pEffect->BeginPass(1);
 				}
+
 				// モデルパーツの描画
 				pModelData[nCntParts].pMesh->DrawSubset(nCntMat);
 				// シェーダパスの終了

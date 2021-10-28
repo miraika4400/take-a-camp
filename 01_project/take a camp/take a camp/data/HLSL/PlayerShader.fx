@@ -12,7 +12,7 @@ struct VS_IN
 	float3 Position : POSITION;
 	float3 Normal   : NORMAL;
 	float4 Color    :COLOR;         // ディフューズ
-	float2 TexCoord :TEXCOORD;     // テクスチャUV
+	float2 TexCoord :TEXCOORD;      // テクスチャUV
 };
 
 struct VS_OUT
@@ -121,7 +121,7 @@ technique Shader
 		PixelShader = compile ps_3_0 PS();
 	}
 
-	pass P0
+	pass P1
 	{
 		VertexShader = compile vs_3_0 VS();
 		PixelShader = compile ps_3_0 PS_TEX();

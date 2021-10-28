@@ -15,6 +15,7 @@
 #include "scene3d.h"
 #include "resource_texture.h"
 #include "particle.h"
+#include "peint_collision.h"
 
 #ifdef _DEBUG
 #include "manager.h"
@@ -244,6 +245,17 @@ void CColorTile::HitPlayerActionTrigger(CPlayer * pPlayer)
 }
 
 //******************************
+// “h‚è”»’è‚Æ“–‚½‚Á‚½‚ÌƒAƒNƒVƒ‡ƒ“
+//******************************
+void CColorTile::HItPeint(CPeintCollision * pPeint)
+{
+	//
+	Peint(pPeint->GetColorNumber(), pPeint->GetPlayerNum());
+	//€–Sƒtƒ‰ƒO
+	pPeint->Death();
+}
+
+//******************************
 // ƒAƒCƒRƒ“‚ÌŠÇ—
 //******************************
 void CColorTile::ManageFrame(void)
@@ -293,7 +305,7 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 			m_nStep++;
 		}
 		else if (m_nPrevNum == nColorNumber)
-		{// ¡“h‚ç‚ê‚Ä‚¢‚é‚Ì‚Æ‚©‚ç“h‚é”Ô†‚ªˆê’v
+		{// ¡“h‚ç‚ê‚Ä‚¢‚é‚Æ‚©‚ç“h‚é”Ô†‚ªˆê’v
 
 			if (m_nStep < COLOR_STEP_NUM)
 			{
