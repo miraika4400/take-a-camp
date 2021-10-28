@@ -127,9 +127,12 @@ void CMapManager::Load(void)
 
 		if (pFile != NULL)
 		{
-
+			//中心値の取得用変数
+			int nCneterX, nCneterY;
 			//生成位置読み込み
-			fscanf_s(pFile, "POS,%f,%f,%f", &m_MapData[nMap].m_pos.x, &m_MapData[nMap].m_pos.y, &m_MapData[nMap].m_pos.z);
+			fscanf_s(pFile, "CENTER_POS,%d,%d", &nCneterX,  &nCneterY);
+			//生成位置修正
+			m_MapData[nMap].m_pos = D3DXVECTOR3(TILE_ONE_SIDE * nCneterX,0.0f, TILE_ONE_SIDE * -nCneterY);
 			//ヘッダー読み飛ばし
 			while (fgetc(pFile) != '\n');
 

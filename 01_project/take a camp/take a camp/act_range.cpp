@@ -50,7 +50,7 @@ void CActRange::PlayerPos(void)
 		{
 			for (int nBlockX = 0; nBlockX < m_MapData.BlockData[nBlockY].nStageSizeX; nBlockX++)
 			{
-				D3DXVECTOR3 BlockPos = D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos;
+				D3DXVECTOR3 BlockPos = D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY)+ m_MapData.m_pos;
 				if (PlayerPos.x>BlockPos.x - TILE_ONE_SIDE/2
 					&&PlayerPos.x<BlockPos.x + TILE_ONE_SIDE/2
 					&&PlayerPos.z>BlockPos.z - TILE_ONE_SIDE/2
