@@ -69,23 +69,9 @@ public:
 	// ヒットフラグ
 	bool GetHitPlayerFlag(void) { return m_bHitPlayer; }
 	bool GetHitBulletFlag(void) { return m_bHitBullet; }
+
 	typedef CTile*(*CTile::SENTENCE_FUNC)(D3DXVECTOR3);
 	static std::vector<SENTENCE_FUNC>m_CreateSentence;
-	
-	//static void aaa(void)
-	//{
-	//	//std::function<>fnc = CTile::Create1;
-	//	m_CreateSentence.push_back();
-	//	m_CreateSentence.push_back(&CTile::Create);
-	//	m_CreateSentence[1](D3DXVECTOR3(100.0f,1000.0f,0.0f));
-	//}
-
-	template <typename T> static void aiueo(D3DXVECTOR3 pos, T data)
-	{
-		return T::Create(pos);
-	//	aFunc(D3DXVECTOR3(0.0f,100.0f,0.0f));
-	}
-
 
 private:
 	void DrawModel(void);
