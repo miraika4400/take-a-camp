@@ -119,6 +119,19 @@ void CAttackManager::Load(void)
 				case ATTACK_RANGE_HIT_4:
 					m_AttackData[nAttack][nLveel].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_HIT_4;
 					break;
+				case ATTACK_RANGE_HIT_5:
+					m_AttackData[nAttack][nLveel].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_HIT_5;
+					break;
+				case ATTACK_RANGE_HIT_6:
+					m_AttackData[nAttack][nLveel].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_HIT_6;
+					break;
+				case ATTACK_RANGE_HIT_7:
+					m_AttackData[nAttack][nLveel].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_HIT_7;
+					break;
+				case ATTACK_RANGE_HIT_8:
+					m_AttackData[nAttack][nLveel].RangeData[nRow].nRangeType[nCol] = ATTACK_RANGE_HIT_8;
+					break;
+
 				}
 				//攻撃タイプごとの速度
 				if (strcmp(cFileString, "AttackFrame") == 0)
@@ -228,6 +241,38 @@ void CAttackManager::PosCalc(void)
 							RangePos[m_AttackSwuare[nAttack][nLevel].nMaxHitRange] = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
 							//マスのタイプ取得
 							m_AttackSwuare[nAttack][nLevel].SquareData[m_AttackSwuare[nAttack][nLevel].nMaxHitRange].RangeType = ATTACK_RANGE_HIT_4;
+							//攻撃マスの最大を増やす
+							m_AttackSwuare[nAttack][nLevel].nMaxHitRange++;
+							break;
+						case CAttackManager::ATTACK_RANGE_HIT_5:	/*攻撃範囲*/
+							//位置取得
+							RangePos[m_AttackSwuare[nAttack][nLevel].nMaxHitRange] = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
+							//マスのタイプ取得
+							m_AttackSwuare[nAttack][nLevel].SquareData[m_AttackSwuare[nAttack][nLevel].nMaxHitRange].RangeType = ATTACK_RANGE_HIT_5;
+							//攻撃マスの最大を増やす
+							m_AttackSwuare[nAttack][nLevel].nMaxHitRange++;
+							break;
+						case CAttackManager::ATTACK_RANGE_HIT_6:	/*攻撃範囲*/
+							//位置取得
+							RangePos[m_AttackSwuare[nAttack][nLevel].nMaxHitRange] = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
+							//マスのタイプ取得
+							m_AttackSwuare[nAttack][nLevel].SquareData[m_AttackSwuare[nAttack][nLevel].nMaxHitRange].RangeType = ATTACK_RANGE_HIT_6;
+							//攻撃マスの最大を増やす
+							m_AttackSwuare[nAttack][nLevel].nMaxHitRange++;
+							break;
+						case CAttackManager::ATTACK_RANGE_HIT_7:	/*攻撃範囲*/
+																	//位置取得
+							RangePos[m_AttackSwuare[nAttack][nLevel].nMaxHitRange] = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
+							//マスのタイプ取得
+							m_AttackSwuare[nAttack][nLevel].SquareData[m_AttackSwuare[nAttack][nLevel].nMaxHitRange].RangeType = ATTACK_RANGE_HIT_7;
+							//攻撃マスの最大を増やす
+							m_AttackSwuare[nAttack][nLevel].nMaxHitRange++;
+							break;
+						case CAttackManager::ATTACK_RANGE_HIT_8:	/*攻撃範囲*/
+							//位置取得
+							RangePos[m_AttackSwuare[nAttack][nLevel].nMaxHitRange] = D3DXVECTOR3((float)nBlockX, 0.0f, (float)nBlockY);
+							//マスのタイプ取得
+							m_AttackSwuare[nAttack][nLevel].SquareData[m_AttackSwuare[nAttack][nLevel].nMaxHitRange].RangeType = ATTACK_RANGE_HIT_8;
 							//攻撃マスの最大を増やす
 							m_AttackSwuare[nAttack][nLevel].nMaxHitRange++;
 							break;

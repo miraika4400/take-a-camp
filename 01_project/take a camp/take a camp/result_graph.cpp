@@ -13,6 +13,7 @@
 #include "scene2d.h"
 #include "color_tile.h"
 #include "color_manager.h"
+#include "chara_select.h"
 
 //**********************************
 // マクロ定義
@@ -20,11 +21,13 @@
 #define GAUGE_WIDTH  50.0f   // ゲージの幅
 #define GAUGE_HEIGHT 500.0f  // ゲージの高さ*最大値
 #define GAUGE_SPACE  150.0f  // 各ゲージの間隔
-#define BG_SIZE    D3DXVECTOR3(SCREEN_WIDTH/2-15,SCREEN_HEIGHT/2-20,0.0f)
+#define BG_SIZE    D3DXVECTOR3(SCREEN_WIDTH-15,SCREEN_HEIGHT-20,0.0f)
 #define BG_COLOR D3DXCOLOR(0.0f,0.0f,0.0f,0.6f)
 #define GAUGE_RATE 0.03f
 #define BACK_GAUGE_SIZE 16
 #define BACK_GAUGE_COLOR D3DXCOLOR(1.0f,1.0f,1.0f,1.0f)
+#define GAUGE_POS_Y 710.0f
+
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
@@ -89,37 +92,44 @@ HRESULT CResultGraph::Init(void)
 			}
 		}
 	}
-	// プレイヤーの生成
+	
+	// プレイヤー数の取得
+	int nEntryPlayerNum = CCharaSelect::GetEntryPlayerNum();
+
 	// 生成位置X軸の調整
-	float posX = (SCREEN_WIDTH/2) - ((float)(MAX_PLAYER - 1) * GAUGE_SPACE) / 2;
+	float posX = (SCREEN_WIDTH/2) - ((float)(nEntryPlayerNum - 1) * GAUGE_SPACE) / 2;
 
-	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
+	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++ )
 	{
-		for (int nCntGauge = 0; nCntGauge < GAUGE_NUM; nCntGauge++)
+		if (CCharaSelect::GetEntryData(nCntPlayer).bEntry)
 		{
-			if (nCntGauge == 0)
+			
+			for (int nCntGauge = 0; nCntGauge < GAUGE_NUM; nCntGauge++)
 			{
-				m_aGauge[nCntPlayer][nCntGauge].pGauge = CGauge::Create(&m_aGauge[nCntPlayer][nCntGauge].fGraphData,
-					D3DXVECTOR3(posX, 700.0f, 0.0f),
-					GAUGE_WIDTH + BACK_GAUGE_SIZE,
-					GAUGE_HEIGHT + BACK_GAUGE_SIZE /2,
-					fMaxNum,
-					BACK_GAUGE_COLOR);
-				      
-			}
-			else
-			{
-				m_aGauge[nCntPlayer][nCntGauge].pGauge = CGauge::Create(&m_aGauge[nCntPlayer][nCntGauge].fGraphData,
-					D3DXVECTOR3(posX, 700.0f, 0.0f),
-					GAUGE_WIDTH,
-					GAUGE_HEIGHT,
-					fMaxNum,
-					GET_COLORMANAGER->GetIconColor(m_aGauge[nCntPlayer][nCntGauge].m_nColorNum));
-			}
+				if (nCntGauge == 0)
+				{
+					m_aGauge[nCntPlayer][nCntGauge].pGauge = CGauge::Create(&m_aGauge[nCntPlayer][nCntGauge].fGraphData,
+						D3DXVECTOR3(posX, GAUGE_POS_Y, 0.0f),
+						GAUGE_WIDTH + BACK_GAUGE_SIZE,
+						GAUGE_HEIGHT + BACK_GAUGE_SIZE / 2,
+						fMaxNum,
+						BACK_GAUGE_COLOR);
 
-			m_aGauge[nCntPlayer][nCntGauge].fGraphData = 0;
+				}
+				else
+				{
+					m_aGauge[nCntPlayer][nCntGauge].pGauge = CGauge::Create(&m_aGauge[nCntPlayer][nCntGauge].fGraphData,
+						D3DXVECTOR3(posX, GAUGE_POS_Y, 0.0f),
+						GAUGE_WIDTH,
+						GAUGE_HEIGHT,
+						fMaxNum,
+						GET_COLORMANAGER->GetIconColor(m_aGauge[nCntPlayer][nCntGauge].m_nColorNum));
+				}
+
+				m_aGauge[nCntPlayer][nCntGauge].fGraphData = 0;
+			}
+			posX += GAUGE_SPACE;
 		}
-		posX += GAUGE_SPACE;
 	}
 
 	return S_OK;

@@ -31,6 +31,7 @@ class CPause;
 class CCamera;
 class CColorManager;
 class CLight;
+class CCharaSelect;
 //=============================
 // クラス定義
 //=============================
@@ -45,11 +46,12 @@ public:
 	// 画面遷移モード
 	typedef enum
 	{
-		MODE_TITLE = 0, // タイトル
-		MODE_TUTORIAL,  // チュートリアル
-		MODE_GAME,      // ゲーム
-		MODE_RESULT,    // リザルト
-		MODE_MAX,       // モードの最大数
+		MODE_TITLE = 0,    // タイトル
+		MODE_TUTORIAL,     // チュートリアル
+		MODE_CHARA_SELECT, // キャラ選択
+		MODE_GAME,         // ゲーム
+		MODE_RESULT,       // リザルト
+		MODE_MAX,          // モードの最大数
 	}MODE;
 
 
@@ -102,6 +104,7 @@ private:
 	static CCamera*m_pCamera;                // カメラ
 	static CLight*m_pLight;					 // ライト
 	static bool m_bPause;                    // ポーズフラグ
+	static CCharaSelect* m_pCharaSelectMode; // キャラ選択モード
 };
 	
 

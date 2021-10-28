@@ -15,6 +15,7 @@
 #include "scene3d.h"
 #include "resource_texture.h"
 #include "particle.h"
+#include "peint_collision.h"
 
 #ifdef _DEBUG
 #include "manager.h"
@@ -42,7 +43,8 @@ CColorTile::CColorTile()
 	m_nPrevNum = -1;                             // 今塗られているカラーの番号*デフォルトは-1
 	m_nStep = 0;                                 // 今の塗段階
 	m_nCntStep = 0;                              // 再度塗り可能カウント
-	m_nLastHitPlayerNum = -1;                    // 現在の塗られている番号
+	m_nLastHitPlayerNum = -1;                    // 現在の塗られている番号4
+	m_nCntFrem = 0;
 }
 
 //******************************
@@ -66,7 +68,6 @@ CColorTile * CColorTile::Create(D3DXVECTOR3 pos)
 
 	// 各値の代入・セット
 	pTile->SetPos(pos);
-	pTile->SetPriority(OBJTYPE_COLOR_TILE); // オブジェクトタイプ
 
 	return pTile;
 }
@@ -149,7 +150,7 @@ HRESULT CColorTile::Init(void)
 	// アイコン
 	m_pFrame = CScene3d::Create(GetPos(), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
 	m_pFrame->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_FRAME));
-	m_pFrame->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+	m_pFrame->SetColor(TILE_DEFAULT_COLOR);
 	m_pFrame->SetPriority(OBJTYPE_UI);
 
 	// 変数の初期化
@@ -157,6 +158,8 @@ HRESULT CColorTile::Init(void)
 	m_nStep = 0;                                 // 今の塗段階
 	m_nCntStep = 0;                              // 再度塗り可能カウント
 	m_nLastHitPlayerNum = -1;                    // 現在の塗られている番号
+	
+	SetPriority(OBJTYPE_COLOR_TILE); // オブジェクトタイプ
 
 	return S_OK;
 }
@@ -174,6 +177,8 @@ void CColorTile::Uninit(void)
 //******************************
 void CColorTile::Update(void)
 {
+	//プレイヤーのポインター所得
+	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
 
 	// タイルのアップデート
 	CTile::Update();
@@ -186,6 +191,18 @@ void CColorTile::Update(void)
 		m_nCntStep--;
 	}
 
+	if (m_nStep == 3)
+	{
+		m_nCntFrem++;
+
+		if(m_nCntFrem % 10 <= 0)
+		{
+
+			D3DXVECTOR3 pos = m_pFrame->GetPos();
+			CParticle::Create(D3DXVECTOR3(pos.x + (float)(rand() % 16 -8), pos.y, pos.z + (float)(rand() % 16 - 8)), D3DXVECTOR3(0.0f, 0.25f, 0.0f), D3DXVECTOR3(3.0f, 3.0f, 3.0f), 500, GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_SQUARE);
+			
+		}
+	}
 
 #ifdef _DEBUG
 	// デバッグキー
@@ -228,15 +245,26 @@ void CColorTile::HitPlayerActionTrigger(CPlayer * pPlayer)
 }
 
 //******************************
+// 塗り判定と当たった時のアクション
+//******************************
+void CColorTile::HItPeint(CPeintCollision * pPeint)
+{
+	//
+	Peint(pPeint->GetColorNumber(), pPeint->GetPlayerNum());
+	//死亡フラグ
+	pPeint->Death();
+}
+
+//******************************
 // アイコンの管理
 //******************************
 void CColorTile::ManageFrame(void)
 {
 	// 位置の調整
 	D3DXVECTOR3 pos = m_pFrame->GetPos();
-	if (pos != D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 1.0f, GetPos().z))
+	if (pos != D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z))
 	{
-		pos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 1.0f, GetPos().z);
+		pos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z);
 
 		m_pFrame->SetPos(pos);
 	}
@@ -257,6 +285,7 @@ void CColorTile::ManageFrame(void)
 //******************************
 void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 {
+
 	if (m_nCntStep <= 0 || nPlayerNum != m_nLastHitPlayerNum)
 	{
 		// カウントの初期化
@@ -276,7 +305,7 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 			m_nStep++;
 		}
 		else if (m_nPrevNum == nColorNumber)
-		{// 今塗られているのとから塗る番号が一致
+		{// 今塗られているとから塗る番号が一致
 
 			if (m_nStep < COLOR_STEP_NUM)
 			{
@@ -284,12 +313,6 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 				m_nStep++;
 				// 色の取得
 				SetColor(GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1));
-
-				if (m_nStep == 2)
-				{
-					D3DXVECTOR3 pos = m_pFrame->GetPos();
-					CParticle::Create(D3DXVECTOR3(pos.x, pos.y + 5.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(10.0f, 10.0f, 10.0f), 500, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_SQUARE);
-				}
 			}
 		}
 		else

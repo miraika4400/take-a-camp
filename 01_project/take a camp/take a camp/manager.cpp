@@ -27,11 +27,12 @@
 #include "collision.h"
 #include "player.h"
 #include "light.h"
+#include "chara_select.h"
 
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CManager::MODE   CManager::m_mode = MODE_GAME;       // ゲームモード
+CManager::MODE   CManager::m_mode = MODE_CHARA_SELECT;       // ゲームモード
 CRenderer       *CManager::m_pRenderer = NULL;       // レンダラーポインタ
 CInputKeyboard  *CManager::m_pInputKeyboard = NULL;  // キーボード
 CInputJoypad    *CManager::m_pJoypad = NULL;         // ジョイパッド
@@ -46,7 +47,7 @@ CPause          *CManager::m_pPause = NULL;          // ポーズポインタ
 CCamera         *CManager::m_pCamera = NULL;         // カメラクラス
 CLight			*CManager::m_pLight = NULL;			 // ライトクラス
 bool             CManager::m_bPause = false;         // ポーズフラグ
-
+CCharaSelect    *CManager::m_pCharaSelectMode = NULL;// キャラ選択
 //=============================
 // コンストラクタ
 //=============================
@@ -347,6 +348,10 @@ void CManager::SetMode(MODE mode)
 		// タイトルBGM停止
 		m_pSound->Stop(CSound::LABEL_BGM_TUTORIAL);
 		break;
+	case MODE_CHARA_SELECT:
+		m_pCharaSelectMode = NULL;
+
+		break;
 	case MODE_GAME:
 		// NULLクリア
 		m_pGame = NULL;
@@ -382,6 +387,10 @@ void CManager::SetMode(MODE mode)
 		m_pTutorial = CTutorial::Create();
 		//　チュートリアルBGM再生
 		//m_pSound->Play(CSound::LABEL_BGM_TUTORIAL);
+		break;
+	case MODE_CHARA_SELECT:
+		m_pCharaSelectMode = CCharaSelect::Create();
+
 		break;
 	case MODE_GAME:
 		// ゲーム生成
