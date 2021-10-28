@@ -11,6 +11,10 @@
 #include "peint_collision.h"
 #include "collision.h"
 #include "player.h"
+//=============================================================================
+// マクロ定義
+//=============================================================================
+#define MAX_LIFE (2)	//マックスライフ
 
 //=============================================================================
 // コンストラクタ
@@ -21,6 +25,7 @@ CPeintCollision::CPeintCollision()
 	m_nColorNumber  = 0;
 	m_bDeath		= false;
 	m_pCollision	= NULL;
+	m_nLife			= 0;
 }
 
 //=============================================================================
@@ -45,13 +50,15 @@ CPeintCollision * CPeintCollision::Create(D3DXVECTOR3 pos, int nPlayerNum)
 		//初期化処理
 		pPeintCollision->Init();
 		//位置設定
-		pPeintCollision->SetPos(pos);
+		pPeintCollision->m_pos = (pos);
 		//サイズ設定
-		pPeintCollision->SetSize(D3DXVECTOR3(0.5f, 0.5f, 0.5f));
+		pPeintCollision->m_size = (D3DXVECTOR3(0.5f, 0.5f, 0.5f));
 		//プレイヤーナンバー取得
 		pPeintCollision->m_nPlayerNum = nPlayerNum;
 		//カラー番号取得(ナンバーを取得後にする)
 		pPeintCollision->ColorLoad();
+		//ライフ
+		pPeintCollision->m_nLife = MAX_LIFE;
 
 		// オブジェクトタイプ
 		pPeintCollision->SetPriority(OBJTYPE_PEINT);
@@ -65,10 +72,10 @@ CPeintCollision * CPeintCollision::Create(D3DXVECTOR3 pos, int nPlayerNum)
 HRESULT CPeintCollision::Init(void)
 {	
 	// 初期化処理
-	CModel::Init();
+	//CScene::Init();
 
-	// モデル割り当て
-	BindModel(CResourceModel::GetModel(CResourceModel::MODEL_BULLET01));
+	//// モデル割り当て
+	//BindModel(CResourceModel::GetModel(CResourceModel::MODEL_BULLET01));
 
 	return S_OK;
 }
@@ -86,7 +93,7 @@ void CPeintCollision::Uninit(void)
 		m_pCollision = NULL;
 	}
 	// 終了処理
-	CModel::Uninit();
+	Release();
 
 }
 
@@ -96,15 +103,26 @@ void CPeintCollision::Uninit(void)
 void CPeintCollision::Update(void)
 {
 	// 位置の取得
-	D3DXVECTOR3 Pos = GetPos();
+	//D3DXVECTOR3 Pos = GetPos();
 
 	if (m_pCollision == NULL)
 	{
-		m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(Pos.x, Pos.y + 20.0f / 2, Pos.z), 10 / 2);
+		m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(m_pos.x, m_pos.y + 20.0f / 2, m_pos.z), 10 / 2);
 	}
 	else
 	{
-		m_pCollision->SetPos(D3DXVECTOR3(Pos.x, Pos.y + 20.0f / 2, Pos.z));
+		m_pCollision->SetPos(D3DXVECTOR3(m_pos.x, m_pos.y + 20.0f / 2, m_pos.z));
+	}
+
+	//ライフDOWN
+	m_nLife--;
+	//ライフがゼロ以下になると
+	if (m_nLife<=0)
+	{
+		//死亡フラグ
+		Death();
+
+		m_nLife = 0;
 	}
 
 	//死亡フラグ
@@ -121,7 +139,7 @@ void CPeintCollision::Update(void)
 void CPeintCollision::Draw(void)
 {
 	// 描画処理
-	CModel::Draw();
+	//CScene3d::Draw();
 }
 
 //=============================================================================
