@@ -206,6 +206,7 @@
     <ClCompile Include="map.cpp" />
     <ClCompile Include="spawn_tile.cpp" />
     <ClCompile Include="tile.cpp" />
+    <ClCompile Include="tile_factory.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tutorial.cpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="map.h" />
     <ClInclude Include="spawn_tile.h" />
     <ClInclude Include="tile.h" />
+    <ClInclude Include="tile_factory.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tutorial.h" />

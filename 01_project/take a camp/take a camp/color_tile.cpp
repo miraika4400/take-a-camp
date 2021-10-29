@@ -25,7 +25,7 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define TILE_DEFAULT_COLOR D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
+
 #define PEINT_COUNT 60  // 再度塗れるようになるまでのカウント
 #define PLAYER_HIT_POS_Y TILE_POS_Y - 3.0f
 
@@ -57,7 +57,7 @@ CColorTile::~CColorTile()
 //******************************
 // クラス生成
 //******************************
-CColorTile * CColorTile::Create(D3DXVECTOR3 pos)
+void CColorTile::Create(D3DXVECTOR3 pos, D3DXCOLOR col)
 {
 	// メモリの確保
 	CColorTile *pTile;
@@ -68,8 +68,6 @@ CColorTile * CColorTile::Create(D3DXVECTOR3 pos)
 
 	// 各値の代入・セット
 	pTile->SetPos(pos);
-
-	return pTile;
 }
 
 //******************************

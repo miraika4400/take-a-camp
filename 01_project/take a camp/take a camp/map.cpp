@@ -17,6 +17,7 @@
 #include "item.h"
 #include <time.h>
 #include "chara_select.h"
+#include "tile_factory.h"
 
 //=============================================================================
 // マクロ定義
@@ -115,71 +116,49 @@ void CMap::MapCreate(void)
 		{
 			for (int nBlockX = 0; nBlockX < m_MapData.BlockData[nBlockY].nStageSizeX; nBlockX++)
 			{
+				CTileFactory* pTileFactory = CTileFactory::GetTileFactory();
 
+				D3DXCOLOR tileCol = TILE_DEFAULT_COLOR;
 				//マス目のタイプ取得
 				switch (m_MapData.BlockData[nBlockY].nBlockType[nBlockX])
 				{
-				case CMapManager::BLOCK_TYPE_NONE:	//なし
-					break;
 				case CMapManager::BLOCK_TYPE_1P_START:	//1Pスタート位置
-				{
-					D3DXCOLOR tileCol = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
 					if (CCharaSelect::GetEntryData(0).bEntry)
 					{
 						CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0);
 						tileCol = GET_COLORMANAGER->GetColorDataByPlayerNumber(0).iconColor;
 					}
-					CSpawnTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, ColorTileHeight, TILE_ONE_SIDE * nBlockY)+ m_MapData.m_pos, tileCol);
+
 					break;
-				}
 				case CMapManager::BLOCK_TYPE_2P_START:	//2Pスタート位置
-				{
-					D3DXCOLOR tileCol = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 					if (CCharaSelect::GetEntryData(1).bEntry)
 					{
 						CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 1);
 						tileCol = GET_COLORMANAGER->GetColorDataByPlayerNumber(1).iconColor;
 					}
-					CSpawnTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, ColorTileHeight, TILE_ONE_SIDE * nBlockY)+ m_MapData.m_pos, tileCol);
+
 					break;
-				}
 				case CMapManager::BLOCK_TYPE_3P_START:	//3Pスタート位置
-				{
-					D3DXCOLOR tileCol = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 					if (CCharaSelect::GetEntryData(2).bEntry)
 					{
 						CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 2);
 						tileCol = GET_COLORMANAGER->GetColorDataByPlayerNumber(2).iconColor;
 					}
-					CSpawnTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, ColorTileHeight, TILE_ONE_SIDE * nBlockY)+ m_MapData.m_pos, tileCol);
 					break;
-				}
 				case CMapManager::BLOCK_TYPE_4P_START:	//4Pスタート位置
-				{
-					D3DXCOLOR tileCol = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
-					if (CCharaSelect::GetEntryData(3).bEntry) 
+					if (CCharaSelect::GetEntryData(3).bEntry)
 					{
 						CPlayer::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 3);
 						tileCol = GET_COLORMANAGER->GetColorDataByPlayerNumber(3).iconColor;
 					}
-					
-					CSpawnTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, ColorTileHeight, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, tileCol);
 					break;
 				}
-				case CMapManager::BLOCK_TYPE_BLOCK:	//仮置きタイル
+
+				if (pTileFactory != NULL
+					&&pTileFactory->GetCreateFunction(m_MapData.BlockData[nBlockY].nBlockType[nBlockX]) != NULL)
 				{
-					CColorTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, ColorTileHeight, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos);
-					ColorTileHeight += COLOR_TILE_PLUS_HEIGHT;
-					break;
-				}
-				case CMapManager::BLOCK_TYPE_NEEDLE_BLOCK:
-				{
-					CNeedleTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, ColorTileHeight, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos);
-					ColorTileHeight += COLOR_TILE_PLUS_HEIGHT;
-					break;
-				}
-				default:
-					break;
+					pTileFactory->GetCreateFunction(m_MapData.BlockData[nBlockY].nBlockType[nBlockX])(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, ColorTileHeight, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, tileCol);
 				}
 			}
 		}

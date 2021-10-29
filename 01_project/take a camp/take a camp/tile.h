@@ -42,12 +42,15 @@ class CPeintCollision;
 class CTile : public CModel
 {
 public:
+
+	// 関数ポインタ
+	typedef void(*CTile::SENTENCE_FUNC)(D3DXVECTOR3, D3DXCOLOR);
+
 	//メンバ関数
 	CTile();
 	~CTile();
 
-	static CTile *Create(D3DXVECTOR3 pos);
-	static void Create1(void)  { return; }
+	static void Create(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
 	virtual HRESULT Init(void);
 	virtual void Uninit(void);
 	virtual void Update(void);
@@ -70,9 +73,6 @@ public:
 	bool GetHitPlayerFlag(void) { return m_bHitPlayer; }
 	bool GetHitBulletFlag(void) { return m_bHitBullet; }
 
-	typedef CTile*(*CTile::SENTENCE_FUNC)(D3DXVECTOR3);
-	static std::vector<SENTENCE_FUNC>m_CreateSentence;
-
 private:
 	void DrawModel(void);
 	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData); // シェーダに値を送る
@@ -84,7 +84,8 @@ private:
 	virtual void HitBulletAction(CBullet * pBullet);		// 弾と当たったときのアクション
 	bool CollisionPeint(void);								// 塗り判定に当たった時
 	virtual void HItPeint(CPeintCollision * pPeint);		// 塗り判定と当たった時のアクション
-	// メンバ変数
+
+
 	D3DXCOLOR m_color;        // カラー
 	CCollision * m_pCollison; // 当たり判定
 	float m_fDistPosY;        // 座標Yの目標値

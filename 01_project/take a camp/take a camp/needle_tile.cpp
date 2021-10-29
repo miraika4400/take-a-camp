@@ -51,7 +51,7 @@ CNeedleTile::~CNeedleTile()
 //******************************
 // ƒNƒ‰ƒX¶¬
 //******************************
-CNeedleTile * CNeedleTile::Create(D3DXVECTOR3 pos)
+void CNeedleTile::Create(D3DXVECTOR3 pos , D3DXCOLOR col )
 {
 	// ƒƒ‚ƒŠ‚ÌŠm•Û
 	CNeedleTile *pTile;
@@ -72,7 +72,7 @@ CNeedleTile * CNeedleTile::Create(D3DXVECTOR3 pos)
 	pTile->m_pHole->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_NEEDLE));
 	pTile->m_pHole->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
 	pTile->m_pHole->SetPriority(OBJTYPE_UI);
-	return pTile;
+
 }
 
 //******************************

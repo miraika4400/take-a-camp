@@ -28,6 +28,7 @@
 #include "player.h"
 #include "light.h"
 #include "chara_select.h"
+#include "tile_factory.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -138,6 +139,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	// カラーマネージャーの生成
 	CColorManager::Create();
 
+	// タイルファクトリーの生成
+	CTileFactory::Create();
+
 	// ポーズ状態の時
 	return S_OK;
 }
@@ -161,7 +165,8 @@ void CManager::Uninit(void)
 	CResourceShader::Release();
 	// カラーマーマネージャーの破棄
 	CColorManager::Release();
-
+	// タイルファクトリーの破棄
+	CTileFactory::Release();
 
 	// テクスチャのアンロード
 	CPause::Unload();    // ポーズ

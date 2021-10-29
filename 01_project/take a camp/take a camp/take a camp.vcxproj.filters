@@ -270,9 +270,6 @@
     <ClCompile Include="chara_select.cpp">
       <Filter>ソース ファイル\06_GameScene</Filter>
     </ClCompile>
-    <ClCompile Include="button.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
-    </ClCompile>
     <ClCompile Include="shadow.cpp">
       <Filter>ソース ファイル\07_GameModel</Filter>
     </ClCompile>
@@ -281,6 +278,9 @@
     </ClCompile>
     <ClCompile Include="peint_collision.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="tile_factory.cpp">
+      <Filter>ソース ファイル\08_Map\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -457,6 +457,9 @@
     </ClInclude>
     <ClInclude Include="bullet.h">
       <Filter>ヘッダー ファイル\07_GameModel\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="tile_factory.h">
+      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

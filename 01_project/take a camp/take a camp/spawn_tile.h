@@ -35,7 +35,7 @@ public:
 	CSpawnTile();
 	~CSpawnTile();
 
-	static CSpawnTile *Create(D3DXVECTOR3 pos, D3DXCOLOR col);
+	static void Create(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
 
 	HRESULT Init(void);
 	void Uninit(void);

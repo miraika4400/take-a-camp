@@ -11,7 +11,7 @@
 #include "resource_texture.h"
 #include "renderer.h"
 #include "manager.h"
-
+#include <assert.h>
 //******************************
 // ƒ}ƒNƒ’è‹`
 //******************************
