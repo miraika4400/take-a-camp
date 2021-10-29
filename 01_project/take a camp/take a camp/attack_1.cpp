@@ -11,6 +11,7 @@
 #include "attack_1.h"
 #include "tile.h"
 #include "player.h"
+
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -74,6 +75,8 @@ void CAttack1::AttackCreate(void)
 		//カウントアップ
 		m_nAttackCount++;
 
+		// 攻撃範囲の可視化
+		ChangeFrameColor();
 		//カウントが一定になったら
 		if (m_nAttackCount >= GetAttackSquare().nAttackFrame[m_nType])
 		{

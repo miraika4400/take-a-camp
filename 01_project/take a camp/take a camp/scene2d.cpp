@@ -186,11 +186,11 @@ void CScene2d::SetPos(const D3DXVECTOR3 pos)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 中心から頂点の距離
-	float fDistance = sqrtf(powf(m_size.x, 2) + powf(m_size.y, 2));
+	float fDistance = sqrtf(powf(m_size.x/2, 2) + powf(m_size.y/2, 2));
 	// 中心から右上の頂点の角度
-	float fAngle = atan2f(m_size.y, m_size.x);
+	float fAngle = atan2f(m_size.y/2, m_size.x/2);
 	// 中心から左上の頂点の角度
-	float  fAngle2 = atan2f(m_size.y, -m_size.x);
+	float  fAngle2 = atan2f(m_size.y/2, -m_size.x/2);
 
 	// 頂点座標の設定
 	pVtx[0].pos = D3DXVECTOR3(m_pos.x + (cosf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), m_pos.y + (sinf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);

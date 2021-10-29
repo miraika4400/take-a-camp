@@ -71,7 +71,7 @@ CParticle * CParticle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, con
 	pParticle->m_fRotAngle;                  // âÒì]äpìx
 	pParticle->SetColor(col);                // ÉJÉâÅ[ê›íË
 	pParticle->SetAngle((float)(rand() % 360));       // âÒì]äpìxÇÉâÉìÉ_ÉÄ
-	pParticle->SetAddMode(true);             // â¡éZçáê¨
+	pParticle->SetAddMode(false);             // â¡éZçáê¨
 	
 
 	switch (type)
@@ -134,6 +134,7 @@ void CParticle::Update(void)
 	case PARTICLE_SQUARE:
 		m_col.a -= m_fFadeout;
 		SetColor(m_col);
+
 		break;
 
 	case PARTICLE_TEARS:
@@ -146,7 +147,15 @@ void CParticle::Update(void)
 		break;
 	}
 
+	if (m_col.a <= 0)
+	{
+		m_bFadeoutFlag = false;
+	}
 
+	if (!m_bFadeoutFlag)
+	{
+		Uninit();
+	}
 
 	// éıñΩ
 	/*m_nLife--;

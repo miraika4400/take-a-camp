@@ -17,10 +17,12 @@
 //=============================================================================
 class CPlayer;
 class CCollision;
+class CPeintCollision;
 //=============================================================================
 // マクロ定義
 //=============================================================================
 #define BULLET_MOVE 5		// 弾の移動量
+#define MAX_PEINT 5			// 攻撃でぬれる最大マス
 
 //=============================================================================
 // クラス宣言
@@ -33,7 +35,7 @@ public:
 
 	static CBullet * Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, int nPlayerNum);	// 生成処理
 
-	HRESULT Init(void);				// 初期化処理
+	HRESULT Init(void);		// 初期化処理
 
 	void Uninit(void);		// 終了処理
 	void Update(void);		// 更新処理
@@ -51,9 +53,10 @@ private:
 	D3DXCOLOR	m_color;		// 色
 	int m_nLife;				// ライフ
 	float m_fSpeed;				// 速さ
-	CPlayer *m_pPlayer;			// プレイヤーのポインタ
 	CCollision * m_pCollision;	// 当たり判定
-	int m_nPlayerNum;
+	CPeintCollision* m_pPeintCollision[MAX_PEINT];	//マス目の当たり判定
+	int m_nPlayerNum;			// プレイヤーナンバー
+	static D3DXVECTOR3 m_PeintPos[MAX_PEINT];	//塗る用の当たり判定位置
 };
 
 #endif // !_BULLET_H_

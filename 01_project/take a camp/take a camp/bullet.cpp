@@ -12,6 +12,8 @@
 #include "manager.h"
 #include "player.h"
 #include "collision.h"
+#include "peint_collision.h"
+
 
 //=============================================================================
 // マクロ定義
@@ -22,6 +24,19 @@
 #define BULLET_COLOR D3DXCOLOR(0.0f,0.0f,0.0f,0.0f)
 #define BULLET_ONE_SIDE 20.0f
 #define BULLET_COLLISION_SIZE 10.0f
+#define PEINT_SIDE (20.0f)	//塗る用の当たり判定の一辺の大きさ
+
+//=============================================================================
+// 静的メンバー変数宣言
+//=============================================================================
+D3DXVECTOR3 CBullet::m_PeintPos[MAX_PEINT] = 
+{
+	D3DXVECTOR3(0.0f,0.0f,0.0f),
+	D3DXVECTOR3(-PEINT_SIDE,0.0f,0.0f),
+	D3DXVECTOR3(PEINT_SIDE,0.0f,0.0f),
+	D3DXVECTOR3(0.0f,0.0f,-PEINT_SIDE),
+	D3DXVECTOR3(0.0f,0.0f,PEINT_SIDE),
+};
 
 //=============================================================================
 // コンストラクタ
@@ -33,6 +48,7 @@ CBullet::CBullet() :CModel(OBJTYPE_BULLET)
 	m_nLife = 0;			// ライフ
 	m_fSpeed = 0.0f;		// 速さ
 	m_pCollision = NULL;	// 当たり判定
+	memset(&m_pPeintCollision, 0, sizeof(m_pPeintCollision));
 	m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
 //=============================================================================
@@ -42,6 +58,7 @@ CBullet::~CBullet()
 {
 
 }
+
 //=============================================================================
 // 生成処理
 //=============================================================================
@@ -173,6 +190,11 @@ void CBullet::CollisionPlayer(void)
 			{
 				// 死亡状態にする
 				pPlayer->Death();
+				//タイルを塗る用の当たり判定生成
+				for (int nPeint = 0; nPeint < MAX_PEINT; nPeint++)
+				{
+					m_pPeintCollision[nPeint] = CPeintCollision::Create(m_PeintPos[nPeint]+GetPos(),m_nPlayerNum);
+				}
 
 				return;
 			}

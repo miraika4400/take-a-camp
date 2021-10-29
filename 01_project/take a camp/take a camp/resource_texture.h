@@ -39,6 +39,11 @@ public:
 		TEXTURE_CROSS_MARK,      // ×マーク
 		TEXTURE_NEEDLE,          // とげ穴
 		TEXTURE_SHADOW,			 // 影
+		TEXTURE_PLAYERNUMBER,	 // プレイヤー番号
+		TEXTURE_NONE,			 // NONE
+		TEXTURE_CONTROLLER,		 // コントローラーアイコン
+		TEXTURE_KEYBOARD,		 // キーボードアイコン
+		TEXTURE_CHARASELECT_BACK,// キャラ選択背景
 		TEXTURE_BUTTON_START,	 // タイトルのボタン(スタート)
 		TEXTYRE_BUTTON_TUTORIAL, // タイトルのボタン(チュートリアル)
 		TEXTURE_MAX              // テクスチャ数

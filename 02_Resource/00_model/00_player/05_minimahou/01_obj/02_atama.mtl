@@ -1,0 +1,118 @@
+newmtl ThickBelt:blinn1SG
+illum 4
+Kd 0.92 0.68 0.54
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+newmtl ThickBelt1:blinn1SG
+illum 4
+Kd 0.92 0.68 0.54
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+newmtl ThickBelt2:blinn1SG
+illum 4
+Kd 0.92 0.68 0.54
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+newmtl _migiasi:ThickBelt:blinn1SG
+illum 4
+Kd 0.92 0.68 0.54
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+newmtl _migiasi:lambert2SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl _migiasi:lambert3SG
+illum 4
+Kd 0.43 0.43 0.49
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl _migiasi:lambert7SG
+illum 4
+Kd 0.15 0.14 0.19
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl initialShadingGroup
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl kensi_m_lambert2SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl kensi_m_lambert2SG1
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl kensi_m_lambert2SG2
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl kensi_m_lambert3SG
+illum 4
+Kd 0.43 0.43 0.49
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl kensi_m_lambert3SG1
+illum 4
+Kd 0.43 0.43 0.49
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl kensi_m_lambert3SG2
+illum 4
+Kd 0.43 0.43 0.49
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl kensi_m_lambert7SG
+illum 4
+Kd 0.15 0.14 0.19
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl kensi_m_lambert7SG1
+illum 4
+Kd 0.15 0.14 0.19
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl kensi_m_lambert7SG2
+illum 4
+Kd 0.15 0.14 0.19
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl lambert3SG
+illum 4
+Kd 1.00 0.65 0.29
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl lambert4SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00

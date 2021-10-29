@@ -51,6 +51,7 @@ public:
 	void		SetPlayer(CPlayer* pPlayer);
 	CPlayer*	GetPlayer(void);
 	virtual void AttackCreate(void) = 0;//攻撃生成処理 
+	void		ChangeFrameColor(); // 攻撃の範囲のブロックの枠の色を変える処理
 private:
 	CPlayer* m_pPlayer;	//プレイヤークラス
 	CAttackManager::ATTACK_TYPE			m_nAttackType;	// 攻撃タイプ
