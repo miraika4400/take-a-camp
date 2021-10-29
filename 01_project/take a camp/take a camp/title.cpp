@@ -23,11 +23,13 @@
 #include "bg.h"
 #include "light.h"
 #include "map.h"
+#include "button_title.h"
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
 CMap* CTitle::m_pMap = NULL;	// ステージクラスのポインタ
 CMapManager::MAP_TYPE CTitle::m_MapType = CMapManager::MAP_TYPE_1;	// マップタイプ
+CButton_Title* CTitle::m_pButton = NULL; // ボタンクラスのポインタ
 //**********************************
 // マクロ定義
 //**********************************
@@ -86,6 +88,10 @@ HRESULT CTitle::Init(void)
 
 	// ライトクラスの生成
 	CManager::SetLight();
+
+	// ボタンの生成
+	m_pButton = CButton_Title::Create(D3DXVECTOR3(800.0f, 600.0f, 0.0f), CButton_Title::BUTTON_START);
+	m_pButton = CButton_Title::Create(D3DXVECTOR3(800.0f, 660.0f, 0.0f), CButton_Title::BUTTON_TUTORIAL);
 
 	return S_OK;
 }
@@ -147,13 +153,13 @@ void CTitle::Update(void)
 	// ポリゴンの更新処理
 	m_pPolygon->Update();
 
-	if( CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || 
-		CManager::GetMouse()->GetMouseTrigger(0) /*|| 
-		CManager::GetJoypad()->GetJoystickTrigger(3, 0)||
-		CManager::GetJoypad()->GetJoystickTrigger(11, 0)*/)
-	{
-		CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
-	}
+	//if( CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || 
+	//	CManager::GetMouse()->GetMouseTrigger(0) /*|| 
+	//	CManager::GetJoypad()->GetJoystickTrigger(3, 0)||
+	//	CManager::GetJoypad()->GetJoystickTrigger(11, 0)*/)
+	//{
+	//	CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
+	//}
 }
 
 

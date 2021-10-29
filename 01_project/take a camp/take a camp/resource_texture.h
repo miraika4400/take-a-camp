@@ -44,7 +44,8 @@ public:
 		TEXTURE_CONTROLLER,		 // コントローラーアイコン
 		TEXTURE_KEYBOARD,		 // キーボードアイコン
 		TEXTURE_CHARASELECT_BACK,// キャラ選択背景
-
+		TEXTURE_BUTTON_START,	 // タイトルのボタン(スタート)
+		TEXTYRE_BUTTON_TUTORIAL, // タイトルのボタン(チュートリアル)
 		TEXTURE_MAX              // テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類

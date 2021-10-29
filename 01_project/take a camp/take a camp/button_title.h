@@ -1,16 +1,16 @@
 //=============================================================================
 //
-// ボタンの処理 [button.h]
+// タイトルボタンの処理 [button_title.h]
 // Author : 佐藤颯紀
 //
 //=============================================================================
-#ifndef  _BUTTON_H_
-#define  _BUTTON_H_
+#ifndef _BUTTON_TITLE_H_
+#define _BUTTON_TITLE_H_
 
 //=============================================================================
 // インクルードファイル
 //=============================================================================
-#include "scene2d.h"
+#include "button.h"
 
 //=============================================================================
 // 前方宣言
@@ -23,24 +23,38 @@
 //=============================================================================
 // クラス宣言
 //=============================================================================
-class CButton : public CScene2d
+class CButton_Title : public CButton
 {
 public:
-	CButton();
-	~CButton();
+	//=========================================================================
+	// 列挙型
+	//=========================================================================
+	typedef enum
+	{
+		BUTTON_NONE = -1,
+		BUTTON_START,
+		BUTTON_TUTORIAL,
+		BUTTON_MAX
+	}BUTTON_TYPE;
 
-	static CButton *Create(D3DXVECTOR3 pos);	// 生成処理
-	virtual HRESULT Init(void);				// 初期化処理
-	virtual void Uninit(void);				// 終了処理
-	virtual void Update(void);				// 更新処理
-	virtual void Draw(void);				// 描画処理
+	CButton_Title();
+	~CButton_Title();
 
-	void SelectColor(void);					// 選択中の色の処理
-	void NotSelectColor(void);				// 選択されてない時の色の処理
+	static CButton_Title *Create(D3DXVECTOR3 pos, BUTTON_TYPE type);	// 生成処理
+	HRESULT Init(void);		// 初期化処理
+	void Uninit(void);		// 終了処理
+	void Update(void);		// 更新処理
+
+	void Select(void);		// 選択処理
+	void Collar(void);		// 色の処理
+
 private:
 	//=============================================================================
 	// メンバ変数宣言
 	//=============================================================================
+	int m_nButton;			// 選択されてるやつ
+	BUTTON_TYPE m_type;		// 種類
 	D3DXCOLOR m_color;		// 色
 };
-#endif // ! _BUTTON_H_
+
+#endif // !_BUTTON_TITLE_H_

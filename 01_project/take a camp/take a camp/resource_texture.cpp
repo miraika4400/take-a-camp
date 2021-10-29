@@ -41,7 +41,8 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/joypad.png",		      // コントローラーアイコン
 	"./data/Textures/keyboars.png",		      // キーボードアイコン
 	"./data/Textures/chara_select_frame.png", // キャラ選択背景
-
+	"./data/Textures/suma.png",		// タイトルのボタン(スタート)
+	"./data/Textures/ka-bi-.jpg",		// タイトルのボタン(チュートリアル)
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]
