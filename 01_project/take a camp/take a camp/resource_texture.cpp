@@ -36,7 +36,8 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/cross_mark.png",   // バツマーク
 	"./data/Textures/needle_hole.png",  // とげ穴
 	"./data/Textures/shadow.png",		// 影
-
+	"./data/Textures/suma.png",		// タイトルのボタン(スタート)
+	"./data/Textures/ka-bi-.jpg",		// タイトルのボタン(チュートリアル)
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]
