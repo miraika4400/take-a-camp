@@ -22,6 +22,7 @@ class CCollision;
 class CActRange;
 class CAttackBased;
 class CMotion;
+class CKillCount;
 
 //*****************************
 // クラス定義
@@ -98,6 +99,8 @@ public:
 	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }
 	ITEM_STATE GetItemState(void) { return m_ItemState; }
 
+	CKillCount * GetKillCount(void) { return m_pKillCount; }
+
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 private:
 	void Move(void);		// 移動処理
@@ -111,10 +114,11 @@ private:
 	static int m_anControllKey[4][KEY_MAX];
 	static CResourceModel::Model m_model[MAX_PARTS_NUM]; // モデル構造体
 	static int m_nPartsNum;                              // モデルパーツ数
-	ITEM_STATE m_ItemState;			//アイテムステータス
-	int m_nMoveframe;				// 移動速度
-	int m_nDashCnt;				//速度アップカウント
 
+	CKillCount * m_pKillCount;	// プレイヤーのキルカウントポインタ
+	ITEM_STATE m_ItemState;		// アイテムステータス
+	int m_nMoveframe;			// 移動速度
+	int m_nDashCnt;				// 速度アップカウント
 	CAttackBased* m_pAttack;	// 攻撃用クラス
 	int m_nPlayerNumber;		// プレイヤー番号
 	int m_nColor;				// 色ナンバー
@@ -132,7 +136,6 @@ private:
 	CActRange *	 m_pActRange;	// 行動判定
 	D3DXVECTOR3  m_rotDest;		// 回転(目標の値)
 	D3DXVECTOR3  m_RespawnPos;	// リスポーン位置
-
 	// モーション用変数
 	static char m_achAnimPath[MOTION_MAX][64];   // アニメーションテキストのパス格納用
 	CMotion *m_apMotion[MOTION_MAX];  // アニメーションポインタ

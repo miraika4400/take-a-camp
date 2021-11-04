@@ -16,7 +16,7 @@
 
 //=============================
 // 前方宣言
-//=============================1
+//=============================
 class CRenderer;
 class CInputKeyboard;
 class CInputJoypad;
@@ -25,6 +25,7 @@ class CSound;
 class CGame;
 class CTitle;
 class CResult;
+class CTotalResult;
 class CFade;
 class CTutorial;
 class CPause;
@@ -32,6 +33,8 @@ class CCamera;
 class CColorManager;
 class CLight;
 class CCharaSelect;
+
+
 //=============================
 // クラス定義
 //=============================
@@ -46,12 +49,13 @@ public:
 	// 画面遷移モード
 	typedef enum
 	{
-		MODE_TITLE = 0,    // タイトル
-		MODE_TUTORIAL,     // チュートリアル
-		MODE_CHARA_SELECT, // キャラ選択
-		MODE_GAME,         // ゲーム
-		MODE_RESULT,       // リザルト
-		MODE_MAX,          // モードの最大数
+		MODE_TITLE = 0,		// タイトル
+		MODE_TUTORIAL,		// チュートリアル
+		MODE_CHARA_SELECT,	// キャラ選択
+		MODE_GAME,			// ゲーム
+		MODE_RESULT,		// リザルト
+		MODE_TOTAL_RESULT,	// 全体リザルト
+		MODE_MAX,			// モードの最大数
 	}MODE;
 
 
@@ -88,23 +92,25 @@ private:
 	//============
 	// メンバ変数
 	//============
-	static MODE m_mode;                      // モード
+	static MODE m_mode;							// モード
 
-	static CRenderer *m_pRenderer;           // レンダラーポインタ
-	static CInputKeyboard *m_pInputKeyboard; // キーボードポインタ
-	static CInputJoypad*m_pJoypad;           // ジョイパッドポインタ
-	static CInputMouse *m_pInputMouse;       // マウスポインタ
-	static CSound*m_pSound;                  // サウンドポインタ
-	static CGame*m_pGame;                    // ゲームクラスのポインタ
-	static CTitle*m_pTitle;                  // タイトルクラスのポインタ
-	static CResult*m_pResult;                // タイトルクラスのポインタ
-	static CFade*m_pFade;                    // フェードポインタ
-	static CTutorial*m_pTutorial;            // チュートリアル
-	static CPause*m_pPause;                  // ポーズポインタ
-	static CCamera*m_pCamera;                // カメラ
-	static CLight*m_pLight;					 // ライト
-	static bool m_bPause;                    // ポーズフラグ
-	static CCharaSelect* m_pCharaSelectMode; // キャラ選択モード
+	static CRenderer *		m_pRenderer;		// レンダラーポインタ
+	static CInputKeyboard * m_pInputKeyboard;	// キーボードポインタ
+	static CInputJoypad *	m_pJoypad;			// ジョイパッドポインタ
+	static CInputMouse *	m_pInputMouse;		// マウスポインタ
+	static CSound *			m_pSound;			// サウンドポインタ
+	static CGame *			m_pGame;			// ゲームクラスのポインタ
+	static CTitle *			m_pTitle;			// タイトルクラスのポインタ
+	static CResult *		m_pResult;			// リザルトクラスのポインタ
+	static CTotalResult *	m_TotalResult;		// トータルリザルトのポインタ
+	static CFade *			m_pFade;			// フェードポインタ
+	static CTutorial *		m_pTutorial;		// チュートリアル
+	static CPause *			m_pPause;			// ポーズポインタ
+	static CCamera *		m_pCamera;			// カメラ
+	static CLight *			m_pLight;			// ライト
+	static bool				m_bPause;			// ポーズフラグ
+	static CCharaSelect* m_pCharaSelectMode;	// キャラ選択モード
+
 };
 	
 

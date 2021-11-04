@@ -25,9 +25,9 @@
 #include "tutorial.h"
 #include "color_manager.h"
 #include "collision.h"
-#include "player.h"
 #include "light.h"
 #include "chara_select.h"
+#include "total_result.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -41,6 +41,7 @@ CSound          *CManager::m_pSound = NULL;          // サウンド
 CGame           *CManager::m_pGame = NULL;           // ゲーム
 CTitle          *CManager::m_pTitle = NULL;          // タイトル
 CResult         *CManager::m_pResult = NULL;         // リザルト
+CTotalResult	*CManager::m_TotalResult = NULL;	 // トータルリザルト
 CFade           *CManager::m_pFade = NULL;           // フェード
 CTutorial       *CManager::m_pTutorial = NULL;       // チュートリアル
 CPause          *CManager::m_pPause = NULL;          // ポーズポインタ
@@ -365,6 +366,12 @@ void CManager::SetMode(MODE mode)
 		// リザルトBGM停止
 		m_pSound->Stop(CSound::LABEL_BGM_RESULT);
 		break;
+	case MODE_TOTAL_RESULT:
+		// NULLクリア
+		m_TotalResult = NULL;
+		// トータルリザルトBGM停止
+		//m_pSound->Stop(CSound::LABEL_BGM_RESULT);
+		break;
 
 	default:
 		break;
@@ -405,7 +412,10 @@ void CManager::SetMode(MODE mode)
 		// リザルトBGM再生
 		//m_pSound->Play(CSound::LABEL_BGM_RESULT);
 		break;
-
+	case MODE_TOTAL_RESULT:
+		// トータルリザルト生成
+		m_TotalResult = CTotalResult::Create();
+		break;
 	default:
 		break;
 	}

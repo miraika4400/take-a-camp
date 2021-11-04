@@ -18,15 +18,15 @@
 //**********************************
 // マクロ定義
 //**********************************
-#define GAUGE_WIDTH  50.0f   // ゲージの幅
-#define GAUGE_HEIGHT 500.0f  // ゲージの高さ*最大値
-#define GAUGE_SPACE  150.0f  // 各ゲージの間隔
-#define BG_SIZE    D3DXVECTOR3(SCREEN_WIDTH-15,SCREEN_HEIGHT-20,0.0f)
-#define BG_COLOR D3DXCOLOR(0.0f,0.0f,0.0f,0.6f)
-#define GAUGE_RATE 0.03f
-#define BACK_GAUGE_SIZE 16
-#define BACK_GAUGE_COLOR D3DXCOLOR(1.0f,1.0f,1.0f,1.0f)
-#define GAUGE_POS_Y 710.0f
+#define GAUGE_WIDTH  (50.0f)   // ゲージの幅
+#define GAUGE_HEIGHT (500.0f)  // ゲージの高さ*最大値
+#define GAUGE_SPACE  (150.0f)  // 各ゲージの間隔
+#define BG_SIZE		(D3DXVECTOR3(SCREEN_WIDTH-15,SCREEN_HEIGHT-20,0.0f))
+#define BG_COLOR	(D3DXCOLOR(0.0f,0.0f,0.0f,0.6f))
+#define GAUGE_RATE	(0.03f)
+#define BACK_GAUGE_SIZE (16)
+#define BACK_GAUGE_COLOR (D3DXCOLOR(1.0f,1.0f,1.0f,1.0f))
+#define GAUGE_POS_Y (710.0f)
 
 //**********************************
 // 静的メンバ変数宣言

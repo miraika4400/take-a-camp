@@ -27,6 +27,7 @@
 #include "debug_log.h"
 #include "color_manager.h"
 #include "color_tile.h"
+#include "kill_count.h"
 
 //=============================
 // マクロ定義
@@ -148,9 +149,15 @@ void CGame::Update(void)
 	{
 		CManager::SetCamera(CCamera::Create());
 	}
-
+	CKillCount::AddTotalKill();
 	CColorTile::CountColorTile();
+
 	CDebugLog::Init();
+	CDebugLog::Print("1P:Kill:%d\n", CKillCount::GetTotalKill(0));
+	CDebugLog::Print("2P:Kill:%d\n", CKillCount::GetTotalKill(1));
+	CDebugLog::Print("3P:Kill:%d\n", CKillCount::GetTotalKill(2));
+	CDebugLog::Print("4P:Kill:%d\n", CKillCount::GetTotalKill(3));
+
 	CDebugLog::Print("赤:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(0), CColorTile::GetTileNum(0, 1), CColorTile::GetTileNum(0, 2), CColorTile::GetTileNum(0, 3));
 	CDebugLog::Print("青:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(1), CColorTile::GetTileNum(1, 1), CColorTile::GetTileNum(1, 2), CColorTile::GetTileNum(1, 3));
 	CDebugLog::Print("緑:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(2), CColorTile::GetTileNum(2, 1), CColorTile::GetTileNum(2, 2), CColorTile::GetTileNum(2, 3));

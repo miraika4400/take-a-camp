@@ -21,15 +21,15 @@
 //**********************************
 // マクロ定義
 //**********************************
-#define PLAYER_SPACE 150.0f //　プレイヤー位置の間隔
-#define PLAYER_POS_Z 100.0f // プレイヤーのZ位置
-#define PLAYER_FALL_COUNT 300 // プレイヤーがこけるカウント数
-#define RANK_UI_HEGHT -50  // ランキングのUIプレイヤーからの位置
-#define RESULT_BOARD_SPACE 320.0f
+#define PLAYER_SPACE (150.0f) //　プレイヤー位置の間隔
+#define PLAYER_POS_Z (100.0f) // プレイヤーのZ位置
+#define PLAYER_FALL_COUNT (300) // プレイヤーがこけるカウント数
+#define RANK_UI_HEGHT (-50) // ランキングのUIプレイヤーからの位置
+#define RESULT_BOARD_SPACE (320.0f)
 
-#define LOGO_POS D3DXVECTOR3(SCREEN_WIDTH/2, 100.0f, 0.0f)
-#define LOGO_SIZE D3DXVECTOR3(300.0f,75.0f,0.0f)
-#define OBJ_BASE_POS_Y 2000.0f
+#define LOGO_POS (D3DXVECTOR3(SCREEN_WIDTH/2, 100.0f, 0.0f))
+#define LOGO_SIZE (D3DXVECTOR3(300.0f,75.0f,0.0f))
+#define OBJ_BASE_POS_Y (2000.0f)
 
 //**********************************
 // 静的メンバ変数宣言
@@ -94,7 +94,8 @@ void CResult::Update(void)
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0) ||
 		CManager::GetJoypad()->GetJoystickTrigger(11, 0)*/)
 	{
-		CManager::GetFade()->SetFade(CManager::MODE_TITLE);
+		// デバッグ用画面遷移コマンド
+		CManager::GetFade()->SetFade(CManager::MODE_TOTAL_RESULT);
 	}
 }
 

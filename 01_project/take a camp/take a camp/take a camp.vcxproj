@@ -158,6 +158,7 @@
     <ClCompile Include="chara_select.cpp" />
     <ClCompile Include="chara_select_ui.cpp" />
     <ClCompile Include="item.cpp" />
+    <ClCompile Include="kill_count.cpp" />
     <ClCompile Include="needle_tile.cpp" />
     <ClCompile Include="peint_collision.cpp" />
     <ClCompile Include="resource_attack.cpp" />
@@ -200,6 +201,7 @@
     <ClCompile Include="scene2d.cpp" />
     <ClCompile Include="scene3d.cpp" />
     <ClCompile Include="score.cpp" />
+    <ClCompile Include="score_kill.cpp" />
     <ClCompile Include="shadow.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="resource_texture.cpp" />
@@ -208,6 +210,7 @@
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
+    <ClCompile Include="total_result.cpp" />
     <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +221,7 @@
     <ClInclude Include="chara_select_ui.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="kill_count.h" />
     <ClInclude Include="needle_tile.h" />
     <ClInclude Include="peint_collision.h" />
     <ClInclude Include="resource_attack.h" />
@@ -260,6 +264,7 @@
     <ClInclude Include="scene2d.h" />
     <ClInclude Include="scene3d.h" />
     <ClInclude Include="score.h" />
+    <ClInclude Include="score_kill.h" />
     <ClInclude Include="shadow.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="resource_texture.h" />
@@ -268,6 +273,7 @@
     <ClInclude Include="tile.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
+    <ClInclude Include="total_result.h" />
     <ClInclude Include="tutorial.h" />
   </ItemGroup>
   <ItemGroup>

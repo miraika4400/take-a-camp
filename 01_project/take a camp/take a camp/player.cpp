@@ -29,6 +29,7 @@
 #include "resource_texture.h"
 #include "color_tile.h"
 #include "chara_select.h"
+#include "kill_count.h"
 
 //*****************************
 // マクロ定義
@@ -96,6 +97,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_nMoveframe = 0;				// 移動速度
 	m_nDashCnt = 1;					// 速度アップカウント
 	m_bController = false;
+	m_pKillCount = NULL;
 }
 
 //******************************
@@ -197,7 +199,9 @@ HRESULT CPlayer::Init(void)
 	m_nColor = m_nPlayerNumber;
 	CColorManager::GetColorManager()->SetUsePlayerNum(m_nPlayerNumber, m_nColor);
 	////////////////////////////////////////
-
+	
+	//キルカウント用のクラス
+	m_pKillCount = CKillCount::Create(m_nPlayerNumber);
 	// モデルのサイズの設定
 	SetSize(MODEL_SIZE);
 
