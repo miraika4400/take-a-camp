@@ -52,6 +52,7 @@ public:
 	typedef enum
 	{
 		PLAYER_STATE_NORMAL = 0,	//通常状態
+		PLAYER_STATE_REVERSE,		//操作逆転
 		PLAYER_STATE_DEATH			//死亡状態
 	}PLAYER_STATE;
 	// アイテムステート
@@ -59,6 +60,7 @@ public:
 	{
 		ITEM_STATE_NONE = 0,	//通常
 		ITEM_STATE_DASH,		//加速
+		ITEM_STATE_REVERSE,		//操作逆転
 		ITEM_STATE_MAX
 	}ITEM_STATE;
 	// キャラタイプ
@@ -127,6 +129,7 @@ private:
 	int m_nInvincibleCount;		// 無敵時間のカウント
 	D3DXVECTOR3	 m_Move;		// 移動量
 	int			 m_MoveCount;	// 移動時のカウント
+	int			m_ReverseCount;//操作反転カウント
 	D3DXCOLOR	 m_color;		// 色
 	CCollision * m_pCollision;	// 当たり判定
 	CActRange *	 m_pActRange;	// 行動判定
