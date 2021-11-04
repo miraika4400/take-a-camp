@@ -100,7 +100,7 @@ void CTileFactory::LoadTileData(void)
 	FILE*	pFile = NULL;
 	//読み込み用データ
 	char cFileString[256];
-	ZeroMemory(cFileString, 0, sizeof(cFileString));
+	ZeroMemory(cFileString, sizeof(cFileString));
 
 	//ファイル読み込み
 	fopen_s(&pFile, TILE_DATA_TEXT, "r");

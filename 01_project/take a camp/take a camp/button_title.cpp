@@ -154,7 +154,7 @@ void CButton_Title::Select(void)
 		if (m_nButton == BUTTON_START)
 		{
 			// ゲーム画面に遷移
-			CManager::GetFade()->SetFade(CManager::MODE_GAME);
+			CManager::GetFade()->SetFade(CManager::MODE_CHARA_SELECT);
 		}
 		// ボタンの種類がチュートリアルだった場合
 		if (m_nButton == BUTTON_TUTORIAL)

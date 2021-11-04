@@ -33,7 +33,7 @@
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CManager::MODE   CManager::m_mode = MODE_CHARA_SELECT;       // ゲームモード
+CManager::MODE   CManager::m_mode = MODE_TITLE;       // ゲームモード
 CRenderer       *CManager::m_pRenderer = NULL;       // レンダラーポインタ
 CInputKeyboard  *CManager::m_pInputKeyboard = NULL;  // キーボード
 CInputJoypad    *CManager::m_pJoypad = NULL;         // ジョイパッド

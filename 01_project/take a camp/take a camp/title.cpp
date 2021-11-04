@@ -24,6 +24,8 @@
 #include "light.h"
 #include "map.h"
 #include "button_title.h"
+#include "chara_select.h"
+
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
@@ -82,6 +84,9 @@ HRESULT CTitle::Init(void)
 
 	// 背景の設定
 	CBg::Create();
+
+	// エントリー人数の初期化
+	CCharaSelect::ResetEntryPlayer();
 	
 	// ステージ生成
 	m_pMap = CMap::Create(m_MapType);

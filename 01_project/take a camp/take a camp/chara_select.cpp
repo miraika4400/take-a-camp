@@ -63,16 +63,14 @@ HRESULT CCharaSelect::Init(void)
 {
 	for (int nCntData = 0; nCntData < MAX_PLAYER; nCntData++)
 	{
-		m_aEntryData[nCntData].bController = false;
-		m_aEntryData[nCntData].bEntry= false;
-		m_aEntryData[nCntData].nColorNum = nCntData; // 仮
-		m_aEntryData[nCntData].nControllNum = -1;
-		m_aEntryData[nCntData].charaType = CPlayer::CHARA_TYPE_FIGHTER;
 		m_abUseJoy[nCntData] = false;
 		m_abUseKey[nCntData] = false;
 	}
 
+	ResetEntryPlayer();
+
 	CCharaSelectUi::Create();
+
 	return S_OK;
 }
 
@@ -104,7 +102,6 @@ void CCharaSelect::Update(void)
 	CountEntryPlayerNum();
 #endif // _DEBUG
 
-
 }
 
 //=============================
@@ -112,6 +109,23 @@ void CCharaSelect::Update(void)
 //=============================
 void CCharaSelect::Draw(void)
 {
+}
+
+//=============================
+// キャラクター数のリセット
+//=============================
+void CCharaSelect::ResetEntryPlayer(void)
+{
+	for (int nCntData = 0; nCntData < MAX_PLAYER; nCntData++)
+	{
+		m_aEntryData[nCntData].bController = false;
+		m_aEntryData[nCntData].bEntry = false;
+		m_aEntryData[nCntData].nColorNum = nCntData; // 仮
+		m_aEntryData[nCntData].nControllNum = -1;
+		m_aEntryData[nCntData].charaType = CPlayer::CHARA_TYPE_FIGHTER;
+	}
+
+	m_nEntryPlayerNum = 0;
 }
 
 //=============================

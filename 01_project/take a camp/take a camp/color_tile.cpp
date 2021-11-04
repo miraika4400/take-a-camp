@@ -16,6 +16,7 @@
 #include "resource_texture.h"
 #include "particle.h"
 #include "peint_collision.h"
+#include "max_color_effect.h"
 
 #ifdef _DEBUG
 #include "manager.h"
@@ -311,6 +312,11 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 				m_nStep++;
 				// F‚ÌŽæ“¾
 				SetColor(GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1));
+
+				if (m_nStep == COLOR_STEP_NUM)
+				{
+					CMaxColorEffect::Create(GetPos(), GET_COLORMANAGER->GetIconColor(m_nPrevNum));
+				}
 			}
 		}
 		else

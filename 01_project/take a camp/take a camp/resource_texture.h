@@ -46,6 +46,7 @@ public:
 		TEXTURE_CHARASELECT_BACK,// キャラ選択背景
 		TEXTURE_BUTTON_START,	 // タイトルのボタン(スタート)
 		TEXTYRE_BUTTON_TUTORIAL, // タイトルのボタン(チュートリアル)
+		TEXTURE_MAX_COLOR_EFFECT,// 最大塗段階時のエフェクト
 		TEXTURE_MAX              // テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類
