@@ -28,11 +28,12 @@
 #include "light.h"
 #include "chara_select.h"
 #include "total_result.h"
+#include "tile_factory.h"
 
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CManager::MODE   CManager::m_mode = MODE_CHARA_SELECT;       // ゲームモード
+CManager::MODE   CManager::m_mode = MODE_TITLE;       // ゲームモード
 CRenderer       *CManager::m_pRenderer = NULL;       // レンダラーポインタ
 CInputKeyboard  *CManager::m_pInputKeyboard = NULL;  // キーボード
 CInputJoypad    *CManager::m_pJoypad = NULL;         // ジョイパッド
@@ -139,6 +140,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	// カラーマネージャーの生成
 	CColorManager::Create();
 
+	// タイルファクトリーの生成
+	CTileFactory::Create();
+
 	// ポーズ状態の時
 	return S_OK;
 }
@@ -162,7 +166,8 @@ void CManager::Uninit(void)
 	CResourceShader::Release();
 	// カラーマーマネージャーの破棄
 	CColorManager::Release();
-
+	// タイルファクトリーの破棄
+	CTileFactory::Release();
 
 	// テクスチャのアンロード
 	CPause::Unload();    // ポーズ

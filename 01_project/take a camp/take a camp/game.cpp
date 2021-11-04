@@ -36,9 +36,10 @@
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CRuleManager* CGame::m_pRuleManager = NULL; // ルールマネージャークラス
-CMap* CGame::m_pMap = NULL;			// ステージクラスポインタ
-CMapManager::MAP_TYPE CGame::m_MapType = CMapManager::MAP_TYPE_1;// マップタイプ
+CRuleManager* CGame::m_pRuleManager = NULL;                       // ルールマネージャークラス
+CMap* CGame::m_pMap = NULL;			                              // ステージクラスポインタ
+CMapManager::MAP_TYPE CGame::m_MapType = CMapManager::MAP_TYPE_1; // マップタイプ
+
 //=============================
 // コンストラクタ
 //=============================
@@ -84,7 +85,7 @@ HRESULT CGame::Init(void)
 	
 	//ステージ生成
 	m_pMap = CMap::Create(m_MapType);
-
+	
 	// ライトクラスの生成
 	CManager::SetLight();
 

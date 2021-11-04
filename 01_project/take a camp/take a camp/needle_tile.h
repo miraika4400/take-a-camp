@@ -35,7 +35,7 @@ public:
 	CNeedleTile();
 	~CNeedleTile();
 
-	static CNeedleTile *Create(D3DXVECTOR3 pos);
+	static void Create(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
 	void Update(void);
 private:
 	void HitPlayerAction(CPlayer*pPlayer);

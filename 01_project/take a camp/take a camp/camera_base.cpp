@@ -19,7 +19,7 @@
 //******************************
 // マクロ定義
 //******************************
-#define CAMERA_INIT_POS D3DXVECTOR3(-150.0f,250.0f,200.0f)
+#define CAMERA_INIT_POS D3DXVECTOR3(-40.0f,300.0f,290.0f)
 #define CAMERA_VIEW_MAX 100000.0f                           // カメラの描画距離(遠)
 #define CAMERA_VIEW_MIN 10.0f                                // カメラの描画距離(近)
 #define CAMERA_FOV_BASE D3DXToRadian(45.0f)                  // 視野角
@@ -60,7 +60,6 @@ CCamera * CCamera::Create(void)
 	return pCamera;
 }
 
-
 //******************************
 // 初期化処理
 //******************************
@@ -68,7 +67,7 @@ HRESULT CCamera::Init(void)
 {
 	// 変数の初期化
 
-	m_posR = D3DXVECTOR3(-25.0f, 0.0f, 0.0f);      // 注視点
+	m_posR = D3DXVECTOR3(0.0f, 0.0f, 20.0f);      // 注視点
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);      // 上方向ベクトル
 	m_posV = CAMERA_INIT_POS; // 位置
 

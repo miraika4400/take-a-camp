@@ -65,7 +65,6 @@ public:
 	static void			Release(void);					// ƒNƒ‰ƒX”jŠü
 	static MAP_DATA		GetMapData(MAP_TYPE MapData);
 
-
 private:
 	void	Load(void);
 

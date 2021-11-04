@@ -36,7 +36,7 @@ public:
 	CColorTile();
 	~CColorTile();
 
-	static CColorTile *Create(D3DXVECTOR3 pos);
+	static void Create(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
 	static void CountColorTile(void); // ƒ^ƒCƒ‹‚Ì”š‚Ì”‚ğ”‚¦‚é
 
 

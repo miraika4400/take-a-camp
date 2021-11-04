@@ -21,6 +21,7 @@
 //=============================
 class CPolygon;
 class CMapManager;
+class CButton_Title;
 //*****************************
 //クラス定義
 //*****************************
@@ -49,6 +50,7 @@ private:
 	CPolygon *m_pPolygon;					// ポリゴン
 	static CMap *m_pMap;					// ステージのポインタ
 	static CMapManager::MAP_TYPE m_MapType;	// マップのタイプ
+	static CButton_Title *m_pButton;		// ボタンのポインタ
 };
 
 #endif

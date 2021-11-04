@@ -62,6 +62,7 @@ public:
 	void Draw(void);    // •`‰æ
 	static Entry_Data GetEntryData(int nIndex) { return m_aEntryData[nIndex]; }
 	static int GetEntryPlayerNum(void) { return m_nEntryPlayerNum; }
+	static void ResetEntryPlayer(void);
 private:
 	void EntryPlayer(void);
 	void CountEntryPlayerNum(void);

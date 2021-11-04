@@ -11,6 +11,7 @@
 // インクルードファイル
 //=============================================================================
 #include "scene2d.h"
+
 //=============================================================================
 // 前方宣言
 //=============================================================================
@@ -28,15 +29,14 @@ public:
 	CButton();
 	~CButton();
 
-	static CButton * Create(D3DXVECTOR3 pos);	// 生成処理
+	static CButton *Create(D3DXVECTOR3 pos);	// 生成処理
+	virtual HRESULT Init(void);				// 初期化処理
+	virtual void Uninit(void);				// 終了処理
+	virtual void Update(void);				// 更新処理
+	virtual void Draw(void);				// 描画処理
 
-	HRESULT Init(void);		// 初期化処理
-	void Uninit(void);		// 終了処理
-	void Update(void);		// 更新処理
-	void Draw(void);		// 描画処理
-
-	void Select(void);		// 選択中の処理
-	void NotSelect(void);	// 選択されてない時の処理
+	void SelectColor(void);					// 選択中の色の処理
+	void NotSelectColor(void);				// 選択されてない時の色の処理
 private:
 	//=============================================================================
 	// メンバ変数宣言

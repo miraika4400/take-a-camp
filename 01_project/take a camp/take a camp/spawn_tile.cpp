@@ -39,7 +39,7 @@ CSpawnTile::~CSpawnTile()
 //******************************
 // ƒNƒ‰ƒX¶¬
 //******************************
-CSpawnTile * CSpawnTile::Create(D3DXVECTOR3 pos , D3DXCOLOR col)
+void CSpawnTile::Create(D3DXVECTOR3 pos , D3DXCOLOR col )
 {
 	// ƒƒ‚ƒŠ‚ÌŠm•Û
 	CSpawnTile *pTile;
@@ -58,7 +58,6 @@ CSpawnTile * CSpawnTile::Create(D3DXVECTOR3 pos , D3DXCOLOR col)
 	pTile->m_pCrossPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CROSS_MARK));
 	pTile->m_pCrossPolygon->SetPriority(OBJTYPE_UI);
 
-	return pTile;
 }
 
 //******************************

@@ -62,10 +62,10 @@ HRESULT CPolygon::Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DX
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(pos.x - size.x/2, pos.y - size.y/2, 0);
-	pVtx[1].pos = D3DXVECTOR3(pos.x + size.x/2, pos.y - size.y/2, 0);
-	pVtx[2].pos = D3DXVECTOR3(pos.x - size.x/2, pos.y + size.y/2, 0);
-	pVtx[3].pos = D3DXVECTOR3(pos.x + size.x/2, pos.y + size.y/2, 0);
+	pVtx[0].pos = D3DXVECTOR3(pos.x - size.x/2.0f, pos.y - size.y/2.0f, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(pos.x + size.x/2.0f, pos.y - size.y/2.0f, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(pos.x - size.x/2.0f, pos.y + size.y/2.0f, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(pos.x + size.x/2.0f, pos.y + size.y/2.0f, 0.0f);
 
 	// テクスチャUV座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);

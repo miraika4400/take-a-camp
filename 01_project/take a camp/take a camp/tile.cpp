@@ -19,6 +19,7 @@
 #include "player.h"
 #include "peint_collision.h"
 #include "color_tile.h"
+
 #ifdef _DEBUG
 #include "keyboard.h"
 #endif
@@ -29,15 +30,11 @@
 #define POS_Y_RATE_BASE   0.03f
 #define POS_Y_RATE_UP     0.1f
 #define BULLET_HIT_POS_Y TILE_POS_Y + 6.0f
+#define TILE_DEFAULT_COLOR D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-std::vector<CTile::SENTENCE_FUNC> CTile::m_CreateSentence =
-{
-		&CTile::Create,
-		//&CColorTile::Create
-};
 
 //******************************
 // コンストラクタ
@@ -63,7 +60,7 @@ CTile::~CTile()
 //******************************
 // クラス生成
 //******************************
-CTile * CTile::Create(D3DXVECTOR3 pos)
+void CTile::Create(D3DXVECTOR3 pos , D3DXCOLOR col )
 {
 	// メモリの確保
 	CTile *pTile;
@@ -75,8 +72,6 @@ CTile * CTile::Create(D3DXVECTOR3 pos)
 	// 各値の代入・セット
 	pTile->SetPos(pos);
 	pTile->SetPriority(OBJTYPE_TILE); // オブジェクトタイプ
-
-	return pTile;
 }
 
 //******************************
