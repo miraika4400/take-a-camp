@@ -29,10 +29,18 @@ class CShadow;
 class CItem : public CModel
 {
 public:
+	//アイテム効果
+	typedef enum
+	{
+		ITEM_EFFECT_DASH = 0,//加速
+		ITEM_EFFECT_REVERSE,		//操作逆転
+		ITEM_EFFECT_MAX
+	}ITEM_EFFECT;
+
 	CItem();	// コンストラクタ
 	~CItem();	// デストラクタ
 
-	static CItem * Create(D3DXVECTOR3 pos);	// 生成処理
+	static CItem * Create(D3DXVECTOR3 pos, ITEM_EFFECT effect);	// 生成処理
 
 	HRESULT Init(void);		// 初期化処理
 	void Uninit(void);		// 終了処理
@@ -44,6 +52,8 @@ public:
 
 	void CollisionItem(void);	//当たり判定
 
+	void SetItemEffect(ITEM_EFFECT ItemState) { m_ItemEffect = ItemState; }
+	ITEM_EFFECT GetItemState(void) { return m_ItemEffect; }
 private:
 	//=============================================================================
 	// メンバ変数宣言
@@ -52,6 +62,7 @@ private:
 	D3DXVECTOR3 m_rot;		//角度
 	D3DXVECTOR3 m_move;		//移動
 
+	ITEM_EFFECT m_ItemEffect;			//アイテムステータス
 	CCollision *m_pCollision;	//コリジョンのポインタ
 	CPlayer *m_pPlayer;			//プレイヤーのポインタ
 	CShadow *m_pShadow;			//影のポインタ

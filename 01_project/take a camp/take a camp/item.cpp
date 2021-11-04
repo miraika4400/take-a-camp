@@ -46,11 +46,14 @@ CItem::~CItem()
 //******************************
 // クラス生成
 //******************************
-CItem * CItem::Create(D3DXVECTOR3 pos)
+CItem * CItem::Create(D3DXVECTOR3 pos,ITEM_EFFECT effect)
 {
 	//メモリの確保
 	CItem *pItem;
 	pItem = new CItem;
+
+	//効果処理セット
+	pItem->SetItemEffect(effect);
 
 	//初期化処理
 	pItem->Init();
@@ -71,9 +74,19 @@ HRESULT CItem::Init(void)
 {
 	//モデル初期化
 	CModel::Init();
-
+	
 	// モデル割り当て
-	BindModel(CResourceModel::GetModel(CResourceModel::MODEL_PLAYER01));
+	switch (m_ItemEffect)
+	{
+	case ITEM_EFFECT_DASH:	
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_PLAYER01));
+		break;
+	case ITEM_EFFECT_REVERSE:
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_PLAYER01));
+		break;
+	default:
+		break;
+	}
 
 	// モデルのサイズの設定
 	SetSize(MODEL_SIZE);
@@ -94,7 +107,6 @@ void CItem::Uninit(void)
 		delete m_pCollision;
 		m_pCollision = NULL;
 	}
-
 
 	//モデルの終了処理
 	CModel::Uninit();
@@ -202,7 +214,18 @@ void CItem::CollisionItem(void)
 			{
 
 				m_bDeath = true;
-				pPlayer->SetItemState(CPlayer::ITEM_STATE_DASH);
+				switch (m_ItemEffect)
+				{
+				case ITEM_EFFECT_DASH:
+					pPlayer->SetItemState(CPlayer::ITEM_STATE_DASH);
+					break;
+				case ITEM_EFFECT_REVERSE:
+					pPlayer->SetItemState(CPlayer::ITEM_STATE_REVERSE);
+					break;
+				default:
+					break;
+				}
+
 				//影の終了処理
 				if (m_pShadow != NULL)
 				{
