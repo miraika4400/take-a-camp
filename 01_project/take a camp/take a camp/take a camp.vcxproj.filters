@@ -297,6 +297,9 @@
     <ClCompile Include="max_color_effect.cpp">
       <Filter>ソース ファイル\09_Effect</Filter>
     </ClCompile>
+    <ClCompile Include="attack_area.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -484,6 +487,9 @@
     </ClInclude>
     <ClInclude Include="max_color_effect.h">
       <Filter>ヘッダー ファイル\09_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_area.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

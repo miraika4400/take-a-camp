@@ -15,6 +15,7 @@
 #include "main.h"
 #include "model.h"
 #include "color_manager.h"
+
 //*****************************
 //前方宣言
 //*****************************
@@ -23,6 +24,7 @@ class CScene3d;
 class CBullet;
 class CPlayer;
 class CPeintCollision;
+class CAttackArea;
 
 //*****************************
 //マクロ定義
@@ -51,6 +53,8 @@ public:
 	~CTile();
 
 	static void Create(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
+	static CTile*GetHitTile(D3DXVECTOR3 pos);
+
 	virtual HRESULT Init(void);
 	virtual void Uninit(void);
 	virtual void Update(void);
@@ -73,6 +77,13 @@ public:
 	bool GetHitPlayerFlag(void) { return m_bHitPlayer; }
 	bool GetHitBulletFlag(void) { return m_bHitBullet; }
 
+	// 攻撃範囲の取得
+	CAttackArea*GetAttackAreaPolygon(void) { return m_pAttackArea; }
+	// タイルリストの取得
+	static std::vector<CTile*>GetTileList(void) { return m_aTileList; }
+	// タイルリストのクリア
+	static void ResetTileList(void) { m_aTileList.clear(); }
+
 private:
 	void DrawModel(void);
 	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData); // シェーダに値を送る
@@ -85,14 +96,17 @@ private:
 	bool CollisionPeint(void);								// 塗り判定に当たった時
 	virtual void HItPeint(CPeintCollision * pPeint);		// 塗り判定と当たった時のアクション
 
-
+	// メンバ変数
+	static std::vector<CTile*> m_aTileList;
 	D3DXCOLOR m_color;        // カラー
 	CCollision * m_pCollison; // 当たり判定
+	CAttackArea * m_pAttackArea; // 攻撃範囲クラスポインタ
 	float m_fDistPosY;        // 座標Yの目標値
 	float m_fDistPosYRate;    // 座標Yの変更時の係数
 	bool m_bHitOld;           // 一個前のフレームで当たっていたか保存するよう
 	bool m_bHitPlayer;        // プレイヤーが当たっているフラグ
 	bool m_bHitBullet;        // 弾が当たっているフラグ
+
 };
 
 

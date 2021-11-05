@@ -155,6 +155,7 @@
     <ClCompile Include="act_range.cpp" />
     <ClCompile Include="attack.cpp" />
     <ClCompile Include="attack_1.cpp" />
+    <ClCompile Include="attack_area.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="chara_select.cpp" />
     <ClCompile Include="chara_select_ui.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="act_range.h" />
     <ClInclude Include="attack.h" />
     <ClInclude Include="attack_1.h" />
+    <ClInclude Include="attack_area.h" />
     <ClInclude Include="chara_select.h" />
     <ClInclude Include="chara_select_ui.h" />
     <ClInclude Include="button.h" />
