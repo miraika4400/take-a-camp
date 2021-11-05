@@ -14,22 +14,22 @@ NUM_MODEL = 16
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/00_dodai.x			# [00]土台
-MODEL_FILENAME = data/MODEL/01_karada.x			# [01]体
-MODEL_FILENAME = data/MODEL/02_kosi.x			# [02]腰
-MODEL_FILENAME = data/MODEL/03_atama.x			# [03]頭
-MODEL_FILENAME = data/MODEL/04_migikata.x		# [04]右上腕
-MODEL_FILENAME = data/MODEL/05_migiude.x		# [05]右前腕
-MODEL_FILENAME = data/MODEL/06_migite.x			# [06]右手
-MODEL_FILENAME = data/MODEL/07_hidarikata.x		# [07]左上腕
-MODEL_FILENAME = data/MODEL/08_hidariude.x		# [08]左前腕
-MODEL_FILENAME = data/MODEL/09_hidarite.x		# [09]左手
-MODEL_FILENAME = data/MODEL/10_migihutomomo.x	# [10]右もも
-MODEL_FILENAME = data/MODEL/11_migileg.x		# [11]右ふくらはぎ
-MODEL_FILENAME = data/MODEL/12_migiasi.x		# [12]右足
-MODEL_FILENAME = data/MODEL/13_hidarihutomomo.x	# [13]左もも
-MODEL_FILENAME = data/MODEL/14_hidarileg.x		# [14]左ふくらはぎ
-MODEL_FILENAME = data/MODEL/15_hidariasi.x		# [15]左足
+MODEL_FILENAME = data/MODEL/00_foundation.x		# [00]土台
+MODEL_FILENAME = data/MODEL/01_bodyU.x			# [01]体
+MODEL_FILENAME = data/MODEL/02_bodyD.x			# [02]腰
+MODEL_FILENAME = data/MODEL/03_head.x			# [03]頭
+MODEL_FILENAME = data/MODEL/04_armUR.x			# [04]右上腕
+MODEL_FILENAME = data/MODEL/05_armDR.x			# [05]右前腕
+MODEL_FILENAME = data/MODEL/06_handR.x			# [06]右手
+MODEL_FILENAME = data/MODEL/07_armUL.x			# [07]左上腕
+MODEL_FILENAME = data/MODEL/08_armDL.x			# [08]左前腕
+MODEL_FILENAME = data/MODEL/09_handL.x			# [09]左手
+MODEL_FILENAME = data/MODEL/10_legUR.x			# [10]右もも
+MODEL_FILENAME = data/MODEL/11_legDR.x			# [11]右ふくらはぎ
+MODEL_FILENAME = data/MODEL/12_footR.x			# [12]右足
+MODEL_FILENAME = data/MODEL/13_legUL.x			# [13]左もも
+MODEL_FILENAME = data/MODEL/14_legDL.x			# [14]左ふくらはぎ
+MODEL_FILENAME = data/MODEL/15_footL.x			# [15]左足
 
 #------------------------------------------------------------------------------
 # キャラクター情報
