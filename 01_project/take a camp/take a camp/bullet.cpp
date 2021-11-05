@@ -13,7 +13,7 @@
 #include "player.h"
 #include "collision.h"
 #include "peint_collision.h"
-
+#include "kill_count.h"
 
 //=============================================================================
 // マクロ定義
@@ -190,6 +190,8 @@ void CBullet::CollisionPlayer(void)
 			{
 				// 死亡状態にする
 				pPlayer->Death();
+				//キル時のカウント
+				KillCount();
 				//タイルを塗る用の当たり判定生成
 				for (int nPeint = 0; nPeint < MAX_PEINT; nPeint++)
 				{
@@ -201,4 +203,24 @@ void CBullet::CollisionPlayer(void)
 		}
 			pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
+}
+
+//=============================================================================
+// キルカウント処理
+//=============================================================================
+void CBullet::KillCount(void)
+{
+	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+
+	while (pPlayer != NULL)
+	{
+		if (pPlayer->GetPlayerNumber() == m_nPlayerNum)
+		{
+			//キルカウントを進める
+			pPlayer->GetKillCount()->AddKill();
+			return;
+		}
+		pPlayer = (CPlayer*)pPlayer->GetNext();
+	}
+
 }

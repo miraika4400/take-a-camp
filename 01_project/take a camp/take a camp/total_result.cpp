@@ -1,0 +1,116 @@
+////////////////////////////////////////////////////
+//
+//    トータルリザルトクラスの処理[total_result.cpp]
+//    Author : 吉田 悠人
+//
+////////////////////////////////////////////////////
+
+
+//=============================
+// インクルード
+//=============================
+#include "manager.h"
+#include "total_result.h"
+#include "score_kill.h"
+#include "score_paint.h"
+#include "keyboard.h"
+#include "mouse.h"
+#include "fade.h"
+#include "scene2d.h"
+
+//**********************************
+// マクロ定義
+//**********************************
+
+//**********************************
+// 静的メンバ変数宣言
+//**********************************
+
+
+//=============================
+// コンストラクタ
+//=============================
+CTotalResult::CTotalResult()
+{
+	m_pBg			= NULL;
+	m_pScoreKill	= NULL;
+}
+
+//=============================
+// デストラクタ
+//=============================
+CTotalResult::~CTotalResult()
+{
+}
+
+//=============================
+// クリエイト
+//=============================
+CTotalResult * CTotalResult::Create(void)
+{
+	// メモリの確保
+	CTotalResult *pTotalResult = NULL;
+	pTotalResult = new CTotalResult;
+	
+	//NULLチェック
+	if (pTotalResult != NULL)
+	{
+		// 初期化
+		pTotalResult->Init();
+
+	}
+	return pTotalResult;
+}
+
+//=============================
+// 初期化処理
+//=============================
+HRESULT CTotalResult::Init(void)
+{
+	// 背景の生成
+	m_pBg = CScene2d::Create();
+	m_pBg->SetSize(D3DXVECTOR3(SCREEN_WIDTH - 15, SCREEN_HEIGHT - 20, 0.0f));
+	m_pBg->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.6f));
+	m_pBg->SetPriority(OBJTYPE_BG);
+	//塗りスコア生成
+	CScorePaint::Create();
+	//キルスコア生成
+	m_pScoreKill = CScoreKill::Create();
+
+	return S_OK;
+}
+
+//=============================
+// 終了処理
+//=============================
+void CTotalResult::Uninit(void)
+{
+	// 開放処理
+	Release();
+}
+
+
+//=============================
+// 更新処理
+//=============================
+void CTotalResult::Update(void)
+{
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) ||
+		CManager::GetMouse()->GetMouseTrigger(0) /*||
+												 CManager::GetJoypad()->GetJoystickTrigger(3, 0) ||
+												 CManager::GetJoypad()->GetJoystickTrigger(11, 0)*/)
+	{
+		// デバッグ用画面遷移コマンド
+		CManager::GetFade()->SetFade(CManager::MODE_TITLE);
+	}
+
+}
+
+//=============================
+// 描画処理
+//=============================
+void CTotalResult::Draw(void)
+{
+
+}
+
