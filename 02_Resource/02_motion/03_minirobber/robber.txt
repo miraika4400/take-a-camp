@@ -51,14 +51,14 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 1					# 体
 		PARENT = 0					# (親)NULL
-		POS = 0.0 6.0 0.0
+		POS = 0.0 6.7 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 2					# 腰
 		PARENT = 1					# (親)腰
-		POS = 0.0 0.5 0.0
+		POS = 0.0 0.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
@@ -79,14 +79,14 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 5					# 右前腕
 		PARENT = 4					# (親)右上腕
-		POS = -2.2 0.0 0.0
+		POS = -2.0 0.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 6					# 右手
 		PARENT = 5					# (親)右前腕
-		POS = -2.6 0.0 0.0
+		POS = -1.4 0.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
@@ -100,28 +100,28 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 8					# 左前腕
 		PARENT = 7					# (親)左上腕
-		POS = 2.2 0.0 0.0
+		POS = 2.0 0.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET 
 		INDEX = 9					# 左手
 		PARENT = 8					# (親)左前腕
-		POS = 2.6 0.0 0.0
+		POS = 1.4 0.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 10					# 右もも
 		PARENT = 2					# (親)腰
-		POS = -0.55 -1.0 0.0
+		POS = -0.55 -0.8 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 11					# 右ふくらはぎ
 		PARENT = 10					# (親)右もも
-		POS = 0.0 -1.6 0.0
+		POS = 0.0 -1.8 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 	
@@ -135,14 +135,14 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 13					# 左もも
 		PARENT = 2					# (親)腰
-		POS = 0.55 -1.0 0.0
+		POS = 0.55 -0.8 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 	
 	PARTSSET
 		INDEX = 14					# 左ふくらはぎ
 		PARENT = 13					# (親)左もも
-		POS = 0.0 -1.6 0.0
+		POS = 0.0 -1.8 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 	
