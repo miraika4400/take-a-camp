@@ -16,12 +16,14 @@
 //=============================
 // 静的メンバ変数宣言
 //=============================
-char CDebugLog::m_aStr[DEBUG_LOG_MAX_STRING] = {}; // デバッグ文字
-LPD3DXFONT CDebugLog::m_pFont = NULL;              // フォント
+// デバッグ文字
+char CDebugLog::m_aStr[DEBUG_LOG_MAX_STRING] = {}; 
+// フォント
+LPD3DXFONT CDebugLog::m_pFont = NULL;            
 
-												   //=============================
-												   // コンストラクタ
-												   //=============================
+//=============================
+// コンストラクタ
+//=============================
 CDebugLog::CDebugLog()
 {
 

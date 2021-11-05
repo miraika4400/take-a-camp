@@ -16,7 +16,7 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define TILE_DATA_TEXT "data/Text/tile_data.csv"
+#define TILE_DATA_TEXT ("data/Text/tile_data.csv")
 
 //*****************************
 // 静的メンバ変数宣言
