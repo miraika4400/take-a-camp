@@ -205,6 +205,7 @@
     <ClCompile Include="scene3d.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="score_kill.cpp" />
+    <ClCompile Include="score_paint.cpp" />
     <ClCompile Include="shadow.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="resource_texture.cpp" />
@@ -271,6 +272,7 @@
     <ClInclude Include="scene3d.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="score_kill.h" />
+    <ClInclude Include="score_paint.h" />
     <ClInclude Include="shadow.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="resource_texture.h" />
