@@ -34,6 +34,7 @@ public:
 		TEXTURE_PARTICLE_SQUARE,    // パーティクル*箱
 		TEXTURE_PARTICLE_TEARS,  // パーティクル*涙
 		TEXTURE_PARTICLE_CIRCLE, // パーティクル*円
+		TEXTURE_PARTICLE_GURUGURU, // ぐるぐる
 		TEXTURE_NUMBER,          // ナンバー
 		TEXTURE_FRAME,           // 枠
 		TEXTURE_CROSS_MARK,      // ×マーク

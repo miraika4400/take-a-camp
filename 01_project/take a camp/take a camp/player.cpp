@@ -30,6 +30,7 @@
 #include "color_tile.h"
 #include "chara_select.h"
 #include "kill_count.h"
+#include "particle.h"
 
 //*****************************
 // マクロ定義
@@ -40,7 +41,7 @@
 #define COLLISION_RADIUS 18.0f
 #define MODL_COLOR D3DXCOLOR(0.3f,0.3f,0.3f,1.0f)
 //#define MODEL_SIZE D3DXVECTOR3( 0.3f, 0.3f, 0.3f)
-#define MODEL_SIZE D3DXVECTOR3( 1.2f, 1.2f, 1.2f)
+#define MODEL_SIZE D3DXVECTOR3( 1.4f, 1.4f, 1.4f)
 #define RESPAWN_MAX_COUNT (60*5)	// リスポーンまでの最大カウント
 #define INVINCIBLE_COUNT (60*2)		// 無敵時間
 #define ROTDEST_PREVIOUS 0.0f		// 前方向き
@@ -251,12 +252,21 @@ void CPlayer::Update(void)
 	switch (m_PlayerState)
 	{
 	case PLAYER_STATE_REVERSE:
+	{
 		m_ReverseCount++;
 		if (m_ReverseCount % 180 == 0)
 		{
 			m_ReverseCount = 0;
 			SetState(PLAYER_STATE_NORMAL);
 		}
+
+		//if (m_ReverseCount % 15 == 0)
+		//{
+		//	D3DXVECTOR3 pos = GetPos();
+		//	pos.y += 10.0f;
+		//	CParticle::Create(pos, D3DXVECTOR3((float)(rand() % 16 - 8)/100.0f, 0.25f, (float)(rand() % 16 - 8) / 100.0f), D3DXVECTOR3(7.0f, 7.0f, 7.0f), 500, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_GURUGURU)->SetAddRotValue(1.2f);
+		//}
+	}
 	case PLAYER_STATE_NORMAL:	//通常状態
 		// 移動処理
 		Move();
@@ -582,7 +592,7 @@ void CPlayer::Move(void)
 					{
 						pPlayer->SetState(PLAYER_STATE_REVERSE);
 						m_ItemState = ITEM_STATE_NONE;
-						//return;
+						//return;5
 					}
 				}
 				pPlayer = (CPlayer*)pPlayer->GetNext();
