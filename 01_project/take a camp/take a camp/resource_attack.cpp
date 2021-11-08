@@ -19,7 +19,7 @@
 //=============================================================================
 char* CAttackManager::m_pFileName[ATTACK_TYPE_MAX] =
 {
-	"data/Text/attack_1.csv" ,
+	"data/Text/attack/attack_1.csv" ,
 	"",
 	"",
 	""
