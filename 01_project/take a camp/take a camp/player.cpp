@@ -34,13 +34,13 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define HIERARCHY_TEXT_PATH1 "data/Text/hierarchy/knight.txt"   // 階層構造テキストのパス
+#define HIERARCHY_TEXT_PATH1 "data/Text/hierarchy/Knight.txt"   // 階層構造テキストのパス
 #define MOVE_DIST (TILE_ONE_SIDE)	// 移動距離
 #define MOVE_FRAME 15				// 移動速度
 #define COLLISION_RADIUS 18.0f
 #define MODL_COLOR D3DXCOLOR(0.3f,0.3f,0.3f,1.0f)
 //#define MODEL_SIZE D3DXVECTOR3( 0.3f, 0.3f, 0.3f)
-#define MODEL_SIZE D3DXVECTOR3( 1.0f, 1.0f, 1.0f)
+#define MODEL_SIZE D3DXVECTOR3( 1.2f, 1.2f, 1.2f)
 #define RESPAWN_MAX_COUNT (60*5)	// リスポーンまでの最大カウント
 #define INVINCIBLE_COUNT (60*2)		// 無敵時間
 #define ROTDEST_PREVIOUS 0.0f		// 前方向き
@@ -335,10 +335,10 @@ void CPlayer::Draw(void)
 		for (int nCntMat = 0; nCntMat < (int)GetModelData()[nCntParts].nNumMat; nCntMat++)
 		{
 			D3DXMATERIAL* mat = (D3DXMATERIAL*)GetModelData()[nCntParts].pBuffMat->GetBufferPointer();
-			mat[nCntMat].MatD3D.Ambient = m_color;
-			mat[nCntMat].MatD3D.Diffuse = m_color;
-			mat[nCntMat].MatD3D.Specular = m_color;
-			mat[nCntMat].MatD3D.Emissive = m_color;
+			mat[nCntMat].MatD3D.Ambient .a = m_color.a;
+			mat[nCntMat].MatD3D.Diffuse .a = m_color.a;
+			mat[nCntMat].MatD3D.Specular.a = m_color.a;
+			mat[nCntMat].MatD3D.Emissive.a = m_color.a;
 		}
 	}
 
@@ -365,12 +365,12 @@ void CPlayer::Death(void)
 		}
 
 		//行動クラスに死亡状態になったフラグを送る
-m_pActRange->SetDeath(true);
-//透明にする
-m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+		m_pActRange->SetDeath(true);
+		//透明にする
+		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
-//位置セット
-SetPos(m_RespawnPos);
+		//位置セット
+		SetPos(m_RespawnPos);
 	}
 
 }
@@ -576,18 +576,23 @@ void CPlayer::Move(void)
 
 			while (pPlayer != NULL)
 			{
-				if (pPlayer->GetPlayerNumber() != m_nPlayerNumber)
+				if (pPlayer->m_PlayerState != PLAYER_STATE_DEATH)
 				{
-					pPlayer->SetState(PLAYER_STATE_REVERSE);	
-					m_ItemState = ITEM_STATE_NONE;
-					return;
+					if (pPlayer->GetPlayerNumber() != m_nPlayerNumber)
+					{
+						pPlayer->SetState(PLAYER_STATE_REVERSE);
+						m_ItemState = ITEM_STATE_NONE;
+						//return;
+					}
 				}
 				pPlayer = (CPlayer*)pPlayer->GetNext();
 			}
 			break;
 		}
 	}
-}//******************************
+}
+
+//******************************
 // 弾の処理
 //******************************
 void CPlayer::Attack(void)

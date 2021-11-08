@@ -12,8 +12,9 @@
 #include "resource_attack.h"
 #include "player.h"
 #include "bullet.h"
-#include "color_tile.h"
 #include "scene3d.h"
+#include "attack_area.h"
+#include "color_tile.h"
 
 //=============================================================================
 // コンストラクタ
@@ -234,11 +235,12 @@ void CAttackBased::ChangeFrameColor()
 			CreatePos.y = 1 * AttackPos.y;
 			CreatePos.z = ((-sinf(GetRot().y)*AttackPos.x) + (cosf(GetRot().y)*AttackPos.z));
 
-			CColorTile*pTile = CColorTile::GetHitColorTile(CreatePos + GetPos());
+			CTile*pTile = CTile::GetHitTile(CreatePos + GetPos());
 			if (pTile != NULL)
 			{
-				pTile->GetFrame()->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
-				pTile->GetFrame()->SetPos(pTile->GetPos() + D3DXVECTOR3(0.0f, 10.0f, 0.0f));
+				pTile->GetAttackAreaPolygon()->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
+				pTile->GetAttackAreaPolygon()->SetPos(pTile->GetPos() + D3DXVECTOR3(0.0f, 10.0f, 0.0f));
+				pTile->GetAttackAreaPolygon()->SetDrawFlag(true);
 			}
 		}
 	}
@@ -259,11 +261,12 @@ void CAttackBased::ChangeFrameColor()
 				CreatePos.y = 1 * AttackPos.y;
 				CreatePos.z = ((-sinf(GetPlayer()->GetRotDest().y)*AttackPos.x) + (cosf(GetPlayer()->GetRotDest().y)*AttackPos.z));
 
-				CColorTile*pTile = CColorTile::GetHitColorTile(CreatePos + GetPlayer()->GetPos());
+				CTile*pTile = CTile::GetHitTile(CreatePos + GetPlayer()->GetPos());
 				if (pTile != NULL)
 				{
-					pTile->GetFrame()->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
-					pTile->GetFrame()->SetPos(pTile->GetPos() + D3DXVECTOR3(0.0f, 10.0f, 0.0f));
+					pTile->GetAttackAreaPolygon()->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
+					pTile->GetAttackAreaPolygon()->SetPos(pTile->GetPos() + D3DXVECTOR3(0.0f, 10.0f, 0.0f));
+					pTile->GetAttackAreaPolygon()->SetDrawFlag(true);
 				}
 			}
 		}

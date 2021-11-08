@@ -21,7 +21,8 @@
 //=============================================================================
 char* CMapManager::m_pFileName[MAP_TYPE_MAX] =
 {
-	"data/Text/stage04.csv" ,
+	
+	"data/Text/stage/stage04.csv" ,
 	"",
 	"",
 	""
