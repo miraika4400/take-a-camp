@@ -1,28 +1,35 @@
 //===================================================
 //
-//    スコアクラスの処理[score.cpp]
-//    Author:増澤 未来
+// スコア表示処理 [score.cpp]
+//    Author : 吉田 悠人
 //
 //====================================================
 
 //**********************************
 //インクルード
 //**********************************
-#include "score.h"
 #include "number.h"
+#include "chara_select.h"
+#include "score.h"
+#include "color_tile.h"
 
-//==============================
-//静的メンバ変数宣言
-//==============================
-int CScore::m_nScore = 0;
+//**********************************
+//インクルード
+//**********************************
+#define SCORE_SIZE		(D3DXVECTOR3(40.0f, 30.0f, 0.0f))
+#define CREATE_POS_Y	(400.0f)
+#define SCORE_SPACE		(SCREEN_WIDTH/4)
 
 //==================================
 // コンストラクタ
 //==================================
 CScore::CScore()
 {
-	// ナンバーのクリア
-	memset(m_apNumber, 0, sizeof(m_apNumber));
+	//初期化
+	memset(m_apNumber, 0, sizeof(m_apNumber));	// ナンバーのクリア
+	memset(m_pos, 0, sizeof(m_pos));			// 位置
+	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);	// カラー
+	m_nPlayerNum = 0;
 }
 
 //==================================
@@ -35,18 +42,27 @@ CScore::~CScore()
 //==================================
 // クリエイト
 //==================================
-CScore * CScore::Create(void)
+CScore * CScore::Create(D3DXVECTOR3 pos, D3DXCOLOR col, int nScore)
 {
 	// メモリの確保
-	CScore *pScore = new CScore;
+	CScore *pScorePaint = NULL;
+	pScorePaint = new CScore;
 
-	// 初期化処理
-	pScore->Init();
-
-	// オブジェクトタイプの設定
-	pScore->SetPriority(OBJTYPE_UI);
-
-	return pScore;
+	//NULLチェック
+	if (pScorePaint != NULL)
+	{
+		// 位置設定
+		pScorePaint->m_pos = pos;
+		// カラー設定
+		pScorePaint->m_col = col;
+		// 初期化処理
+		pScorePaint->Init();
+		//スコアセット
+		pScorePaint->SetPaintScore(nScore);
+		// オブジェクトタイプの設定
+		pScorePaint->SetPriority(OBJTYPE_UI);
+	}
+	return pScorePaint;
 }
 
 //==================================
@@ -54,16 +70,14 @@ CScore * CScore::Create(void)
 //==================================
 HRESULT CScore::Init(void)
 {
-	// 最大桁数分ループ
+	//数値生成
 	for (int nCntDigit = 0; nCntDigit < MAX_SCORE_DIGIT; nCntDigit++)
 	{
 		m_apNumber[nCntDigit] = CNumber::Create(0,
-			D3DXVECTOR3((float)(1000 + nCntDigit * 40), 50.0f, 0.0f),
-			D3DXVECTOR3(20, 20, 0),
-			D3DXCOLOR(0.8f, 0.3f, 0.8f, 1.0f));
+			D3DXVECTOR3((float)(m_pos.x - (nCntDigit-1) * (SCORE_SIZE.x)), m_pos.y, 0.0f),
+			SCORE_SIZE,
+			m_col);
 	}
-	// スコアの初期化
-	m_nScore = 0;
 
 	return S_OK;
 }
@@ -94,9 +108,12 @@ void CScore::Update(void)
 {
 	for (int nCntDigit = 0; nCntDigit < MAX_SCORE_DIGIT; nCntDigit++)
 	{
-		m_apNumber[nCntDigit]->Update();
+		//NULLチェック
+		if (m_apNumber[nCntDigit] != NULL)
+		{
+			m_apNumber[nCntDigit]->Update();
 
-		m_apNumber[nCntDigit]->SetNumber((int)((m_nScore % (int)(powf(10.0f, (MAX_SCORE_DIGIT - nCntDigit)))) / (float)(powf(10, (MAX_SCORE_DIGIT - nCntDigit - 1)))));
+		}
 	}
 }
 
@@ -107,6 +124,25 @@ void CScore::Draw(void)
 {
 	for (int nCntDigit = 0; nCntDigit < MAX_SCORE_DIGIT; nCntDigit++)
 	{
-		m_apNumber[nCntDigit]->Draw();
+		//NULLチェック
+		if (m_apNumber[nCntDigit] != NULL)
+		{
+			m_apNumber[nCntDigit]->Draw();
+		}
+	}
+}
+
+//=============================
+// スコア計算処理
+//=============================
+void CScore::SetPaintScore(int nScore)
+{
+	int nInteger = 0;//計算用変数
+
+	for (int nCntDigit = 0; nCntDigit < MAX_SCORE_DIGIT; nCntDigit++)
+	{
+		nInteger = int(nScore / pow(10, nCntDigit + 1)); //1の位以下を切り捨てる
+		nInteger = int(nInteger * pow(10, nCntDigit + 1));
+		m_apNumber[nCntDigit]->SetNumber(int((nScore - nInteger) / pow(10, nCntDigit)));
 	}
 }
