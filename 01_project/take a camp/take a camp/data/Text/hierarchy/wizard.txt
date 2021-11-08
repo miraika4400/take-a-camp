@@ -14,22 +14,22 @@ NUM_MODEL = 16
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/Models/player/00_knight/00_foundation.x		# [00]土台
-MODEL_FILENAME = data/Models/player/00_knight/01_bodyU.x			# [01]体
-MODEL_FILENAME = data/Models/player/00_knight/02_bodyD.x			# [02]腰
-MODEL_FILENAME = data/Models/player/00_knight/03_head.x				# [03]頭
-MODEL_FILENAME = data/Models/player/00_knight/04_armUR.x			# [04]右上腕
-MODEL_FILENAME = data/Models/player/00_knight/05_armDR.x			# [05]右前腕
-MODEL_FILENAME = data/Models/player/00_knight/06_handR.x			# [06]右手
-MODEL_FILENAME = data/Models/player/00_knight/07_armUL.x			# [07]左上腕
-MODEL_FILENAME = data/Models/player/00_knight/08_armDL.x			# [08]左前腕
-MODEL_FILENAME = data/Models/player/00_knight/09_handL.x			# [09]左手
-MODEL_FILENAME = data/Models/player/00_knight/10_legUR.x			# [10]右もも
-MODEL_FILENAME = data/Models/player/00_knight/11_legDR.x			# [11]右ふくらはぎ
-MODEL_FILENAME = data/Models/player/00_knight/12_footR.x			# [12]右足
-MODEL_FILENAME = data/Models/player/00_knight/13_legUL.x			# [13]左もも
-MODEL_FILENAME = data/Models/player/00_knight/14_legDL.x			# [14]左ふくらはぎ
-MODEL_FILENAME = data/Models/player/00_knight/15_footL.x			# [15]左足
+MODEL_FILENAME = data/Models/player/02_wizard/00_foundation.x		# [00]土台
+MODEL_FILENAME = data/Models/player/02_wizard/01_bodyU.x			# [01]体
+MODEL_FILENAME = data/Models/player/02_wizard/02_bodyD.x			# [02]腰
+MODEL_FILENAME = data/Models/player/02_wizard/03_head.x				# [03]頭
+MODEL_FILENAME = data/Models/player/02_wizard/04_armUR.x			# [04]右上腕
+MODEL_FILENAME = data/Models/player/02_wizard/05_armDR.x			# [05]右前腕
+MODEL_FILENAME = data/Models/player/02_wizard/06_handR.x			# [06]右手
+MODEL_FILENAME = data/Models/player/02_wizard/07_armUL.x			# [07]左上腕
+MODEL_FILENAME = data/Models/player/02_wizard/08_armDL.x			# [08]左前腕
+MODEL_FILENAME = data/Models/player/02_wizard/09_handL.x			# [09]左手
+MODEL_FILENAME = data/Models/player/02_wizard/10_legUR.x			# [10]右もも
+MODEL_FILENAME = data/Models/player/02_wizard/11_legDR.x			# [11]右ふくらはぎ
+MODEL_FILENAME = data/Models/player/02_wizard/12_footR.x			# [12]右足
+MODEL_FILENAME = data/Models/player/02_wizard/13_legUL.x			# [13]左もも
+MODEL_FILENAME = data/Models/player/02_wizard/14_legDL.x			# [14]左ふくらはぎ
+MODEL_FILENAME = data/Models/player/02_wizard/15_footL.x			# [15]左足
 
 #------------------------------------------------------------------------------
 # キャラクター情報
@@ -50,7 +50,7 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 1					# 体
 		PARENT = 0					# (親)NULL
-		POS = 0.0 8.0 0.0
+		POS = 0.0 7.8 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
@@ -71,7 +71,7 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 4					# 右上腕
 		PARENT = 1					# (親)腹
-		POS = -1.8 1.8 0.0
+		POS = -1.2 1.8 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
@@ -92,7 +92,7 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 7					# 左上腕
 		PARENT = 1					# (親)腹
-		POS = 1.8 1.8 0.0
+		POS = 1.2 1.8 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 	
@@ -120,7 +120,7 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 11					# 右ふくらはぎ
 		PARENT = 10					# (親)右もも
-		POS = 0.0 -1.8 0.0
+		POS = 0.0 -1.6 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 	
@@ -141,7 +141,7 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 14					# 左ふくらはぎ
 		PARENT = 13					# (親)左もも
-		POS = 0.0 -1.8 0.0
+		POS = 0.0 -1.6 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 	
