@@ -1,7 +1,7 @@
 //=============================================================================
 //
-// scoreヘッダ [score.h]
-// Author : 増澤 未来
+// 塗りスコア表示処理 [score.h]
+// Author : 吉田 悠人
 //
 //=============================================================================
 
@@ -14,6 +14,7 @@
 //*****************************
 #include "main.h"
 #include "scene.h"
+#include "game.h"
 
 //*****************************
 //前方宣言
@@ -23,7 +24,7 @@ class CNumber;
 //*****************************
 //マクロ定義
 //*****************************
-#define MAX_SCORE_DIGIT 6  // スコアの最大桁数
+#define MAX_SCORE_DIGIT (3)  // スコアの最大桁数
 
 //*****************************
 //クラス定義
@@ -39,22 +40,23 @@ public:
 	CScore();
 	~CScore();
 
-	static CScore *Create(void); // クラス生成
+	static CScore *Create(D3DXVECTOR3 pos, D3DXCOLOR col, int nScore); // クラス生成
 
-	HRESULT Init(void);// 初期化
-	void Uninit(void); // 終了
-	void Update(void); // 更新
-	void Draw(void);   // 描画
+	HRESULT Init(void);		// 初期化
+	void	Uninit(void);	// 終了
+	void	Update(void);	// 更新
+	void	Draw(void);		// 描画
+	void	SetPaintScore(int nScore);	// スコア
 
-	static void AddScore(int nPoint) { m_nScore += nPoint; } // スコア加算
-	static int GetScore(void) { return m_nScore; }           // スコアの取得
 private:
 	//============
 	// メンバ変数
 	//============
-	CNumber* m_apNumber[MAX_SCORE_DIGIT]; // ナンバーポリゴン
-	static int m_nScore;                  // スコア
-
+	CNumber* m_apNumber[MAX_SCORE_DIGIT];	// ナンバーポリゴン
+	int			m_nPaintScore;					// スコア
+	D3DXVECTOR3 m_pos;							// 位置
+	D3DXCOLOR	m_col;							// カラー
+	int			m_nPlayerNum;					// プレイヤー人数取得用変数
 };
 
 #endif

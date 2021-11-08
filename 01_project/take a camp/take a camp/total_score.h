@@ -1,13 +1,13 @@
 //=============================================================================
 //
-// 塗りスコア表示処理 [score_paint.h]
+// トータルスコア表示処理 [total_score.h]
 // Author : 吉田 悠人
 //
 //=============================================================================
 
 //二重インクルード防止
-#ifndef _SCORE_PAINT_H_
-#define _SCORE_PAINT_H_
+#ifndef _TOTAL_SCORE_H_
+#define _TOTAL_SCORE_H_
 
 //*****************************
 //インクルード
@@ -15,48 +15,37 @@
 #include "main.h"
 #include "scene.h"
 #include "game.h"
-
 //*****************************
-//前方宣言
+// 前方宣言
 //*****************************
-class CNumber;
-
-//*****************************
-//マクロ定義
-//*****************************
-#define MAX_PAINT_SCORE_DIGIT (3)  // スコアの最大桁数
+class CScene2d;
 
 //*****************************
 //クラス定義
 //*****************************
-
 //スコアクラス
-class CScorePaint : public CScene
+class CTotalScore : public CScene
 {
 public:
 	//============
 	// メンバ関数
 	//============
-	CScorePaint();
-	~CScorePaint();
+	CTotalScore();
+	~CTotalScore();
 
-	static CScorePaint *Create(void); // クラス生成
+	static CTotalScore *Create(void); // クラス生成
 
 	HRESULT Init(void);		// 初期化
 	void	Uninit(void);	// 終了
 	void	Update(void);	// 更新
 	void	Draw(void);		// 描画
-	void	SetPaintScore(int nPlayer, int nScore);	// スコア
 
 private:
 	//============
 	// メンバ変数
 	//============
-	CNumber* m_apNumber[MAX_PLAYER][MAX_PAINT_SCORE_DIGIT];	// ナンバーポリゴン
-	int			m_nPaintScore[MAX_PLAYER];					// スコア
-	D3DXVECTOR3 m_pos[MAX_PLAYER];							// 位置
-	D3DXCOLOR	m_col[MAX_PLAYER];							// カラー
-	int			m_nPlayerNum;								// プレイヤー人数取得用変数
+	CScene2d* m_pBg;
+
 };
 
 #endif
