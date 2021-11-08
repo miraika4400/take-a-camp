@@ -27,10 +27,10 @@ public:
 	CScene3d(int nPliority = OBJTYPE_NONE);
 	~CScene3d();
 	static CScene3d *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size);
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	virtual HRESULT Init(void);
+	virtual void Uninit(void);
+	virtual void Update(void);
+	virtual void Draw(void);
 	LPDIRECT3DTEXTURE9 GetTexture(void) { return m_pTexture; }
 	void BindTexture(const LPDIRECT3DTEXTURE9 pTexture) { m_pTexture = pTexture; }
 

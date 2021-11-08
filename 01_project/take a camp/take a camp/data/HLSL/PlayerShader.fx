@@ -86,7 +86,7 @@ VS_OUT VS(VS_IN In)
 //////////////////////////////////
 float4 PS(VS_OUT In) :COLOR
 {
-	float4 col = texCUBE(SamplerCube, In.CubeTexCoord)*In.Color + In.Specular;
+	float4 col = In.Color + In.Specular;
 
 	// ƒŠƒ€
 	float rim = 1.0f - abs(dot(In.viewDir, In.normalDir));
@@ -102,7 +102,7 @@ float4 PS(VS_OUT In) :COLOR
 //////////////////////////////////
 float4 PS_TEX(VS_OUT In) :COLOR
 {
-	float4 col = tex2D(Sampler, In.TexCoord)*texCUBE(SamplerCube, In.CubeTexCoord) + In.Specular;
+	float4 col = tex2D(Sampler, In.TexCoord) * In.Color + In.Specular;
 
 	// ƒŠƒ€
 	float rim = 1.0f - abs(dot(In.viewDir, In.normalDir));
