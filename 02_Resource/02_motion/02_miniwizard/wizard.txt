@@ -50,7 +50,7 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 1					# 体
 		PARENT = 0					# (親)NULL
-		POS = 0.0 8.0 0.0
+		POS = 0.0 7.8 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
@@ -71,7 +71,7 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 4					# 右上腕
 		PARENT = 1					# (親)腹
-		POS = -1.8 1.8 0.0
+		POS = -1.2 1.8 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
@@ -92,7 +92,7 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 7					# 左上腕
 		PARENT = 1					# (親)腹
-		POS = 1.8 1.8 0.0
+		POS = 1.2 1.8 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 	
@@ -120,7 +120,7 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 11					# 右ふくらはぎ
 		PARENT = 10					# (親)右もも
-		POS = 0.0 -1.8 0.0
+		POS = 0.0 -1.6 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 	
@@ -141,7 +141,7 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 14					# 左ふくらはぎ
 		PARENT = 13					# (親)左もも
-		POS = 0.0 -1.8 0.0
+		POS = 0.0 -1.6 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 	
