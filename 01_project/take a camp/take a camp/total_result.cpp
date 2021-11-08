@@ -11,8 +11,7 @@
 //=============================
 #include "manager.h"
 #include "total_result.h"
-#include "score_kill.h"
-#include "score_paint.h"
+#include "total_score.h"
 #include "keyboard.h"
 #include "mouse.h"
 #include "fade.h"
@@ -72,11 +71,9 @@ HRESULT CTotalResult::Init(void)
 	m_pBg->SetSize(D3DXVECTOR3(SCREEN_WIDTH - 15, SCREEN_HEIGHT - 20, 0.0f));
 	m_pBg->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.6f));
 	m_pBg->SetPriority(OBJTYPE_BG);
-	//塗りスコア生成
-	CScorePaint::Create();
-	//キルスコア生成
-	m_pScoreKill = CScoreKill::Create();
 
+	//スコア生成
+	CTotalScore::Create();
 	return S_OK;
 }
 

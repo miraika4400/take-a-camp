@@ -19,6 +19,7 @@
 #include "player.h"
 #include "peint_collision.h"
 #include "color_tile.h"
+#include "attack_area.h"
 
 #ifdef _DEBUG
 #include "keyboard.h"
@@ -35,6 +36,7 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
+std::vector<CTile*> CTile::m_aTileList = {};
 
 //******************************
 // コンストラクタ
@@ -48,6 +50,8 @@ CTile::CTile() :CModel(OBJTYPE_TILE)
 	m_bHitOld = false;
 	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
 	m_bHitBullet = false;        // 弾が当たっているフラグ
+	m_pAttackArea = false;
+	m_aTileList.push_back(this);
 }
 
 //******************************
@@ -75,6 +79,40 @@ void CTile::Create(D3DXVECTOR3 pos , D3DXCOLOR col )
 }
 
 //******************************
+// 指定座標の当たっているタイルの取得
+//******************************
+CTile * CTile::GetHitTile(D3DXVECTOR3 pos)
+{
+	CCollision*pCollision = CCollision::CreateSphere(pos, TILE_ONE_SIDE / 4);
+
+	for (size_t nCntTile = 0; nCntTile< m_aTileList.size(); nCntTile++)
+	{
+		if (CCollision::CollisionSphere(pCollision, m_aTileList[nCntTile]->GetCollision()))
+		{
+			if (pCollision != NULL)
+			{
+				pCollision->ReConnection();
+				pCollision->Uninit();
+				delete pCollision;
+				pCollision = NULL;
+			}
+
+			return m_aTileList[nCntTile];
+		}
+	}
+
+	if (pCollision != NULL)
+	{
+		pCollision->ReConnection();
+		pCollision->Uninit();
+		delete pCollision;
+		pCollision = NULL;
+	}
+
+	return NULL;
+}
+
+//******************************
 // 初期化処理
 //******************************
 HRESULT CTile::Init(void)
@@ -97,6 +135,8 @@ HRESULT CTile::Init(void)
 	m_bHitOld = false;                           // 一個前のフレームで当たっていたか保存するよう 
 	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
 	m_bHitBullet = false;        // 弾が当たっているフラグ
+
+	m_pAttackArea = CAttackArea::Create(GetPos());
 
 	if (m_pCollison == NULL)
 	{
@@ -140,6 +180,16 @@ void CTile::Update(void)
 	
 	//塗り判定との当たり判定
 	CollisionPeint();
+
+	// 攻撃エリアの位置の調整
+	m_pAttackArea->SetDrawFlag(false);
+	//D3DXVECTOR3 attackAreaPos = m_pAttackArea->GetPos();
+	//if (attackAreaPos != D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z))
+	//{
+	//	attackAreaPos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z);
+
+	//	m_pAttackArea->SetPos(attackAreaPos);
+	//}
 }
 
 //******************************
