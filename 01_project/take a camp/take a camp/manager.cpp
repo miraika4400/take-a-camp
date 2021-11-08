@@ -19,6 +19,7 @@
 #include "resource_model.h"
 #include "resource_shader.h"
 #include "resource_attack.h"
+#include "resource_final_attack.h"
 #include "camera_base.h"
 #include "debug_log.h"
 #include "pause.h"
@@ -133,6 +134,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CMapManager::Create();
 	//UŒ‚”ÍˆÍ“Ç‚İ‚İ
 	CAttackManager::Create();
+	//•KE‹Z”ÍˆÍ“Ç‚İ‚İ
+	CFinalAttackManager::Create();
 
 	// ƒvƒŒƒCƒ„[ŠK‘w\‘¢
 	CPlayer::Load();

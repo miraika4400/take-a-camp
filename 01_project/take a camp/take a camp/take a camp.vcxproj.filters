@@ -312,6 +312,9 @@
     <ClCompile Include="score.cpp">
       <Filter>ソース ファイル\10_Ui\ResultScore</Filter>
     </ClCompile>
+    <ClCompile Include="resource_final_attack.cpp">
+      <Filter>ソース ファイル\03_Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -508,6 +511,9 @@
     </ClInclude>
     <ClInclude Include="score.h">
       <Filter>ヘッダー ファイル\10_Ui\ResultScore</Filter>
+    </ClInclude>
+    <ClInclude Include="resource_final_attack.h">
+      <Filter>ヘッダー ファイル\03_Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

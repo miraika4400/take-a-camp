@@ -136,11 +136,15 @@ void CAttackManager::Load(void)
 				//UŒ‚ƒ^ƒCƒv‚²‚Æ‚Ì‘¬“x
 				if (strcmp(cFileString, "AttackFrame") == 0)
 				{
-					fscanf_s(pFile, "‡T:%d,‡U:%d,‡V:%d,‡W:%d", 
+					fscanf_s(pFile, "‡T:%d,‡U:%d,‡V:%d,‡W:%d,‡X:%d,‡Y:%d,‡Z:%d,‡[:%d", 
 						&m_AttackData[nAttack][nLveel].nAttackFrame[0],
 						&m_AttackData[nAttack][nLveel].nAttackFrame[1],
 						&m_AttackData[nAttack][nLveel].nAttackFrame[2],
-						&m_AttackData[nAttack][nLveel].nAttackFrame[3]);
+						&m_AttackData[nAttack][nLveel].nAttackFrame[3],
+						&m_AttackData[nAttack][nLveel].nAttackFrame[4],
+						&m_AttackData[nAttack][nLveel].nAttackFrame[5],
+						&m_AttackData[nAttack][nLveel].nAttackFrame[6],
+						&m_AttackData[nAttack][nLveel].nAttackFrame[7] );
 				}
 
 				//LevelUp‚Ì•¶š‚ğ“Ç‚İ‚ñ‚¾‚©
