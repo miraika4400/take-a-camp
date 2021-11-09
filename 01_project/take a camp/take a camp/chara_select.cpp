@@ -94,7 +94,7 @@ void CCharaSelect::Update(void)
 
 #ifdef _DEBUG
 
-	if(CManager::GetKeyboard()->GetKeyTrigger(DIK_F1))
+	if(CManager::GetKeyboard()->GetKeyTrigger(DIK_F1)|| CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_GAME);
 	}

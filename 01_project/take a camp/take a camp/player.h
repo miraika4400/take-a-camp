@@ -107,6 +107,7 @@ public:
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 private:
 	void Move(void);		// ˆÚ“®ˆ—
+	void ManageRot(void);   // Œü‚«‚ÌŠÇ—
 	void Respawn(void);		// ƒŠƒXƒ|[ƒ“ˆ—
 	void Invincible(void);	// –³“Gˆ—
 
