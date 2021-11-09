@@ -164,6 +164,7 @@
     <ClCompile Include="kill_count.cpp" />
     <ClCompile Include="max_color_effect.cpp" />
     <ClCompile Include="needle_tile.cpp" />
+    <ClCompile Include="paint_time.cpp" />
     <ClCompile Include="peint_collision.cpp" />
     <ClCompile Include="resource_attack.cpp" />
     <ClCompile Include="bg.cpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="kill_count.h" />
     <ClInclude Include="max_color_effect.h" />
     <ClInclude Include="needle_tile.h" />
+    <ClInclude Include="paint_time.h" />
     <ClInclude Include="peint_collision.h" />
     <ClInclude Include="resource_attack.h" />
     <ClInclude Include="bg.h" />

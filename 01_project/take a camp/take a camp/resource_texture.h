@@ -48,7 +48,9 @@ public:
 		TEXTURE_BUTTON_START,	 // タイトルのボタン(スタート)
 		TEXTYRE_BUTTON_TUTORIAL, // タイトルのボタン(チュートリアル)
 		TEXTURE_MAX_COLOR_EFFECT,// 最大塗段階時のエフェクト
-		TEXTURE_SWORD_ICON,      // 剣アイコン
+		TEXTURE_ATTACK_AREA,      // 攻撃範囲
+		TEXTURE_CLOCK_FRAME,      // 時計の枠
+		TEXTURE_CLOCK_HANDS,      // 時計の針
 		TEXTURE_MAX              // テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類

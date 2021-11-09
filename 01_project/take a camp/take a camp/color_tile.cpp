@@ -17,6 +17,7 @@
 #include "particle.h"
 #include "peint_collision.h"
 #include "max_color_effect.h"
+#include "paint_time.h"
 
 #ifdef _DEBUG
 #include "manager.h"
@@ -27,8 +28,8 @@
 // マクロ定義
 //*****************************
 
-#define PEINT_COUNT 60  // 再度塗れるようになるまでのカウント
-#define PLAYER_HIT_POS_Y TILE_POS_Y - 3.0f
+#define PEINT_COUNT (60)  // 再度塗れるようになるまでのカウント
+#define PLAYER_HIT_POS_Y (TILE_POS_Y - 3.0f)
 
 //*****************************
 // 静的メンバ変数宣言
@@ -46,6 +47,8 @@ CColorTile::CColorTile()
 	m_nCntStep = 0;                              // 再度塗り可能カウント
 	m_nLastHitPlayerNum = -1;                    // 現在の塗られている番号4
 	m_nCntFrem = 0;
+	m_distColor = TILE_DEFAULT_COLOR;
+	m_pPaintTime = NULL;
 }
 
 //******************************
@@ -160,6 +163,8 @@ HRESULT CColorTile::Init(void)
 	
 	SetPriority(OBJTYPE_COLOR_TILE); // オブジェクトタイプ
 
+	m_pPaintTime = CPaintTime::Create();
+
 	return S_OK;
 }
 
@@ -188,6 +193,9 @@ void CColorTile::Update(void)
 	if (m_nCntStep > 0)
 	{
 		m_nCntStep--;
+
+		// 色の管理
+		ManageColor();
 	}
 
 	if (m_nStep == 3)
@@ -196,10 +204,8 @@ void CColorTile::Update(void)
 
 		if(m_nCntFrem % 10 <= 0)
 		{
-
 			D3DXVECTOR3 pos = m_pFrame->GetPos();
 			CParticle::Create(D3DXVECTOR3(pos.x + (float)(rand() % 16 -8), pos.y, pos.z + (float)(rand() % 16 - 8)), D3DXVECTOR3(0.0f, 0.25f, 0.0f), D3DXVECTOR3(3.0f, 3.0f, 3.0f), 500, GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_SQUARE);
-			
 		}
 	}
 
@@ -268,6 +274,9 @@ void CColorTile::ManageFrame(void)
 		m_pFrame->SetPos(pos);
 	}
 
+	// 塗時間位置
+	m_pPaintTime->SetPos(D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z));
+
 	// 色の設定
 	if (m_nStep != 0)
 	{
@@ -280,6 +289,32 @@ void CColorTile::ManageFrame(void)
 }
 
 //******************************
+// 色の管理
+//******************************
+void CColorTile::ManageColor(void)
+{
+	D3DXCOLOR col = GetColor();
+
+	float fRate = 1.0f / PEINT_COUNT;
+
+	if (m_nStep == 1|| m_nPrevNum == -1)
+	{
+		col.r += (m_distColor.r) * fRate;
+		col.g += (m_distColor.g) * fRate;
+		col.b += (m_distColor.b) * fRate;
+	}
+	else
+	{
+		D3DXCOLOR oldCol = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 2);
+		col.r += (m_distColor.r) * fRate;
+		col.g += (m_distColor.g) * fRate;
+		col.b += (m_distColor.b) * fRate;
+	}
+
+	SetColor(col);
+}
+
+//******************************
 // 塗処理
 //******************************
 void CColorTile::Peint(int nColorNumber, int nPlayerNum)
@@ -289,6 +324,7 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 	{
 		// カウントの初期化
 		m_nCntStep = PEINT_COUNT;
+		m_pPaintTime->SetPaintTime(PEINT_COUNT);
 
 		// 最後に当たったプレイヤーの保存
 		m_nLastHitPlayerNum = nPlayerNum;
@@ -299,7 +335,12 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 			 // カラー番号の保存
 			m_nPrevNum = nColorNumber;
 			// 色の取得
-			SetColor(GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep));
+			//SetColor(GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep));
+			m_distColor = GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep);
+
+			m_distColor.r = (m_distColor.r - TILE_DEFAULT_COLOR.r);
+			m_distColor.g = (m_distColor.g - TILE_DEFAULT_COLOR.g);
+			m_distColor.b = (m_distColor.b - TILE_DEFAULT_COLOR.b);
 			// 色段階を進める
 			m_nStep++;
 		}
@@ -311,12 +352,25 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 				// 段階を進める
 				m_nStep++;
 				// 色の取得
-				SetColor(GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1));
+				//SetColor(GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1));
+				m_distColor = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1);
 
+				m_distColor.r = (m_distColor.r - GetColor().r);
+				m_distColor.g = (m_distColor.g - GetColor().g);
+				m_distColor.b = (m_distColor.b - GetColor().b);
+				
 				if (m_nStep == COLOR_STEP_NUM)
 				{
+					// 塗最大
 					CMaxColorEffect::Create(GetPos(), GET_COLORMANAGER->GetIconColor(m_nPrevNum));
+					// ペイントタイムは出さない
+					m_pPaintTime->SetDrawFlag(false);
 				}
+			}
+			else
+			{
+				// ペイントタイムは出さない
+				m_pPaintTime->SetDrawFlag(false);
 			}
 		}
 		else
@@ -327,7 +381,11 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 			 // カラー番号の保存
 				m_nPrevNum = nColorNumber;
 				// カラーの取得
-				SetColor(GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep - 1));
+				//SetColor(GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep - 1));
+				m_distColor = GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep - 1);
+				m_distColor.r = (m_distColor.r - GetColor().r);
+				m_distColor.g = (m_distColor.g - GetColor().g);
+				m_distColor.b = (m_distColor.b - GetColor().b);
 			}
 			else
 			{// 段階が2以上の時
@@ -335,7 +393,11 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 			 // 段階を減らす
 				m_nStep--;
 				// 色の取得
-				SetColor(GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1));
+				//SetColor(GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1));
+				m_distColor = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1);
+				m_distColor.r = (m_distColor.r - GetColor().r);
+				m_distColor.g = (m_distColor.g - GetColor().g);
+				m_distColor.b = (m_distColor.b - GetColor().b);
 			}
 		}
 	}

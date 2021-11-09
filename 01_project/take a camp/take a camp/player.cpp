@@ -272,6 +272,9 @@ void CPlayer::Update(void)
 		Move();
 		//ñ≥ìGèàóù
 		Invincible();
+		// íeÇÃèàóù
+		Attack();
+
 		// ìñÇΩÇËîªíËÇÃà íu
 		if (m_pCollision == NULL)
 		{
@@ -285,11 +288,12 @@ void CPlayer::Update(void)
 	case PLAYER_STATE_DEATH:	//éÄñSèÛë‘
 		//ÉäÉXÉ|Å[Éìèàóù
 		Respawn();
+		// çUåÇîÕàÕÇè¡Ç∑
+		m_pAttack->ResetAttackArea();
+		// çUåÇÇÃÉLÉÉÉìÉZÉã
+		m_pAttack->SetAttackFlag(false);
 		break;
 	}
-
-	// íeÇÃèàóù
-	Attack();
 
 	// å¸Ç´ÇÃéÊìæ
 	D3DXVECTOR3 rot = GetRot();
@@ -439,6 +443,8 @@ void CPlayer::Move(void)
 				m_pActRange->ActMove(0, -1);
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
+
+				if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
 			}
 		};
 		// å„ëﬁ
@@ -451,6 +457,8 @@ void CPlayer::Move(void)
 				m_pActRange->ActMove(0, 1);
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
+
+				if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
 			}
 		};
 		// ç∂
@@ -463,6 +471,8 @@ void CPlayer::Move(void)
 				m_pActRange->ActMove(-1, 0);
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
+
+				if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
 			}
 		};
 		// âE
@@ -475,6 +485,8 @@ void CPlayer::Move(void)
 				m_pActRange->ActMove(1, 0);
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
+
+				if(!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
 			}
 		};
 
@@ -655,9 +667,9 @@ void CPlayer::Attack(void)
 				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
 			}
 
-			m_pAttack->ChangeFrameColor();
+			m_pAttack->VisualizationAttackArea();
 		}
-
+	
 		// ó£ÇµÇΩÇÁíeÇ™Ç≈ÇÈÇÊÇ§Ç…
 		if (  !m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
@@ -666,6 +678,17 @@ void CPlayer::Attack(void)
 			pHitTile->ResetTile();
 		}
 	}
+
+	if (!m_bController && !pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
+		|| m_bController &&!pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
+	{
+		if (!m_pAttack->GetAttackFlag())
+		{
+			m_pAttack->ResetAttackArea();
+		}
+	}
+	
+
 	//à íuê›íË
 	SetPos(pos);
 }

@@ -44,8 +44,10 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/chara_select_frame.png", // キャラ選択背景
 	"./data/Textures/suma.png",				  // タイトルのボタン(スタート)
 	"./data/Textures/ka-bi-.jpg",			  // タイトルのボタン(チュートリアル)
-	"./data/Textures/taile_effect_00.png",	  // 最大塗段階時のエフェクト
-	"./data/Textures/sword_icon.png",	      // 剣アイコン
+	"./data/Textures/tile_effect_00.png",	  // 最大塗段階時のエフェクト
+	"./data/Textures/attack_area.png",	      // 攻撃範囲
+	"./data/Textures/clock_frame.png",	      // 時計の枠
+	"./data/Textures/clock_hands.png",	      // 時計の針
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]
