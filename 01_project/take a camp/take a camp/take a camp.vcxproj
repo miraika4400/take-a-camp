@@ -164,6 +164,7 @@
     <ClCompile Include="kill_count.cpp" />
     <ClCompile Include="max_color_effect.cpp" />
     <ClCompile Include="needle_tile.cpp" />
+    <ClCompile Include="paint_time.cpp" />
     <ClCompile Include="peint_collision.cpp" />
     <ClCompile Include="resource_attack.cpp" />
     <ClCompile Include="bg.cpp" />
@@ -205,8 +206,6 @@
     <ClCompile Include="scene2d.cpp" />
     <ClCompile Include="scene3d.cpp" />
     <ClCompile Include="score.cpp" />
-    <ClCompile Include="score_kill.cpp" />
-    <ClCompile Include="score_paint.cpp" />
     <ClCompile Include="shadow.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="resource_texture.cpp" />
@@ -217,6 +216,7 @@
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="total_result.cpp" />
+    <ClCompile Include="total_score.cpp" />
     <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +232,7 @@
     <ClInclude Include="kill_count.h" />
     <ClInclude Include="max_color_effect.h" />
     <ClInclude Include="needle_tile.h" />
+    <ClInclude Include="paint_time.h" />
     <ClInclude Include="peint_collision.h" />
     <ClInclude Include="resource_attack.h" />
     <ClInclude Include="bg.h" />
@@ -273,8 +274,6 @@
     <ClInclude Include="scene2d.h" />
     <ClInclude Include="scene3d.h" />
     <ClInclude Include="score.h" />
-    <ClInclude Include="score_kill.h" />
-    <ClInclude Include="score_paint.h" />
     <ClInclude Include="shadow.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="resource_texture.h" />
@@ -285,6 +284,7 @@
     <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="total_result.h" />
+    <ClInclude Include="total_score.h" />
     <ClInclude Include="tutorial.h" />
   </ItemGroup>
   <ItemGroup>

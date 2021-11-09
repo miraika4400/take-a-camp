@@ -25,8 +25,9 @@ public:
 	// メンバ関数
 	CAttackArea();
 	~CAttackArea();
-	static CAttackArea *Create(D3DXVECTOR3 pos);
+	static CAttackArea *Create(void);
 	HRESULT Init(void);
+	void Update(void);
 	void Draw(void);
 
 	bool GetDrawFlag(void) { return m_bDraw; }
@@ -34,6 +35,7 @@ public:
 private:
 	// メンバ変数
 	bool m_bDraw;// 描画フラグ
+	bool m_bExpansion; // 拡大フラグ
 };
 
 

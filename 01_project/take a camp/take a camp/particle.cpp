@@ -68,7 +68,7 @@ CParticle * CParticle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, con
 	pParticle->m_nLife = nLife;				 // 寿命
 	pParticle->m_col = col;					 // 代入
 	pParticle->m_fFadeout = fadeout;		 // フェードアウト
-	pParticle->m_fRotAngle;                  // 回転角度
+	pParticle->m_fRotAngle = 0.0f;           // 回転角度
 	pParticle->SetColor(col);                // カラー設定
 	pParticle->SetAngle((float)(rand() % 360));       // 回転角度をランダム
 	pParticle->SetAddMode(false);             // 加算合成
@@ -106,6 +106,7 @@ HRESULT CParticle::Init(void)
 	m_apTexture[PARTICLE_SQUARE] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SQUARE);
 	m_apTexture[PARTICLE_TEARS] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_TEARS);
 	m_apTexture[PARTICLE_CIRCLE] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_CIRCLE);
+	m_apTexture[PARTICLE_GURUGURU] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_GURUGURU);
 	// テクスチャ割り当て
 	BindTexture(m_apTexture[m_type]);
 
@@ -142,10 +143,16 @@ void CParticle::Update(void)
 
 	case PARTICLE_CIRCLE:
 		break;
-
+	case PARTICLE_GURUGURU:
+		m_col.a -= m_fFadeout;
+		SetColor(m_col);
+		break;
+	
 	default:
 		break;
 	}
+
+	SetAngle(GetAngle() + m_fRotAngle);
 
 	if (m_col.a <= 0)
 	{

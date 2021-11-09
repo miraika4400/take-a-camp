@@ -16,11 +16,12 @@
 // 前方宣言
 //*****************************
 class CPlayer;
+class CAttackArea;
 //*****************************
 // マクロ定義
 //*****************************
 #define MAX_ATTACK (4)	//攻撃の最大回数
-
+#define MAX_ATTACK_AREA_NUM 128
 //=============================================================================
 // クラス定義
 //=============================================================================
@@ -51,9 +52,11 @@ public:
 	void		SetPlayer(CPlayer* pPlayer);
 	CPlayer*	GetPlayer(void);
 	virtual void AttackCreate(void) = 0;//攻撃生成処理 
-	void		ChangeFrameColor(); // 攻撃の範囲のブロックの枠の色を変える処理
+	void		VisualizationAttackArea(int nAttackType = 0); // 攻撃範囲の可視化
+	void        ResetAttackArea(void);
 private:
 	CPlayer* m_pPlayer;	//プレイヤークラス
+	CAttackArea * m_apAttackArea[MAX_ATTACK_AREA_NUM];
 	CAttackManager::ATTACK_TYPE			m_nAttackType;	// 攻撃タイプ
 	CAttackManager::ATTACK_SQUARE_DATA	m_AttackSquare[MAX_ATTACK_LEVEL];	// 攻撃マスデータ
 	D3DXVECTOR3 m_pos;									// 位置

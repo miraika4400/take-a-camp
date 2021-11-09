@@ -10,7 +10,6 @@
 //=============================
 #include "game.h"
 #include "number.h"
-#include "score.h" 
 #include "mouse.h"
 #include "camera_tps.h"
 #include "light.h"

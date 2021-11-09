@@ -50,7 +50,6 @@ CTile::CTile() :CModel(OBJTYPE_TILE)
 	m_bHitOld = false;
 	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
 	m_bHitBullet = false;        // 弾が当たっているフラグ
-	m_pAttackArea = false;
 	m_aTileList.push_back(this);
 }
 
@@ -136,8 +135,6 @@ HRESULT CTile::Init(void)
 	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
 	m_bHitBullet = false;        // 弾が当たっているフラグ
 
-	m_pAttackArea = CAttackArea::Create(GetPos());
-
 	if (m_pCollison == NULL)
 	{
 		m_pCollison = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y + TILE_ONE_SIDE / 2, GetPos().z), TILE_ONE_SIDE / 2);
@@ -180,16 +177,6 @@ void CTile::Update(void)
 	
 	//塗り判定との当たり判定
 	CollisionPeint();
-
-	// 攻撃エリアの位置の調整
-	m_pAttackArea->SetDrawFlag(false);
-	//D3DXVECTOR3 attackAreaPos = m_pAttackArea->GetPos();
-	//if (attackAreaPos != D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z))
-	//{
-	//	attackAreaPos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z);
-
-	//	m_pAttackArea->SetPos(attackAreaPos);
-	//}
 }
 
 //******************************

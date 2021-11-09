@@ -30,17 +30,18 @@
 #include "color_tile.h"
 #include "chara_select.h"
 #include "kill_count.h"
+#include "particle.h"
 
 //*****************************
 // マクロ定義
 //*****************************
-#define HIERARCHY_TEXT_PATH1 "data/Text/hierarchy/knight.txt"   // 階層構造テキストのパス
+#define HIERARCHY_TEXT_PATH1 "data/Text/hierarchy/Knight.txt"   // 階層構造テキストのパス
 #define MOVE_DIST (TILE_ONE_SIDE)	// 移動距離
 #define MOVE_FRAME 15				// 移動速度
 #define COLLISION_RADIUS 18.0f
 #define MODL_COLOR D3DXCOLOR(0.3f,0.3f,0.3f,1.0f)
 //#define MODEL_SIZE D3DXVECTOR3( 0.3f, 0.3f, 0.3f)
-#define MODEL_SIZE D3DXVECTOR3( 1.0f, 1.0f, 1.0f)
+#define MODEL_SIZE D3DXVECTOR3( 1.4f, 1.4f, 1.4f)
 #define RESPAWN_MAX_COUNT (60*5)	// リスポーンまでの最大カウント
 #define INVINCIBLE_COUNT (60*2)		// 無敵時間
 #define ROTDEST_PREVIOUS 0.0f		// 前方向き
@@ -251,17 +252,29 @@ void CPlayer::Update(void)
 	switch (m_PlayerState)
 	{
 	case PLAYER_STATE_REVERSE:
+	{
 		m_ReverseCount++;
 		if (m_ReverseCount % 180 == 0)
 		{
 			m_ReverseCount = 0;
 			SetState(PLAYER_STATE_NORMAL);
 		}
+
+		//if (m_ReverseCount % 15 == 0)
+		//{
+		//	D3DXVECTOR3 pos = GetPos();
+		//	pos.y += 10.0f;
+		//	CParticle::Create(pos, D3DXVECTOR3((float)(rand() % 16 - 8)/100.0f, 0.25f, (float)(rand() % 16 - 8) / 100.0f), D3DXVECTOR3(7.0f, 7.0f, 7.0f), 500, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_GURUGURU)->SetAddRotValue(1.2f);
+		//}
+	}
 	case PLAYER_STATE_NORMAL:	//通常状態
 		// 移動処理
 		Move();
 		//無敵処理
 		Invincible();
+		// 弾の処理
+		Attack();
+
 		// 当たり判定の位置
 		if (m_pCollision == NULL)
 		{
@@ -275,11 +288,12 @@ void CPlayer::Update(void)
 	case PLAYER_STATE_DEATH:	//死亡状態
 		//リスポーン処理
 		Respawn();
+		// 攻撃範囲を消す
+		m_pAttack->ResetAttackArea();
+		// 攻撃のキャンセル
+		m_pAttack->SetAttackFlag(false);
 		break;
 	}
-
-	// 弾の処理
-	Attack();
 
 	// 向きの取得
 	D3DXVECTOR3 rot = GetRot();
@@ -335,10 +349,10 @@ void CPlayer::Draw(void)
 		for (int nCntMat = 0; nCntMat < (int)GetModelData()[nCntParts].nNumMat; nCntMat++)
 		{
 			D3DXMATERIAL* mat = (D3DXMATERIAL*)GetModelData()[nCntParts].pBuffMat->GetBufferPointer();
-			mat[nCntMat].MatD3D.Ambient = m_color;
-			mat[nCntMat].MatD3D.Diffuse = m_color;
-			mat[nCntMat].MatD3D.Specular = m_color;
-			mat[nCntMat].MatD3D.Emissive = m_color;
+			mat[nCntMat].MatD3D.Ambient .a = m_color.a;
+			mat[nCntMat].MatD3D.Diffuse .a = m_color.a;
+			mat[nCntMat].MatD3D.Specular.a = m_color.a;
+			mat[nCntMat].MatD3D.Emissive.a = m_color.a;
 		}
 	}
 
@@ -365,12 +379,12 @@ void CPlayer::Death(void)
 		}
 
 		//行動クラスに死亡状態になったフラグを送る
-m_pActRange->SetDeath(true);
-//透明にする
-m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+		m_pActRange->SetDeath(true);
+		//透明にする
+		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
-//位置セット
-SetPos(m_RespawnPos);
+		//位置セット
+		SetPos(m_RespawnPos);
 	}
 
 }
@@ -429,6 +443,8 @@ void CPlayer::Move(void)
 				m_pActRange->ActMove(0, -1);
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
+
+				if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
 			}
 		};
 		// 後退
@@ -441,6 +457,8 @@ void CPlayer::Move(void)
 				m_pActRange->ActMove(0, 1);
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
+
+				if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
 			}
 		};
 		// 左
@@ -453,6 +471,8 @@ void CPlayer::Move(void)
 				m_pActRange->ActMove(-1, 0);
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
+
+				if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
 			}
 		};
 		// 右
@@ -465,6 +485,8 @@ void CPlayer::Move(void)
 				m_pActRange->ActMove(1, 0);
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
+
+				if(!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
 			}
 		};
 
@@ -576,18 +598,23 @@ void CPlayer::Move(void)
 
 			while (pPlayer != NULL)
 			{
-				if (pPlayer->GetPlayerNumber() != m_nPlayerNumber)
+				if (pPlayer->m_PlayerState != PLAYER_STATE_DEATH)
 				{
-					pPlayer->SetState(PLAYER_STATE_REVERSE);	
-					m_ItemState = ITEM_STATE_NONE;
-					return;
+					if (pPlayer->GetPlayerNumber() != m_nPlayerNumber)
+					{
+						pPlayer->SetState(PLAYER_STATE_REVERSE);
+						m_ItemState = ITEM_STATE_NONE;
+						//return;5
+					}
 				}
 				pPlayer = (CPlayer*)pPlayer->GetNext();
 			}
 			break;
 		}
 	}
-}//******************************
+}
+
+//******************************
 // 弾の処理
 //******************************
 void CPlayer::Attack(void)
@@ -640,9 +667,9 @@ void CPlayer::Attack(void)
 				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
 			}
 
-			m_pAttack->ChangeFrameColor();
+			m_pAttack->VisualizationAttackArea();
 		}
-
+	
 		// 離したら弾がでるように
 		if (  !m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
@@ -651,6 +678,17 @@ void CPlayer::Attack(void)
 			pHitTile->ResetTile();
 		}
 	}
+
+	if (!m_bController && !pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
+		|| m_bController &&!pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
+	{
+		if (!m_pAttack->GetAttackFlag())
+		{
+			m_pAttack->ResetAttackArea();
+		}
+	}
+	
+
 	//位置設定
 	SetPos(pos);
 }
