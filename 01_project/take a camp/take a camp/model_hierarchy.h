@@ -13,6 +13,7 @@
 #include "scene.h"
 #include "model.h"
 #include "resource_model.h"
+#include "resource_model_hierarchy.h"
 
 //=============================================================================
 //マクロ定義
@@ -36,6 +37,7 @@ public:
 
 	HRESULT Init(void); // 純関数用
 	HRESULT Init(int nNumParts, CResourceModel::Model *model, char*pPath); // 初期化
+
 	void Uninit(void);                                             // 終了
 	void Update(void);                                             // 更新
 	void Draw(void);                                       // 描画 

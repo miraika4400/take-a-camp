@@ -103,6 +103,8 @@ void CModelHierarchy::LoadModels(char * pPath, CResourceModel::Model *model,int 
 			// Ÿ‚Ì•¶š‚ğ“Ç‚İ‚Ş
 			fscanf(pFile, "%s", chChar);
 		}
+
+		fclose(pFile);
 	}
 }
 
@@ -182,7 +184,6 @@ HRESULT CModelHierarchy::Init(int nNumParts, CResourceModel::Model * model, char
 		for (int nCntMat = 0; nCntMat < (int)m_model[nCnt].nNumMat; nCntMat++)
 		{
 			m_model[nCnt].defMat[nCntMat] = ((D3DXMATERIAL*)m_model[nCnt].pBuffMat->GetBufferPointer())[nCntMat];
-
 		}
 	}
 

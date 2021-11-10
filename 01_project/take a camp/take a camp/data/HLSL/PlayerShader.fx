@@ -24,6 +24,7 @@ struct VS_OUT
 	float3 viewDir      : TEXCOORD1;
 	float3 normalDir    : TEXCOORD2;
 	float3 CubeTexCoord : TEXCOORD3; // キューブテクスチャTEX
+	float2 ToonTexCoord : TEXCOORD4;
 };
 
 texture Tex;
@@ -40,6 +41,20 @@ samplerCUBE SamplerCube = sampler_state {
 	MipFilter = LINEAR;
 	MinFilter = LINEAR;
 	MagFilter = LINEAR;
+};
+
+/* テクスチャのサンプラ― */
+texture ToonTex;
+sampler ToonSampler = sampler_state {
+	Texture = ToonTex;
+	MipFilter = LINEAR;
+	MinFilter = LINEAR;
+	MagFilter = LINEAR;
+
+	Filter = MIN_MAG_MIP_LINEAR;
+	AddressU = clamp;
+	AddressV = Wrap;
+	AddressW = Wrap;
 };
 
 //////////////////////////////////
@@ -61,7 +76,7 @@ VS_OUT VS(VS_IN In)
 	LightPower = max(0, LightPower);
 	
 	// カラーの設定
-	Out.Color = DiffuseColor*LightPower;
+	Out.Color = DiffuseColor;
 	Out.Color.a = 1.0f;
 	
 	// スペキュラ
@@ -77,7 +92,10 @@ VS_OUT VS(VS_IN In)
 
 	// キューブテクスチャ
     Out.CubeTexCoord = reflect(mul(World, In.Position).xyz - Eye, Out.normalDir);
-	
+
+	Out.ToonTexCoord.x = LightPower;
+	Out.ToonTexCoord.y = 0.5f;
+
 	return Out;
 }
 
@@ -86,7 +104,7 @@ VS_OUT VS(VS_IN In)
 //////////////////////////////////
 float4 PS(VS_OUT In) :COLOR
 {
-	float4 col = In.Color + In.Specular;
+	float4 col = tex2D(ToonSampler, In.ToonTexCoord) * In.Color + In.Specular;
 
 	// リム
 	float rim = 1.0f - abs(dot(In.viewDir, In.normalDir));
@@ -102,7 +120,7 @@ float4 PS(VS_OUT In) :COLOR
 //////////////////////////////////
 float4 PS_TEX(VS_OUT In) :COLOR
 {
-	float4 col = tex2D(Sampler, In.TexCoord) * In.Color + In.Specular;
+	float4 col = tex2D(Sampler, In.TexCoord) * tex2D(ToonSampler, In.ToonTexCoord) * In.Color + In.Specular;
 
 	// リム
 	float rim = 1.0f - abs(dot(In.viewDir, In.normalDir));

@@ -260,12 +260,12 @@ void CPlayer::Update(void)
 			SetState(PLAYER_STATE_NORMAL);
 		}
 
-		//if (m_ReverseCount % 15 == 0)
-		//{
-		//	D3DXVECTOR3 pos = GetPos();
-		//	pos.y += 10.0f;
-		//	CParticle::Create(pos, D3DXVECTOR3((float)(rand() % 16 - 8)/100.0f, 0.25f, (float)(rand() % 16 - 8) / 100.0f), D3DXVECTOR3(7.0f, 7.0f, 7.0f), 500, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_GURUGURU)->SetAddRotValue(1.2f);
-		//}
+		if (m_ReverseCount % 15 == 0)
+		{
+			D3DXVECTOR3 pos = GetPos();
+			pos.y += 10.0f;
+			CParticle::Create(pos, D3DXVECTOR3((float)(rand() % 16 - 8)/100.0f, 0.25f, (float)(rand() % 16 - 8) / 100.0f), D3DXVECTOR3(7.0f, 7.0f, 7.0f), 500, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_GURUGURU)->SetAddRotValue(1.2f);
+		}
 	}
 	case PLAYER_STATE_NORMAL:	//通常状態
 
@@ -486,7 +486,7 @@ void CPlayer::Move(void)
 			}
 			else
 			{
-				MoveValue(CActRange::PLAYER_MOVE_DOWN, D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_AFTER));
+				MoveValue(CActRange::PLAYER_MOVE_DOWN, D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
 			}
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
@@ -881,5 +881,7 @@ void CPlayer::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pM
 		pEffect->SetFloat("RimPower", RIM_POWER);
 		// キューブテクスチャ
 		pEffect->SetTexture("CubeTex", CResourceTexture::GetCubeTexture(CResourceTexture::TECTURE_CUBE_SLY));
+		// トゥーンシャドウテクスチャをシェーダーに送る
+		pEffect->SetTexture("ToonTex", CResourceTexture::GetTexture(CResourceTexture::TEXTURE_TOON_SHADOW));
 	}
 }

@@ -19,6 +19,7 @@
 #include "resource_model.h"
 #include "resource_shader.h"
 #include "resource_attack.h"
+#include "resource_model_hierarchy.h"
 #include "camera_base.h"
 #include "debug_log.h"
 #include "pause.h"
@@ -126,6 +127,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CResourceModel::Create();
 	// シェーダーリソースクラスの生成
 	CResourceShader::Create();
+	// 階層構造リソースクラス
+	CResourceModelHierarchy::Create();
 
 	// テクスチャ・モデルの読み込み
 	CPause::Load();    // ポーズ
@@ -164,6 +167,8 @@ void CManager::Uninit(void)
 	CResourceModel::Release();
 	// シェーダーリソースクラスの破棄
 	CResourceShader::Release();
+	// 階層構造リソースクラス
+	CResourceModelHierarchy::Release();
 	// カラーマーマネージャーの破棄
 	CColorManager::Release();
 	// タイルファクトリーの破棄

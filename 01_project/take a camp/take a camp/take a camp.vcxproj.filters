@@ -312,6 +312,9 @@
     <ClCompile Include="paint_time.cpp">
       <Filter>ソース ファイル\09_Effect</Filter>
     </ClCompile>
+    <ClCompile Include="resource_model_hierarchy.cpp">
+      <Filter>ソース ファイル\03_Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -514,6 +517,9 @@
     </ClInclude>
     <ClInclude Include="paint_time.h">
       <Filter>ヘッダー ファイル\09_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="resource_model_hierarchy.h">
+      <Filter>ヘッダー ファイル\03_Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

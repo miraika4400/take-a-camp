@@ -296,20 +296,10 @@ void CColorTile::ManageColor(void)
 	D3DXCOLOR col = GetColor();
 
 	float fRate = 1.0f / PEINT_COUNT;
-
-	if (m_nStep == 1|| m_nPrevNum == -1)
-	{
-		col.r += (m_distColor.r) * fRate;
-		col.g += (m_distColor.g) * fRate;
-		col.b += (m_distColor.b) * fRate;
-	}
-	else
-	{
-		D3DXCOLOR oldCol = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 2);
-		col.r += (m_distColor.r) * fRate;
-		col.g += (m_distColor.g) * fRate;
-		col.b += (m_distColor.b) * fRate;
-	}
+	
+	col.r += (m_distColor.r) * fRate;
+	col.g += (m_distColor.g) * fRate;
+	col.b += (m_distColor.b) * fRate;
 
 	SetColor(col);
 }
@@ -371,6 +361,7 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 			{
 				// ペイントタイムは出さない
 				m_pPaintTime->SetDrawFlag(false);
+				m_nCntStep = 0;
 			}
 		}
 		else
