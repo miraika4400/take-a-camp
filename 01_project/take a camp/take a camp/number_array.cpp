@@ -184,8 +184,6 @@ void CNumberArray::SetNumber(void)
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
 
-
-
 	// ”š‚Ìİ’è
 	for (nIndex = 0; nIndex < MAX_ARRAY_NUM; nIndex++)
 	{

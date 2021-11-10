@@ -303,17 +303,17 @@
     <ClCompile Include="attack_area.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
-    <ClCompile Include="score_kill.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
-    </ClCompile>
     <ClCompile Include="total_result.cpp">
       <Filter>ソース ファイル\06_GameScene</Filter>
     </ClCompile>
-    <ClCompile Include="score_paint.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="resource_final_attack.cpp">
       <Filter>ソース ファイル\03_Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="total_score.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_gauge.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -494,9 +494,6 @@
     <ClInclude Include="kill_count.h">
       <Filter>ヘッダー ファイル\07_GameModel\Player</Filter>
     </ClInclude>
-    <ClInclude Include="score_kill.h">
-      <Filter>ヘッダー ファイル\10_Ui</Filter>
-    </ClInclude>
     <ClInclude Include="button.h">
       <Filter>ヘッダー ファイル\10_Ui\Button</Filter>
     </ClInclude>
@@ -515,11 +512,14 @@
     <ClInclude Include="attack_area.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
-    <ClInclude Include="score_paint.h">
-      <Filter>ヘッダー ファイル\10_Ui</Filter>
-    </ClInclude>
     <ClInclude Include="resource_final_attack.h">
       <Filter>ヘッダー ファイル\03_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="total_score.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_gauge.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

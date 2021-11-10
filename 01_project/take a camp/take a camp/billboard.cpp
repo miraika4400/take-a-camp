@@ -316,3 +316,23 @@ void CBillboard::SetColor(const D3DXCOLOR col)
 	// アンロック
 	m_pVtxBuff->Unlock();
 }
+
+//===================================
+// ポリゴンの頂点ごとの設定
+//===================================
+void CBillboard::SetVertexPos(D3DXVECTOR3 pos[NUM_VERTEX])
+{
+	VERTEX_3D *pVtx;// 頂点情報ポインタ
+
+	// ロック
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 頂点カラーの設定
+	pVtx[0].pos = pos[0];
+	pVtx[1].pos = pos[1];
+	pVtx[2].pos = pos[2];
+	pVtx[3].pos = pos[3];
+
+	// アンロック
+	m_pVtxBuff->Unlock();
+}
