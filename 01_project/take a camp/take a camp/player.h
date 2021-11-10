@@ -36,7 +36,7 @@ public:
 	//モーション
 	typedef enum
 	{
-		MOTION_WALK = 0,     // アイドル
+		MOTION_WALK = 0,     //
 		MOTION_MAX
 	}MOTION_TYPE;
 	// キー
@@ -77,8 +77,6 @@ public:
 	CPlayer();
 	~CPlayer();
 	static CPlayer *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber);
-	static HRESULT Load(void);
-	static void Unload(void);
 
 	HRESULT Init(void);
 	void Uninit(void);
@@ -116,8 +114,6 @@ private:
 
 	// メンバ変数
 	static int m_anControllKey[4][KEY_MAX];
-	static CResourceModel::Model m_model[MAX_PARTS_NUM]; // モデル構造体
-	static int m_nPartsNum;                              // モデルパーツ数
 
 	CKillCount * m_pKillCount;	// プレイヤーのキルカウントポインタ
 	ITEM_STATE m_ItemState;		// アイテムステータス

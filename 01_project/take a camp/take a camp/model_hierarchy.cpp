@@ -33,137 +33,6 @@ CModelHierarchy::~CModelHierarchy()
 }
 
 //=============================================================================
-// 階層構造の読み込みクラス
-//=============================================================================
-void CModelHierarchy::LoadModels(char * pPath, CResourceModel::Model *model,int * pNumModel)
-{
-	// ファイルオープン
-	FILE*pFile = NULL;
-	pFile = fopen(pPath, "r");
-
-	if (pFile != NULL)
-	{
-		// テキストファイルの解析
-
-		char chChar[256] = {};
-		fscanf(pFile, "%s", chChar);
-
-		// "NUM_MODEL"読み込むまでループ
-		while (strcmp(chChar, "NUM_MODEL") != 0)
-		{
-			fscanf(pFile, "%s", chChar);
-		}
-
-		// 読み込むモデルの数
-		fscanf(pFile, "%*s %d # %*s", pNumModel);
-
-		// デバイスの取得
-		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
-		for (int nCnt = 0; nCnt < *pNumModel; nCnt++)
-		{
-			// 読み込んだ文字格納用
-			char chPath[64] = {};
-			// "MODEL_FILENAME"を読み込むまでループ
-			while (strcmp(chChar, "MODEL_FILENAME") != 0)
-			{
-				fscanf(pFile, "%s", chChar);
-			}
-			// ファイルパスの読み込み
-			fscanf(pFile, "%*s %s", chPath);
-
-			// Xファイルの読み込み
-			D3DXLoadMeshFromX(chPath,
-				D3DXMESH_SYSTEMMEM,
-				pDevice,
-				NULL,
-				&model[nCnt].pBuffMat,
-				NULL,
-				&model[nCnt].nNumMat,
-				&model[nCnt].pMesh);
-
-			// テクスチャ読み込み
-			if (model[nCnt].nNumMat != 0)
-			{
-				D3DXMATERIAL*pMat = (D3DXMATERIAL*)model[nCnt].pBuffMat->GetBufferPointer();
-
-				for (int nCntMat = 0; nCntMat < (int)model[nCnt].nNumMat; nCntMat++)
-				{
-					model[nCnt].defMat[nCntMat] = pMat[nCntMat];
-					if (pMat[nCntMat].pTextureFilename != NULL)
-					{
-						char cPath[128] = {};
-						sprintf(cPath, "./data/Textures/%s", pMat[nCntMat].pTextureFilename);
-						// テクスチャの生成
-						D3DXCreateTextureFromFile(pDevice, cPath, &model[nCnt].apTexture[nCntMat]);
-					}
-				}
-			}
-
-			// 次の文字を読み込む
-			fscanf(pFile, "%s", chChar);
-		}
-
-		fclose(pFile);
-	}
-}
-
-//=============================================================================
-//テキストファイルの読み込み
-//=============================================================================
-void CModelHierarchy::LoadHierarchy(CResourceModel::Model * model, char * pPath)
-{
-	// ファイルオープン
-	FILE*pFile = NULL;
-	pFile = fopen(pPath, "r");
-
-	// パーツ数
-	int nPartsNum = 0;
-
-	if (pFile != NULL)
-	{
-		// テキストファイルの解析
-
-		char chChar[256] = {};
-		fscanf(pFile, "%s", chChar);
-
-		// "SCRIPT"読み込むまでループ
-		while (strcmp(chChar, "CHARACTERSET") != 0)
-		{
-			fscanf(pFile, "%s", chChar);
-		}
-
-		// 文字排除用
-		char cString[32] = {};
-
-		fscanf(pFile, "%s %s %d", &cString, &cString, &nPartsNum);
-
-		// "END_PARTSSET"読み込むまでループ
-		while (strcmp(chChar, "END_CHARACTERSET") != 0)
-		{
-			fscanf(pFile, "%s", chChar);
-			if (strcmp(chChar, "PARTSSET") == 0)
-			{
-				// インデックス一時保管用
-				int nIndex = 0;
-				// インデックスの読み込み
-				fscanf(pFile, "%*s %*s %d # %*s", &nIndex);
-				// 親番号の読み込み
-				fscanf(pFile, "%*s %*s %d # %*s", &model[nIndex].nParent);
-				// 座標の読み込み
-				fscanf(pFile, "%*s %*s %f %f %f", &model[nIndex].pos.x, &model[nIndex].pos.y, &model[nIndex].pos.z);
-				// 回転の読み込み
-				fscanf(pFile, "%*s %*s %f %f %f", &model[nIndex].rot.x, &model[nIndex].rot.y, &model[nIndex].rot.z);
-
-				fscanf(pFile, "%*s");
-			}
-
-		}
-		fclose(pFile);
-	}
-}
-
-//=============================================================================
 //初期化処理
 //=============================================================================
 HRESULT CModelHierarchy::Init(void)
@@ -172,14 +41,17 @@ HRESULT CModelHierarchy::Init(void)
 	return S_OK;
 }
 
-HRESULT CModelHierarchy::Init(int nNumParts, CResourceModel::Model * model, char*pPath)
+HRESULT CModelHierarchy::Init(CResourceModelHierarchy::MODEL_HIERARCHY_TYPE modelType)
 {
-	LoadHierarchy(model, pPath);
-	// 引数の代入
-	m_nNumParts = nNumParts;
-	for (int nCnt = 0; nCnt < nNumParts; nCnt++)
+	//LoadHierarchy(model, pPath);
+	//// 引数の代入
+	//m_nNumParts = nNumParts;
+	CResourceModelHierarchy::ModelHierarchy modelData = CResourceModelHierarchy::GetModel (modelType);
+	m_nNumParts = modelData.nPartsNum;
+
+	for (int nCnt = 0; nCnt < m_nNumParts; nCnt++)
 	{
-		m_model[nCnt] = model[nCnt];
+		m_model[nCnt] = modelData.aModelData[nCnt];
 
 		for (int nCntMat = 0; nCntMat < (int)m_model[nCnt].nNumMat; nCntMat++)
 		{

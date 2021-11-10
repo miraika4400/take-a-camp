@@ -31,6 +31,7 @@
 #include "chara_select.h"
 #include "kill_count.h"
 #include "particle.h"
+#include "resource_model_hierarchy.h"
 
 //*****************************
 // マクロ定義
@@ -66,8 +67,6 @@ int CPlayer::m_anControllKey[4][CPlayer::KEY_MAX] =
 	{ DIK_U,DIK_J,DIK_H,DIK_K,DIK_I },
 	{ DIK_NUMPAD8,DIK_NUMPAD5,DIK_NUMPAD4,DIK_NUMPAD6,DIK_NUMPAD9 }
 };
-CResourceModel::Model CPlayer::m_model[MAX_PARTS_NUM] = {};
-int CPlayer::m_nPartsNum = 0;
 char CPlayer::m_achAnimPath[MOTION_MAX][64]
 {
 	{ "data/Text/motion/run.txt" },         // 歩きアニメーション
@@ -110,39 +109,6 @@ CPlayer::~CPlayer()
 }
 
 //******************************
-// テクスチャのロード
-//******************************
-HRESULT CPlayer::Load(void)
-{
-	// モデルの読み込み
-	LoadModels(HIERARCHY_TEXT_PATH1, &m_model[0], &m_nPartsNum);
-
-	return S_OK;
-}
-
-//******************************
-// テクスチャのアンロード
-//******************************
-void CPlayer::Unload(void)
-{
-	for (int nCnt = 0; nCnt < m_nPartsNum; nCnt++)
-	{
-		//メッシュの破棄
-		if (m_model[nCnt].pMesh != NULL)
-		{
-			m_model[nCnt].pMesh->Release();
-			m_model[nCnt].pMesh = NULL;
-		}
-		//マテリアルの破棄
-		if (m_model[nCnt].pBuffMat != NULL)
-		{
-			m_model[nCnt].pBuffMat->Release();
-			m_model[nCnt].pBuffMat = NULL;
-		}
-	}
-}
-
-//******************************
 // クラス生成
 //******************************
 CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
@@ -179,7 +145,7 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 //******************************
 HRESULT CPlayer::Init(void)
 {
-	if (FAILED(CModelHierarchy::Init(m_nPartsNum, &m_model[0], HIERARCHY_TEXT_PATH1)))
+	if (FAILED(CModelHierarchy::Init(CResourceModelHierarchy::MODEL_HIERARCHY_KNIGHT)))
 	{
 		return E_FAIL;
 	}

@@ -43,7 +43,9 @@ public:
 	// モデル種類
 	typedef enum
 	{
-		MODEL_HIERARCHY_KNIGHT = 0, // プレイヤー
+		MODEL_HIERARCHY_KNIGHT = 0, // 騎士
+		MODEL_HIERARCHY_LANCER,     // 槍兵
+		MODEL_HIERARCHY_WIZARD,     // 魔法使い
 		MODEL_HIERARCHY_MAX        // 全体数
 	}MODEL_HIERARCHY_TYPE;
 

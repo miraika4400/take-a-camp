@@ -52,6 +52,7 @@ CCamera         *CManager::m_pCamera = NULL;         // カメラクラス
 CLight			*CManager::m_pLight = NULL;			 // ライトクラス
 bool             CManager::m_bPause = false;         // ポーズフラグ
 CCharaSelect    *CManager::m_pCharaSelectMode = NULL;// キャラ選択
+
 //=============================
 // コンストラクタ
 //=============================
@@ -140,9 +141,6 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	//必殺技範囲読み込み
 	CFinalAttackManager::Create();
 
-	// プレイヤー階層構造
-	CPlayer::Load();
-
 	// カラーマネージャーの生成
 	CColorManager::Create();
 
@@ -179,9 +177,6 @@ void CManager::Uninit(void)
 
 	// テクスチャのアンロード
 	CPause::Unload();    // ポーズ
-
-	// プレイヤー階層構造
-	CPlayer::Unload();
 
 	if (m_pSound != NULL)
 	{
