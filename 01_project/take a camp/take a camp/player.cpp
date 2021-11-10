@@ -201,7 +201,7 @@ HRESULT CPlayer::Init(void)
 	CColorManager::GetColorManager()->SetUsePlayerNum(m_nPlayerNumber, m_nColor);
 	////////////////////////////////////////
 	
-	//キルカウント用のクラス
+	// キルカウント用のクラス
 	m_pKillCount = CKillCount::Create(m_nPlayerNumber);
 	// モデルのサイズの設定
 	SetSize(MODEL_SIZE);
@@ -426,7 +426,7 @@ void CPlayer::Move(void)
 			{
 				m_Move.z -= MOVE_DIST;
 				m_bMove = false;
-				m_pActRange->ActMove(0, -1);
+				//m_pActRange->ActMove(0, -1);
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
 			}
@@ -438,7 +438,7 @@ void CPlayer::Move(void)
 			{
 				m_Move.z += MOVE_DIST;
 				m_bMove = false;
-				m_pActRange->ActMove(0, 1);
+				//m_pActRange->ActMove(0, 1);
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
 			}
@@ -450,7 +450,7 @@ void CPlayer::Move(void)
 			{
 				m_Move.x += MOVE_DIST;
 				m_bMove = false;
-				m_pActRange->ActMove(-1, 0);
+				//m_pActRange->ActMove(-1, 0);
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
 			}
@@ -462,7 +462,7 @@ void CPlayer::Move(void)
 			{
 				m_Move.x -= MOVE_DIST;
 				m_bMove = false;
-				m_pActRange->ActMove(1, 0);
+				//m_pActRange->ActMove(1, 0);
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
 			}
