@@ -98,6 +98,7 @@ public:
 	PLAYER_STATE GetState(void) { return m_PlayerState; }
 
 	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }
+	D3DXVECTOR3 GetPosDest(void) { return m_Move; }
 	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }
 	ITEM_STATE GetItemState(void) { return m_ItemState; }
 
@@ -106,6 +107,7 @@ public:
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 private:
 	void Move(void);		// ˆÚ“®ˆ—
+	void ManageRot(void);   // Œü‚«‚ÌŠÇ—
 	void Respawn(void);		// ƒŠƒXƒ|[ƒ“ˆ—
 	void Invincible(void);	// –³“Gˆ—
 

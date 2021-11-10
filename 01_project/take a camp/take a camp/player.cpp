@@ -30,6 +30,7 @@
 #include "color_tile.h"
 #include "chara_select.h"
 #include "kill_count.h"
+#include "particle.h"
 
 //*****************************
 // マクロ定義
@@ -40,7 +41,7 @@
 #define COLLISION_RADIUS 18.0f
 #define MODL_COLOR D3DXCOLOR(0.3f,0.3f,0.3f,1.0f)
 //#define MODEL_SIZE D3DXVECTOR3( 0.3f, 0.3f, 0.3f)
-#define MODEL_SIZE D3DXVECTOR3( 1.2f, 1.2f, 1.2f)
+#define MODEL_SIZE D3DXVECTOR3( 1.4f, 1.4f, 1.4f)
 #define RESPAWN_MAX_COUNT (60*5)	// リスポーンまでの最大カウント
 #define INVINCIBLE_COUNT (60*2)		// 無敵時間
 #define ROTDEST_PREVIOUS 0.0f		// 前方向き
@@ -251,17 +252,32 @@ void CPlayer::Update(void)
 	switch (m_PlayerState)
 	{
 	case PLAYER_STATE_REVERSE:
+	{
 		m_ReverseCount++;
 		if (m_ReverseCount % 180 == 0)
 		{
 			m_ReverseCount = 0;
 			SetState(PLAYER_STATE_NORMAL);
 		}
+
+		if (m_ReverseCount % 15 == 0)
+		{
+			D3DXVECTOR3 pos = GetPos();
+			pos.y += 10.0f;
+			CParticle::Create(pos, D3DXVECTOR3((float)(rand() % 16 - 8)/100.0f, 0.25f, (float)(rand() % 16 - 8) / 100.0f), D3DXVECTOR3(7.0f, 7.0f, 7.0f), 500, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_GURUGURU)->SetAddRotValue(1.2f);
+		}
+	}
 	case PLAYER_STATE_NORMAL:	//通常状態
+
+		// 向きの管理
+		ManageRot();
 		// 移動処理
 		Move();
 		//無敵処理
 		Invincible();
+		// 弾の処理
+		Attack();
+
 		// 当たり判定の位置
 		if (m_pCollision == NULL)
 		{
@@ -275,30 +291,12 @@ void CPlayer::Update(void)
 	case PLAYER_STATE_DEATH:	//死亡状態
 		//リスポーン処理
 		Respawn();
+		// 攻撃範囲を消す
+		m_pAttack->ResetAttackArea();
+		// 攻撃のキャンセル
+		m_pAttack->SetAttackFlag(false);
 		break;
 	}
-
-	// 弾の処理
-	Attack();
-
-	// 向きの取得
-	D3DXVECTOR3 rot = GetRot();
-
-	while (m_rotDest.y - rot.y > D3DXToRadian(ROT_FACING_01))
-	{
-		m_rotDest.y -= D3DXToRadian(ROT_FACING_02);
-	}
-
-	while (m_rotDest.y - rot.y < D3DXToRadian(-ROT_FACING_01))
-	{
-		m_rotDest.y += D3DXToRadian(ROT_FACING_02);
-	}
-
-	// 目標の向きに変える
-	rot += (m_rotDest - rot)*ROT_SPEED;
-
-	// 向き設定
-	SetRot(rot);
 
 	// 
 #ifdef _DEBUG
@@ -426,21 +424,72 @@ void CPlayer::Move(void)
 			{
 				m_Move.z -= MOVE_DIST;
 				m_bMove = false;
-				//m_pActRange->ActMove(0, -1);
+				m_pActRange->ActMove(0, -1);
+		//// 前進
+		//auto MoveUp = [&](CActRange::PLAYER_MOVE playerMove, D3DXVECTOR3 move , D3DXVECTOR2 actMove)
+		//{
+		//	if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
+		//	{
+		//		m_Move.z -= MOVE_DIST;
+		//		m_bMove = false;
+		//		m_pActRange->ActMove(0, -1);
+		//		if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+		//	}
+		//};
+		//// 後退
+		//auto MoveDown = [&]
+		//{
+		//	if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
+		//	{
+		//		m_Move.z += MOVE_DIST;
+		//		m_bMove = false;
+		//		m_pActRange->ActMove(0, 1);
+		//		if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+		//	}
+		//};
+		//// 左
+		//auto MoveLeft = [&]
+		//{
+		//	if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
+		//	{
+		//		m_Move.x += MOVE_DIST;
+		//		m_bMove = false;
+		//		m_pActRange->ActMove(-1, 0);
+		//		if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+		//	}
+		//};
+		//// 右
+		//auto MoveRight = [&]
+		//{
+		//	if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
+		//	{
+		//		m_Move.x -= MOVE_DIST;
+		//		m_bMove = false;
+		//		m_pActRange->ActMove(1, 0);
+		//		if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+		//	}
+		//};
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
 			}
 		};
 		// 後退
 		auto MoveDown = [&]
+		// 移動値
+		auto MoveValue = [&](CActRange::PLAYER_MOVE playerMove, D3DXVECTOR3 move, D3DXVECTOR2 actMove , float fRotDistY)
 		{
 			if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
+			if (m_pActRange->GetPlayerMove(playerMove))
 			{
 				m_Move.z += MOVE_DIST;
+				m_Move += move;
 				m_bMove = false;
-				//m_pActRange->ActMove(0, 1);
+				m_pActRange->ActMove(0, 1);
+				m_pActRange->ActMove(actMove.x, actMove.y);
+				m_rotDest.y = fRotDistY;
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
+				if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
 			}
 		};
 		// 左
@@ -450,7 +499,15 @@ void CPlayer::Move(void)
 			{
 				m_Move.x += MOVE_DIST;
 				m_bMove = false;
-				//m_pActRange->ActMove(-1, 0);
+				m_pActRange->ActMove(-1, 0);
+
+
+
+
+
+
+
+
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
 			}
@@ -462,11 +519,27 @@ void CPlayer::Move(void)
 			{
 				m_Move.x -= MOVE_DIST;
 				m_bMove = false;
-				//m_pActRange->ActMove(1, 0);
+				m_pActRange->ActMove(1, 0);
 
 				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
 			}
 		};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
 			|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
@@ -475,10 +548,12 @@ void CPlayer::Move(void)
 			if (m_PlayerState != PLAYER_STATE_REVERSE)
 			{
 				MoveUp();
+				MoveValue(CActRange::PLAYER_MOVE_UP,D3DXVECTOR3(0.0f,0.0f, -MOVE_DIST),D3DXVECTOR2(0,-1), D3DXToRadian(ROTDEST_PREVIOUS));
 			}
 			else
 			{
 				MoveDown();
+				MoveValue(CActRange::PLAYER_MOVE_DOWN, D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
 			}
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
@@ -488,10 +563,12 @@ void CPlayer::Move(void)
 			if (m_PlayerState != PLAYER_STATE_REVERSE)
 			{
 				MoveDown();
+				MoveValue(CActRange::PLAYER_MOVE_DOWN, D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
 			}
 			else
 			{
 				MoveUp();
+				MoveValue(CActRange::PLAYER_MOVE_UP, D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
 			}
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
@@ -501,10 +578,12 @@ void CPlayer::Move(void)
 			if (m_PlayerState != PLAYER_STATE_REVERSE)
 			{
 				MoveLeft();
+				MoveValue(CActRange::PLAYER_MOVE_LEFT, D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
 			}
 			else
 			{
 				MoveRight();
+				MoveValue(CActRange::PLAYER_MOVE_RIGHT, D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
 			}
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
@@ -514,14 +593,15 @@ void CPlayer::Move(void)
 			if (m_PlayerState != PLAYER_STATE_REVERSE)
 			{
 				MoveRight();
+				MoveValue(CActRange::PLAYER_MOVE_RIGHT, D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
 			}
 			else
 			{
 				MoveLeft();
+				MoveValue(CActRange::PLAYER_MOVE_LEFT, D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
 			}
 		}
-	}
-	else
+	}	else
 	{
 		// 座標の取得
 		D3DXVECTOR3 pos = GetPos();
@@ -547,15 +627,6 @@ void CPlayer::Move(void)
 		switch (m_ItemState)
 		{
 		case ITEM_STATE_NONE:
-
-			//カウントが一定に達する
-			if (m_MoveCount >= m_nMoveframe)
-			{
-				//カウント初期化
-				m_MoveCount = 0;
-				//移動できるように
-				m_bMove = true;
-			}
 			break;
 		case ITEM_STATE_DASH:
 
@@ -592,6 +663,39 @@ void CPlayer::Move(void)
 	}
 }
 
+
+//******************************
+// 向きの管理処理
+//******************************
+void CPlayer::ManageRot(void)
+{
+
+	// キーボードとジョイパッドの取得
+	CInputKeyboard * pKey = CManager::GetKeyboard();
+	CInputJoypad* pJoypad = CManager::GetJoypad();
+	// スティックの座標
+	D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
+
+	// 向きの取得
+	D3DXVECTOR3 rot = GetRot();
+
+	while (m_rotDest.y - rot.y > D3DXToRadian(ROT_FACING_01))
+	{
+		m_rotDest.y -= D3DXToRadian(ROT_FACING_02);
+	}
+
+	while (m_rotDest.y - rot.y < D3DXToRadian(-ROT_FACING_01))
+	{
+		m_rotDest.y += D3DXToRadian(ROT_FACING_02);
+	}
+
+	// 目標の向きに変える
+	rot += (m_rotDest - rot)*ROT_SPEED;
+
+	// 向き設定
+	SetRot(rot);
+}
+
 //******************************
 // 弾の処理
 //******************************
@@ -615,39 +719,38 @@ void CPlayer::Attack(void)
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
 		{
-
 			// 移動不可に
 			m_bMove = false;
 
 			// 向いてる方向を変える
 			if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
 				|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
+					|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			{// 前
 				m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
 			}
 			else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
 				|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
+					|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			{// 後
 				m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
 			}
 			else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
 				|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+					|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			{// 左
 				m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
 			}
 			else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
 				|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+					|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			{// 右
 				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
 			}
 
-			m_pAttack->ChangeFrameColor();
+			m_pAttack->VisualizationAttackArea();
 		}
-
+	
 		// 離したら弾がでるように
 		if (  !m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
@@ -656,6 +759,16 @@ void CPlayer::Attack(void)
 			pHitTile->ResetTile();
 		}
 	}
+	
+	if (!m_bController && !pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
+		|| m_bController &&!pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
+	{
+		if (!m_pAttack->GetAttackFlag())
+		{
+			m_pAttack->ResetAttackArea();
+		}
+	}
+	
 	//位置設定
 	SetPos(pos);
 }
@@ -840,5 +953,7 @@ void CPlayer::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pM
 		pEffect->SetFloat("RimPower", RIM_POWER);
 		// キューブテクスチャ
 		pEffect->SetTexture("CubeTex", CResourceTexture::GetCubeTexture(CResourceTexture::TECTURE_CUBE_SLY));
+		// トゥーンシャドウテクスチャをシェーダーに送る
+		pEffect->SetTexture("ToonTex", CResourceTexture::GetTexture(CResourceTexture::TEXTURE_TOON_SHADOW));
 	}
 }
