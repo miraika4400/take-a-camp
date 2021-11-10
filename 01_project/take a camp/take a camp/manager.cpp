@@ -162,6 +162,8 @@ void CManager::Uninit(void)
 	CMapManager::Release();
 	//攻撃範囲読み込みクラスの破棄
 	CAttackManager::Release();
+	//必殺技の範囲読み込みクラスの破棄
+	CFinalAttackManager::Release();
 	// テクスチャクラスの破棄
 	CResourceTexture::Release();
 	// モデルリソースクラスの破棄

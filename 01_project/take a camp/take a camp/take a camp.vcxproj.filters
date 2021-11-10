@@ -114,9 +114,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bg.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="scene.cpp">
       <Filter>ソース ファイル\01_Scene</Filter>
     </ClCompile>
@@ -282,9 +279,6 @@
     <ClCompile Include="chara_select_ui.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
-    <ClCompile Include="peint_collision.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="kill_count.cpp">
       <Filter>ソース ファイル\07_GameModel\Player</Filter>
     </ClCompile>
@@ -300,11 +294,11 @@
     <ClCompile Include="max_color_effect.cpp">
       <Filter>ソース ファイル\09_Effect</Filter>
     </ClCompile>
+    <ClCompile Include="attack_area.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
     <ClCompile Include="total_result.cpp">
       <Filter>ソース ファイル\06_GameScene</Filter>
-    </ClCompile>
-    <ClCompile Include="total_score.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="attack_area.cpp">
       <Filter>ソース ファイル\09_Effect</Filter>
@@ -318,11 +312,20 @@
     <ClCompile Include="resource_final_attack.cpp">
       <Filter>ソース ファイル\03_Resource</Filter>
     </ClCompile>
+    <ClCompile Include="total_score.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="peint_collision.cpp">
+      <Filter>ソース ファイル\08_Map\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="bg.cpp">
+      <Filter>ソース ファイル\07_GameModel</Filter>
+    </ClCompile>
+    <ClCompile Include="total_score.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bg.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="scene.h">
       <Filter>ヘッダー ファイル\01_Scene</Filter>
     </ClInclude>
@@ -512,9 +515,6 @@
     <ClInclude Include="max_color_effect.h">
       <Filter>ヘッダー ファイル\09_Effect</Filter>
     </ClInclude>
-    <ClInclude Include="total_score.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="attack_area.h">
       <Filter>ヘッダー ファイル\09_Effect</Filter>
     </ClInclude>
@@ -526,6 +526,15 @@
     </ClInclude>
     <ClInclude Include="resource_final_attack.h">
       <Filter>ヘッダー ファイル\03_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="total_score.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="bg.h">
+      <Filter>ヘッダー ファイル\07_GameModel</Filter>
+    </ClInclude>
+    <ClInclude Include="total_score.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -168,7 +168,7 @@ HRESULT CPlayer::Init(void)
 	CColorManager::GetColorManager()->SetUsePlayerNum(m_nPlayerNumber, m_nColor);
 	////////////////////////////////////////
 	
-	//キルカウント用のクラス
+	// キルカウント用のクラス
 	m_pKillCount = CKillCount::Create(m_nPlayerNumber);
 	// モデルのサイズの設定
 	SetSize(MODEL_SIZE);
@@ -429,13 +429,13 @@ void CPlayer::Move(void)
 		//};
 
 		// 移動値
-		auto MoveValue = [&](CActRange::PLAYER_MOVE playerMove, D3DXVECTOR3 move, D3DXVECTOR2 actMove , float fRotDistY)
+		auto MoveValue = [&](CActRange::PLAYER_MOVE playerMove, D3DXVECTOR3 move, D3DXVECTOR2 actMove, float fRotDistY)
 		{
 			if (m_pActRange->GetPlayerMove(playerMove))
 			{
 				m_Move += move;
 				m_bMove = false;
-				m_pActRange->ActMove(actMove.x, actMove.y);
+				//m_pActRange->ActMove(actMove.x, actMove.y);
 				m_rotDest.y = fRotDistY;
 
 				if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
@@ -444,20 +444,20 @@ void CPlayer::Move(void)
 
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
 			|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
 			if (m_PlayerState != PLAYER_STATE_REVERSE)
 			{
-				MoveValue(CActRange::PLAYER_MOVE_UP,D3DXVECTOR3(0.0f,0.0f, -MOVE_DIST),D3DXVECTOR2(0,-1), D3DXToRadian(ROTDEST_PREVIOUS));
+				MoveValue(CActRange::PLAYER_MOVE_UP, D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
 			}
 			else
 			{
-				MoveValue(CActRange::PLAYER_MOVE_DOWN, D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
+				MoveValue(CActRange::PLAYER_MOVE_DOWN, D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_AFTER));
 			}
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
 			|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
 			if (m_PlayerState != PLAYER_STATE_REVERSE)
 			{
@@ -470,7 +470,7 @@ void CPlayer::Move(void)
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
 			|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
 			if (m_PlayerState != PLAYER_STATE_REVERSE)
 			{
@@ -483,7 +483,7 @@ void CPlayer::Move(void)
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
 			|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
 			if (m_PlayerState != PLAYER_STATE_REVERSE)
 			{

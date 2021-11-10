@@ -196,6 +196,8 @@ void CActRange::Update(void)
 {
 	//他のプレイヤーのマップ位置
 	OtherPlayer();
+	//プレイヤーの位置取得
+	PlayerPos();
 	// プレイヤーの移動範囲
 	ActRange();
 }
