@@ -315,6 +315,9 @@
     <ClCompile Include="resource_model_hierarchy.cpp">
       <Filter>ソース ファイル\03_Resource</Filter>
     </ClCompile>
+    <ClCompile Include="resource_final_attack.cpp">
+      <Filter>ソース ファイル\03_Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -519,6 +522,9 @@
       <Filter>ヘッダー ファイル\09_Effect</Filter>
     </ClInclude>
     <ClInclude Include="resource_model_hierarchy.h">
+      <Filter>ヘッダー ファイル\03_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="resource_final_attack.h">
       <Filter>ヘッダー ファイル\03_Resource</Filter>
     </ClInclude>
   </ItemGroup>
