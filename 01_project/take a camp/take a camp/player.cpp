@@ -417,14 +417,6 @@ void CPlayer::Move(void)
 		// スティックの座標
 		D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
 
-		// 前進
-		auto MoveUp = [&]
-		{
-			if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
-			{
-				m_Move.z -= MOVE_DIST;
-				m_bMove = false;
-				m_pActRange->ActMove(0, -1);
 		//// 前進
 		//auto MoveUp = [&](CActRange::PLAYER_MOVE playerMove, D3DXVECTOR3 move , D3DXVECTOR2 actMove)
 		//{
@@ -470,138 +462,74 @@ void CPlayer::Move(void)
 		//	}
 		//};
 
-				m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
-			}
-		};
-		// 後退
-		auto MoveDown = [&]
 		// 移動値
-		auto MoveValue = [&](CActRange::PLAYER_MOVE playerMove, D3DXVECTOR3 move, D3DXVECTOR2 actMove , float fRotDistY)
+		auto MoveValue = [&](CActRange::PLAYER_MOVE playerMove, D3DXVECTOR3 move, D3DXVECTOR2 actMove, float fRotDistY)
 		{
-			if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
 			if (m_pActRange->GetPlayerMove(playerMove))
 			{
-				m_Move.z += MOVE_DIST;
 				m_Move += move;
 				m_bMove = false;
-				m_pActRange->ActMove(0, 1);
-				m_pActRange->ActMove(actMove.x, actMove.y);
+				//m_pActRange->ActMove(actMove.x, actMove.y);
 				m_rotDest.y = fRotDistY;
 
-				m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
 				if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
 			}
 		};
-		// 左
-		auto MoveLeft = [&]
-		{
-			if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
-			{
-				m_Move.x += MOVE_DIST;
-				m_bMove = false;
-				m_pActRange->ActMove(-1, 0);
-
-
-
-
-
-
-
-
-
-				m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
-			}
-		};
-		// 右
-		auto MoveRight = [&]
-		{
-			if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
-			{
-				m_Move.x -= MOVE_DIST;
-				m_bMove = false;
-				m_pActRange->ActMove(1, 0);
-
-				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
-			}
-		};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
 			|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
 			if (m_PlayerState != PLAYER_STATE_REVERSE)
 			{
-				MoveUp();
-				MoveValue(CActRange::PLAYER_MOVE_UP,D3DXVECTOR3(0.0f,0.0f, -MOVE_DIST),D3DXVECTOR2(0,-1), D3DXToRadian(ROTDEST_PREVIOUS));
+				MoveValue(CActRange::PLAYER_MOVE_UP, D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
 			}
 			else
 			{
-				MoveDown();
-				MoveValue(CActRange::PLAYER_MOVE_DOWN, D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
+				MoveValue(CActRange::PLAYER_MOVE_DOWN, D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_AFTER));
 			}
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
 			|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
 			if (m_PlayerState != PLAYER_STATE_REVERSE)
 			{
-				MoveDown();
 				MoveValue(CActRange::PLAYER_MOVE_DOWN, D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
 			}
 			else
 			{
-				MoveUp();
 				MoveValue(CActRange::PLAYER_MOVE_UP, D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
 			}
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
 			|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
 			if (m_PlayerState != PLAYER_STATE_REVERSE)
 			{
-				MoveLeft();
 				MoveValue(CActRange::PLAYER_MOVE_LEFT, D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
 			}
 			else
 			{
-				MoveRight();
 				MoveValue(CActRange::PLAYER_MOVE_RIGHT, D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
 			}
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
 			|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
 			if (m_PlayerState != PLAYER_STATE_REVERSE)
 			{
-				MoveRight();
 				MoveValue(CActRange::PLAYER_MOVE_RIGHT, D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
 			}
 			else
 			{
-				MoveLeft();
 				MoveValue(CActRange::PLAYER_MOVE_LEFT, D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
 			}
 		}
-	}	else
+	}
+	else
 	{
 		// 座標の取得
 		D3DXVECTOR3 pos = GetPos();

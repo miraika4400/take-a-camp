@@ -17,8 +17,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define MODEL_SIZE D3DXVECTOR3( 0.6f, 0.6f, 0.6f)
-#define ITEM_ONE_SIDE (10.0f)
+#define MODEL_SIZE		(D3DXVECTOR3( 0.6f, 0.6f, 0.6f))
+#define ITEM_ONE_SIDE	(10.0f)
 
 //******************************
 // コンストラクタ
