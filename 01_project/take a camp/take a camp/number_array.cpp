@@ -123,7 +123,7 @@ void CNumberArray::Update(void)
 //==================================
 void CNumberArray::Draw(void)
 {
-	// ステンシルバッファを使う
+	// Zバッファを無効に
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	pDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
 
@@ -136,6 +136,7 @@ void CNumberArray::Draw(void)
 		}
 	}
 
+	// Zバッファを戻す
 	pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 }
 

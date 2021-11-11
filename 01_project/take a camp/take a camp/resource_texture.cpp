@@ -44,6 +44,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/suma.png",				  // タイトルのボタン(スタート)
 	"./data/Textures/ka-bi-.jpg",			  // タイトルのボタン(チュートリアル)
 	"./data/Textures/taile_effect_00.png",	  // 最大塗段階時のエフェクト
+	"./data/Textures/icon_bg.png",	      // 剣アイコン
 	"./data/Textures/sword_icon.png",	      // 剣アイコン
 };
 // テクスチャのパス

@@ -145,6 +145,13 @@ void CBillboard::Draw(void)
 	// ライトを消す
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
 
+	//アルファテストを有効化
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	//アルファテスト基準値の設定
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	//アルファテストの比較方法の設定
+	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
+
 	// 加算モードの時
 	if (m_bAddMode)
 	{
@@ -201,6 +208,9 @@ void CBillboard::Draw(void)
 		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	}
+
+	//アルファテストを無効化
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 	// ライトをつける
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);

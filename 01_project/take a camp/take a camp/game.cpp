@@ -27,7 +27,6 @@
 #include "color_manager.h"
 #include "color_tile.h"
 #include "kill_count.h"
-#include "skill_gauge.h"
 
 //=============================
 // É}ÉNÉçíËã`
@@ -90,9 +89,6 @@ HRESULT CGame::Init(void)
 	CManager::SetLight();
 
 	CTime::Create();
-
-	CSkillgauge::Create(D3DXVECTOR3(20.0f, 20.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0, CSkillgauge::SKILLGAUGE_BG);
-	CSkillgauge::Create(D3DXVECTOR3(20.0f, 20.0f, 0.0f), D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.8f), 0, CSkillgauge::SKILLGAUGE_STENCIL);
 
 	return S_OK;
 }

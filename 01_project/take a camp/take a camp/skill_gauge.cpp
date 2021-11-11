@@ -14,7 +14,6 @@
 #include "resource_texture.h"
 #include "renderer.h"
 #include "polygon.h"
-#include "keyboard.h"
 #include "player.h"
 #include "color_tile.h"
 
@@ -44,6 +43,10 @@ CSkillgauge::~CSkillgauge()
 
 //==================================
 // クリエイト
+// size：スキルゲージの大きさ
+// col：スキルゲージの色
+// nPlayerNum：プレイヤーの番号
+// SkillGaugeType：スキルゲージのタイプ
 //==================================
 CSkillgauge * CSkillgauge::Create(const D3DXVECTOR3 size, const D3DXCOLOR col, const int nPlayerNum, const SKILLGAUGE_TYPE SkillGaugeType)
 {
@@ -52,8 +55,9 @@ CSkillgauge * CSkillgauge::Create(const D3DXVECTOR3 size, const D3DXCOLOR col, c
 
 	pSkillgauge->m_size = size;
 	pSkillgauge->m_col = col;
-	pSkillgauge->m_SkillGaugeType = SkillGaugeType;
 	pSkillgauge->m_nPlayerNum = nPlayerNum;
+	pSkillgauge->m_SkillGaugeType = SkillGaugeType;
+	pSkillgauge->SetPriority(OBJTYPE_UI);
 
 	// 初期化処理
 	pSkillgauge->Init();
@@ -75,7 +79,7 @@ HRESULT CSkillgauge::Init()
 	switch (m_SkillGaugeType)
 	{
 	case SKILLGAUGE_BG:
-		BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+		BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ICON_BG));
 
 		SetPos(m_pos);
 		SetSize(m_size);
@@ -83,9 +87,6 @@ HRESULT CSkillgauge::Init()
 		break;
 
 	case SKILLGAUGE_STENCIL:
-
-		//BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
-
 		SetPos(m_pos);
 		SetSize(m_size);
 		SetColor(m_col);
@@ -96,6 +97,14 @@ HRESULT CSkillgauge::Init()
 		Pos[3] = D3DXVECTOR3(+m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f);
 
 		SetVertexPos(Pos);
+		break;
+
+	case SKILLGAUGE_ICON:
+		BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+
+		SetPos(m_pos);
+		SetSize(m_size);
+		SetColor(m_col);
 		break;
 
 	default:
@@ -122,8 +131,7 @@ void CSkillgauge::Update(void)
 	// 更新処理
 	CBillboard::Update();
 
-	CInputKeyboard* pInputKeyboard = CManager::GetKeyboard();
-
+	// プレイヤーの座標を取得
 	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
 	while (pPlayer != NULL)
 	{
@@ -161,6 +169,10 @@ void CSkillgauge::Update(void)
 		SetVertexPos(Pos);
 		break;
 
+	case SKILLGAUGE_ICON:
+		SetPos(m_pos + SKILLGAUGE_ADDPOS);
+		break;
+
 	default:
 		break;
 	}
@@ -177,11 +189,18 @@ void CSkillgauge::Draw(void)
 	// ステンシルテストを有効に
 	pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
 
+	//アルファテストを有効化
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	//アルファテスト基準値の設定
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	//アルファテストの比較方法の設定
+	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
 	switch (m_SkillGaugeType)
 	{
 	case SKILLGAUGE_BG:
 		pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-		pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+		pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 
 		// ステンシルテストと比較する参照値設定
 		pDevice->SetRenderState(D3DRS_STENCILREF, 0x01);
@@ -190,18 +209,17 @@ void CSkillgauge::Draw(void)
 		pDevice->SetRenderState(D3DRS_STENCILMASK, 0xff);
 
 		// この描画での参照値 == ステンシルバッファの参照値なら合格
-		pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_ALWAYS);
+		pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_GREATER);
 
 		// ステンシルテストの結果に対しての反映設定
 		pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_REPLACE);
 		pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
 		pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_KEEP);
-
 		break;
 
 	case SKILLGAUGE_STENCIL:
 		pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-		pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+		pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 
 		// ステンシルテストと比較する参照値設定
 		pDevice->SetRenderState(D3DRS_STENCILREF, 0x01);
@@ -214,10 +232,10 @@ void CSkillgauge::Draw(void)
 
 		// ステンシルテストの結果に対しての反映設定
 		pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_REPLACE);
-		pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_REPLACE);
-		pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_REPLACE);
-
+		pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
+		pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_KEEP);
 		break;
+
 	default:
 		break;
 	}
@@ -225,15 +243,12 @@ void CSkillgauge::Draw(void)
 	// 描画処理
 	CBillboard::Draw();
 
-	// ZBUFFER比較設定変更 => (参照値 <= バッファ値)(戻す)
+	// Zバッファを戻す
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 
-	//// Zバッファ設定 => 有効
-	//pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-	//// ZBUFFER比較設定変更 => (参照値 <= バッファ値)
-	//pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+	//アルファテストを無効化
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 	// ステンシルテストを無効に
 	pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
-
 }

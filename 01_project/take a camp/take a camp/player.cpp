@@ -30,6 +30,7 @@
 #include "color_tile.h"
 #include "chara_select.h"
 #include "kill_count.h"
+#include "skill_gauge.h"
 
 //*****************************
 // マクロ定義
@@ -162,6 +163,9 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 	pPlayer->SetPriority(OBJTYPE_PLAYER); // オブジェクトタイプ
 	pPlayer->m_Move = pos;
 	pPlayer->m_RespawnPos = pos;
+	CSkillgauge::Create(D3DXVECTOR3(20.0f, 20.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), pPlayer->m_nColor, CSkillgauge::SKILLGAUGE_BG);
+	CSkillgauge::Create(D3DXVECTOR3(20.0f, 20.0f, 0.0f), GET_COLORMANAGER->GetIconColor(pPlayer->m_nColor), pPlayer->m_nColor, CSkillgauge::SKILLGAUGE_STENCIL);
+	CSkillgauge::Create(D3DXVECTOR3(20.0f, 20.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), pPlayer->m_nColor, CSkillgauge::SKILLGAUGE_ICON);
 	CNumberArray::Create(0, pos, D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(pPlayer->m_nColor), pPlayer->m_nColor);
 
 	//攻撃用クラス生成
