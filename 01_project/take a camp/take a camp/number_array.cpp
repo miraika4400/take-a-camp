@@ -123,6 +123,10 @@ void CNumberArray::Update(void)
 //==================================
 void CNumberArray::Draw(void)
 {
+	// ステンシルバッファを使う
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	pDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+
 	for (int nCount = 0; nCount < MAX_ARRAY_NUM; nCount++)
 	{
 		// 中身が入ってたら描画
@@ -131,6 +135,8 @@ void CNumberArray::Draw(void)
 			m_apNumber[nCount]->Draw();
 		}
 	}
+
+	pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 }
 
 //==================================

@@ -91,8 +91,8 @@ HRESULT CGame::Init(void)
 
 	CTime::Create();
 
-	CSkillgauge::Create(D3DXVECTOR3(200.0f, 200.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0, CSkillgauge::SKILLGAUGE_BG);
-	CSkillgauge::Create(D3DXVECTOR3(200.0f, 200.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0, CSkillgauge::SKILLGAUGE_STENCIL);
+	CSkillgauge::Create(D3DXVECTOR3(20.0f, 20.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0, CSkillgauge::SKILLGAUGE_BG);
+	CSkillgauge::Create(D3DXVECTOR3(20.0f, 20.0f, 0.0f), D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.8f), 0, CSkillgauge::SKILLGAUGE_STENCIL);
 
 	return S_OK;
 }

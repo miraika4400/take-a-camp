@@ -41,7 +41,7 @@ public:
 	//============
 	CSkillgauge();
 	~CSkillgauge();
-	static CSkillgauge *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col, const int nPlayerNum, const SKILLGAUGE_TYPE SkillGaugeType); // クラス生成
+	static CSkillgauge *Create(const D3DXVECTOR3 size, const D3DXCOLOR col, const int nPlayerNum, const SKILLGAUGE_TYPE SkillGaugeType); // クラス生成
 
 	HRESULT Init(void); // 初期化
 	void Uninit(void);	// 終了

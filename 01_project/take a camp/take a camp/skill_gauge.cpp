@@ -16,10 +16,12 @@
 #include "polygon.h"
 #include "keyboard.h"
 #include "player.h"
+#include "color_tile.h"
 
 //==================================
 // マクロ定義
 //==================================
+#define SKILLGAUGE_ADDPOS (D3DXVECTOR3(0.0f, 35.0f, 0.0f))
 
 //==================================
 // コンストラクタ
@@ -43,12 +45,11 @@ CSkillgauge::~CSkillgauge()
 //==================================
 // クリエイト
 //==================================
-CSkillgauge * CSkillgauge::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col, const int nPlayerNum, const SKILLGAUGE_TYPE SkillGaugeType)
+CSkillgauge * CSkillgauge::Create(const D3DXVECTOR3 size, const D3DXCOLOR col, const int nPlayerNum, const SKILLGAUGE_TYPE SkillGaugeType)
 {
 	// メモリの確保
 	CSkillgauge * pSkillgauge = new CSkillgauge;
 
-	pSkillgauge->m_pos = pos;
 	pSkillgauge->m_size = size;
 	pSkillgauge->m_col = col;
 	pSkillgauge->m_SkillGaugeType = SkillGaugeType;
@@ -89,10 +90,10 @@ HRESULT CSkillgauge::Init()
 		SetSize(m_size);
 		SetColor(m_col);
 
-		Pos[0] = D3DXVECTOR3(m_pos.x - m_size.x / 2.0f, m_pos.y + m_size.y / 2.0f - m_fGauge, 0.0f);
-		Pos[1] = D3DXVECTOR3(m_pos.x + m_size.x / 2.0f, m_pos.y + m_size.y / 2.0f - m_fGauge, 0.0f);
-		Pos[2] = D3DXVECTOR3(m_pos.x - m_size.x / 2.0f, m_pos.y + m_size.y / 2.0f, 0.0f);
-		Pos[3] = D3DXVECTOR3(m_pos.x + m_size.x / 2.0f, m_pos.y + m_size.y / 2.0f, 0.0f);
+		Pos[0] = D3DXVECTOR3(-m_size.x / 2.0f, -m_size.y / 2.0f - m_fGauge, 0.0f);
+		Pos[1] = D3DXVECTOR3(+m_size.x / 2.0f, -m_size.y / 2.0f - m_fGauge, 0.0f);
+		Pos[2] = D3DXVECTOR3(-m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f);
+		Pos[3] = D3DXVECTOR3(+m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f);
 
 		SetVertexPos(Pos);
 		break;
@@ -118,6 +119,9 @@ void CSkillgauge::Uninit(void)
 //==================================
 void CSkillgauge::Update(void)
 {
+	// 更新処理
+	CBillboard::Update();
+
 	CInputKeyboard* pInputKeyboard = CManager::GetKeyboard();
 
 	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
@@ -137,38 +141,29 @@ void CSkillgauge::Update(void)
 	switch (m_SkillGaugeType)
 	{
 	case SKILLGAUGE_BG:
-		SetPos(m_pos);
+		SetPos(m_pos + SKILLGAUGE_ADDPOS);
 		break;
 
 	case SKILLGAUGE_STENCIL:
-		if (pInputKeyboard->GetKeyPress(DIK_UP))
-		{
-			m_fGauge++;
-		}
-		if (pInputKeyboard->GetKeyPress(DIK_DOWN))
-		{
-			m_fGauge--;
-		}
+		m_fGauge = (float)CColorTile::GetTileNum(m_nPlayerNum);
 
 		if (m_fGauge > m_size.y)
 		{
 			m_fGauge = m_size.y;
 		}
 
-		Pos[0] = D3DXVECTOR3(m_pos.x - m_size.x / 2.0f, m_pos.y + m_size.y / 2.0f - m_fGauge, 0.0f);
-		Pos[1] = D3DXVECTOR3(m_pos.x + m_size.x / 2.0f, m_pos.y + m_size.y / 2.0f - m_fGauge, 0.0f);
-		Pos[2] = D3DXVECTOR3(m_pos.x - m_size.x / 2.0f, m_pos.y + m_size.y / 2.0f, 0.0f);
-		Pos[3] = D3DXVECTOR3(m_pos.x + m_size.x / 2.0f, m_pos.y + m_size.y / 2.0f, 0.0f);
+		Pos[0] = D3DXVECTOR3(-m_size.x / 2.0f, -m_size.y / 2.0f + m_fGauge, 0.0f);
+		Pos[1] = D3DXVECTOR3(+m_size.x / 2.0f, -m_size.y / 2.0f + m_fGauge, 0.0f);
+		Pos[2] = D3DXVECTOR3(-m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f);
+		Pos[3] = D3DXVECTOR3(+m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f);
 
+		SetPos(m_pos + SKILLGAUGE_ADDPOS);
 		SetVertexPos(Pos);
 		break;
 
 	default:
 		break;
 	}
-
-	// 更新処理
-	CBillboard::Update();
 }
 
 //==================================
@@ -179,9 +174,6 @@ void CSkillgauge::Draw(void)
 	// ステンシルバッファを使う
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	//pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-	//pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_NEVER);
-
 	// ステンシルテストを有効に
 	pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
 
@@ -189,28 +181,8 @@ void CSkillgauge::Draw(void)
 	{
 	case SKILLGAUGE_BG:
 		pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-		pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_NEVER);
-
-		// ステンシルテストと比較する参照値設定
-		pDevice->SetRenderState(D3DRS_STENCILREF, 0x01);
-
-		// ステンシルテストの値に対してのマスク設定 0xff(全て真)
-		pDevice->SetRenderState(D3DRS_STENCILMASK, 0xff);
-
-		// 参照値
-		pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_EQUAL);
-
-		// ステンシルテストの結果に対しての反映設定
-		pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_KEEP);
-		pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
-		pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_REPLACE);
-		pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 		pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 
-
-		break;
-
-	case SKILLGAUGE_STENCIL:
 		// ステンシルテストと比較する参照値設定
 		pDevice->SetRenderState(D3DRS_STENCILREF, 0x01);
 
@@ -226,15 +198,35 @@ void CSkillgauge::Draw(void)
 		pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_KEEP);
 
 		break;
+
+	case SKILLGAUGE_STENCIL:
+		pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+		pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+
+		// ステンシルテストと比較する参照値設定
+		pDevice->SetRenderState(D3DRS_STENCILREF, 0x01);
+
+		// ステンシルテストの値に対してのマスク設定 0xff(全て真)
+		pDevice->SetRenderState(D3DRS_STENCILMASK, 0xff);
+
+		// この描画での参照値 == ステンシルバッファの参照値なら合格
+		pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_EQUAL);
+
+		// ステンシルテストの結果に対しての反映設定
+		pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_REPLACE);
+		pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_REPLACE);
+		pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_REPLACE);
+
+		break;
 	default:
 		break;
 	}
 
-	// ZBUFFER比較設定変更 => (参照値 <= バッファ値)(戻す)
-	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
-
 	// 描画処理
 	CBillboard::Draw();
+
+	// ZBUFFER比較設定変更 => (参照値 <= バッファ値)(戻す)
+	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 
 	//// Zバッファ設定 => 有効
 	//pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
