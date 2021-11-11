@@ -76,7 +76,8 @@ void CAttack1::AttackCreate(void)
 		m_nAttackCount++;
 
 		// UŒ‚”ÍˆÍ‚Ì‰ÂŽ‹‰»
-		ChangeFrameColor();
+		VisualizationAttackArea(m_nType);
+
 		//ƒJƒEƒ“ƒg‚ªˆê’è‚É‚È‚Á‚½‚ç
 		if (m_nAttackCount >= GetAttackSquare().nAttackFrame[m_nType])
 		{

@@ -49,6 +49,7 @@ public:
 		KEY_BULLET,
 		KEY_MAX
 	}CONTROLL_KEY;
+
 	// ステート
 	typedef enum
 	{
@@ -56,6 +57,7 @@ public:
 		PLAYER_STATE_REVERSE,		//操作逆転
 		PLAYER_STATE_DEATH			//死亡状態
 	}PLAYER_STATE;
+
 	// アイテムステート
 	typedef enum
 	{
@@ -87,33 +89,33 @@ public:
 
 	void Death(void);		// 死亡処理関数
 	void SkillDeath(void);	// スキルでの死亡処理関数
+	void Attack(void);	// 攻撃処理
 
 	int GetColorNumber(void) { return m_nColor; }
 	CCollision * GetCollision(void) { return  m_pCollision; }
 	int GetPlayerNumber(void) { return m_nPlayerNumber; }
 
-	void Attack(void);	//弾の処理
-
 	void SetState(PLAYER_STATE PlayerState) {m_PlayerState = PlayerState;}
 	PLAYER_STATE GetState(void) { return m_PlayerState; }
 
-	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }
+	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }						
+	D3DXVECTOR3 GetPosDest(void) { return m_Move; }
 	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }
 	ITEM_STATE GetItemState(void) { return m_ItemState; }
-
 	CKillCount * GetKillCount(void) { return m_pKillCount; }
 
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 private:
 	void Move(void);		// 移動処理
+	void ManageRot(void);   // 向きの管理
 	void Respawn(void);		// リスポーン処理
 	void Invincible(void);	// 無敵処理
 
-	void DrawModel(void);
+	void DrawModel(void);	// モデルの描画処理
 	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData);// シェーダに値を送る
 
 	// メンバ変数
-	static int m_anControllKey[4][KEY_MAX];
+	static int m_anControllKey[MAX_PLAYER][KEY_MAX];
 	static CResourceModel::Model m_model[MAX_PARTS_NUM]; // モデル構造体
 	static int m_nPartsNum;                              // モデルパーツ数
 
@@ -133,7 +135,7 @@ private:
 	int m_nInvincibleCount;		// 無敵時間のカウント
 	D3DXVECTOR3	 m_Move;		// 移動量
 	int			 m_MoveCount;	// 移動時のカウント
-	int			m_ReverseCount;//操作反転カウント
+	int			m_ReverseCount;	// 操作反転カウント
 	D3DXCOLOR	 m_color;		// 色
 	CCollision * m_pCollision;	// 当たり判定
 	CActRange *	 m_pActRange;	// 行動判定

@@ -19,6 +19,8 @@
 #include "resource_model.h"
 #include "resource_shader.h"
 #include "resource_attack.h"
+#include "resource_model_hierarchy.h"
+#include "resource_final_attack.h"
 #include "camera_base.h"
 #include "debug_log.h"
 #include "pause.h"
@@ -126,6 +128,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CResourceModel::Create();
 	// シェーダーリソースクラスの生成
 	CResourceShader::Create();
+	// 階層構造リソースクラス
+	CResourceModelHierarchy::Create();
 
 	// テクスチャ・モデルの読み込み
 	CPause::Load();    // ポーズ
@@ -133,6 +137,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CMapManager::Create();
 	//攻撃範囲読み込み
 	CAttackManager::Create();
+	//必殺技範囲読み込み
+	CFinalAttackManager::Create();
 
 	// プレイヤー階層構造
 	CPlayer::Load();
@@ -158,12 +164,16 @@ void CManager::Uninit(void)
 	CMapManager::Release();
 	//攻撃範囲読み込みクラスの破棄
 	CAttackManager::Release();
+	//必殺技の範囲読み込みクラスの破棄
+	CFinalAttackManager::Release();
 	// テクスチャクラスの破棄
 	CResourceTexture::Release();
 	// モデルリソースクラスの破棄
 	CResourceModel::Release();
 	// シェーダーリソースクラスの破棄
 	CResourceShader::Release();
+	// 階層構造リソースクラス
+	CResourceModelHierarchy::Release();
 	// カラーマーマネージャーの破棄
 	CColorManager::Release();
 	// タイルファクトリーの破棄

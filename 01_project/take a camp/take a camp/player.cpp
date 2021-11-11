@@ -30,35 +30,35 @@
 #include "color_tile.h"
 #include "chara_select.h"
 #include "kill_count.h"
+#include "particle.h"
 
 //*****************************
 // マクロ定義
 //*****************************
-#define HIERARCHY_TEXT_PATH1 "data/Text/hierarchy/knight.txt"   // 階層構造テキストのパス
-#define MOVE_DIST (TILE_ONE_SIDE)	// 移動距離
-#define MOVE_FRAME 15				// 移動速度
-#define COLLISION_RADIUS 18.0f
-#define MODL_COLOR D3DXCOLOR(0.3f,0.3f,0.3f,1.0f)
-//#define MODEL_SIZE D3DXVECTOR3( 0.3f, 0.3f, 0.3f)
-#define MODEL_SIZE D3DXVECTOR3( 1.0f, 1.0f, 1.0f)
-#define RESPAWN_MAX_COUNT (60*5)	// リスポーンまでの最大カウント
-#define INVINCIBLE_COUNT (60*2)		// 無敵時間
-#define ROTDEST_PREVIOUS 0.0f		// 前方向き
-#define ROTDEST_AFTER 	180.0f		// 後方向き
-#define ROTDEST_LEFT 270.0f			// 左向き
-#define ROTDEST_RIGHT 90.0f			// 右向き
-#define ROT_SPEED 0.3f				// 回転速度
-#define ROT_FACING_01 180			// 回転の基準
-#define ROT_FACING_02 360			// 回転向き
-#define RIM_POWER     2.5f          // リムライトの強さ
-#define DASH_FRAME      300
-#define DASH_MOVE_FRAME  MOVE_FRAME*0.8f
-#define STICK_DECISION_RANGE (32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
+#define HIERARCHY_TEXT_PATH1	"data/Text/hierarchy/Knight.txt"   // 階層構造テキストのパス
+#define MOVE_DIST				(TILE_ONE_SIDE)	// 移動距離
+#define MOVE_FRAME				(15)			// 移動速度
+#define COLLISION_RADIUS		(18.0f)			// 当たり判定の大きさ
+#define MODL_COLOR				(D3DXCOLOR(0.3f,0.3f,0.3f,1.0f))	// モデルカラー
+#define MODEL_SIZE				(D3DXVECTOR3(1.4f,1.4f,1.4f))		// モデルサイズ
+#define RESPAWN_MAX_COUNT		(60*5)			// リスポーンまでの最大カウント
+#define INVINCIBLE_COUNT		(60*2)			// 無敵時間
+#define ROTDEST_PREVIOUS		(0.0f)			// 前方向き
+#define ROTDEST_AFTER 			(180.0f)		// 後方向き
+#define ROTDEST_LEFT			(270.0f)		// 左向き
+#define ROTDEST_RIGHT			(90.0f)			// 右向き
+#define ROT_SPEED				(0.3f)			// 回転速度
+#define ROT_FACING_01			(180)			// 回転の基準
+#define ROT_FACING_02			(360)			// 回転向き
+#define RIM_POWER				(2.5f)			// リムライトの強さ
+#define DASH_FRAME				(300)			// ダッシュ時有効フレーム数
+#define DASH_MOVE_FRAME			(MOVE_FRAME*0.8f)	// ダッシュ時の速度
+#define STICK_DECISION_RANGE	(32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
 
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-int CPlayer::m_anControllKey[4][CPlayer::KEY_MAX] =
+int CPlayer::m_anControllKey[MAX_PLAYER][CPlayer::KEY_MAX] =
 {
 	{ DIK_W,DIK_S,DIK_A,DIK_D,DIK_E },
 	{ DIK_UP,DIK_DOWN,DIK_LEFT,DIK_RIGHT,DIK_NUMPAD1 },
@@ -201,7 +201,7 @@ HRESULT CPlayer::Init(void)
 	CColorManager::GetColorManager()->SetUsePlayerNum(m_nPlayerNumber, m_nColor);
 	////////////////////////////////////////
 	
-	//キルカウント用のクラス
+	// キルカウント用のクラス
 	m_pKillCount = CKillCount::Create(m_nPlayerNumber);
 	// モデルのサイズの設定
 	SetSize(MODEL_SIZE);
@@ -251,17 +251,32 @@ void CPlayer::Update(void)
 	switch (m_PlayerState)
 	{
 	case PLAYER_STATE_REVERSE:
+	{
 		m_ReverseCount++;
 		if (m_ReverseCount % 180 == 0)
 		{
 			m_ReverseCount = 0;
 			SetState(PLAYER_STATE_NORMAL);
 		}
+
+		if (m_ReverseCount % 15 == 0)
+		{
+			D3DXVECTOR3 pos = GetPos();
+			pos.y += 10.0f;
+			CParticle::Create(pos, D3DXVECTOR3((float)(rand() % 16 - 8)/100.0f, 0.25f, (float)(rand() % 16 - 8) / 100.0f), D3DXVECTOR3(7.0f, 7.0f, 7.0f), 500, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_GURUGURU)->SetAddRotValue(1.2f);
+		}
+	}
 	case PLAYER_STATE_NORMAL:	//通常状態
+
+		// 向きの管理
+		ManageRot();
 		// 移動処理
 		Move();
 		//無敵処理
 		Invincible();
+		// 弾の処理
+		Attack();
+
 		// 当たり判定の位置
 		if (m_pCollision == NULL)
 		{
@@ -275,30 +290,12 @@ void CPlayer::Update(void)
 	case PLAYER_STATE_DEATH:	//死亡状態
 		//リスポーン処理
 		Respawn();
+		// 攻撃範囲を消す
+		m_pAttack->ResetAttackArea();
+		// 攻撃のキャンセル
+		m_pAttack->SetAttackFlag(false);
 		break;
 	}
-
-	// 弾の処理
-	Attack();
-
-	// 向きの取得
-	D3DXVECTOR3 rot = GetRot();
-
-	while (m_rotDest.y - rot.y > D3DXToRadian(ROT_FACING_01))
-	{
-		m_rotDest.y -= D3DXToRadian(ROT_FACING_02);
-	}
-
-	while (m_rotDest.y - rot.y < D3DXToRadian(-ROT_FACING_01))
-	{
-		m_rotDest.y += D3DXToRadian(ROT_FACING_02);
-	}
-
-	// 目標の向きに変える
-	rot += (m_rotDest - rot)*ROT_SPEED;
-
-	// 向き設定
-	SetRot(rot);
 
 	// 
 #ifdef _DEBUG
@@ -335,10 +332,10 @@ void CPlayer::Draw(void)
 		for (int nCntMat = 0; nCntMat < (int)GetModelData()[nCntParts].nNumMat; nCntMat++)
 		{
 			D3DXMATERIAL* mat = (D3DXMATERIAL*)GetModelData()[nCntParts].pBuffMat->GetBufferPointer();
-			mat[nCntMat].MatD3D.Ambient = m_color;
-			mat[nCntMat].MatD3D.Diffuse = m_color;
-			mat[nCntMat].MatD3D.Specular = m_color;
-			mat[nCntMat].MatD3D.Emissive = m_color;
+			mat[nCntMat].MatD3D.Ambient .a = m_color.a;
+			mat[nCntMat].MatD3D.Diffuse .a = m_color.a;
+			mat[nCntMat].MatD3D.Specular.a = m_color.a;
+			mat[nCntMat].MatD3D.Emissive.a = m_color.a;
 		}
 	}
 
@@ -365,12 +362,12 @@ void CPlayer::Death(void)
 		}
 
 		//行動クラスに死亡状態になったフラグを送る
-m_pActRange->SetDeath(true);
-//透明にする
-m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+		m_pActRange->SetDeath(true);
+		//透明にする
+		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
-//位置セット
-SetPos(m_RespawnPos);
+		//位置セット
+		SetPos(m_RespawnPos);
 	}
 
 }
@@ -419,107 +416,131 @@ void CPlayer::Move(void)
 		// スティックの座標
 		D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
 
-		// 前進
-		auto MoveUp = [&]
-		{
-			if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
-			{
-				m_Move.z -= MOVE_DIST;
-				m_bMove = false;
-				m_pActRange->ActMove(0, -1);
+		//// 移動値
+		//auto MoveValue = [&](D3DXVECTOR3 move, D3DXVECTOR2 actMove, float fRotDistY)
+		//{
+		//	if (m_pActRange->ActMove(actMove.x, actMove.y))
+		//	{
+		//		m_Move += move;
+		//		m_bMove = false;
+		//		m_rotDest.y = fRotDistY;
 
-				m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
-			}
-		};
-		// 後退
-		auto MoveDown = [&]
-		{
-			if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
-			{
-				m_Move.z += MOVE_DIST;
-				m_bMove = false;
-				m_pActRange->ActMove(0, 1);
+		//		if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+		//	}
+		//};
+		//if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
+		//	|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+		//		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
+		//{
+		//	if (m_PlayerState != PLAYER_STATE_REVERSE)
+		//	{
+		//		MoveValue(D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
+		//	}
+		//	else
+		//	{
+		//		MoveValue(D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_AFTER));
+		//	}
+		//}
+		//else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
+		//	|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+		//		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
+		//{
+		//	if (m_PlayerState != PLAYER_STATE_REVERSE)
+		//	{
+		//		MoveValue(D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
+		//	}
+		//	else
+		//	{
+		//		MoveValue(D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
+		//	}
+		//}
+		//else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
+		//	|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+		//		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+		//{
+		//	if (m_PlayerState != PLAYER_STATE_REVERSE)
+		//	{
+		//		MoveValue(D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
+		//	}
+		//	else
+		//	{
+		//		MoveValue(D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
+		//	}
+		//}
+		//else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
+		//	|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+		//		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+		//{
+		//	if (m_PlayerState != PLAYER_STATE_REVERSE)
+		//	{
+		//		MoveValue(D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
+		//	}
+		//	else
+		//	{
+		//		MoveValue(D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
+		//	}
+		//}
 
-				m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
-			}
-		};
-		// 左
-		auto MoveLeft = [&]
+		// 移動値
+		auto MoveValue = [&](D3DXVECTOR3 move, D3DXVECTOR2 actMove, float fRotDistY)
 		{
-			if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
-			{
-				m_Move.x += MOVE_DIST;
-				m_bMove = false;
-				m_pActRange->ActMove(-1, 0);
+			//プレイヤーの移動方向取得変数
+			D3DXVECTOR2 ActMove;
 
-				m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
-			}
-		};
-		// 右
-		auto MoveRight = [&]
-		{
-			if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
+			//操作逆転状態じゃない時
+			if (m_PlayerState != PLAYER_STATE_REVERSE)
 			{
-				m_Move.x -= MOVE_DIST;
-				m_bMove = false;
-				m_pActRange->ActMove(1, 0);
+				ActMove = actMove;
+				if (m_pActRange->ActMove(((int)ActMove.x),((int) ActMove.y)))
+				{
+					m_Move += move;
+					m_bMove = false;
+					m_rotDest.y = fRotDistY;
 
-				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
+					if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+				}
 			}
+			//操作逆転状態の時
+			else
+			{
+				ActMove = actMove*-1;
+				if (m_pActRange->ActMove(((int)ActMove.x), ((int)ActMove.y)))
+				{
+					m_Move += move*-1;
+					m_bMove = false;
+					m_rotDest.y = fRotDistY - D3DXToRadian(180);
+
+					if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+				}
+			}
+
 		};
 
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
 			|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
-			if (m_PlayerState != PLAYER_STATE_REVERSE)
-			{
-				MoveUp();
-			}
-			else
-			{
-				MoveDown();
-			}
+			MoveValue(D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
 			|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
-			if (m_PlayerState != PLAYER_STATE_REVERSE)
-			{
-				MoveDown();
-			}
-			else
-			{
-				MoveUp();
-			}
+			MoveValue(D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
 			|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
-			if (m_PlayerState != PLAYER_STATE_REVERSE)
-			{
-				MoveLeft();
-			}
-			else
-			{
-				MoveRight();
-			}
+			MoveValue(D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
 			|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
-			if (m_PlayerState != PLAYER_STATE_REVERSE)
-			{
-				MoveRight();
-			}
-			else
-			{
-				MoveLeft();
-			}
+			MoveValue(D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
 		}
+
 	}
 	else
 	{
@@ -547,15 +568,6 @@ void CPlayer::Move(void)
 		switch (m_ItemState)
 		{
 		case ITEM_STATE_NONE:
-
-			//カウントが一定に達する
-			if (m_MoveCount >= m_nMoveframe)
-			{
-				//カウント初期化
-				m_MoveCount = 0;
-				//移動できるように
-				m_bMove = true;
-			}
 			break;
 		case ITEM_STATE_DASH:
 
@@ -576,19 +588,50 @@ void CPlayer::Move(void)
 
 			while (pPlayer != NULL)
 			{
-				if (pPlayer->GetPlayerNumber() != m_nPlayerNumber)
+				if (pPlayer->m_PlayerState != PLAYER_STATE_DEATH)
 				{
-					pPlayer->SetState(PLAYER_STATE_REVERSE);	
-					m_ItemState = ITEM_STATE_NONE;
-					return;
+					if (pPlayer->GetPlayerNumber() != m_nPlayerNumber)
+					{
+						pPlayer->SetState(PLAYER_STATE_REVERSE);
+						m_ItemState = ITEM_STATE_NONE;
+						//return;
+					}
 				}
 				pPlayer = (CPlayer*)pPlayer->GetNext();
 			}
 			break;
 		}
 	}
-}//******************************
-// 弾の処理
+}
+
+
+//******************************
+// 向きの管理処理
+//******************************
+void CPlayer::ManageRot(void)
+{
+	// 向きの取得
+	D3DXVECTOR3 rot = GetRot();
+
+	while (m_rotDest.y - rot.y > D3DXToRadian(ROT_FACING_01))
+	{
+		m_rotDest.y -= D3DXToRadian(ROT_FACING_02);
+	}
+
+	while (m_rotDest.y - rot.y < D3DXToRadian(-ROT_FACING_01))
+	{
+		m_rotDest.y += D3DXToRadian(ROT_FACING_02);
+	}
+
+	// 目標の向きに変える
+	rot += (m_rotDest - rot)*ROT_SPEED;
+
+	// 向き設定
+	SetRot(rot);
+}
+
+//******************************
+// 攻撃処理
 //******************************
 void CPlayer::Attack(void)
 {
@@ -610,39 +653,38 @@ void CPlayer::Attack(void)
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
 		{
-
 			// 移動不可に
 			m_bMove = false;
 
 			// 向いてる方向を変える
 			if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
 				|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
+					|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			{// 前
 				m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
 			}
 			else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
 				|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
+					|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			{// 後
 				m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
 			}
 			else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
 				|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+					|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			{// 左
 				m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
 			}
 			else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
 				|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+					|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 			{// 右
 				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
 			}
 
-			m_pAttack->ChangeFrameColor();
+			m_pAttack->VisualizationAttackArea();
 		}
-
+	
 		// 離したら弾がでるように
 		if (  !m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
@@ -651,6 +693,16 @@ void CPlayer::Attack(void)
 			pHitTile->ResetTile();
 		}
 	}
+	
+	if (!m_bController && !pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
+		|| m_bController &&!pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
+	{
+		if (!m_pAttack->GetAttackFlag())
+		{
+			m_pAttack->ResetAttackArea();
+		}
+	}
+	
 	//位置設定
 	SetPos(pos);
 }
@@ -835,5 +887,7 @@ void CPlayer::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pM
 		pEffect->SetFloat("RimPower", RIM_POWER);
 		// キューブテクスチャ
 		pEffect->SetTexture("CubeTex", CResourceTexture::GetCubeTexture(CResourceTexture::TECTURE_CUBE_SLY));
+		// トゥーンシャドウテクスチャをシェーダーに送る
+		pEffect->SetTexture("ToonTex", CResourceTexture::GetTexture(CResourceTexture::TEXTURE_TOON_SHADOW));
 	}
 }

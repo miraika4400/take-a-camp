@@ -155,6 +155,7 @@
     <ClCompile Include="act_range.cpp" />
     <ClCompile Include="attack.cpp" />
     <ClCompile Include="attack_1.cpp" />
+    <ClCompile Include="attack_area.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="chara_select.cpp" />
     <ClCompile Include="chara_select_ui.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="kill_count.cpp" />
     <ClCompile Include="max_color_effect.cpp" />
     <ClCompile Include="needle_tile.cpp" />
+    <ClCompile Include="paint_time.cpp" />
     <ClCompile Include="peint_collision.cpp" />
     <ClCompile Include="resource_attack.cpp" />
     <ClCompile Include="bg.cpp" />
@@ -183,6 +185,7 @@
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
+    <ClCompile Include="resource_final_attack.cpp" />
     <ClCompile Include="resource_map.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="model_hierarchy.cpp" />
@@ -197,6 +200,7 @@
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="resource_model.cpp" />
+    <ClCompile Include="resource_model_hierarchy.cpp" />
     <ClCompile Include="resource_shader.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="result_graph.cpp" />
@@ -221,6 +225,7 @@
     <ClInclude Include="act_range.h" />
     <ClInclude Include="attack.h" />
     <ClInclude Include="attack_1.h" />
+    <ClInclude Include="attack_area.h" />
     <ClInclude Include="chara_select.h" />
     <ClInclude Include="chara_select_ui.h" />
     <ClInclude Include="button.h" />
@@ -229,6 +234,7 @@
     <ClInclude Include="kill_count.h" />
     <ClInclude Include="max_color_effect.h" />
     <ClInclude Include="needle_tile.h" />
+    <ClInclude Include="paint_time.h" />
     <ClInclude Include="peint_collision.h" />
     <ClInclude Include="resource_attack.h" />
     <ClInclude Include="bg.h" />
@@ -242,6 +248,7 @@
     <ClInclude Include="debug_log.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="resource_final_attack.h" />
     <ClInclude Include="resource_map.h" />
     <ClInclude Include="number_array.h" />
     <ClInclude Include="gauge.h" />
@@ -263,6 +270,7 @@
     <ClInclude Include="polygon.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="resource_model.h" />
+    <ClInclude Include="resource_model_hierarchy.h" />
     <ClInclude Include="resource_shader.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="result_graph.h" />

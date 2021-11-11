@@ -19,6 +19,7 @@
 //*****************************
 class CCollision;
 class CScene3d;
+class CPaintTime;
 
 //*****************************
 //マクロ定義
@@ -38,7 +39,6 @@ public:
 
 	static void Create(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
 	static void CountColorTile(void); // タイルの数字の数を数える
-
 
 	static int GetTileNum(int nIndex) { return m_anTileNum[nIndex][0]; } // 特定カラーのタイル数
 	static int GetTileNum(int nIndex, int nStep) { return m_anTileNum[nIndex][nStep]; } // 特定カラーの特定段階のタイル数
@@ -61,11 +61,13 @@ private:
 	void HitPlayerActionTrigger(CPlayer * pPlayer);  // 弾と当たったときのアクション*トリガー
 	void HItPeint(CPeintCollision * pPeint);		 // 塗り判定と当たった時のアクション
 	void ManageFrame(void);        // アイコン管理
-	
+	void ManageColor(void); // 色の管理
 
 	// メンバ変数
 	static int m_anTileNum[MAX_TILE_COLOR_NUM][COLOR_STEP_NUM + 1];
+	D3DXCOLOR m_distColor;    // 目標カラー
 	CScene3d *m_pFrame;       // 枠
+	CPaintTime * m_pPaintTime;// 再度塗り可能時間
 	int m_nPrevNum;           // 今塗られているカラーの番号*デフォルトは-1
 	int m_nStep;              // 今の塗段階
 	int m_nCntStep;           // 再度塗り可能カウント

@@ -18,8 +18,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define SIZE       D3DXVECTOR3(110.0f,110.0f ,110.0f) // サイズ
-#define ADD_ROT D3DXVECTOR3(0.0f,0.0005f,0.0f)         // ゆっくり回す
+#define BG_SIZE_MAX	(D3DXVECTOR3(110.0f,110.0f ,110.0f))	// サイズ
+#define ADD_ROT		(D3DXVECTOR3(0.0f,0.0005f,0.0f))		// ゆっくり回す
 
 //*****************************
 // 静的メンバ変数宣言
@@ -68,7 +68,7 @@ HRESULT CBg::Init(void)
 	BindModel(CResourceModel::GetModel(CResourceModel::MODEL_BG));
 
 	// サイズの設定
-	SetSize(SIZE);
+	SetSize(BG_SIZE_MAX);
 	
 	return S_OK;
 }

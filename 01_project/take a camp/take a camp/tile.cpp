@@ -19,6 +19,7 @@
 #include "player.h"
 #include "peint_collision.h"
 #include "color_tile.h"
+#include "attack_area.h"
 
 #ifdef _DEBUG
 #include "keyboard.h"
@@ -35,6 +36,7 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
+std::vector<CTile*> CTile::m_aTileList = {};
 
 //******************************
 // コンストラクタ
@@ -48,6 +50,7 @@ CTile::CTile() :CModel(OBJTYPE_TILE)
 	m_bHitOld = false;
 	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
 	m_bHitBullet = false;        // 弾が当たっているフラグ
+	m_aTileList.push_back(this);
 }
 
 //******************************
@@ -72,6 +75,40 @@ void CTile::Create(D3DXVECTOR3 pos , D3DXCOLOR col )
 	// 各値の代入・セット
 	pTile->SetPos(pos);
 	pTile->SetPriority(OBJTYPE_TILE); // オブジェクトタイプ
+}
+
+//******************************
+// 指定座標の当たっているタイルの取得
+//******************************
+CTile * CTile::GetHitTile(D3DXVECTOR3 pos)
+{
+	CCollision*pCollision = CCollision::CreateSphere(pos, TILE_ONE_SIDE / 4);
+
+	for (size_t nCntTile = 0; nCntTile< m_aTileList.size(); nCntTile++)
+	{
+		if (CCollision::CollisionSphere(pCollision, m_aTileList[nCntTile]->GetCollision()))
+		{
+			if (pCollision != NULL)
+			{
+				pCollision->ReConnection();
+				pCollision->Uninit();
+				delete pCollision;
+				pCollision = NULL;
+			}
+
+			return m_aTileList[nCntTile];
+		}
+	}
+
+	if (pCollision != NULL)
+	{
+		pCollision->ReConnection();
+		pCollision->Uninit();
+		delete pCollision;
+		pCollision = NULL;
+	}
+
+	return NULL;
 }
 
 //******************************

@@ -19,7 +19,7 @@
 //******************************
 // マクロ定義
 //******************************
-#define CAMERA_INIT_POS D3DXVECTOR3(-40.0f,300.0f,290.0f)
+#define CAMERA_INIT_POS D3DXVECTOR3(0.0f,270.0f,270.0f)
 #define CAMERA_VIEW_MAX 100000.0f                           // カメラの描画距離(遠)
 #define CAMERA_VIEW_MIN 10.0f                                // カメラの描画距離(近)
 #define CAMERA_FOV_BASE D3DXToRadian(45.0f)                  // 視野角

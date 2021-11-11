@@ -107,6 +107,9 @@ void CMap::Draw(void)
 //=============================================================================
 void CMap::MapCreate(void)
 {
+	// タイルリストのリセット
+	CTile::ResetTileList();
+
 	//マップデータがあるか
 	if (&m_MapData != NULL)
 	{
