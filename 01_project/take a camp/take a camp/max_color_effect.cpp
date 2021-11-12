@@ -35,6 +35,7 @@ CMaxColorEffect::CMaxColorEffect() : CScene(OBJTYPE_EFFECT)
 	ZeroMemory(&m_apPolygon, sizeof(m_apPolygon));
 	m_nCntLife = 0;
 	m_fTexV = -1.0f;
+	m_distColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 //=============================

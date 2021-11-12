@@ -56,6 +56,7 @@ public:
 private:
 	CScene3d *m_apPolygon[MAX_COLOR_EFFECT_POLYGON_NUM]; // ポリゴン
 	D3DXCOLOR m_polygonColor; // ポリゴンカラー
+	D3DXCOLOR m_distColor;    // 目標カラー
 	D3DXVECTOR3 m_pos;        // 座標
 	int m_nCntLife;           // 寿命カウント
 	float m_fTexV;            // テクスチャV座標

@@ -104,7 +104,7 @@ void CMotion::Update(void)
 
 		// フレームカウントを進める
 		m_nCntFrame++;
-		if (m_nCntFrame >= m_nNumFrame[m_nCntKey])
+		if (m_nCntFrame > m_nNumFrame[m_nCntKey])
 		{
 			m_nCntFrame = 0;
 			// キーカウントを進める

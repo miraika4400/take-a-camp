@@ -31,6 +31,7 @@
 #include "chara_select.h"
 #include "total_result.h"
 #include "tile_factory.h"
+#include "resource_character.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -131,6 +132,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CResourceShader::Create();
 	// 階層構造リソースクラス
 	CResourceModelHierarchy::Create();
+	// キャラクターリソースの生成
+	CResourceCharacter::Create();
 
 	// テクスチャ・モデルの読み込み
 	CPause::Load();    // ポーズ
@@ -176,6 +179,8 @@ void CManager::Uninit(void)
 	CColorManager::Release();
 	// タイルファクトリーの破棄
 	CTileFactory::Release();
+	// キャラクターリソースの破棄
+	CResourceCharacter::Release();
 
 	// テクスチャのアンロード
 	CPause::Unload();    // ポーズ

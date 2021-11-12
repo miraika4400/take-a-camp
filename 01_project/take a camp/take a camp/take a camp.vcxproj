@@ -185,6 +185,7 @@
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
+    <ClCompile Include="resource_character.cpp" />
     <ClCompile Include="resource_final_attack.cpp" />
     <ClCompile Include="resource_map.cpp" />
     <ClCompile Include="model.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="debug_log.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="resource_character.h" />
     <ClInclude Include="resource_final_attack.h" />
     <ClInclude Include="resource_map.h" />
     <ClInclude Include="number_array.h" />

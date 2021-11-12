@@ -69,7 +69,7 @@ int CPlayer::m_anControllKey[4][CPlayer::KEY_MAX] =
 };
 char CPlayer::m_achAnimPath[MOTION_MAX][64]
 {
-	{ "data/Text/motion/run.txt" },         // 歩きアニメーション
+	{ "data/Text/motion/motion_knight_neutral.txt" },         // ニュートラルアニメーション
 };
 
 //******************************
@@ -176,13 +176,12 @@ HRESULT CPlayer::Init(void)
 	//CNumberArray::Create(10, GetPos() + D3DXVECTOR3(0.0f, 100.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);	
 
-	//for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
-	//{
-	//	m_apMotion[nCntAnim] = CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], GetModelData());
-	//}
+	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
+	{
+		m_apMotion[nCntAnim] = CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], GetModelData());
+	}
 
-	//m_apMotion[MOTION_WALK]->SetActiveMotion(true);
-
+	m_apMotion[MOTION_IDLE]->SetActiveMotion(true);
 
 	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);
 
@@ -452,7 +451,7 @@ void CPlayer::Move(void)
 			}
 			else
 			{
-				MoveValue(CActRange::PLAYER_MOVE_DOWN, D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_AFTER));
+				MoveValue(CActRange::PLAYER_MOVE_DOWN, D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
 			}
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])

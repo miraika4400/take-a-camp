@@ -59,7 +59,7 @@ private:
 	// メンバ変数
 	static std::vector<SENTENCE_FUNC>m_CreateSentence;// 関数ポインタ
 	static CTileFactory*m_pInstance;
-	const static std::vector<LabelData> m_cLabelData;
+	static const std::vector<LabelData> m_cLabelData;
 };
 
 #endif
