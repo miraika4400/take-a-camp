@@ -13,7 +13,6 @@
 //インクルード
 //*****************************
 #include "main.h"
-#include "player.h"
 #include "resource_model_hierarchy.h"
 
 //*****************************
@@ -31,7 +30,7 @@ class CResourceCharacter
 public:
 
 	// 列挙
-	// テクスチャ種類
+	// キャラクターの種類
 	typedef enum
 	{
 		CHARACTER_KNIGHT = 0,  // 騎士
@@ -39,6 +38,14 @@ public:
 		CHARACTER_WIZARD,      // 魔術師
 		CHARACTER_MAX // キャラクタ数
 	}CHARACTER_TYPE;
+	//モーション
+	typedef enum
+	{
+		MOTION_IDLE = 0,     // ニュートラル
+		MOTION_CHARGE,       // チャージ
+		MOTION_ATTACK,       // 攻撃
+		MOTION_MAX
+	}MOTION_TYPE;
 
 	// 構造体定義
 	//characterデータ
@@ -51,7 +58,7 @@ public:
 		std::string finalAttackPath;           // 必殺技テキストのパス
 		int nFinalAttackTime;                  // 必殺技発動可能時間
 		int anChargeTime[ATTACK_PATTARN_NUM];  // 各攻撃のチャージタイムのリスト
-		std::string aMotionTextPath[CPlayer::MOTION_MAX]; // モーションファイルパスリスト
+		std::string aMotionTextPath[MOTION_MAX]; // モーションファイルパスリスト
 	}CharacterData;
 
 	// キャラクターラベルデータ
@@ -68,6 +75,8 @@ public:
 	// メンバ関数
 	static CResourceCharacter * Create(void); // クラス生成
 	static void Release(void);                // クラス破棄
+	static CResourceCharacter*GetResourceCharacter(void) { return m_pInstance; } // インスタンスの取得処理
+	CharacterData GetCharacterData(CHARACTER_TYPE type) { return m_aCharacterData[type]; }// キャラクターデータの取得処理
 
 private:
 	void Load(void); // テクスチャ読み込み
@@ -76,7 +85,7 @@ private:
 	static CResourceCharacter* m_pInstance;           // インスタンスの保持
 	static const std::vector<LabelData> m_aLabelList; // キャラクターラベルリスト
 	static const std::string m_aCharacterDataTxtPath[CHARACTER_MAX]; // キャラクターデータのテキストのパス
-	std::vector<CharacterData> m_aCharacterData;
+	CharacterData m_aCharacterData[CHARACTER_MAX];    // キャラクターデータ
 };
 
 #endif

@@ -1,6 +1,6 @@
 CHARACTER_DATA
 
-	LABEL = KNIGHT
+	LABEL = LANCER
 	MOVE_FRAME = 15
 	MOVE_FRAME_DASH = 10
 	ATTACK_PATH = data/Text/attack/attack_1.csv
@@ -15,9 +15,9 @@ CHARACTER_DATA
 	CHARGE_TIME_LIST_END
 	
 	MOTION_LIST
-		IDLE   = data/Text/motion/motion_knight_neutral.txt
-		CHARGE = data/Text/motion/motion_knight_neutral.txt
-		ATTACK = data/Text/motion/motion_knight_attack.txt
+		IDLE   = data/Text/motion/motion_lancer_neutral.txt
+		CHARGE = data/Text/motion/motion_lancer_neutral.txt
+		ATTACK = data/Text/motion/motion_lancer_attack.txt
 	MOTION_LIST_END
 	
 CHARACTER_DATA_END

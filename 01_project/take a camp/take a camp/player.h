@@ -14,6 +14,7 @@
 //*****************************
 #include "main.h"
 #include "model_hierarchy.h"
+#include "resource_character.h"
 
 //*****************************
 // 前方宣言
@@ -33,14 +34,7 @@ class CPlayer : public CModelHierarchy
 {
 public:
 	// 列挙
-	//モーション
-	typedef enum
-	{
-		MOTION_IDLE = 0,     // ニュートラル
-		MOTION_CHARGE,       // チャージ
-		MOTION_ATTACK,       // 攻撃
-		MOTION_MAX
-	}MOTION_TYPE;
+
 	// キー
 	typedef enum
 	{
@@ -68,14 +62,14 @@ public:
 		ITEM_STATE_REVERSE,		//操作逆転
 		ITEM_STATE_MAX
 	}ITEM_STATE;
-	// キャラタイプ
-	typedef enum
-	{
-		CHARA_TYPE_FIGHTER = 0, // 戦士
-		CHARA_TYPE_LANCER,      // 槍使い
-		CHARA_TYPE_WIZARD,      // 魔法使い
-		CHARA_TYPE_MAX
-	}CHARA_TYPE;
+	//// キャラタイプ
+	//typedef enum
+	//{
+	//	CHARA_TYPE_FIGHTER = 0, // 戦士
+	//	CHARA_TYPE_LANCER,      // 槍使い
+	//	CHARA_TYPE_WIZARD,      // 魔法使い
+	//	CHARA_TYPE_MAX
+	//}CHARA_TYPE;
 
 	//メンバ関数
 	CPlayer();
@@ -110,7 +104,7 @@ private:
 	void ManageRot(void);   // 向きの管理
 	void Respawn(void);		// リスポーン処理
 	void Invincible(void);	// 無敵処理
-
+	void ManageMotion(void);// モーション管理
 	void DrawModel(void);	// モデルの描画処理
 	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData);// シェーダに値を送る
 
@@ -139,9 +133,10 @@ private:
 	CActRange *	 m_pActRange;	// 行動判定
 	D3DXVECTOR3  m_rotDest;		// 回転(目標の値)
 	D3DXVECTOR3  m_RespawnPos;	// リスポーン位置
+	CResourceCharacter::CHARACTER_TYPE m_characterType; // キャラタイプ
+
 	// モーション用変数
-	static char m_achAnimPath[MOTION_MAX][64];   // アニメーションテキストのパス格納用
-	CMotion *m_apMotion[MOTION_MAX];  // アニメーションポインタ
+	CMotion *m_apMotion[CResourceCharacter::MOTION_MAX];  // アニメーションポインタ
 
 };
 

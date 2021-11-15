@@ -175,12 +175,13 @@ void CManager::Uninit(void)
 	CResourceShader::Release();
 	// 階層構造リソースクラス
 	CResourceModelHierarchy::Release();
+	// キャラクターリソースの破棄
+	CResourceCharacter::Release();
+
 	// カラーマーマネージャーの破棄
 	CColorManager::Release();
 	// タイルファクトリーの破棄
 	CTileFactory::Release();
-	// キャラクターリソースの破棄
-	CResourceCharacter::Release();
 
 	// テクスチャのアンロード
 	CPause::Unload();    // ポーズ

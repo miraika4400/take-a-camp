@@ -15,6 +15,7 @@
 #include "keyboard.h"
 #include "manager.h"
 #include "fade.h"
+#include "player.h"
 
 //=============================
 // É}ÉNÉçíËã`
@@ -122,7 +123,7 @@ void CCharaSelect::ResetEntryPlayer(void)
 		m_aEntryData[nCntData].bEntry = false;
 		m_aEntryData[nCntData].nColorNum = nCntData; // âº
 		m_aEntryData[nCntData].nControllNum = -1;
-		m_aEntryData[nCntData].charaType = CPlayer::CHARA_TYPE_FIGHTER;
+		m_aEntryData[nCntData].charaType = CResourceCharacter::CHARACTER_KNIGHT;
 	}
 
 	m_nEntryPlayerNum = 0;
