@@ -46,14 +46,15 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define WINDOW_CLASS_NAME "AppClass" // ウインドウのクラス名
-#define FVF_VERTEX_2D (D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1)
-#define FVF_VERTEX_3D (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_DIFFUSE|D3DFVF_TEX1)
-#define SCREEN_WIDTH 1280  // 画面サイズ 横
-#define SCREEN_HEIGHT 720  // 画面サイズ 縦
-#define NUM_POLYGON 2      // 一描画のポリゴン数
-#define NUM_VERTEX 4       // 一描画の頂点数
-#define VEC3_ZERO D3DXVECTOR3(0.0f,0.0f,0.0f) //0ベクトル
+#define WINDOW_CLASS_NAME	("AppClass") // ウインドウのクラス名
+#define FVF_VERTEX_2D		(D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1)
+#define FVF_VERTEX_3D		(D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_DIFFUSE|D3DFVF_TEX1)
+#define SCREEN_WIDTH		(1280)							// 画面サイズ 横
+#define SCREEN_HEIGHT		(720)							// 画面サイズ 縦
+#define NUM_POLYGON			(2)								// 一描画のポリゴン数
+#define NUM_VERTEX			(4)								// 一描画の頂点数
+#define VEC3_ZERO			(D3DXVECTOR3(0.0f,0.0f,0.0f))	// 0ベクトル
+#define MAX_PLAYER			(4)								// プレイヤーの最大人数
 
 #ifdef _DEBUG
 #define   new                   new(_NORMAL_BLOCK, __FILE__, __LINE__)

@@ -32,9 +32,9 @@ public:
 	typedef enum	//移動できる方向
 	{
 		PLAYER_MOVE_UP = 0,	//上
+		PLAYER_MOVE_DOWN,	//下
 		PLAYER_MOVE_LEFT,	//左
 		PLAYER_MOVE_RIGHT,	//右
-		PLAYER_MOVE_DOWN,	//下
 		PLAYER_MOVE_MAX
 	}PLAYER_MOVE;
 	typedef struct
@@ -47,10 +47,10 @@ public:
 	//メンバ関数
 	CActRange();
 	~CActRange();
-	void PlayerPos(void);	// プレイヤーがどの位置にいるか
-	void ActMove(int nMoveX, int nMoveZ);
-	void OtherPlayer(void);	// 他のプレイヤーにぶつかり止まる判定
-	void ActRange(void);	// プレイヤーの移動範囲
+	void PlayerPos(void);					// プレイヤーがどの位置にいるか
+	bool ActMove(int nMoveX, int nMoveZ);	// プレイヤーがその方向に移動できるか
+	void OtherPlayer(void);					// 他のプレイヤーにぶつかり止まる判定
+	void ActRange(void);					// プレイヤーの移動範囲
 	static CActRange *Create(CPlayer* pPlayer);
 	HRESULT Init(void);
 	void Uninit(void);
@@ -61,12 +61,12 @@ public:
 	void SetDeath(bool bDeath) { m_bDeath = bDeath; }
 	bool GetDeath(void) { return m_bDeath; }
 private:
-	CPlayer*		 m_pPlayer;			// プレイヤーポインタ
-	CMapManager::MAP_DATA m_MapData;			// マップデータ
-	D3DXVECTOR3		 m_ActPos;			// マップ上のプレイヤーの位置
+	CPlayer*		 m_pPlayer;							// プレイヤーポインタ
+	CMapManager::MAP_DATA m_MapData;					// マップデータ
+	D3DXVECTOR3		 m_ActPos;							// マップ上のプレイヤーの位置
 	OTHER_ACT		 m_OtherAct[PLAYER_MOVE_MAX - 1];	// 他プレイヤーの情報
 	bool			 m_bPlayerMove[PLAYER_MOVE_MAX];	// プレイヤーが移動できるか
-	bool			 m_bDeath;			// 死亡フラグ
+	bool			 m_bDeath;							// 死亡フラグ
 };
 
 #endif

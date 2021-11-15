@@ -36,31 +36,30 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define HIERARCHY_TEXT_PATH1 "data/Text/hierarchy/Knight.txt"   // 階層構造テキストのパス
-#define MOVE_DIST (TILE_ONE_SIDE)	// 移動距離
-#define MOVE_FRAME 15				// 移動速度
-#define COLLISION_RADIUS 18.0f
-#define MODL_COLOR D3DXCOLOR(0.3f,0.3f,0.3f,1.0f)
-//#define MODEL_SIZE D3DXVECTOR3( 0.3f, 0.3f, 0.3f)
-#define MODEL_SIZE D3DXVECTOR3( 1.4f, 1.4f, 1.4f)
-#define RESPAWN_MAX_COUNT (60*5)	// リスポーンまでの最大カウント
-#define INVINCIBLE_COUNT (60*2)		// 無敵時間
-#define ROTDEST_PREVIOUS 0.0f		// 前方向き
-#define ROTDEST_AFTER 	180.0f		// 後方向き
-#define ROTDEST_LEFT 270.0f			// 左向き
-#define ROTDEST_RIGHT 90.0f			// 右向き
-#define ROT_SPEED 0.3f				// 回転速度
-#define ROT_FACING_01 180			// 回転の基準
-#define ROT_FACING_02 360			// 回転向き
-#define RIM_POWER     2.5f          // リムライトの強さ
-#define DASH_FRAME      300
-#define DASH_MOVE_FRAME  MOVE_FRAME*0.8f
-#define STICK_DECISION_RANGE (32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
+#define HIERARCHY_TEXT_PATH1	"data/Text/hierarchy/Knight.txt"   // 階層構造テキストのパス
+#define MOVE_DIST				(TILE_ONE_SIDE)	// 移動距離
+#define MOVE_FRAME				(15)			// 移動速度
+#define COLLISION_RADIUS		(18.0f)			// 当たり判定の大きさ
+#define MODL_COLOR				(D3DXCOLOR(0.3f,0.3f,0.3f,1.0f))	// モデルカラー
+#define MODEL_SIZE				(D3DXVECTOR3(1.4f,1.4f,1.4f))		// モデルサイズ
+#define RESPAWN_MAX_COUNT		(60*5)			// リスポーンまでの最大カウント
+#define INVINCIBLE_COUNT		(60*2)			// 無敵時間
+#define ROTDEST_PREVIOUS		(0.0f)			// 前方向き
+#define ROTDEST_AFTER 			(180.0f)		// 後方向き
+#define ROTDEST_LEFT			(270.0f)		// 左向き
+#define ROTDEST_RIGHT			(90.0f)			// 右向き
+#define ROT_SPEED				(0.3f)			// 回転速度
+#define ROT_FACING_01			(180)			// 回転の基準
+#define ROT_FACING_02			(360)			// 回転向き
+#define RIM_POWER				(2.5f)			// リムライトの強さ
+#define DASH_FRAME				(300)			// ダッシュ時有効フレーム数
+#define DASH_MOVE_FRAME			(MOVE_FRAME*0.8f)	// ダッシュ時の速度
+#define STICK_DECISION_RANGE	(32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
 
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-int CPlayer::m_anControllKey[4][CPlayer::KEY_MAX] =
+int CPlayer::m_anControllKey[MAX_PLAYER][CPlayer::KEY_MAX] =
 {
 	{ DIK_W,DIK_S,DIK_A,DIK_D,DIK_E },
 	{ DIK_UP,DIK_DOWN,DIK_LEFT,DIK_RIGHT,DIK_NUMPAD1 },
@@ -382,117 +381,131 @@ void CPlayer::Move(void)
 		// スティックの座標
 		D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
 
-		//// 前進
-		//auto MoveUp = [&](CActRange::PLAYER_MOVE playerMove, D3DXVECTOR3 move , D3DXVECTOR2 actMove)
+		//// 移動値
+		//auto MoveValue = [&](D3DXVECTOR3 move, D3DXVECTOR2 actMove, float fRotDistY)
 		//{
-		//	if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_UP))
+		//	if (m_pActRange->ActMove(actMove.x, actMove.y))
 		//	{
-		//		m_Move.z -= MOVE_DIST;
+		//		m_Move += move;
 		//		m_bMove = false;
-		//		m_pActRange->ActMove(0, -1);
+		//		m_rotDest.y = fRotDistY;
+
 		//		if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
 		//	}
 		//};
-		//// 後退
-		//auto MoveDown = [&]
+		//if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
+		//	|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+		//		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		//{
-		//	if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_DOWN))
+		//	if (m_PlayerState != PLAYER_STATE_REVERSE)
 		//	{
-		//		m_Move.z += MOVE_DIST;
-		//		m_bMove = false;
-		//		m_pActRange->ActMove(0, 1);
-		//		if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+		//		MoveValue(D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
 		//	}
-		//};
-		//// 左
-		//auto MoveLeft = [&]
+		//	else
+		//	{
+		//		MoveValue(D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_AFTER));
+		//	}
+		//}
+		//else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
+		//	|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+		//		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		//{
-		//	if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_LEFT))
+		//	if (m_PlayerState != PLAYER_STATE_REVERSE)
 		//	{
-		//		m_Move.x += MOVE_DIST;
-		//		m_bMove = false;
-		//		m_pActRange->ActMove(-1, 0);
-		//		if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+		//		MoveValue(D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
 		//	}
-		//};
-		//// 右
-		//auto MoveRight = [&]
+		//	else
+		//	{
+		//		MoveValue(D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
+		//	}
+		//}
+		//else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
+		//	|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+		//		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		//{
-		//	if (m_pActRange->GetPlayerMove(CActRange::PLAYER_MOVE_RIGHT))
+		//	if (m_PlayerState != PLAYER_STATE_REVERSE)
 		//	{
-		//		m_Move.x -= MOVE_DIST;
-		//		m_bMove = false;
-		//		m_pActRange->ActMove(1, 0);
-		//		if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+		//		MoveValue(D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
 		//	}
-		//};
+		//	else
+		//	{
+		//		MoveValue(D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
+		//	}
+		//}
+		//else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
+		//	|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+		//		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+		//{
+		//	if (m_PlayerState != PLAYER_STATE_REVERSE)
+		//	{
+		//		MoveValue(D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
+		//	}
+		//	else
+		//	{
+		//		MoveValue(D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
+		//	}
+		//}
 
 		// 移動値
-		auto MoveValue = [&](CActRange::PLAYER_MOVE playerMove, D3DXVECTOR3 move, D3DXVECTOR2 actMove, float fRotDistY)
+		auto MoveValue = [&](D3DXVECTOR3 move, D3DXVECTOR2 actMove, float fRotDistY)
 		{
-			if (m_pActRange->GetPlayerMove(playerMove))
-			{
-				m_Move += move;
-				m_bMove = false;
-				//m_pActRange->ActMove(actMove.x, actMove.y);
-				m_rotDest.y = fRotDistY;
+			//プレイヤーの移動方向取得変数
+			D3DXVECTOR2 ActMove;
 
-				if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+			//操作逆転状態じゃない時
+			if (m_PlayerState != PLAYER_STATE_REVERSE)
+			{
+				ActMove = actMove;
+				if (m_pActRange->ActMove(((int)ActMove.x),((int) ActMove.y)))
+				{
+					m_Move += move;
+					m_bMove = false;
+					m_rotDest.y = fRotDistY;
+
+					if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+				}
 			}
+			//操作逆転状態の時
+			else
+			{
+				ActMove = actMove*-1;
+				if (m_pActRange->ActMove(((int)ActMove.x), ((int)ActMove.y)))
+				{
+					m_Move += move*-1;
+					m_bMove = false;
+					m_rotDest.y = fRotDistY - D3DXToRadian(180);
+
+					if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+				}
+			}
+
 		};
 
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
 			|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
-			if (m_PlayerState != PLAYER_STATE_REVERSE)
-			{
-				MoveValue(CActRange::PLAYER_MOVE_UP, D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
-			}
-			else
-			{
-				MoveValue(CActRange::PLAYER_MOVE_DOWN, D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
-			}
+			MoveValue(D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
 			|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
-			if (m_PlayerState != PLAYER_STATE_REVERSE)
-			{
-				MoveValue(CActRange::PLAYER_MOVE_DOWN, D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
-			}
-			else
-			{
-				MoveValue(CActRange::PLAYER_MOVE_UP, D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
-			}
+			MoveValue(D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
 			|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
-			if (m_PlayerState != PLAYER_STATE_REVERSE)
-			{
-				MoveValue(CActRange::PLAYER_MOVE_LEFT, D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
-			}
-			else
-			{
-				MoveValue(CActRange::PLAYER_MOVE_RIGHT, D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
-			}
+			MoveValue(D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
 			|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 		{
-			if (m_PlayerState != PLAYER_STATE_REVERSE)
-			{
-				MoveValue(CActRange::PLAYER_MOVE_RIGHT, D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
-			}
-			else
-			{
-				MoveValue(CActRange::PLAYER_MOVE_LEFT, D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
-			}
+			MoveValue(D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
 		}
+
 	}
 	else
 	{
@@ -562,13 +575,6 @@ void CPlayer::Move(void)
 //******************************
 void CPlayer::ManageRot(void)
 {
-
-	// キーボードとジョイパッドの取得
-	CInputKeyboard * pKey = CManager::GetKeyboard();
-	CInputJoypad* pJoypad = CManager::GetJoypad();
-	// スティックの座標
-	D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
-
 	// 向きの取得
 	D3DXVECTOR3 rot = GetRot();
 
@@ -590,7 +596,7 @@ void CPlayer::ManageRot(void)
 }
 
 //******************************
-// 弾の処理
+// 攻撃処理
 //******************************
 void CPlayer::Attack(void)
 {
