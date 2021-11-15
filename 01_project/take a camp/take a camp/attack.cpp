@@ -17,6 +17,11 @@
 #include "color_tile.h"
 
 //=============================================================================
+// マクロ定義
+//=============================================================================
+#define ATTACK_AREA_EFFECT_POS (D3DXVECTOR3(0.0f,10.0f,0.0f))
+
+//=============================================================================
 // コンストラクタ
 //=============================================================================
 CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
@@ -253,7 +258,7 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 				if (m_apAttackArea[nAttack] != NULL)
 				{
 					m_apAttackArea[nAttack]->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
-					m_apAttackArea[nAttack]->SetPos(CreatePos + m_pos + D3DXVECTOR3(0.0f, 10.0f, 0.0f));
+					m_apAttackArea[nAttack]->SetPos(CreatePos + m_pos + ATTACK_AREA_EFFECT_POS);
 					m_apAttackArea[nAttack]->SetDrawFlag(true);
 				}
 			}
@@ -272,7 +277,11 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 		if (pHitTile != NULL)
 		{
 			m_nLevel = pHitTile->GetStepNum() - 1;
-			//タイプが一致しているか
+			if (m_nLevel < 0)
+			{
+				return;
+			}
+			// タイプが一致しているか
 			for (int nAttack = 0; nAttack < GetAttackSquare().nMaxHitRange; nAttack++)
 			{
 				//行列計算
@@ -286,7 +295,7 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 				if (m_apAttackArea[nAttack] != NULL)
 				{
 					m_apAttackArea[nAttack]->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
-					m_apAttackArea[nAttack]->SetPos(CreatePos + GetPlayer()->GetPosDest() + D3DXVECTOR3(0.0f, 10.0f, 0.0f));
+					m_apAttackArea[nAttack]->SetPos(CreatePos + GetPlayer()->GetPosDest() + ATTACK_AREA_EFFECT_POS);
 					m_apAttackArea[nAttack]->SetDrawFlag(true);
 				}
 
