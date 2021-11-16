@@ -50,12 +50,11 @@ public:
 	void	Attack(int AttackType);		// 攻撃処理
 	void	ChargeFlag(int nMaxLevel);	// チャージ開始処理
 	void	AttackSwitch(void);			// 攻撃スイッチ関数
-	void	SetAttackType(CAttackManager::ATTACK_TYPE AttackType) { m_nAttackType = AttackType; }	//攻撃タイプセッター
-	CAttackManager::ATTACK_TYPE GetAttackType(void) { return m_nAttackType; }						//攻撃タイプゲッター
+	void	SetAttackType(CResourceCharacter::CHARACTER_TYPE AttackType);			//攻撃タイプセッター
+	CResourceCharacter::CHARACTER_TYPE GetAttackType(void);						//攻撃タイプゲッター
 	void	SetAttackSquare(CAttackManager::ATTACK_SQUARE_DATA AttackSquare);	//攻撃マスデータセッター
 	CAttackManager::ATTACK_SQUARE_DATA GetAttackSquare(void);					//攻撃マスデータゲッター
-	//void		SetUseTile(CColorTile * pColorTile) { m_pColorTile = pColorTile; }
-	//CColorTile*	GetUseTile(void) { return m_pColorTile; }
+
 	void		SetLevel(int nLevel) { m_nLevel = nLevel; }				// レベルセッター
 	void		SetPos(D3DXVECTOR3 pos) { m_pos = pos; }				// 位置セッター
 	D3DXVECTOR3 GetPos(void) { return m_pos; }							// 位置ゲッター	
@@ -75,7 +74,7 @@ private:
 
 	CPlayer *		m_pPlayer;							// プレイヤークラス
 	CAttackArea *	m_apAttackArea[MAX_ATTACK_AREA_NUM];// 攻撃範囲ポインタ
-	CAttackManager::ATTACK_TYPE			m_nAttackType;	// 攻撃タイプ
+	CResourceCharacter::CHARACTER_TYPE			m_nAttackType;	// 攻撃タイプ
 	CAttackManager::ATTACK_SQUARE_DATA	m_AttackSquare[MAX_ATTACK_LEVEL];	// 攻撃マスデータ
 	D3DXVECTOR3		m_pos;								// 位置
 	D3DXVECTOR3		m_rot;								// 向き

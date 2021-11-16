@@ -37,7 +37,6 @@
 // マクロ定義
 //*****************************
 #define MOVE_DIST				(TILE_ONE_SIDE)	// 移動距離
-#define MOVE_FRAME				(15)			// 移動速度
 #define COLLISION_RADIUS		(18.0f)			// 当たり判定の大きさ
 #define MODL_COLOR				(D3DXCOLOR(0.3f,0.3f,0.3f,1.0f))	// モデルカラー
 #define MODEL_SIZE				(D3DXVECTOR3(1.4f,1.4f,1.4f))		// モデルサイズ
@@ -52,7 +51,6 @@
 #define ROT_FACING_02			(360)			// 回転向き
 #define RIM_POWER				(2.5f)			// リムライトの強さ
 #define DASH_FRAME				(300)			// ダッシュ時有効フレーム数
-#define DASH_MOVE_FRAME			(MOVE_FRAME*0.8f)	// ダッシュ時の速度
 #define STICK_DECISION_RANGE	(32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
 
 //*****************************
@@ -89,11 +87,12 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_pAttack = NULL;
 	memset(&m_apMotion, 0, sizeof(m_apMotion));	// アニメーションポインタ
 	m_ItemState = ITEM_STATE_NONE;	// アイテム用ステート
-	m_nMoveframe = 0;				// 移動速度
 	m_nDashCnt = 1;					// 速度アップカウント
 	m_bController = false;
 	m_pKillCount = NULL;
 	m_characterType = CResourceCharacter::CHARACTER_KNIGHT;
+	m_nMoveFrameData = 0;
+	m_nMoveFrameDataDash = 0;
 }
 
 //******************************
@@ -150,6 +149,10 @@ HRESULT CPlayer::Init(void)
 		return E_FAIL;
 	}
 
+	// キャラデータの反映
+	m_nMoveFrameData = charaData.nMoveFrame; // 移動時フレーム数
+	m_nMoveFrameDataDash = charaData.nMoveFrameDash;// 移動時フレーム数*ダッシュ時
+
 	// 移動フラグの初期化
 	m_bMove = true;
 	// 無敵フラグの初期化
@@ -188,7 +191,7 @@ HRESULT CPlayer::Init(void)
 	// アイテムステート
 	m_ItemState = ITEM_STATE_NONE;
 
-	m_nMoveframe = MOVE_FRAME;				// 移動速度
+	m_nMoveFrame = m_nMoveFrameData;
 	m_nDashCnt = 1;		//速度アップカウント
 	return S_OK;
 }
@@ -243,11 +246,12 @@ void CPlayer::Update(void)
 			ManageRot();
 			// 移動処理
 			Move();
+			// 攻撃処理
+			Attack();
+
 		}
 		//無敵処理
 		Invincible();
-		// 弾の処理
-		Attack();
 
 		// 当たり判定の位置
 		if (m_pCollision == NULL)
@@ -264,8 +268,6 @@ void CPlayer::Update(void)
 		Respawn();
 		// 攻撃範囲を消す
 		m_pAttack->ResetAttackArea();
-		// 攻撃のキャンセル
-		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		break;
 	}
 
@@ -338,6 +340,8 @@ void CPlayer::Death(void)
 
 		//行動クラスに死亡状態になったフラグを送る
 		m_pActRange->SetDeath(true);
+		//攻撃状態の初期化
+		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		//透明にする
 		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -368,6 +372,8 @@ void CPlayer::SkillDeath(void)
 
 		//行動クラスに死亡状態になったフラグを送る
 		m_pActRange->SetDeath(true);
+		//攻撃状態の初期化
+		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		//透明にする
 		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -407,7 +413,7 @@ void CPlayer::Move(void)
 					m_bMove = false;
 					m_rotDest.y = fRotDistY;
 
-					if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
+					//if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
 				}
 			}
 			//操作逆転状態の時
@@ -420,7 +426,7 @@ void CPlayer::Move(void)
 					m_bMove = false;
 					m_rotDest.y = fRotDistY - D3DXToRadian(180);
 
-					if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
+					//if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
 				}
 			}
 
@@ -458,7 +464,7 @@ void CPlayer::Move(void)
 		D3DXVECTOR3 pos = GetPos();
 
 		//移動計算
-		pos += (m_Move - pos) / (float)(m_nMoveframe - m_MoveCount);
+		pos += (m_Move - pos) / (float)(m_nMoveFrame - m_MoveCount);
 
 		//位置設定
 		SetPos(pos);
@@ -467,7 +473,7 @@ void CPlayer::Move(void)
 		m_MoveCount++;
 
 		//カウントが一定に達する
-		if (m_MoveCount >= m_nMoveframe)
+		if (m_MoveCount >= m_nMoveFrame)
 		{
 			//カウント初期化
 			m_MoveCount = 0;
@@ -484,12 +490,12 @@ void CPlayer::Move(void)
 			//ダッシュタイムをカウント
 			m_nDashCnt++;
 
-			m_nMoveframe = (int)(DASH_MOVE_FRAME);
+			m_nMoveFrame = (int)(m_nMoveFrameDataDash);
 
 			if (m_nDashCnt % DASH_FRAME == 0)
 			{
 				m_nDashCnt = 0;
-				m_nMoveframe = MOVE_FRAME;
+				m_nMoveFrame = m_nMoveFrameData;
 				m_ItemState = ITEM_STATE_NONE;
 			}
 			break;
@@ -552,40 +558,42 @@ void CPlayer::Attack(void)
 	// 当たっているタイルの取得
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 	
-	//攻撃処理
+	//触れているタイルの識別＆攻撃の状況が攻撃中になっていないか
 	if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor 
-		&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK)
+		&& m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL)
 	{
 		// 攻撃ボタンを押したら
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
 		{
-			// チャージ処理
-			if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL)
+			//タイルがチャージ出来ているか取得
+			if (pHitTile->ChargeFlag(m_nPlayerNumber))
 			{
-				//タイルがチャージ出来ているか取得
-				if (pHitTile->ChargeFlag(m_nPlayerNumber))
-				{
-					//攻撃チャージを開始
-					m_pAttack->ChargeFlag(pHitTile->GetStepNum()-1);
+				//攻撃チャージを開始
+				m_pAttack->ChargeFlag(pHitTile->GetStepNum()-1);
 
-				}
-			}
-			//チャージできる状態になりフラグが立つ
-			else
-			{
-				//攻撃範囲の枠の色を変える
-				m_pAttack->VisualizationAttackArea();
 			}
 		}
 	
+	}
+
+	//チャージ状態か
+	if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_CHARGE)
+	{
+		//攻撃範囲の枠の色を変える
+		m_pAttack->VisualizationAttackArea();
+
 		// 離したら弾がでるように
-		if (  !m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
+		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
 		{
 			//攻撃スイッチ処理
 			m_pAttack->AttackSwitch();
-			m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);		}
+			//アニメーション処理
+			m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
+
+		}
+
 	}
 
 	//攻撃範囲をリセット

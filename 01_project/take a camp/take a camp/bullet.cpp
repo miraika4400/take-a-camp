@@ -184,8 +184,11 @@ void CBullet::CollisionPlayer(void)
 
 	while (pPlayer != NULL)
 	{
-		if (pPlayer->GetPlayerNumber() != m_nPlayerNum)
+		//自分以外のプレイヤーか＆そのプレイヤーが無敵フラグがオフ
+		if (pPlayer->GetPlayerNumber() != m_nPlayerNum
+			&&!pPlayer->GetInvincible())
 		{
+			//当たり判定処理
 			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 			{
 				// 死亡状態にする

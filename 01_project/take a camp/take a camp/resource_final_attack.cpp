@@ -17,14 +17,8 @@
 //=============================================================================
 // 静的メンバー変数
 //=============================================================================
-char* CFinalAttackManager::m_pFileName[FINAL_ATTACK_TYPE_MAX] =
-{
-	"data/Text/final_attack_1.csv" ,
-	"",
-	"",
-	""
-};
 CFinalAttackManager* CFinalAttackManager::m_pAttackBasis = NULL;
+
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -42,13 +36,12 @@ CFinalAttackManager::~CFinalAttackManager()
 {
 }
 
-
 //=============================================================================
 // ロード関数
 //=============================================================================
 void CFinalAttackManager::Load(void)
 {
-	for (int nAttack = 0; nAttack < FINAL_ATTACK_TYPE_MAX; nAttack++)
+	for (int nAttack = 0; nAttack < CResourceCharacter::CHARACTER_MAX; nAttack++)
 	{
 		//ファイルポインタ
 		FILE*	pFile = NULL;
@@ -67,7 +60,7 @@ void CFinalAttackManager::Load(void)
 		memset(cFileString, 0, sizeof(cFileString));
 
 		//ファイル読み込み
-		fopen_s(&pFile, m_pFileName[nAttack], "r");
+		fopen_s(&pFile, CResourceCharacter::GetResourceCharacter()->GetCharacterData((CResourceCharacter::CHARACTER_TYPE)nAttack).finalAttackPath.c_str(), "r");
 
 		if (pFile != NULL)
 		{
@@ -177,7 +170,7 @@ void CFinalAttackManager::Load(void)
 //=============================================================================
 void CFinalAttackManager::PosCalc(void)
 {
-	for (int nAttack = 0; nAttack < FINAL_ATTACK_TYPE_MAX; nAttack++)
+	for (int nAttack = 0; nAttack < CResourceCharacter::CHARACTER_MAX; nAttack++)
 	{
 		//攻撃マス用変数
 		D3DXVECTOR3 RangePos[MAX_FINAL_ATTACK_SIZE_Y*MAX_FINAL_ATTACK_SIZE_X] = {};
@@ -332,7 +325,7 @@ void CFinalAttackManager::Release(void)
 //=============================================================================
 // 攻撃範囲ゲッター生成
 //=============================================================================
-CFinalAttackManager::FINAL_ATTACK_RANGE_DATA CFinalAttackManager::GetFinalAttackData(FINAL_ATTACK_TYPE Attack)
+CFinalAttackManager::FINAL_ATTACK_RANGE_DATA CFinalAttackManager::GetFinalAttackData(CResourceCharacter::CHARACTER_TYPE Attack)
 {
 	if (m_pAttackBasis != NULL)
 	{
@@ -347,7 +340,7 @@ CFinalAttackManager::FINAL_ATTACK_RANGE_DATA CFinalAttackManager::GetFinalAttack
 //=============================================================================
 // 攻撃マス情報ゲッター関数
 //=============================================================================
-CFinalAttackManager::FINAL_ATTACK_SQUARE_DATA CFinalAttackManager::GetFinalAttack(FINAL_ATTACK_TYPE AttackType)
+CFinalAttackManager::FINAL_ATTACK_SQUARE_DATA CFinalAttackManager::GetFinalAttack(CResourceCharacter::CHARACTER_TYPE AttackType)
 {
 	if (m_pAttackBasis != NULL)
 	{

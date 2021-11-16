@@ -85,18 +85,18 @@ public:
 	void SkillDeath(void);	// スキルでの死亡処理関数
 	void Attack(void);		// 攻撃処理
 
-	int GetColorNumber(void) { return m_nColor; }
-	CCollision * GetCollision(void) { return  m_pCollision; }
-	int GetPlayerNumber(void) { return m_nPlayerNumber; }
+	int GetColorNumber(void) { return m_nColor; }				// カラー番号取得
+	CCollision * GetCollision(void) { return  m_pCollision; }	// 当たり判定取得
+	int GetPlayerNumber(void) { return m_nPlayerNumber; }		// プレイヤー番号取得
 
-	void SetState(PLAYER_STATE PlayerState) {m_PlayerState = PlayerState;}
-	PLAYER_STATE GetState(void) { return m_PlayerState; }
-
-	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }						
+	void SetState(PLAYER_STATE PlayerState) {m_PlayerState = PlayerState;}	// プレイヤー状態取得
+	PLAYER_STATE GetState(void) { return m_PlayerState; }					// プレイヤー状態セット
+	bool GetInvincible(void) { return m_bInvincible; }						// 無敵状態取得
+	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }					
 	D3DXVECTOR3 GetPosDest(void) { return m_Move; }
-	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }
-	ITEM_STATE GetItemState(void) { return m_ItemState; }
-	CKillCount * GetKillCount(void) { return m_pKillCount; }
+	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }	// アイテム状態セット
+	ITEM_STATE GetItemState(void) { return m_ItemState; }					// アイテム状態取得
+	CKillCount * GetKillCount(void) { return m_pKillCount; }				// キルカウントポインタ取得
 
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 private:
@@ -114,7 +114,7 @@ private:
 
 	CKillCount * m_pKillCount;	// プレイヤーのキルカウントポインタ
 	ITEM_STATE m_ItemState;		// アイテムステータス
-	int m_nMoveframe;			// 移動速度
+	int m_nMoveFrame;			// 移動速度
 	int m_nDashCnt;				// 速度アップカウント
 	CAttackBased* m_pAttack;	// 攻撃用クラス
 	int m_nPlayerNumber;		// プレイヤー番号
@@ -128,7 +128,9 @@ private:
 	int m_nInvincibleCount;		// 無敵時間のカウント
 	D3DXVECTOR3	 m_Move;		// 移動量
 	int			 m_MoveCount;	// 移動時のカウント
-	int			 m_ReverseCount;// 操作反転カウント
+	int          m_nMoveFrameData;   // 移動時フレーム数
+	int          m_nMoveFrameDataDash; // 移動時のフレーム数*ダッシュ時
+	int			m_ReverseCount;	// 操作反転カウント
 	D3DXCOLOR	 m_color;		// 色
 	CCollision * m_pCollision;	// 当たり判定
 	CActRange *	 m_pActRange;	// 行動判定
