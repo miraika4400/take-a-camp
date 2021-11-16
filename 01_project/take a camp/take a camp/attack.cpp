@@ -86,12 +86,16 @@ void CAttackBased::Update(void)
 	switch (m_AttackState)
 	{
 	case ATTACK_STATE_NORMAL:	//通常状態
-		//レベルの初期化
-		if (m_nLevel>0)
+		
+		//数値の初期化
+		if (m_nLevel != 0)
 		{
-			//初期化
 			m_nLevel = 0;
-
+		}
+		
+		//プレイヤーが死んでいるとき
+		if (m_pPlayer->GetState() == CPlayer::PLAYER_STATE_DEATH)
+		{
 			// チャージをしているプレイヤーの取得
 			CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
 

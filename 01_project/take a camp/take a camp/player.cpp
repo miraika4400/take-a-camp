@@ -188,8 +188,8 @@ HRESULT CPlayer::Init(void)
 	// アイテムステート
 	m_ItemState = ITEM_STATE_NONE;
 
-	m_nMoveframe = MOVE_FRAME;				// 移動速度
-	m_nDashCnt = 1;		//速度アップカウント
+	m_nMoveframe = MOVE_FRAME;	// 移動速度
+	m_nDashCnt = 1;				//速度アップカウント
 	return S_OK;
 }
 
@@ -243,11 +243,12 @@ void CPlayer::Update(void)
 			ManageRot();
 			// 移動処理
 			Move();
+			// 攻撃処理
+			Attack();
+
 		}
 		//無敵処理
 		Invincible();
-		// 弾の処理
-		Attack();
 
 		// 当たり判定の位置
 		if (m_pCollision == NULL)
@@ -264,8 +265,6 @@ void CPlayer::Update(void)
 		Respawn();
 		// 攻撃範囲を消す
 		m_pAttack->ResetAttackArea();
-		// 攻撃のキャンセル
-		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		break;
 	}
 
@@ -338,6 +337,8 @@ void CPlayer::Death(void)
 
 		//行動クラスに死亡状態になったフラグを送る
 		m_pActRange->SetDeath(true);
+		//攻撃状態の初期化
+		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		//透明にする
 		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -368,6 +369,8 @@ void CPlayer::SkillDeath(void)
 
 		//行動クラスに死亡状態になったフラグを送る
 		m_pActRange->SetDeath(true);
+		//攻撃状態の初期化
+		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		//透明にする
 		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -407,7 +410,7 @@ void CPlayer::Move(void)
 					m_bMove = false;
 					m_rotDest.y = fRotDistY;
 
-					if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
+					//if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
 				}
 			}
 			//操作逆転状態の時
@@ -420,7 +423,7 @@ void CPlayer::Move(void)
 					m_bMove = false;
 					m_rotDest.y = fRotDistY - D3DXToRadian(180);
 
-					if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
+					//if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
 				}
 			}
 
@@ -552,40 +555,42 @@ void CPlayer::Attack(void)
 	// 当たっているタイルの取得
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 	
-	//攻撃処理
+	//触れているタイルの識別＆攻撃の状況が攻撃中になっていないか
 	if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor 
-		&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK)
+		&& m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL)
 	{
 		// 攻撃ボタンを押したら
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
 		{
-			// チャージ処理
-			if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL)
+			//タイルがチャージ出来ているか取得
+			if (pHitTile->ChargeFlag(m_nPlayerNumber))
 			{
-				//タイルがチャージ出来ているか取得
-				if (pHitTile->ChargeFlag(m_nPlayerNumber))
-				{
-					//攻撃チャージを開始
-					m_pAttack->ChargeFlag(pHitTile->GetStepNum()-1);
+				//攻撃チャージを開始
+				m_pAttack->ChargeFlag(pHitTile->GetStepNum()-1);
 
-				}
-			}
-			//チャージできる状態になりフラグが立つ
-			else
-			{
-				//攻撃範囲の枠の色を変える
-				m_pAttack->VisualizationAttackArea();
 			}
 		}
 	
+	}
+
+	//チャージ状態か
+	if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_CHARGE)
+	{
+		//攻撃範囲の枠の色を変える
+		m_pAttack->VisualizationAttackArea();
+
 		// 離したら弾がでるように
-		if (  !m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
+		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
 		{
 			//攻撃スイッチ処理
 			m_pAttack->AttackSwitch();
-			m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);		}
+			//アニメーション処理
+			m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
+
+		}
+
 	}
 
 	//攻撃範囲をリセット

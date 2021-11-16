@@ -54,8 +54,7 @@ public:
 	CAttackManager::ATTACK_TYPE GetAttackType(void) { return m_nAttackType; }						//攻撃タイプゲッター
 	void	SetAttackSquare(CAttackManager::ATTACK_SQUARE_DATA AttackSquare);	//攻撃マスデータセッター
 	CAttackManager::ATTACK_SQUARE_DATA GetAttackSquare(void);					//攻撃マスデータゲッター
-	//void		SetUseTile(CColorTile * pColorTile) { m_pColorTile = pColorTile; }
-	//CColorTile*	GetUseTile(void) { return m_pColorTile; }
+
 	void		SetLevel(int nLevel) { m_nLevel = nLevel; }				// レベルセッター
 	void		SetPos(D3DXVECTOR3 pos) { m_pos = pos; }				// 位置セッター
 	D3DXVECTOR3 GetPos(void) { return m_pos; }							// 位置ゲッター	
