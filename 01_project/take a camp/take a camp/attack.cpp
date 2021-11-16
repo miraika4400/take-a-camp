@@ -19,6 +19,7 @@
 //=============================================================================
 // マクロ定義
 //=============================================================================
+#define ATTACK_AREA_EFFECT_POS (D3DXVECTOR3(0.0f,10.0f,0.0f))
 #define CHARGE_COUNT (60*1)	//チャージにかかる時間
 
 //=============================================================================
@@ -27,7 +28,7 @@
 CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 {
 	//初期化処理
-	m_nAttackType	= CAttackManager::ATTACK_TYPE_1;
+	m_nAttackType = CResourceCharacter::CHARACTER_KNIGHT;
 	m_pos			= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	memset(&m_AttackSquare, 0, sizeof(m_AttackSquare));
 	m_pPlayer		= NULL;
@@ -112,26 +113,23 @@ void CAttackBased::Update(void)
 				// リストを進める
 				pColorTile = (CColorTile*)pColorTile->GetNext();
 			}
-
 		}
-		break;
-
+	
 	case ATTACK_STATE_CHARGE:	//チャージ状態
-		// チャージ処理
+								// チャージ処理
 		Charge();
 		break;
 
 	case ATTACK_STATE_ATTACK:	//攻撃状態
-		// 攻撃生成処理
+								// 攻撃生成処理
 		AttackCreate();
 		break;
 
-	//それ以外の状態
+		//それ以外の状態
 	default:
 		m_AttackState = ATTACK_STATE_NORMAL;
 		break;
 	}
-
 }
 
 //=============================================================================
@@ -139,6 +137,22 @@ void CAttackBased::Update(void)
 //=============================================================================
 void CAttackBased::Draw(void)
 {
+}
+
+//=============================================================================
+// 攻撃タイプセッター関数
+//=============================================================================
+void CAttackBased::SetAttackType(CResourceCharacter::CHARACTER_TYPE AttackType)
+{
+	m_nAttackType = AttackType;
+}
+
+//=============================================================================
+// 攻撃タイプゲッター関数
+//=============================================================================
+CResourceCharacter::CHARACTER_TYPE CAttackBased::GetAttackType(void)
+{
+	return m_nAttackType;
 }
 
 //=============================================================================
@@ -285,7 +299,7 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 				if (m_apAttackArea[nAttack] != NULL)
 				{
 					m_apAttackArea[nAttack]->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
-					m_apAttackArea[nAttack]->SetPos(CreatePos + m_pos + D3DXVECTOR3(0.0f, 10.0f, 0.0f));
+					m_apAttackArea[nAttack]->SetPos(CreatePos + m_pos + ATTACK_AREA_EFFECT_POS);
 					m_apAttackArea[nAttack]->SetDrawFlag(true);
 				}
 			}
@@ -303,7 +317,11 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 		CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPlayer()->GetPosDest());
 		if (pHitTile != NULL)
 		{
-			//タイプが一致しているか
+			if (m_nLevel < 0)
+			{
+				return;
+			}
+			// タイプが一致しているか
 			for (int nAttack = 0; nAttack < GetAttackSquare().nMaxHitRange; nAttack++)
 			{
 				//行列計算
@@ -317,7 +335,7 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 				if (m_apAttackArea[nAttack] != NULL)
 				{
 					m_apAttackArea[nAttack]->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
-					m_apAttackArea[nAttack]->SetPos(CreatePos + GetPlayer()->GetPosDest() + D3DXVECTOR3(0.0f, 10.0f, 0.0f));
+					m_apAttackArea[nAttack]->SetPos(CreatePos + GetPlayer()->GetPosDest() + ATTACK_AREA_EFFECT_POS);
 					m_apAttackArea[nAttack]->SetDrawFlag(true);
 				}
 

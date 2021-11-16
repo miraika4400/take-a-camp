@@ -37,7 +37,6 @@
 // マクロ定義
 //*****************************
 #define MOVE_DIST				(TILE_ONE_SIDE)	// 移動距離
-#define MOVE_FRAME				(15)			// 移動速度
 #define COLLISION_RADIUS		(18.0f)			// 当たり判定の大きさ
 #define MODL_COLOR				(D3DXCOLOR(0.3f,0.3f,0.3f,1.0f))	// モデルカラー
 #define MODEL_SIZE				(D3DXVECTOR3(1.4f,1.4f,1.4f))		// モデルサイズ
@@ -52,7 +51,6 @@
 #define ROT_FACING_02			(360)			// 回転向き
 #define RIM_POWER				(2.5f)			// リムライトの強さ
 #define DASH_FRAME				(300)			// ダッシュ時有効フレーム数
-#define DASH_MOVE_FRAME			(MOVE_FRAME*0.8f)	// ダッシュ時の速度
 #define STICK_DECISION_RANGE	(32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
 
 //*****************************
@@ -89,11 +87,12 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_pAttack = NULL;
 	memset(&m_apMotion, 0, sizeof(m_apMotion));	// アニメーションポインタ
 	m_ItemState = ITEM_STATE_NONE;	// アイテム用ステート
-	m_nMoveframe = 0;				// 移動速度
 	m_nDashCnt = 1;					// 速度アップカウント
 	m_bController = false;
 	m_pKillCount = NULL;
 	m_characterType = CResourceCharacter::CHARACTER_KNIGHT;
+	m_nMoveFrameData = 0;
+	m_nMoveFrameDataDash = 0;
 }
 
 //******************************
@@ -150,6 +149,10 @@ HRESULT CPlayer::Init(void)
 		return E_FAIL;
 	}
 
+	// キャラデータの反映
+	m_nMoveFrameData = charaData.nMoveFrame; // 移動時フレーム数
+	m_nMoveFrameDataDash = charaData.nMoveFrameDash;// 移動時フレーム数*ダッシュ時
+
 	// 移動フラグの初期化
 	m_bMove = true;
 	// 無敵フラグの初期化
@@ -188,8 +191,8 @@ HRESULT CPlayer::Init(void)
 	// アイテムステート
 	m_ItemState = ITEM_STATE_NONE;
 
-	m_nMoveframe = MOVE_FRAME;	// 移動速度
-	m_nDashCnt = 1;				//速度アップカウント
+	m_nMoveFrame = m_nMoveFrameData;
+	m_nDashCnt = 1;		//速度アップカウント
 	return S_OK;
 }
 
@@ -461,7 +464,7 @@ void CPlayer::Move(void)
 		D3DXVECTOR3 pos = GetPos();
 
 		//移動計算
-		pos += (m_Move - pos) / (float)(m_nMoveframe - m_MoveCount);
+		pos += (m_Move - pos) / (float)(m_nMoveFrame - m_MoveCount);
 
 		//位置設定
 		SetPos(pos);
@@ -470,7 +473,7 @@ void CPlayer::Move(void)
 		m_MoveCount++;
 
 		//カウントが一定に達する
-		if (m_MoveCount >= m_nMoveframe)
+		if (m_MoveCount >= m_nMoveFrame)
 		{
 			//カウント初期化
 			m_MoveCount = 0;
@@ -487,12 +490,12 @@ void CPlayer::Move(void)
 			//ダッシュタイムをカウント
 			m_nDashCnt++;
 
-			m_nMoveframe = (int)(DASH_MOVE_FRAME);
+			m_nMoveFrame = (int)(m_nMoveFrameDataDash);
 
 			if (m_nDashCnt % DASH_FRAME == 0)
 			{
 				m_nDashCnt = 0;
-				m_nMoveframe = MOVE_FRAME;
+				m_nMoveFrame = m_nMoveFrameData;
 				m_ItemState = ITEM_STATE_NONE;
 			}
 			break;

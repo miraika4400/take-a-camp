@@ -17,21 +17,21 @@
 //=============================================================================
 // 静的メンバー変数
 //=============================================================================
-char* CAttackManager::m_pFileName[ATTACK_TYPE_MAX] =
-{
-	"data/Text/attack/attack_1.csv" ,
-	"",
-	"",
-	""
-};
+//char* CAttackManager::m_pFileName[ATTACK_TYPE_MAX] =
+//{
+//	"data/Text/attack/attack_1.csv" ,
+//	"",
+//	"",
+//	""
+//};
 CAttackManager* CAttackManager::m_pAttackBasis = NULL;
 //=============================================================================
 // コンストラクタ
 //=============================================================================
 CAttackManager::CAttackManager()
 {
-	memset(&m_AttackData, 0, sizeof(ATTACK_RANGE_DATA[ATTACK_TYPE_MAX][MAX_ATTACK_LEVEL]));
-	memset(&m_AttackSwuare, 0, sizeof(ATTACK_SQUARE_DATA[ATTACK_TYPE_MAX][MAX_ATTACK_LEVEL]));
+	memset(&m_AttackData, 0, sizeof(ATTACK_RANGE_DATA[CResourceCharacter::CHARACTER_MAX][MAX_ATTACK_LEVEL]));
+	memset(&m_AttackSwuare, 0, sizeof(ATTACK_SQUARE_DATA[CResourceCharacter::CHARACTER_MAX][MAX_ATTACK_LEVEL]));
 
 }
 
@@ -48,7 +48,7 @@ CAttackManager::~CAttackManager()
 //=============================================================================
 void CAttackManager::Load(void)
 {
-	for (int nAttack = 0; nAttack < ATTACK_TYPE_MAX; nAttack++)
+	for (int nAttack = 0; nAttack < CResourceCharacter::CHARACTER_MAX; nAttack++)
 	{
 		//ファイルポインタ
 		FILE*	pFile = NULL;
@@ -67,9 +67,9 @@ void CAttackManager::Load(void)
 
 		//初期化
 		memset(cFileString, 0, sizeof(cFileString));
-
+		
 		//ファイル読み込み
-		fopen_s(&pFile, m_pFileName[nAttack], "r");
+		fopen_s(&pFile, CResourceCharacter::GetResourceCharacter()->GetCharacterData((CResourceCharacter::CHARACTER_TYPE)nAttack).attackTextPath.c_str(), "r");
 
 		if (pFile != NULL)
 		{
@@ -189,7 +189,7 @@ void CAttackManager::Load(void)
 //=============================================================================
 void CAttackManager::PosCalc(void)
 {
-	for (int nAttack = 0; nAttack < ATTACK_TYPE_MAX; nAttack++)
+	for (int nAttack = 0; nAttack < CResourceCharacter::CHARACTER_MAX; nAttack++)
 	{
 		for (int nLevel=0; nLevel<MAX_ATTACK_LEVEL; nLevel++)
 		{
@@ -346,11 +346,11 @@ void CAttackManager::Release(void)
 //=============================================================================
 // 攻撃範囲ゲッター生成
 //=============================================================================
-CAttackManager::ATTACK_RANGE_DATA CAttackManager::GetAttackData(ATTACK_TYPE Attack, int nLevel)
+CAttackManager::ATTACK_RANGE_DATA CAttackManager::GetAttackData(CResourceCharacter::CHARACTER_TYPE type, int nLevel)
 {
 	if (m_pAttackBasis != NULL)
 	{
-		return m_pAttackBasis->m_AttackData[Attack][nLevel];
+		return m_pAttackBasis->m_AttackData[type][nLevel];
 	}
 	else
 	{
@@ -361,11 +361,11 @@ CAttackManager::ATTACK_RANGE_DATA CAttackManager::GetAttackData(ATTACK_TYPE Atta
 //=============================================================================
 // 攻撃マス情報ゲッター関数
 //=============================================================================
-CAttackManager::ATTACK_SQUARE_DATA CAttackManager::GetAttack(ATTACK_TYPE AttackType, int nLevel)
+CAttackManager::ATTACK_SQUARE_DATA CAttackManager::GetAttack(CResourceCharacter::CHARACTER_TYPE type, int nLevel)
 {
 	if (m_pAttackBasis != NULL)
 	{
-		return m_pAttackBasis->m_AttackSwuare[AttackType][nLevel];
+		return m_pAttackBasis->m_AttackSwuare[type][nLevel];
 	}
 	else
 	{
