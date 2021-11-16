@@ -88,7 +88,6 @@ public:
 	int GetColorNumber(void) { return m_nColor; }				// カラー番号取得
 	CCollision * GetCollision(void) { return  m_pCollision; }	// 当たり判定取得
 	int GetPlayerNumber(void) { return m_nPlayerNumber; }		// プレイヤー番号取得
-
 	void SetState(PLAYER_STATE PlayerState) {m_PlayerState = PlayerState;}	// プレイヤー状態取得
 	PLAYER_STATE GetState(void) { return m_PlayerState; }					// プレイヤー状態セット
 	bool GetInvincible(void) { return m_bInvincible; }						// 無敵状態取得
@@ -122,6 +121,7 @@ private:
 	int m_nControllNum;         // コントロール番号
 	bool m_bController;         // コントローラー捜査課キーボード操作か
 	bool m_bMove;				// 移動可否フラグ
+	bool m_bAttack;				// 攻撃可否フラグ
 	bool m_bInvincible;			// 無敵フラグ
 	PLAYER_STATE m_PlayerState;	// プレイヤーステータス
 	int	m_nRespawnCount;		// リスポーンまでのカウント

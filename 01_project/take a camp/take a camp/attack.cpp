@@ -115,14 +115,12 @@ void CAttackBased::Update(void)
 			}
 		}
 	
-	case ATTACK_STATE_CHARGE:	//チャージ状態
-								// チャージ処理
-		Charge();
+	case ATTACK_STATE_CHARGE:	//チャージ状態					
+		Charge();				// チャージ処理
 		break;
 
-	case ATTACK_STATE_ATTACK:	//攻撃状態
-								// 攻撃生成処理
-		AttackCreate();
+	case ATTACK_STATE_ATTACK:	//攻撃状態			
+		AttackCreate();			// 攻撃生成処理
 		break;
 
 		//それ以外の状態

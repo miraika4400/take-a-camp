@@ -89,6 +89,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_ItemState = ITEM_STATE_NONE;	// アイテム用ステート
 	m_nDashCnt = 1;					// 速度アップカウント
 	m_bController = false;
+	m_bAttack = false;
 	m_pKillCount = NULL;
 	m_characterType = CResourceCharacter::CHARACTER_KNIGHT;
 	m_nMoveFrameData = 0;
@@ -566,7 +567,7 @@ void CPlayer::Attack(void)
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
 		{
-			//タイルがチャージ出来ているか取得
+			//タイルがチャージ出来るか取得
 			if (pHitTile->ChargeFlag(m_nPlayerNumber))
 			{
 				//攻撃チャージを開始
@@ -587,12 +588,20 @@ void CPlayer::Attack(void)
 		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
 		{
-			//攻撃スイッチ処理
-			m_pAttack->AttackSwitch();
-			//アニメーション処理
-			m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
-
+			//攻撃フラグを立てる
+			m_bAttack = true;
 		}
+
+	}
+	//攻撃フラグが立っている＆移動フラグが立っていない状態
+	if (m_bAttack&&m_bMove)
+	{
+		//フラグを回収
+		m_bAttack = false;
+		//攻撃スイッチ処理
+		m_pAttack->AttackSwitch();
+		//アニメーション処理
+		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
 
 	}
 
