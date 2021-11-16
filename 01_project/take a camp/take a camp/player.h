@@ -89,7 +89,7 @@ public:
 
 	void Death(void);		// 死亡処理関数
 	void SkillDeath(void);	// スキルでの死亡処理関数
-	void Attack(void);	// 攻撃処理
+	void Attack(void);		// 攻撃処理
 
 	int GetColorNumber(void) { return m_nColor; }
 	CCollision * GetCollision(void) { return  m_pCollision; }
@@ -106,6 +106,7 @@ public:
 
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 private:
+
 	void Move(void);		// 移動処理
 	void ManageRot(void);   // 向きの管理
 	void Respawn(void);		// リスポーン処理
@@ -135,7 +136,7 @@ private:
 	int m_nInvincibleCount;		// 無敵時間のカウント
 	D3DXVECTOR3	 m_Move;		// 移動量
 	int			 m_MoveCount;	// 移動時のカウント
-	int			m_ReverseCount;	// 操作反転カウント
+	int			 m_ReverseCount;// 操作反転カウント
 	D3DXCOLOR	 m_color;		// 色
 	CCollision * m_pCollision;	// 当たり判定
 	CActRange *	 m_pActRange;	// 行動判定

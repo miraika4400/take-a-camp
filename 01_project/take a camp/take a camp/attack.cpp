@@ -17,17 +17,22 @@
 #include "color_tile.h"
 
 //=============================================================================
+// マクロ定義
+//=============================================================================
+#define CHARGE_COUNT (60*1)	//チャージにかかる時間
+
+//=============================================================================
 // コンストラクタ
 //=============================================================================
 CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 {
 	//初期化処理
-	m_nAttackType = CAttackManager::ATTACK_TYPE_1;
-	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	memset(&m_AttackSquare, 0, sizeof(CAttackManager::ATTACK_SQUARE_DATA));
-	m_bAttack = false;
-	m_pPlayer = NULL;
-	m_nLevel = 0;
+	m_nAttackType	= CAttackManager::ATTACK_TYPE_1;
+	m_pos			= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	memset(&m_AttackSquare, 0, sizeof(m_AttackSquare));
+	m_pPlayer		= NULL;
+	m_nLevel		= 0;
+	m_nChargeCount	= 0;
 	ZeroMemory(&m_apAttackArea, sizeof(m_apAttackArea));
 }
 
@@ -44,6 +49,7 @@ CAttackBased::~CAttackBased()
 HRESULT CAttackBased::Init(void)
 {
 	int nMaxAttackNum = 0;
+	
 	//攻撃タイプセット
 	for (int nLevel = 0; nLevel < MAX_ATTACK_LEVEL; nLevel++)
 	{
@@ -76,8 +82,28 @@ void CAttackBased::Uninit(void)
 //=============================================================================
 void CAttackBased::Update(void)
 {
-	// 攻撃生成処理
-	AttackCreate();
+	//ステートごとの処理
+	switch (m_AttackState)
+	{
+	case ATTACK_STATE_NORMAL:	//通常状態
+		break;
+
+	case ATTACK_STATE_CHARGE:	//チャージ状態
+		// チャージ処理
+		Charge();
+		break;
+
+	case ATTACK_STATE_ATTACK:	//攻撃状態
+		// 攻撃生成処理
+		AttackCreate();
+		break;
+
+	//それ以外の状態
+	default:
+		m_AttackState = ATTACK_STATE_NORMAL;
+		break;
+	}
+
 }
 
 //=============================================================================
@@ -85,121 +111,6 @@ void CAttackBased::Update(void)
 //=============================================================================
 void CAttackBased::Draw(void)
 {
-}
-
-//=============================================================================
-// 攻撃タイプセッター関数
-//=============================================================================
-void CAttackBased::SetAttackType(CAttackManager::ATTACK_TYPE AttackType)
-{
-	m_nAttackType = AttackType;
-}
-
-//=============================================================================
-// 攻撃タイプゲッター関数
-//=============================================================================
-CAttackManager::ATTACK_TYPE CAttackBased::GetAttackType(void)
-{
-	return m_nAttackType;
-}
-
-//=============================================================================
-// 攻撃マスデータゲッター関数
-//=============================================================================
-void CAttackBased::SetAttackSquare(CAttackManager::ATTACK_SQUARE_DATA AttackSquare)
-{
-	m_AttackSquare[m_nLevel] = AttackSquare;
-}
-
-//=============================================================================
-// 攻撃マスデータゲッター関数
-//=============================================================================
-CAttackManager::ATTACK_SQUARE_DATA CAttackBased::GetAttackSquare()
-{
-	return m_AttackSquare[m_nLevel];
-}
-
-//=============================================================================
-// 位置セッター関数
-//=============================================================================
-void CAttackBased::SetPos(D3DXVECTOR3 pos)
-{
-	m_pos = pos;
-}
-
-//=============================================================================
-// 位置ゲッター関数
-//=============================================================================
-D3DXVECTOR3 CAttackBased::GetPos(void)
-{
-	return m_pos;
-}
-
-//=============================================================================
-// 向きセッター関数
-//=============================================================================
-void CAttackBased::SetRot(D3DXVECTOR3 rot)
-{
-	m_rot = rot;
-}
-
-//=============================================================================
-// 向きゲッター関数
-//=============================================================================
-D3DXVECTOR3 CAttackBased::GetRot(void)
-{
-	return m_rot;
-}
-
-//=============================================================================
-// 攻撃フラグセッター関数
-//=============================================================================
-void CAttackBased::SetAttackFlag(bool bAttack)
-{
-	m_bAttack = bAttack;
-}
-
-//=============================================================================
-// 攻撃スイッチ関数
-//=============================================================================
-void CAttackBased::AttackSwitch(int nLevel)
-{
-	//攻撃されていなかったら
-	if (!m_bAttack)
-	{
-		//フラグオン
-		SetAttackFlag(true);
-		//位置取得
-		SetPos(m_pPlayer->GetPos());
-		//向き取得
-		SetRot(m_pPlayer->GetRotDest());
-		//レベル取得
-		m_nLevel = nLevel;
-	}
-}
-
-//=============================================================================
-// 攻撃フラグゲッター関数
-//=============================================================================
-bool CAttackBased::GetAttackFlag(void)
-{
-	return m_bAttack;
-}
-
-//=============================================================================
-// プレイヤーポインタゲッター関数
-//=============================================================================
-void CAttackBased::SetPlayer(CPlayer * pPlayer)
-{
-	m_pPlayer = pPlayer;
-}
-
-//=============================================================================
-// プレイヤーポインタゲッター関数
-//=============================================================================
-CPlayer * CAttackBased::GetPlayer(void)
-{
-	return m_pPlayer;
 }
 
 //=============================================================================
@@ -226,6 +137,98 @@ void CAttackBased::Attack(int AttackType)
 	}
 }
 
+//=============================================================================
+// チャージフラグ処理関数
+//=============================================================================
+void CAttackBased::ChargeFlag(int nMaxLevel)
+{
+	//現在の状態が通常の場合
+	if (m_AttackState == ATTACK_STATE_NORMAL)
+	{
+		//チャージ状態に移行
+		m_AttackState = ATTACK_STATE_CHARGE;
+		//レベルの最大値の取得
+		m_nMaxLevel = nMaxLevel;
+	}
+}
+
+//=============================================================================
+// チャージ処理関数
+// Akuthor: 吉田 悠人
+//=============================================================================
+void CAttackBased::Charge(void)
+{
+	//カウントアップ
+	m_nChargeCount++;
+
+	//一定に達しているか
+	if (m_nChargeCount>CHARGE_COUNT)
+	{
+		//現在のレベルが限界のレベルより低い
+		if (m_nLevel<m_nMaxLevel)
+		{
+			m_nLevel++;
+		}
+		//カウント初期化
+		m_nChargeCount = 0;
+	}
+
+}
+
+//=============================================================================
+// 攻撃スイッチ関数
+//=============================================================================
+void CAttackBased::AttackSwitch(void)
+{
+	//攻撃をしていなかったら
+	if (m_AttackState == ATTACK_STATE_CHARGE)
+	{
+		//攻撃状態に移行
+		m_AttackState = ATTACK_STATE_ATTACK;
+		//位置取得
+		SetPos(m_pPlayer->GetPos());
+		//向き取得
+		SetRot(m_pPlayer->GetRotDest());
+		//カウント初期化
+		m_nChargeCount = 0;
+	
+		// チャージをしているプレイヤーの取得
+		CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
+
+		while (pColorTile != NULL)
+		{
+			//チャージをしているタイル取得
+			if (pColorTile->GetColorTileState() == CColorTile::COLOR_TILE_CHARGE
+				&&pColorTile->GetLasthitPlayerNum()== m_pPlayer->GetPlayerNumber())
+			{
+				//塗り段階の消費
+				pColorTile->ColorDown(m_nLevel+1);
+				//タイルステート
+				pColorTile->SetColorTileState(CColorTile::COLOR_TILE_NORMAL);
+			}
+			// リストを進める
+			pColorTile = (CColorTile*)pColorTile->GetNext();
+		}
+
+
+	}
+}
+
+//=============================================================================
+// 攻撃マスデータゲッター関数
+//=============================================================================
+void CAttackBased::SetAttackSquare(CAttackManager::ATTACK_SQUARE_DATA AttackSquare)
+{
+	m_AttackSquare[m_nLevel] = AttackSquare;
+}
+
+//=============================================================================
+// 攻撃マスデータゲッター関数
+//=============================================================================
+CAttackManager::ATTACK_SQUARE_DATA CAttackBased::GetAttackSquare()
+{
+	return m_AttackSquare[m_nLevel];
+}
 
 //=============================================================================
 // 攻撃範囲の枠の色を変える処理
@@ -234,7 +237,7 @@ void CAttackBased::Attack(int AttackType)
 void CAttackBased::VisualizationAttackArea(int nAttackType)
 {
 	//攻撃フラグが立っているか
-	if (GetAttackFlag())
+	if (m_AttackState == ATTACK_STATE_ATTACK)
 	{
 		//タイプが一致しているか
 		for (int nAttack = 0; nAttack < GetAttackSquare().nMaxHitRange; nAttack++)
@@ -271,7 +274,6 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 		CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPlayer()->GetPosDest());
 		if (pHitTile != NULL)
 		{
-			m_nLevel = pHitTile->GetStepNum() - 1;
 			//タイプが一致しているか
 			for (int nAttack = 0; nAttack < GetAttackSquare().nMaxHitRange; nAttack++)
 			{

@@ -21,7 +21,7 @@
 #include "color_manager.h"
 #include "bullet.h"
 #include "attack.h"
-#include "attack_1.h"
+#include "attack_knight.h"
 #include "resource_shader.h"
 #include "light.h"
 #include "camera_base.h"
@@ -162,10 +162,12 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 	pPlayer->SetPriority(OBJTYPE_PLAYER); // オブジェクトタイプ
 	pPlayer->m_Move = pos;
 	pPlayer->m_RespawnPos = pos;
+	
+	// プレイヤーの頭上に出すスコア生成
 	CNumberArray::Create(0, pos, D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(pPlayer->m_nColor), pPlayer->m_nColor);
 
-	//攻撃用クラス生成
-	pPlayer->m_pAttack = CAttack1::Create(pPlayer);
+	//攻撃用クラス生成(今後職業ごとにcreateする攻撃処理を変える)
+	pPlayer->m_pAttack = CAttackKnight::Create(pPlayer);
 
 	//移動範囲クラスの生成
 	pPlayer->m_pActRange = CActRange::Create(pPlayer);
@@ -206,24 +208,11 @@ HRESULT CPlayer::Init(void)
 	// モデルのサイズの設定
 	SetSize(MODEL_SIZE);
 
-	//CNumberArray::Create(10, GetPos() + D3DXVECTOR3(0.0f, 100.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);	
-
-	//for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
-	//{
-	//	m_apMotion[nCntAnim] = CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], GetModelData());
-	//}
-
-	//m_apMotion[MOTION_WALK]->SetActiveMotion(true);
-
-
-	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);
-
-	// アイテムステート
-	m_ItemState = ITEM_STATE_NONE;
-
-	m_nMoveframe = MOVE_FRAME;				// 移動速度
-	m_nDashCnt = 1;		//速度アップカウント
+	
+	m_rotDest		= D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);	//目標向きの初期化
+	m_ItemState		= ITEM_STATE_NONE;	// アイテムステート初期化
+	m_nMoveframe	= MOVE_FRAME;		// 移動速度の初期化
+	m_nDashCnt		= 1;				// 速度アップカウントの初期化
 	return S_OK;
 }
 
@@ -232,6 +221,7 @@ HRESULT CPlayer::Init(void)
 //******************************
 void CPlayer::Uninit(void)
 {
+	//当たり判定の終了処理
 	if (m_pCollision != NULL)
 	{
 		m_pCollision->ReConnection();
@@ -248,6 +238,7 @@ void CPlayer::Uninit(void)
 //******************************
 void CPlayer::Update(void)
 {
+	//ステートごとの処理
 	switch (m_PlayerState)
 	{
 	case PLAYER_STATE_REVERSE:
@@ -268,10 +259,14 @@ void CPlayer::Update(void)
 	}
 	case PLAYER_STATE_NORMAL:	//通常状態
 
-		// 向きの管理
-		ManageRot();
-		// 移動処理
-		Move();
+		//攻撃可否フラグが立っているか
+		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK)
+		{
+			// 向きの管理
+			ManageRot();
+			// 移動処理
+			Move();
+		}
 		//無敵処理
 		Invincible();
 		// 弾の処理
@@ -293,7 +288,7 @@ void CPlayer::Update(void)
 		// 攻撃範囲を消す
 		m_pAttack->ResetAttackArea();
 		// 攻撃のキャンセル
-		m_pAttack->SetAttackFlag(false);
+		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		break;
 	}
 
@@ -309,11 +304,11 @@ void CPlayer::Update(void)
 		}
 		if (pKey->GetKeyPress(DIK_2))
 		{
-			m_pAttack->AttackSwitch(0);
+			m_pAttack->AttackSwitch();
 		}
 		if (pKey->GetKeyPress(DIK_3))
 		{
-			m_pAttack->AttackSwitch(1);
+			m_pAttack->AttackSwitch();
 		}
 	}
 
@@ -497,7 +492,7 @@ void CPlayer::Move(void)
 					m_bMove = false;
 					m_rotDest.y = fRotDistY;
 
-					if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+					if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
 				}
 			}
 			//操作逆転状態の時
@@ -510,7 +505,7 @@ void CPlayer::Move(void)
 					m_bMove = false;
 					m_rotDest.y = fRotDistY - D3DXToRadian(180);
 
-					if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
+					if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
 				}
 			}
 
@@ -639,72 +634,54 @@ void CPlayer::Attack(void)
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 	CInputJoypad* pJoypad = CManager::GetJoypad();
 
-	// スティックの座標
-	D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
-
-	// 座標の取得
-	D3DXVECTOR3 pos = GetPos();
-
 	// 当たっているタイルの取得
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
-	if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor && !m_pAttack->GetAttackFlag())
+	
+	//攻撃処理
+	if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor 
+		&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK)
 	{
 		// 攻撃ボタンを押したら
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
 		{
-			// 移動不可に
-			m_bMove = false;
+			// チャージ処理
+			if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL)
+			{
+				//タイルがチャージ出来ているか取得
+				if (pHitTile->ChargeFlag(m_nPlayerNumber))
+				{
+					//攻撃チャージを開始
+					m_pAttack->ChargeFlag(pHitTile->GetStepNum()-1);
 
-			// 向いてる方向を変える
-			if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
-				|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-					|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
-			{// 前
-				m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
+				}
 			}
-			else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
-				|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-					|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
-			{// 後
-				m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
+			//チャージできる状態になりフラグが立つ
+			else
+			{
+				//攻撃範囲の枠の色を変える
+				m_pAttack->VisualizationAttackArea();
 			}
-			else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
-				|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-					|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
-			{// 左
-				m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
-			}
-			else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
-				|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-					|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
-			{// 右
-				m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
-			}
-
-			m_pAttack->VisualizationAttackArea();
 		}
 	
 		// 離したら弾がでるように
 		if (  !m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
 		{
-			m_pAttack->AttackSwitch(pHitTile->GetStepNum() - 1);
-			pHitTile->ResetTile();
+			//攻撃スイッチ処理
+			m_pAttack->AttackSwitch();
 		}
 	}
-	
+
+	//攻撃範囲をリセット
 	if (!m_bController && !pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
 		|| m_bController &&!pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
 	{
-		if (!m_pAttack->GetAttackFlag())
+		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK)
 		{
 			m_pAttack->ResetAttackArea();
 		}
 	}
-	
-	//位置設定
-	SetPos(pos);
 }
 
 //******************************
