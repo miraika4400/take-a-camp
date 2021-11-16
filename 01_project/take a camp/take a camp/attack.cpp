@@ -86,6 +86,30 @@ void CAttackBased::Update(void)
 	switch (m_AttackState)
 	{
 	case ATTACK_STATE_NORMAL:	//通常状態
+		//レベルの初期化
+		if (m_nLevel>0)
+		{
+			//初期化
+			m_nLevel = 0;
+
+			// チャージをしているプレイヤーの取得
+			CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
+
+			while (pColorTile != NULL)
+			{
+				//チャージをしているタイル取得
+				if (pColorTile->GetColorTileState() == CColorTile::COLOR_TILE_CHARGE
+					&&pColorTile->GetLasthitPlayerNum() == m_pPlayer->GetPlayerNumber())
+				{
+					//タイルステート
+					pColorTile->SetColorTileState(CColorTile::COLOR_TILE_NORMAL);
+					return;
+				}
+				// リストを進める
+				pColorTile = (CColorTile*)pColorTile->GetNext();
+			}
+
+		}
 		break;
 
 	case ATTACK_STATE_CHARGE:	//チャージ状態
@@ -205,6 +229,7 @@ void CAttackBased::AttackSwitch(void)
 				pColorTile->ColorDown(m_nLevel+1);
 				//タイルステート
 				pColorTile->SetColorTileState(CColorTile::COLOR_TILE_NORMAL);
+				return;
 			}
 			// リストを進める
 			pColorTile = (CColorTile*)pColorTile->GetNext();

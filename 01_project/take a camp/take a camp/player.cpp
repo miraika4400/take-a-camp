@@ -31,11 +31,11 @@
 #include "chara_select.h"
 #include "kill_count.h"
 #include "particle.h"
+#include "resource_model_hierarchy.h"
 
 //*****************************
 // マクロ定義
 //*****************************
-#define HIERARCHY_TEXT_PATH1	"data/Text/hierarchy/Knight.txt"   // 階層構造テキストのパス
 #define MOVE_DIST				(TILE_ONE_SIDE)	// 移動距離
 #define MOVE_FRAME				(15)			// 移動速度
 #define COLLISION_RADIUS		(18.0f)			// 当たり判定の大きさ
@@ -65,12 +65,6 @@ int CPlayer::m_anControllKey[MAX_PLAYER][CPlayer::KEY_MAX] =
 	{ DIK_U,DIK_J,DIK_H,DIK_K,DIK_I },
 	{ DIK_NUMPAD8,DIK_NUMPAD5,DIK_NUMPAD4,DIK_NUMPAD6,DIK_NUMPAD9 }
 };
-CResourceModel::Model CPlayer::m_model[MAX_PARTS_NUM] = {};
-int CPlayer::m_nPartsNum = 0;
-char CPlayer::m_achAnimPath[MOTION_MAX][64]
-{
-	{ "data/Text/motion/run.txt" },         // 歩きアニメーション
-};
 
 //******************************
 // コンストラクタ
@@ -99,6 +93,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_nDashCnt = 1;					// 速度アップカウント
 	m_bController = false;
 	m_pKillCount = NULL;
+	m_characterType = CResourceCharacter::CHARACTER_KNIGHT;
 }
 
 //******************************
@@ -106,39 +101,6 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 //******************************
 CPlayer::~CPlayer()
 {
-}
-
-//******************************
-// テクスチャのロード
-//******************************
-HRESULT CPlayer::Load(void)
-{
-	// モデルの読み込み
-	LoadModels(HIERARCHY_TEXT_PATH1, &m_model[0], &m_nPartsNum);
-
-	return S_OK;
-}
-
-//******************************
-// テクスチャのアンロード
-//******************************
-void CPlayer::Unload(void)
-{
-	for (int nCnt = 0; nCnt < m_nPartsNum; nCnt++)
-	{
-		//メッシュの破棄
-		if (m_model[nCnt].pMesh != NULL)
-		{
-			m_model[nCnt].pMesh->Release();
-			m_model[nCnt].pMesh = NULL;
-		}
-		//マテリアルの破棄
-		if (m_model[nCnt].pBuffMat != NULL)
-		{
-			m_model[nCnt].pBuffMat->Release();
-			m_model[nCnt].pBuffMat = NULL;
-		}
-	}
 }
 
 //******************************
@@ -180,7 +142,10 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 //******************************
 HRESULT CPlayer::Init(void)
 {
-	if (FAILED(CModelHierarchy::Init(m_nPartsNum, &m_model[0], HIERARCHY_TEXT_PATH1)))
+	// キャラデータの取得
+	CResourceCharacter::CharacterData charaData = CResourceCharacter::GetResourceCharacter()->GetCharacterData(m_characterType);
+
+	if (FAILED(CModelHierarchy::Init(charaData.modelType)))
 	{
 		return E_FAIL;
 	}
@@ -208,11 +173,23 @@ HRESULT CPlayer::Init(void)
 	// モデルのサイズの設定
 	SetSize(MODEL_SIZE);
 
-	
-	m_rotDest		= D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);	//目標向きの初期化
-	m_ItemState		= ITEM_STATE_NONE;	// アイテムステート初期化
-	m_nMoveframe	= MOVE_FRAME;		// 移動速度の初期化
-	m_nDashCnt		= 1;				// 速度アップカウントの初期化
+	//CNumberArray::Create(10, GetPos() + D3DXVECTOR3(0.0f, 100.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);	
+
+	for (int nCntAnim = 0; nCntAnim < CResourceCharacter::MOTION_MAX; nCntAnim++)
+	{
+		m_apMotion[nCntAnim] = CMotion::Create(GetPartsNum(), charaData.aMotionTextPath[nCntAnim].c_str(), GetModelData());
+	}
+
+	m_apMotion[CResourceCharacter::MOTION_IDLE]->SetActiveMotion(true);
+
+	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);
+
+	// アイテムステート
+	m_ItemState = ITEM_STATE_NONE;
+
+	m_nMoveframe = MOVE_FRAME;				// 移動速度
+	m_nDashCnt = 1;		//速度アップカウント
 	return S_OK;
 }
 
@@ -291,6 +268,9 @@ void CPlayer::Update(void)
 		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		break;
 	}
+
+	// モーション管理
+	ManageMotion();
 
 	// 
 #ifdef _DEBUG
@@ -410,71 +390,6 @@ void CPlayer::Move(void)
 
 		// スティックの座標
 		D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
-
-		//// 移動値
-		//auto MoveValue = [&](D3DXVECTOR3 move, D3DXVECTOR2 actMove, float fRotDistY)
-		//{
-		//	if (m_pActRange->ActMove(actMove.x, actMove.y))
-		//	{
-		//		m_Move += move;
-		//		m_bMove = false;
-		//		m_rotDest.y = fRotDistY;
-
-		//		if (!m_pAttack->GetAttackFlag()) m_pAttack->ResetAttackArea();
-		//	}
-		//};
-		//if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
-		//	|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-		//		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
-		//{
-		//	if (m_PlayerState != PLAYER_STATE_REVERSE)
-		//	{
-		//		MoveValue(D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
-		//	}
-		//	else
-		//	{
-		//		MoveValue(D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_AFTER));
-		//	}
-		//}
-		//else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
-		//	|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-		//		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
-		//{
-		//	if (m_PlayerState != PLAYER_STATE_REVERSE)
-		//	{
-		//		MoveValue(D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
-		//	}
-		//	else
-		//	{
-		//		MoveValue(D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
-		//	}
-		//}
-		//else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
-		//	|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-		//		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
-		//{
-		//	if (m_PlayerState != PLAYER_STATE_REVERSE)
-		//	{
-		//		MoveValue(D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
-		//	}
-		//	else
-		//	{
-		//		MoveValue(D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
-		//	}
-		//}
-		//else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
-		//	|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-		//		|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
-		//{
-		//	if (m_PlayerState != PLAYER_STATE_REVERSE)
-		//	{
-		//		MoveValue(D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
-		//	}
-		//	else
-		//	{
-		//		MoveValue(D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
-		//	}
-		//}
 
 		// 移動値
 		auto MoveValue = [&](D3DXVECTOR3 move, D3DXVECTOR2 actMove, float fRotDistY)
@@ -670,7 +585,7 @@ void CPlayer::Attack(void)
 		{
 			//攻撃スイッチ処理
 			m_pAttack->AttackSwitch();
-		}
+			m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);		}
 	}
 
 	//攻撃範囲をリセット
@@ -749,6 +664,40 @@ void CPlayer::Invincible(void)
 			m_nInvincibleCount = 0;
 			m_color.a = 1.0f;
 			m_bInvincible = false;
+		}
+	}
+}
+
+//******************************
+// モーション管理
+//******************************
+void CPlayer::ManageMotion(void)
+{
+	for (int nCntMotion = 0; nCntMotion < CResourceCharacter::MOTION_MAX; nCntMotion++)
+	{
+		if (m_apMotion[CResourceCharacter::MOTION_IDLE]->GetActiveMotion())
+		{
+			if (nCntMotion == CResourceCharacter::MOTION_IDLE)
+			{
+				continue;
+			}
+
+			if (m_apMotion[nCntMotion]->GetActiveMotion())
+			{
+				m_apMotion[CResourceCharacter::MOTION_IDLE]->SetActiveMotion(false);
+			}
+		}
+		else
+		{
+			if (nCntMotion == CResourceCharacter::MOTION_IDLE)
+			{
+				continue;
+			}
+			if (m_apMotion[nCntMotion]->GetActiveMotion())
+			{
+				break;
+			}
+			m_apMotion[CResourceCharacter::MOTION_IDLE]->SetActiveMotion(true);
 		}
 	}
 }

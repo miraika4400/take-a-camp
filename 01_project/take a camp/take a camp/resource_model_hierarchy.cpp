@@ -23,7 +23,9 @@ CResourceModelHierarchy *CResourceModelHierarchy::m_pSingle = NULL; //モデルクラ
 // モデルのパス
 const std::string CResourceModelHierarchy::m_aModelPath[CResourceModelHierarchy::MODEL_HIERARCHY_MAX]
 {
-	"data/Text/hierarchy/Knight.txt",            // 騎士
+	"data/Text/hierarchy/Knight.txt",
+	"data/Text/hierarchy/Lancer.txt",
+	"data/Text/hierarchy/wizard.txt",
 };
 
 //===================================

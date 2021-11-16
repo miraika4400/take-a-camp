@@ -321,6 +321,9 @@
     <ClCompile Include="total_score.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
+    <ClCompile Include="resource_character.cpp">
+      <Filter>ソース ファイル\03_Resource</Filter>
+    </ClCompile>
     <ClCompile Include="attack_knight.cpp">
       <Filter>ソース ファイル\07_GameModel\Bullet</Filter>
     </ClCompile>
@@ -529,6 +532,9 @@
     </ClInclude>
     <ClInclude Include="total_score.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="resource_character.h">
+      <Filter>ヘッダー ファイル\03_Resource</Filter>
     </ClInclude>
     <ClInclude Include="attack_knight.h">
       <Filter>ヘッダー ファイル\07_GameModel\Bullet</Filter>

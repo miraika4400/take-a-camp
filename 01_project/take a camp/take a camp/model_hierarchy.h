@@ -32,11 +32,8 @@ public:
 	CModelHierarchy(int nPliority = OBJTYPE_NONE);
 	~CModelHierarchy();
 
-	static void LoadModels(char * pPath, CResourceModel::Model *model, int * pNumModel); // モデルの読み込み
-	void LoadHierarchy(CResourceModel::Model *model, char*pPath);                        // 階層構造の読み込み
-
 	HRESULT Init(void); // 純関数用
-	HRESULT Init(int nNumParts, CResourceModel::Model *model, char*pPath); // 初期化
+	HRESULT Init(CResourceModelHierarchy::MODEL_HIERARCHY_TYPE modelType); // 初期化
 
 	void Uninit(void);                                             // 終了
 	void Update(void);                                             // 更新

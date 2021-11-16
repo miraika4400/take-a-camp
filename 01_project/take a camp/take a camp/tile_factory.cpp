@@ -25,11 +25,11 @@ std::vector<CTile::SENTENCE_FUNC> CTileFactory::m_CreateSentence = {};
 CTileFactory* CTileFactory::m_pInstance = NULL;
 const std::vector<CTileFactory::LabelData> CTileFactory::m_cLabelData = 
 {
-	{ "TILE_NONE"    , NULL},
-	{ "TILE_"        , NULL },
-	{ "TILE_NORMAL"  , CColorTile::Create },
-	{ "TILE_PLAYER"  , CSpawnTile::Create },
-	{ "TILE_NEEDLE"  , CNeedleTile::Create },
+	{ "TILE_NONE"   , NULL},
+	{ "TILE_"       , NULL },
+	{ "TILE_NORMAL" , CColorTile::Create },
+	{ "TILE_PLAYER" , CSpawnTile::Create },
+	{ "TILE_NEEDLE" , CNeedleTile::Create },
 };
 
 //******************************

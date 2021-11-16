@@ -14,7 +14,7 @@
 //*****************************
 #include "scene.h"
 #include "game.h"
-#include "player.h"
+#include "resource_character.h"
 
 //=============================
 // 前方宣言
@@ -44,7 +44,7 @@ public:
 		int nControllNum; // コントローラー番号
 		bool bController; // コントローラーフラグ*trueならコントローラーfalseならキーボード
 		int nColorNum;    // カラー番号
-		CPlayer::CHARA_TYPE charaType; // キャラタイプ
+		CResourceCharacter::CHARACTER_TYPE charaType; // キャラタイプ
 		bool bEntry;      // エントリー状態
 	};
 
