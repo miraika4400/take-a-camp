@@ -113,7 +113,7 @@ private:
 
 	CKillCount * m_pKillCount;	// プレイヤーのキルカウントポインタ
 	ITEM_STATE m_ItemState;		// アイテムステータス
-	int m_nMoveframe;			// 移動速度
+	int m_nMoveFrame;			// 移動速度
 	int m_nDashCnt;				// 速度アップカウント
 	CAttackBased* m_pAttack;	// 攻撃用クラス
 	int m_nPlayerNumber;		// プレイヤー番号
@@ -127,6 +127,8 @@ private:
 	int m_nInvincibleCount;		// 無敵時間のカウント
 	D3DXVECTOR3	 m_Move;		// 移動量
 	int			 m_MoveCount;	// 移動時のカウント
+	int          m_nMoveFrameData;   // 移動時フレーム数
+	int          m_nMoveFrameDataDash; // 移動時のフレーム数*ダッシュ時
 	int			m_ReverseCount;	// 操作反転カウント
 	D3DXCOLOR	 m_color;		// 色
 	CCollision * m_pCollision;	// 当たり判定

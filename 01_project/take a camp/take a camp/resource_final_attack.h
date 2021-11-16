@@ -11,6 +11,7 @@
 //=============================================================================
 #include "model.h"
 #include "scene.h"
+#include "resource_character.h"
 
 //=============================================================================
 // マクロ定義
@@ -65,31 +66,22 @@ public:
 		int			nAttackFrame[MAX_FINAL_HIT_TYPE];										// 攻撃速度
 	}FINAL_ATTACK_SQUARE_DATA;
 
-	typedef enum	//攻撃の種類
-	{
-		FINAL_ATTACK_TYPE_1 = 0,	//なし
-		FINAL_ATTACK_TYPE_2,
-		FINAL_ATTACK_TYPE_3,
-		FINAL_ATTACK_TYPE_4,
-		FINAL_ATTACK_TYPE_MAX
-	}FINAL_ATTACK_TYPE;
-
 	//関数定義
 	CFinalAttackManager();
 	~CFinalAttackManager();
 	static CFinalAttackManager * Create(void);	// クラス生成
 	static void Release(void);					// クラス破棄
-	static FINAL_ATTACK_RANGE_DATA GetFinalAttackData(FINAL_ATTACK_TYPE Attack);
-	static FINAL_ATTACK_SQUARE_DATA GetFinalAttack(FINAL_ATTACK_TYPE AttackType);
+	static FINAL_ATTACK_RANGE_DATA GetFinalAttackData(CResourceCharacter::CHARACTER_TYPE Attack);
+	static FINAL_ATTACK_SQUARE_DATA GetFinalAttack(CResourceCharacter::CHARACTER_TYPE AttackType);
 
 private:
 	void	Load(void);		//攻撃範囲読み込み
 	void	PosCalc(void);	//位置計算
 
-	static char*				m_pFileName[FINAL_ATTACK_TYPE_MAX];		// ファイルネーム
+	static char*				m_pFileName[CResourceCharacter::CHARACTER_MAX];		// ファイルネーム
 	static CFinalAttackManager*	m_pAttackBasis;							// 攻撃範囲クラスのポインタ
-	FINAL_ATTACK_RANGE_DATA		m_AttackData[FINAL_ATTACK_TYPE_MAX];	// 攻撃の情報
-	FINAL_ATTACK_SQUARE_DATA	m_AttackSwuare[FINAL_ATTACK_TYPE_MAX];	// 攻撃マスの情報
+	FINAL_ATTACK_RANGE_DATA		m_AttackData[CResourceCharacter::CHARACTER_MAX];	// 攻撃の情報
+	FINAL_ATTACK_SQUARE_DATA	m_AttackSwuare[CResourceCharacter::CHARACTER_MAX];	// 攻撃マスの情報
 
 };
 #endif

@@ -27,7 +27,7 @@
 CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 {
 	//初期化処理
-	m_nAttackType = CAttackManager::ATTACK_TYPE_1;
+	m_nAttackType = CResourceCharacter::CHARACTER_KNIGHT;
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	memset(&m_AttackSquare, 0, sizeof(CAttackManager::ATTACK_SQUARE_DATA));
 	m_bAttack = false;
@@ -95,7 +95,7 @@ void CAttackBased::Draw(void)
 //=============================================================================
 // 攻撃タイプセッター関数
 //=============================================================================
-void CAttackBased::SetAttackType(CAttackManager::ATTACK_TYPE AttackType)
+void CAttackBased::SetAttackType(CResourceCharacter::CHARACTER_TYPE AttackType)
 {
 	m_nAttackType = AttackType;
 }
@@ -103,7 +103,7 @@ void CAttackBased::SetAttackType(CAttackManager::ATTACK_TYPE AttackType)
 //=============================================================================
 // 攻撃タイプゲッター関数
 //=============================================================================
-CAttackManager::ATTACK_TYPE CAttackBased::GetAttackType(void)
+CResourceCharacter::CHARACTER_TYPE CAttackBased::GetAttackType(void)
 {
 	return m_nAttackType;
 }

@@ -42,7 +42,7 @@ CAttack1 * CAttack1::Create(CPlayer* pPlayer)
 		pAttack1->SetPlayer(pPlayer);	//プレイヤークラス取得
 		pAttack1->SetRot(pPlayer->GetRot());	//向き設定
 		pAttack1->SetPos(pPlayer->GetPos());	//位置設定
-		pAttack1->SetAttackType(CAttackManager::ATTACK_TYPE_1);	//タイプセット
+		pAttack1->SetAttackType(CResourceCharacter::CHARACTER_KNIGHT);	//タイプセット
 		pAttack1->Init();		//初期化処理
 	}
 	return pAttack1;
