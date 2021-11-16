@@ -79,10 +79,10 @@ HRESULT CItem::Init(void)
 	switch (m_ItemEffect)
 	{
 	case ITEM_EFFECT_DASH:	
-		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_PLAYER01));
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_ITEM_DASH));
 		break;
 	case ITEM_EFFECT_REVERSE:
-		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_PLAYER01));
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_ITEM_REVERSE));
 		break;
 	default:
 		break;

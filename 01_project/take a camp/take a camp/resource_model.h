@@ -58,6 +58,8 @@ public:
 		MODEL_STAGE01,            // ステージモデル01
 		MODEL_BULLET01,			  // バレットモデル01
 		MODEL_NEEDLE,             // とげ
+		MODEL_ITEM_DASH,		  // ダッシュアイテム
+		MODEL_ITEM_REVERSE,       // 反転
 		MODEL_MAX        // モデル数
 	}MODEL_TYPE;
 

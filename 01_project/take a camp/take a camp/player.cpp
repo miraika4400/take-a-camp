@@ -272,6 +272,9 @@ void CPlayer::Update(void)
 		break;
 	}
 
+	// アイテムステートの管理
+	ManageItemState();
+
 	// モーション管理
 	ManageMotion();
 
@@ -477,43 +480,6 @@ void CPlayer::Move(void)
 			//移動できるように
 			m_bMove = true;
 		}
-
-		switch (m_ItemState)
-		{
-		case ITEM_STATE_NONE:
-			break;
-		case ITEM_STATE_DASH:
-
-			//ダッシュタイムをカウント
-			m_nDashCnt++;
-
-			m_nMoveFrame = (int)(m_nMoveFrameDataDash);
-
-			if (m_nDashCnt % DASH_FRAME == 0)
-			{
-				m_nDashCnt = 0;
-				m_nMoveFrame = m_nMoveFrameData;
-				m_ItemState = ITEM_STATE_NONE;
-			}
-			break;
-		case ITEM_STATE_REVERSE:
-			CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
-
-			while (pPlayer != NULL)
-			{
-				if (pPlayer->m_PlayerState != PLAYER_STATE_DEATH)
-				{
-					if (pPlayer->GetPlayerNumber() != m_nPlayerNumber)
-					{
-						pPlayer->SetState(PLAYER_STATE_REVERSE);
-						m_ItemState = ITEM_STATE_NONE;
-						//return;
-					}
-				}
-				pPlayer = (CPlayer*)pPlayer->GetNext();
-			}
-			break;
-		}
 	}
 }
 
@@ -577,7 +543,7 @@ void CPlayer::Attack(void)
 			//チャージできる状態になりフラグが立つ
 			else
 			{
-				//攻撃範囲の枠の色を変える
+				//攻撃範囲の可視化
 				m_pAttack->VisualizationAttackArea();
 			}
 		}
@@ -702,6 +668,49 @@ void CPlayer::ManageMotion(void)
 			}
 			m_apMotion[CResourceCharacter::MOTION_IDLE]->SetActiveMotion(true);
 		}
+	}
+}
+
+//******************************
+// アイテムステートの管理
+//******************************
+void CPlayer::ManageItemState(void)
+{
+	switch (m_ItemState)
+	{
+	case ITEM_STATE_NONE:
+		break;
+	case ITEM_STATE_DASH:
+
+		//ダッシュタイムをカウント
+		m_nDashCnt++;
+
+		m_nMoveFrame = (int)(m_nMoveFrameDataDash);
+
+		if (m_nDashCnt % DASH_FRAME == 0)
+		{
+			m_nDashCnt = 0;
+			m_nMoveFrame = m_nMoveFrameData;
+			m_ItemState = ITEM_STATE_NONE;
+		}
+		break;
+	case ITEM_STATE_REVERSE:
+		CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+
+		while (pPlayer != NULL)
+		{
+			if (pPlayer->m_PlayerState != PLAYER_STATE_DEATH)
+			{
+				if (pPlayer->GetPlayerNumber() != m_nPlayerNumber)
+				{
+					pPlayer->SetState(PLAYER_STATE_REVERSE);
+					m_ItemState = ITEM_STATE_NONE;
+					//return;
+				}
+			}
+			pPlayer = (CPlayer*)pPlayer->GetNext();
+		}
+		break;
 	}
 }
 

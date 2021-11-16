@@ -54,13 +54,14 @@ public:
 	void SetPaintTime(int nFrame);
 
 	bool GetDrawFlag(void) { return m_bDraw; }
-	void SetDrawFlag(bool bFlag) { m_bDraw = bFlag; }
+	void SetDrawFlag(bool bFlag);
 private:
 	// メンバ変数
 	bool m_bDraw;// 描画フラグ
 	CScene3d* m_apPolygon[PAINT_TIME_POLYGON_NUM];
 	int m_nFrame; // フレーム数
 	int m_nCntFrame;
+	float m_fAlpha; // アルファ値
 };
 
 

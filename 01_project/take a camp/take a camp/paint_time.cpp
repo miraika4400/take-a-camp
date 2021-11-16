@@ -16,7 +16,8 @@
 //******************************
 // マクロ定義
 //******************************
-#define COLOR D3DXCOLOR(0.8f,0.8f,0.8f,0.8f)
+#define COLOR D3DXCOLOR(0.8f,0.8f,0.8f,m_fAlpha)
+#define ALPHA_RATE 0.1f
 
 //******************************
 // コンストラクタ
@@ -26,6 +27,7 @@ CPaintTime::CPaintTime():CScene(OBJTYPE_EFFECT)
 	m_bDraw = false;
 	m_nCntFrame = 0;
 	m_nFrame = 0;
+	m_fAlpha = 0.0f;
 }
 
 //******************************
@@ -70,6 +72,8 @@ HRESULT CPaintTime::Init(void)
 	m_nCntFrame = 0;
 	m_nFrame = 0;
 	m_bDraw = false;
+	m_fAlpha = 0.0f;
+
 	return S_OK;
 }
 
@@ -99,7 +103,7 @@ void CPaintTime::Update(void)
 	if (m_bDraw)
 	{
 		m_nCntFrame++;
-		
+		// 針を回す
 		float fRotY = D3DXToRadian(((float)m_nCntFrame / (float)m_nFrame)*360.0f);
 		m_apPolygon[PARTS_HANDS]->SetRot(D3DXVECTOR3(0.0f, fRotY, 0.0f));
 
@@ -108,6 +112,16 @@ void CPaintTime::Update(void)
 			m_bDraw = false;
 		}
 	}
+	else
+	{
+		m_fAlpha += (0.0f - m_fAlpha)*ALPHA_RATE;
+	}
+
+	// カラーの設定
+	for (int nCntPolygon = 0; nCntPolygon < PAINT_TIME_POLYGON_NUM; nCntPolygon++)
+	{
+		m_apPolygon[nCntPolygon]->SetColor(COLOR);
+	}
 }
 
 //******************************
@@ -115,15 +129,12 @@ void CPaintTime::Update(void)
 //******************************
 void CPaintTime::Draw(void)
 {
-	if (m_bDraw)
+	// 描画
+	for (int nCntPolygon = 0; nCntPolygon < PAINT_TIME_POLYGON_NUM; nCntPolygon++)
 	{
-		// 描画
-		for (int nCntPolygon = 0; nCntPolygon < PAINT_TIME_POLYGON_NUM; nCntPolygon++)
+		if (m_apPolygon[nCntPolygon] != NULL)
 		{
-			if (m_apPolygon[nCntPolygon] != NULL)
-			{
-				m_apPolygon[nCntPolygon]->Draw();
-			}
+			m_apPolygon[nCntPolygon]->Draw();
 		}
 	}
 }
@@ -152,4 +163,18 @@ void CPaintTime::SetPaintTime(int nFrame)
 	m_apPolygon[PARTS_HANDS]->SetRot(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	m_nCntFrame = 0;
 	m_nFrame = nFrame;
+	m_fAlpha = 1.0f;
+}
+
+//******************************
+// 描画フラグのセット
+//******************************
+void CPaintTime::SetDrawFlag(bool bFlag)
+{
+	m_bDraw = bFlag;
+
+	if (!m_bDraw)
+	{
+		m_fAlpha = 0.0f;
+	}
 }
