@@ -154,7 +154,7 @@
   <ItemGroup>
     <ClCompile Include="act_range.cpp" />
     <ClCompile Include="attack.cpp" />
-    <ClCompile Include="attack_1.cpp" />
+    <ClCompile Include="attack_knight.cpp" />
     <ClCompile Include="attack_area.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="chara_select.cpp" />
@@ -225,12 +225,13 @@
   <ItemGroup>
     <ClInclude Include="act_range.h" />
     <ClInclude Include="attack.h" />
-    <ClInclude Include="attack_1.h" />
+    <ClInclude Include="attack_knight.h" />
     <ClInclude Include="attack_area.h" />
     <ClInclude Include="chara_select.h" />
     <ClInclude Include="chara_select_ui.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="button_title.h" />
+    <ClInclude Include="charge_tile.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="kill_count.h" />
     <ClInclude Include="max_color_effect.h" />
@@ -245,7 +246,6 @@
     <ClInclude Include="camera_tps.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="color_manager.h" />
-    <ClInclude Include="color_tile.h" />
     <ClInclude Include="debug_log.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />

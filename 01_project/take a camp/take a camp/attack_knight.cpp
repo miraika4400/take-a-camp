@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// 攻撃範囲タイプ1 [attack_1.cpp]
+// 攻撃範囲タイプ騎士 [attack_knight.cpp]
 // Author : 吉田悠人
 //
 //=============================================================================
@@ -8,14 +8,15 @@
 //=============================================================================
 // ヘッダファイルのインクルード
 //=============================================================================
-#include "attack_1.h"
+#include "attack_knight.h"
 #include "tile.h"
 #include "player.h"
+#include "attack.h"
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CAttack1::CAttack1()
+CAttackKnight::CAttackKnight()
 {
 	m_nAttackCount = 0;
 	m_nType = 0;
@@ -24,53 +25,46 @@ CAttack1::CAttack1()
 //=============================================================================
 // デストラクタ
 //=============================================================================
-CAttack1::~CAttack1()
+CAttackKnight::~CAttackKnight()
 {
 }
 
 //=============================================================================
 // 生成処理
 //=============================================================================
-CAttack1 * CAttack1::Create(CPlayer* pPlayer)
+CAttackKnight * CAttackKnight::Create(CPlayer* pPlayer)
 {
 	//メモリ確保
-	CAttack1* pAttack1 = NULL;
-	pAttack1 = new CAttack1;
+	CAttackKnight* pAttackKnight = NULL;
+	pAttackKnight = new CAttackKnight;
 
-	if (pAttack1 != NULL)
+	if (pAttackKnight != NULL)
 	{
-		pAttack1->SetPlayer(pPlayer);	//プレイヤークラス取得
-		pAttack1->SetRot(pPlayer->GetRot());	//向き設定
-		pAttack1->SetPos(pPlayer->GetPos());	//位置設定
-		pAttack1->SetAttackType(CResourceCharacter::CHARACTER_KNIGHT);	//タイプセット
-		pAttack1->Init();		//初期化処理
+		pAttackKnight->SetPlayer(pPlayer);	//プレイヤークラス取得
+		pAttackKnight->SetRot(pPlayer->GetRot());	//向き設定
+		pAttackKnight->SetPos(pPlayer->GetPos());	//位置設定
+		pAttackKnight->SetAttackType(CResourceCharacter::CHARACTER_KNIGHT);	//タイプセット
+		pAttackKnight->Init();		//初期化処理
 	}
-	return pAttack1;
+	return pAttackKnight;
 }
 
 //=============================================================================
 // 初期化関数
 //=============================================================================
-HRESULT CAttack1::Init(void)
+HRESULT CAttackKnight::Init(void)
 {
 	CAttackBased::Init();
 	return S_OK;
 }
 
-////=============================================================================
-//// 更新関数
-////=============================================================================
-//void CAttack1::Update(void)
-//{
-//}
-
 //=============================================================================
 // 攻撃生成関数
 //=============================================================================
-void CAttack1::AttackCreate(void)
+void CAttackKnight::AttackCreate(void)
 {
 	//攻撃フラグが立っているか
-	if (GetAttackFlag())
+	if (GetState() == ATTACK_STATE_ATTACK)
 	{
 		//カウントアップ
 		m_nAttackCount++;
@@ -87,9 +81,12 @@ void CAttack1::AttackCreate(void)
 			if (m_nType == MAX_HIT_TYPE)
 			{
 				//フラグの初期化
-				SetAttackFlag(false);
+				SetState(ATTACK_STATE_NORMAL);
 				//タイプ初期化
 				m_nType = 0;
+				//レベルの初期化
+				CAttackBased::SetLevel(0);
+
 			}
 			else
 			{
@@ -98,6 +95,7 @@ void CAttack1::AttackCreate(void)
 			}
 			//カウント初期化
 			m_nAttackCount = 0;
+
 		}
 	}
 }

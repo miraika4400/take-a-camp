@@ -83,7 +83,7 @@ public:
 
 	void Death(void);		// €–Sˆ—ŠÖ”
 	void SkillDeath(void);	// ƒXƒLƒ‹‚Å‚Ì€–Sˆ—ŠÖ”
-	void Attack(void);	// UŒ‚ˆ—
+	void Attack(void);		// UŒ‚ˆ—
 
 	int GetColorNumber(void) { return m_nColor; }
 	CCollision * GetCollision(void) { return  m_pCollision; }
@@ -100,6 +100,7 @@ public:
 
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 private:
+
 	void Move(void);		// ˆÚ“®ˆ—
 	void ManageRot(void);   // Œü‚«‚ÌŠÇ—
 	void Respawn(void);		// ƒŠƒXƒ|[ƒ“ˆ—

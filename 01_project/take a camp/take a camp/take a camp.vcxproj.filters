@@ -261,9 +261,6 @@
     <ClCompile Include="attack.cpp">
       <Filter>ソース ファイル\07_GameModel\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="attack_1.cpp">
-      <Filter>ソース ファイル\07_GameModel\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="item.cpp">
       <Filter>ソース ファイル\07_GameModel</Filter>
     </ClCompile>
@@ -326,6 +323,9 @@
     </ClCompile>
     <ClCompile Include="resource_character.cpp">
       <Filter>ソース ファイル\03_Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_knight.cpp">
+      <Filter>ソース ファイル\07_GameModel\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -461,9 +461,6 @@
     <ClInclude Include="tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
-    <ClInclude Include="color_tile.h">
-      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
-    </ClInclude>
     <ClInclude Include="spawn_tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
@@ -471,9 +468,6 @@
       <Filter>ヘッダー ファイル\03_Resource</Filter>
     </ClInclude>
     <ClInclude Include="attack.h">
-      <Filter>ヘッダー ファイル\07_GameModel\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="attack_1.h">
       <Filter>ヘッダー ファイル\07_GameModel\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="item.h">
@@ -541,6 +535,12 @@
     </ClInclude>
     <ClInclude Include="resource_character.h">
       <Filter>ヘッダー ファイル\03_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_knight.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="charge_tile.h">
+      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

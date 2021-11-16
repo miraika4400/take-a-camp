@@ -87,6 +87,8 @@ bool CActRange::ActMove(int nMoveX, int nMoveZ)
 	{
 		return m_bPlayerMove[PLAYER_MOVE_DOWN];
 	}
+
+	return NULL;
 }
 
 //=============================================================================
