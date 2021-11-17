@@ -24,6 +24,7 @@ class CActRange;
 class CAttackBased;
 class CMotion;
 class CKillCount;
+class CAttackFinal;
 
 //*****************************
 // クラス定義
@@ -43,6 +44,7 @@ public:
 		KEY_LEFT,
 		KEY_RIGHT,
 		KEY_BULLET,
+		KEY_ATTCK_FINAL,
 		KEY_MAX
 	}CONTROLL_KEY;
 
@@ -84,6 +86,7 @@ public:
 	void Death(void);		// 死亡処理関数
 	void SkillDeath(void);	// スキルでの死亡処理関数
 	void Attack(void);		// 攻撃処理
+	void AttackFinal(void); // 必殺技処理
 
 	int GetColorNumber(void) { return m_nColor; }
 	CCollision * GetCollision(void) { return  m_pCollision; }
@@ -117,6 +120,7 @@ private:
 	int m_nMoveframe;			// 移動速度
 	int m_nDashCnt;				// 速度アップカウント
 	CAttackBased* m_pAttack;	// 攻撃用クラス
+	CAttackFinal* m_pAttackFinal; // 必殺用クラス
 	int m_nPlayerNumber;		// プレイヤー番号
 	int m_nColor;				// 色ナンバー
 	int m_nControllNum;         // コントロール番号
