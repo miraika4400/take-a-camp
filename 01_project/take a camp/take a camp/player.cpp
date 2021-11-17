@@ -32,7 +32,8 @@
 #include "kill_count.h"
 #include "particle.h"
 #include "resource_model_hierarchy.h"
-
+#include "attack_final.h"
+#include "attack_final_knight.h"
 //*****************************
 // マクロ定義
 //*****************************
@@ -58,10 +59,10 @@
 //*****************************
 int CPlayer::m_anControllKey[MAX_PLAYER][CPlayer::KEY_MAX] =
 {
-	{ DIK_W,DIK_S,DIK_A,DIK_D,DIK_E },
-	{ DIK_UP,DIK_DOWN,DIK_LEFT,DIK_RIGHT,DIK_NUMPAD1 },
-	{ DIK_U,DIK_J,DIK_H,DIK_K,DIK_I },
-	{ DIK_NUMPAD8,DIK_NUMPAD5,DIK_NUMPAD4,DIK_NUMPAD6,DIK_NUMPAD9 }
+	{ DIK_W,DIK_S,DIK_A,DIK_D,DIK_E,DIK_Q },
+	{ DIK_UP,DIK_DOWN,DIK_LEFT,DIK_RIGHT,DIK_NUMPAD1,DIK_RSHIFT },
+	{ DIK_U,DIK_J,DIK_H,DIK_K,DIK_I,DIK_Y },
+	{ DIK_NUMPAD8,DIK_NUMPAD5,DIK_NUMPAD4,DIK_NUMPAD6,DIK_NUMPAD9,DIK_NUMPAD7 }
 };
 
 //******************************
@@ -89,6 +90,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_ItemState = ITEM_STATE_NONE;	// アイテム用ステート
 	m_nDashCnt = 1;					// 速度アップカウント
 	m_bController = false;
+	m_bAttack = false;
 	m_pKillCount = NULL;
 	m_characterType = CResourceCharacter::CHARACTER_KNIGHT;
 	m_nMoveFrameData = 0;
@@ -129,6 +131,9 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 
 	//攻撃用クラス生成(今後職業ごとにcreateする攻撃処理を変える)
 	pPlayer->m_pAttack = CAttackKnight::Create(pPlayer);
+
+	// 必殺用クラス生成
+	pPlayer->m_pAttackFinal = CAttackFinalknight::Create(pPlayer);
 
 	//移動範囲クラスの生成
 	pPlayer->m_pActRange = CActRange::Create(pPlayer);
@@ -246,11 +251,14 @@ void CPlayer::Update(void)
 			ManageRot();
 			// 移動処理
 			Move();
+			// 攻撃処理
+			Attack();
+
 		}
 		//無敵処理
 		Invincible();
-		// 弾の処理
-		Attack();
+		// 必殺の処理
+		AttackFinal();
 
 		// 当たり判定の位置
 		if (m_pCollision == NULL)
@@ -267,8 +275,6 @@ void CPlayer::Update(void)
 		Respawn();
 		// 攻撃範囲を消す
 		m_pAttack->ResetAttackArea();
-		// 攻撃のキャンセル
-		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		break;
 	}
 
@@ -344,6 +350,8 @@ void CPlayer::Death(void)
 
 		//行動クラスに死亡状態になったフラグを送る
 		m_pActRange->SetDeath(true);
+		//攻撃状態の初期化
+		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		//透明にする
 		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -374,6 +382,8 @@ void CPlayer::SkillDeath(void)
 
 		//行動クラスに死亡状態になったフラグを送る
 		m_pActRange->SetDeath(true);
+		//攻撃状態の初期化
+		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		//透明にする
 		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -413,7 +423,7 @@ void CPlayer::Move(void)
 					m_bMove = false;
 					m_rotDest.y = fRotDistY;
 
-					if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
+					//if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
 				}
 			}
 			//操作逆転状態の時
@@ -426,7 +436,7 @@ void CPlayer::Move(void)
 					m_bMove = false;
 					m_rotDest.y = fRotDistY - D3DXToRadian(180);
 
-					if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
+					//if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
 				}
 			}
 
@@ -521,24 +531,20 @@ void CPlayer::Attack(void)
 	// 当たっているタイルの取得
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 	
-	//攻撃処理
+	//触れているタイルの識別＆攻撃の状況が攻撃中になっていないか
 	if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor 
-		&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK)
+		&& m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL)
 	{
 		// 攻撃ボタンを押したら
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
 		{
-			// チャージ処理
-			if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL)
+			//タイルがチャージ出来るか取得
+			if (pHitTile->ChargeFlag(m_nPlayerNumber))
 			{
-				//タイルがチャージ出来ているか取得
-				if (pHitTile->ChargeFlag(m_nPlayerNumber))
-				{
-					//攻撃チャージを開始
-					m_pAttack->ChargeFlag(pHitTile->GetStepNum()-1);
+				//攻撃チャージを開始
+				m_pAttack->ChargeFlag(pHitTile->GetStepNum()-1);
 
-				}
 			}
 			//チャージできる状態になりフラグが立つ
 			else
@@ -548,13 +554,33 @@ void CPlayer::Attack(void)
 			}
 		}
 	
+	}
+
+	//チャージ状態か
+	if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_CHARGE)
+	{
+		//攻撃範囲の枠の色を変える
+		m_pAttack->VisualizationAttackArea();
+
 		// 離したら弾がでるように
-		if (  !m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
+		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
 		{
-			//攻撃スイッチ処理
-			m_pAttack->AttackSwitch();
-			m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);		}
+			//攻撃フラグを立てる
+			m_bAttack = true;
+		}
+
+	}
+	//攻撃フラグが立っている＆移動フラグが立っていない状態
+	if (m_bAttack&&m_bMove)
+	{
+		//フラグを回収
+		m_bAttack = false;
+		//攻撃スイッチ処理
+		m_pAttack->AttackSwitch();
+		//アニメーション処理
+		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
+
 	}
 
 	//攻撃範囲をリセット
@@ -565,6 +591,43 @@ void CPlayer::Attack(void)
 		{
 			m_pAttack->ResetAttackArea();
 		}
+	}
+}
+
+//******************************
+// 必殺処理
+//******************************
+void CPlayer::AttackFinal(void)
+{
+	// キーボードとジョイパッドの取得
+	CInputKeyboard * pKey = CManager::GetKeyboard();
+	CInputJoypad* pJoypad = CManager::GetJoypad();
+
+	// 当たっているタイルの取得
+	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
+
+	// 攻撃ボタンを押したら
+	if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+		|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
+	{
+		//攻撃範囲の枠の色を変える
+		m_pAttackFinal->VisualizationAttackArea();
+	}
+
+	// 離したら弾がでるように
+	if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+		|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
+	{
+		//必殺スイッチ処理
+		m_pAttackFinal->AttackFinalSwitch();
+		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
+	}
+
+	//攻撃範囲をリセット
+	if (!m_bController && !pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+		|| m_bController && !pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
+	{
+		m_pAttackFinal->ResetAttackArea();
 	}
 }
 

@@ -92,13 +92,17 @@ void CAttackBased::Update(void)
 	{
 	case ATTACK_STATE_NORMAL:	//通常状態
 	{
-		//レベルの初期化
-		if (m_nLevel > 0)
+		//数値の初期化
+		if (m_nLevel != 0)
 		{
-			//初期化
 			m_nLevel = 0;
 			m_nChargeCount = 0;
 
+		}
+		
+		//プレイヤーが死んでいるとき
+		if (m_pPlayer->GetState() == CPlayer::PLAYER_STATE_DEATH)
+		{
 			// チャージをしているプレイヤーの取得
 			CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
 
@@ -118,14 +122,14 @@ void CAttackBased::Update(void)
 		}
 	}
 	break;
-	case ATTACK_STATE_CHARGE:	//チャージ状態
-								// チャージ処理
-		Charge();
+
+	
+	case ATTACK_STATE_CHARGE:	//チャージ状態					
+		Charge();				// チャージ処理
 		break;
 
-	case ATTACK_STATE_ATTACK:	//攻撃状態
-								// 攻撃生成処理
-		AttackCreate();
+	case ATTACK_STATE_ATTACK:	//攻撃状態			
+		AttackCreate();			// 攻撃生成処理
 		break;
 
 		//それ以外の状態
@@ -339,7 +343,7 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 				if (m_apAttackArea[nAttack] != NULL)
 				{
 					m_apAttackArea[nAttack]->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
-					m_apAttackArea[nAttack]->SetPos(CreatePos + GetPlayer()->GetPosDest() + ATTACK_AREA_EFFECT_POS);
+					m_apAttackArea[nAttack]->SetPos(CreatePos + GetPlayer()->GetPos() + ATTACK_AREA_EFFECT_POS);
 					m_apAttackArea[nAttack]->SetDrawFlag(true);
 				}
 

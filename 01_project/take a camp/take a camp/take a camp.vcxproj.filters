@@ -112,6 +112,18 @@
     <Filter Include="ヘッダー ファイル\10_Ui\Button">
       <UniqueIdentifier>{1288eef2-ed2a-442b-ae45-5783bfebf3f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\07_GameModel\Bullet\Attack">
+      <UniqueIdentifier>{62383b5c-5af1-4688-917d-0bc9b7a89476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\07_GameModel\Bullet\AttackFinal">
+      <UniqueIdentifier>{83ad9c87-1e44-44dc-a165-4c8612d1104a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\07_GameModel\Bullet\Attack">
+      <UniqueIdentifier>{b728de14-7bfa-4596-ab98-f8fec1b4fd67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\07_GameModel\Bullet\AttackFinal">
+      <UniqueIdentifier>{48fe2af5-5dd2-475e-9211-8d78fb033855}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene.cpp">
@@ -258,9 +270,6 @@
     <ClCompile Include="resource_attack.cpp">
       <Filter>ソース ファイル\03_Resource</Filter>
     </ClCompile>
-    <ClCompile Include="attack.cpp">
-      <Filter>ソース ファイル\07_GameModel\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="item.cpp">
       <Filter>ソース ファイル\07_GameModel</Filter>
     </ClCompile>
@@ -324,14 +333,23 @@
     <ClCompile Include="resource_character.cpp">
       <Filter>ソース ファイル\03_Resource</Filter>
     </ClCompile>
+    <ClCompile Include="attack.cpp">
+      <Filter>ソース ファイル\07_GameModel\Bullet\Attack</Filter>
+    </ClCompile>
     <ClCompile Include="attack_knight.cpp">
-      <Filter>ソース ファイル\07_GameModel\Bullet</Filter>
+      <Filter>ソース ファイル\07_GameModel\Bullet\Attack</Filter>
     </ClCompile>
     <ClCompile Include="tile_effect_charge.cpp">
       <Filter>ソース ファイル\09_Effect</Filter>
     </ClCompile>
     <ClCompile Include="tile_effect.cpp">
       <Filter>ソース ファイル\09_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_final.cpp">
+      <Filter>ソース ファイル\07_GameModel\Bullet\AttackFinal</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_final_knight.cpp">
+      <Filter>ソース ファイル\07_GameModel\Bullet\AttackFinal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -473,9 +491,6 @@
     <ClInclude Include="resource_attack.h">
       <Filter>ヘッダー ファイル\03_Resource</Filter>
     </ClInclude>
-    <ClInclude Include="attack.h">
-      <Filter>ヘッダー ファイル\07_GameModel\Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="item.h">
       <Filter>ヘッダー ファイル\07_GameModel</Filter>
     </ClInclude>
@@ -542,9 +557,6 @@
     <ClInclude Include="resource_character.h">
       <Filter>ヘッダー ファイル\03_Resource</Filter>
     </ClInclude>
-    <ClInclude Include="attack_knight.h">
-      <Filter>ヘッダー ファイル\07_GameModel\Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="charge_tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
@@ -556,6 +568,18 @@
     </ClInclude>
     <ClInclude Include="color_tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="attack.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Bullet\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_final.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Bullet\AttackFinal</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_final_knight.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Bullet\AttackFinal</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_knight.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Bullet\Attack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

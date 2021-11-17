@@ -237,6 +237,8 @@ void CColorTile::ResetTile(void)
 	m_nStep = 0;                                 // 今の塗段階
 	m_nCntStep = 0;                              // 再度塗り可能カウント
 	m_nLastHitPlayerNum = -1;                    // 最後に当たったプレイヤー番号
+	m_distColor = TILE_DEFAULT_COLOR;
+	m_oldColor = TILE_DEFAULT_COLOR;
 	
 }
 
@@ -247,6 +249,8 @@ void CColorTile::ColorDown(int nCount)
 {
 	//塗り段階を引く
 	m_nStep = m_nStep - nCount;
+	// カウントの初期化
+	m_nCntStep = PEINT_COUNT;
 
 	//0より小さい場合
 	if (m_nStep <= 0)
@@ -259,14 +263,6 @@ void CColorTile::ColorDown(int nCount)
 	{
 		// 色の取得
 		m_distColor = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1);
-
-		//カラー変更
-		m_distColor.r = (m_distColor.r);
-		m_distColor.g = (m_distColor.g);
-		m_distColor.b = (m_distColor.b);
-
-		//カラーセット
-		SetColor(m_distColor);
 	}
 }
 
