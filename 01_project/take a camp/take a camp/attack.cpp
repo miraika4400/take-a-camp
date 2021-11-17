@@ -35,6 +35,7 @@ CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 	m_nLevel		= 0;
 	m_nChargeCount	= 0;
 	ZeroMemory(&m_apAttackArea, sizeof(m_apAttackArea));
+	ZeroMemory(&m_anChargeValue, sizeof(m_anChargeValue));
 }
 
 //=============================================================================
@@ -59,6 +60,9 @@ HRESULT CAttackBased::Init(void)
 		{
 			nMaxAttackNum = m_AttackSquare[nLevel].nMaxHitRange;
 		}
+		
+		// チャージ時間の取得
+		m_anChargeValue[nLevel] = CResourceCharacter::GetResourceCharacter()->GetCharacterData(GetAttackType()).anChargeTime[nLevel];
 	}
 
 	for(int nCntArea = 0 ; nCntArea < nMaxAttackNum; nCntArea++)
@@ -87,11 +91,13 @@ void CAttackBased::Update(void)
 	switch (m_AttackState)
 	{
 	case ATTACK_STATE_NORMAL:	//通常状態
-		
+	{
 		//数値の初期化
 		if (m_nLevel != 0)
 		{
 			m_nLevel = 0;
+			m_nChargeCount = 0;
+
 		}
 		
 		//プレイヤーが死んでいるとき
@@ -114,8 +120,11 @@ void CAttackBased::Update(void)
 				pColorTile = (CColorTile*)pColorTile->GetNext();
 			}
 		}
-		break;
-	case ATTACK_STATE_CHARGE:	// チャージ状態					
+	}
+	break;
+
+	
+	case ATTACK_STATE_CHARGE:	//チャージ状態					
 		Charge();				// チャージ処理
 		break;
 
@@ -194,25 +203,26 @@ void CAttackBased::ChargeFlag(int nMaxLevel)
 
 //=============================================================================
 // チャージ処理関数
-// Akuthor: 吉田 悠人
+// Akuthor: 吉田 悠人、増澤未来
 //=============================================================================
 void CAttackBased::Charge(void)
 {
 	//カウントアップ
 	m_nChargeCount++;
 
-	//一定に達しているか
-	if (m_nChargeCount>CHARGE_COUNT)
+	for (int nCntLevel = 0; nCntLevel < MAX_ATTACK_LEVEL; nCntLevel++)
 	{
-		//現在のレベルが限界のレベルより低い
-		if (m_nLevel<m_nMaxLevel)
+		// 最大レベルの判定
+		if (nCntLevel > m_nMaxLevel)
 		{
-			m_nLevel++;
+			break;
 		}
-		//カウント初期化
-		m_nChargeCount = 0;
+		// チャージ時間に応じたレベルにする
+		if (m_nChargeCount > m_anChargeValue[nCntLevel])
+		{
+			m_nLevel = nCntLevel;
+		}
 	}
-
 }
 
 //=============================================================================
@@ -333,7 +343,7 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 				if (m_apAttackArea[nAttack] != NULL)
 				{
 					m_apAttackArea[nAttack]->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
-					m_apAttackArea[nAttack]->SetPos(CreatePos + GetPlayer()->GetPosDest() + ATTACK_AREA_EFFECT_POS);
+					m_apAttackArea[nAttack]->SetPos(CreatePos + GetPlayer()->GetPos() + ATTACK_AREA_EFFECT_POS);
 					m_apAttackArea[nAttack]->SetDrawFlag(true);
 				}
 

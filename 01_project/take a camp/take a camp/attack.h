@@ -24,6 +24,7 @@ class CColorTile;
 //*****************************
 #define MAX_ATTACK (4)	//攻撃の最大回数
 #define MAX_ATTACK_AREA_NUM (128)
+
 //=============================================================================
 // クラス定義
 //=============================================================================
@@ -38,7 +39,6 @@ public:
 		ATTACK_STATE_CHARGE,		// チャージ状態
 		ATTACK_STATE_ATTACK			// 攻撃状態
 	}ATTACK_STATE;
-
 
 	//関数定義
 	CAttackBased();
@@ -82,6 +82,7 @@ private:
 	int				m_nLevel;							// 攻撃のレベル
 	int				m_nMaxLevel;						// 最大レベル保存用
 	int				m_nChargeCount;						// チャージ用のカウント
+	int				m_anChargeValue[MAX_ATTACK_LEVEL];  // チャージ目標値
 
 };
 

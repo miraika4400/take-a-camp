@@ -20,7 +20,7 @@
 class CCollision;
 class CScene3d;
 class CPaintTime;
-
+class CTileEffectCharge;
 //*****************************
 //マクロ定義
 //*****************************
@@ -73,20 +73,24 @@ public:
 private:
 	void HitPlayerActionTrigger(CPlayer * pPlayer);  // 弾と当たったときのアクション*トリガー
 	void HItPeint(CPeintCollision * pPeint);		 // 塗り判定と当たった時のアクション
-	void ManageFrame(void);			// アイコン管理
+	void ManageEffect(void);			// エフェクト類の管理
 	void ManageColor(void);			// 色の管理
 
 	// メンバ変数
 	static int m_anTileNum[MAX_TILE_COLOR_NUM][COLOR_STEP_NUM + 1];
 	COLOR_TILE_STATE m_ColorTileState;	//タイルのステート
 	D3DXCOLOR m_distColor;    // 目標カラー
+	D3DXCOLOR m_oldColor;     // 色移動時の移動前のカラー
 	CScene3d *m_pFrame;       // 枠
 	CPaintTime * m_pPaintTime;// 再度塗り可能時間
+	CTileEffectCharge*m_pCharge; // チャージエフェクト
 	int m_nPrevNum;           // 今塗られているカラーの番号*デフォルトは-1
 	int m_nStep;              // 今の塗段階
 	int m_nCntStep;           // 再度塗り可能カウント
 	int m_nLastHitPlayerNum;  // 最後に当たったプレイヤー番号
 	int	m_nCntFrem;			  // インターバル用カウント
+	int m_nBlinking;          // 点滅時のカウント
+	bool m_bBlinkingColor;    // 点滅のカラーフラグ
 };
 
 #endif

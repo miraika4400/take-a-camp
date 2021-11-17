@@ -16,16 +16,17 @@
 //******************************
 // マクロ定義
 //******************************
-#define COLOR D3DXCOLOR(0.8f,0.8f,0.8f,0.8f)
+#define COLOR D3DXCOLOR(0.8f,0.8f,0.8f,GetAlpha())
+#define ALPHA_RATE 0.1f
 
 //******************************
 // コンストラクタ
 //******************************
-CPaintTime::CPaintTime():CScene(OBJTYPE_EFFECT)
+CPaintTime::CPaintTime()
 {
-	m_bDraw = false;
 	m_nCntFrame = 0;
 	m_nFrame = 0;
+	
 }
 
 //******************************
@@ -54,6 +55,8 @@ CPaintTime * CPaintTime::Create(void)
 //******************************
 HRESULT CPaintTime::Init(void)
 {
+	CTileEffect::Init();
+
 	// 初期化
 	for (int nCntPolygon = 0; nCntPolygon < PAINT_TIME_POLYGON_NUM; nCntPolygon++)
 	{
@@ -69,7 +72,7 @@ HRESULT CPaintTime::Init(void)
 	// カウントの初期化
 	m_nCntFrame = 0;
 	m_nFrame = 0;
-	m_bDraw = false;
+	
 	return S_OK;
 }
 
@@ -88,7 +91,7 @@ void CPaintTime::Uninit(void)
 		}
 	}
 
-	Release();
+	CTileEffect::Uninit();
 }
 
 //******************************
@@ -96,18 +99,27 @@ void CPaintTime::Uninit(void)
 //******************************
 void CPaintTime::Update(void)
 {
-	if (m_bDraw)
+	if (GetDrawFlag())
 	{
 		m_nCntFrame++;
-		
+		// 針を回す
 		float fRotY = D3DXToRadian(((float)m_nCntFrame / (float)m_nFrame)*360.0f);
 		m_apPolygon[PARTS_HANDS]->SetRot(D3DXVECTOR3(0.0f, fRotY, 0.0f));
 
 		if (m_nCntFrame > m_nFrame)
 		{
-			m_bDraw = false;
+			SetDrawFlag(false);
 		}
 	}
+
+	// カラーの設定
+	for (int nCntPolygon = 0; nCntPolygon < PAINT_TIME_POLYGON_NUM; nCntPolygon++)
+	{
+		m_apPolygon[nCntPolygon]->SetColor(COLOR);
+	}
+
+	// タイルエフェクト更新
+	CTileEffect::Update();
 }
 
 //******************************
@@ -115,15 +127,12 @@ void CPaintTime::Update(void)
 //******************************
 void CPaintTime::Draw(void)
 {
-	if (m_bDraw)
+	// 描画
+	for (int nCntPolygon = 0; nCntPolygon < PAINT_TIME_POLYGON_NUM; nCntPolygon++)
 	{
-		// 描画
-		for (int nCntPolygon = 0; nCntPolygon < PAINT_TIME_POLYGON_NUM; nCntPolygon++)
+		if (m_apPolygon[nCntPolygon] != NULL)
 		{
-			if (m_apPolygon[nCntPolygon] != NULL)
-			{
-				m_apPolygon[nCntPolygon]->Draw();
-			}
+			m_apPolygon[nCntPolygon]->Draw();
 		}
 	}
 }
@@ -148,8 +157,9 @@ void CPaintTime::SetPos(D3DXVECTOR3 pos)
 //******************************
 void CPaintTime::SetPaintTime(int nFrame)
 {
-	m_bDraw = true;
+	SetDrawFlag(true);
 	m_apPolygon[PARTS_HANDS]->SetRot(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	m_nCntFrame = 0;
 	m_nFrame = nFrame;
+	
 }
