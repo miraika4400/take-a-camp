@@ -584,7 +584,7 @@ void CPlayer::Attack(void)
 		//攻撃範囲の枠の色を変える
 		m_pAttack->VisualizationAttackArea();
 
-		// 離したら弾がでるように
+		// 離したら攻撃がでるように
 		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
 		{
@@ -593,7 +593,7 @@ void CPlayer::Attack(void)
 		}
 
 	}
-	//攻撃フラグが立っている＆移動フラグが立っていない状態
+	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
 	if (m_bAttack&&m_bMove)
 	{
 		//フラグを回収

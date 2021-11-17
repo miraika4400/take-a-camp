@@ -114,12 +114,12 @@ void CAttackBased::Update(void)
 				pColorTile = (CColorTile*)pColorTile->GetNext();
 			}
 		}
-	
-	case ATTACK_STATE_CHARGE:	//チャージ状態					
+		break;
+	case ATTACK_STATE_CHARGE:	// チャージ状態					
 		Charge();				// チャージ処理
 		break;
 
-	case ATTACK_STATE_ATTACK:	//攻撃状態			
+	case ATTACK_STATE_ATTACK:	// 攻撃状態			
 		AttackCreate();			// 攻撃生成処理
 		break;
 
