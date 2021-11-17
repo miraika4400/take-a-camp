@@ -154,6 +154,8 @@
   <ItemGroup>
     <ClCompile Include="act_range.cpp" />
     <ClCompile Include="attack.cpp" />
+    <ClCompile Include="attack_final.cpp" />
+    <ClCompile Include="attack_final_knight.cpp" />
     <ClCompile Include="attack_knight.cpp" />
     <ClCompile Include="attack_area.cpp" />
     <ClCompile Include="button.cpp" />
@@ -225,6 +227,8 @@
   <ItemGroup>
     <ClInclude Include="act_range.h" />
     <ClInclude Include="attack.h" />
+    <ClInclude Include="attack_final.h" />
+    <ClInclude Include="attack_final_knight.h" />
     <ClInclude Include="attack_knight.h" />
     <ClInclude Include="attack_area.h" />
     <ClInclude Include="chara_select.h" />
