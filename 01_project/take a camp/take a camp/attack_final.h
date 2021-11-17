@@ -44,8 +44,8 @@ public:
 	void AttackFinalSwitch(void);			// 必殺スイッチ処理
 	void AttackFinal(int AttackFinalType);	// 必殺関数
 
-	void SetAttackFinalType(CFinalAttackManager::FINAL_ATTACK_TYPE AttackFinal) { m_FinalAttackType = AttackFinal; }						// 必殺技タイプ設定
-	CFinalAttackManager::FINAL_ATTACK_TYPE GetAttackFinalType(void) {return m_FinalAttackType;}												// 必殺技タイプの取得
+	void SetAttackFinalType(CResourceCharacter::CHARACTER_TYPE AttackFinal) { m_FinalAttackType = AttackFinal; }						// 必殺技タイプ設定
+	CResourceCharacter::CHARACTER_TYPE GetAttackFinalType(void) {return m_FinalAttackType;}												// 必殺技タイプの取得
 
 	void SetFinalAttackSquare(CFinalAttackManager::FINAL_ATTACK_SQUARE_DATA FinalAttackSquare) { m_FinalAttackSquare = FinalAttackSquare; }	// 必殺技マスデータの設定
 	CFinalAttackManager::FINAL_ATTACK_SQUARE_DATA GetFinalAttackSquare(void) { return m_FinalAttackSquare; }								// 必殺技マスデータの取得
@@ -68,7 +68,7 @@ private:
 	D3DXVECTOR3 m_pos;	// 位置
 	D3DXVECTOR3 m_rot;	// 向き
 	bool m_bAttackFinal;		// 攻撃フラグ
-	CFinalAttackManager::FINAL_ATTACK_TYPE	m_FinalAttackType;	// 必殺技タイプ
+	CResourceCharacter::CHARACTER_TYPE			m_FinalAttackType;	// 攻撃タイプ
 	CFinalAttackManager::FINAL_ATTACK_SQUARE_DATA m_FinalAttackSquare;	// 必殺技マスデータ
 	CPeintCollision* m_pPeintCollision[MAX_FINAL_PEINT];
 };

@@ -42,7 +42,7 @@ CAttackFinalknight * CAttackFinalknight::Create(CPlayer* pPlayer)
 		pAttackFinalKnight->SetPlayer(pPlayer);	// プレイヤークラス取得
 		pAttackFinalKnight->SetPos(pPlayer->GetPos());	// 位置設定
 		pAttackFinalKnight->SetRot(pPlayer->GetRot());	// 向き設定
-		pAttackFinalKnight->SetAttackFinalType(CFinalAttackManager::FINAL_ATTACK_TYPE_1);	// タイプ設定
+		pAttackFinalKnight->SetAttackFinalType(CResourceCharacter::CHARACTER_KNIGHT);	// タイプ設定
 		pAttackFinalKnight->Init();				// 初期化処理
 	}
 	return pAttackFinalKnight;

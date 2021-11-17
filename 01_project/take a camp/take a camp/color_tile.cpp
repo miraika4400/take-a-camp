@@ -242,6 +242,8 @@ void CColorTile::ColorDown(int nCount)
 {
 	//塗り段階を引く
 	m_nStep = m_nStep - nCount;
+	// カウントの初期化
+	m_nCntStep = PEINT_COUNT;
 
 	//0より小さい場合
 	if (m_nStep <= 0)
@@ -256,12 +258,9 @@ void CColorTile::ColorDown(int nCount)
 		m_distColor = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1);
 
 		//カラー変更
-		m_distColor.r = (m_distColor.r);
-		m_distColor.g = (m_distColor.g);
-		m_distColor.b = (m_distColor.b);
-
-		//カラーセット
-		SetColor(m_distColor);
+		m_distColor.r = (m_distColor.r - GetColor().r);
+		m_distColor.g = (m_distColor.g - GetColor().g);
+		m_distColor.b = (m_distColor.b - GetColor().b);
 	}
 }
 
