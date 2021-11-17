@@ -84,9 +84,19 @@ void CAttackFinal::Uninit(void)
 //=============================================================================
 void CAttackFinal::Update(void)
 {
-	AttackFinalCreate();
+	//AttackFinalCreate();
 
-	//Peint();
+	switch (m_FinalAttackState)
+	{
+	case FINAL_ATTACK_STATE_NOMAL:
+
+	case FINAL_ATTACK_STATE_ATTACK:
+		AttackFinalCreate();
+		break;
+	default:
+		m_FinalAttackState = FINAL_ATTACK_STATE_NOMAL;
+		break;
+	}
 }
 
 //=============================================================================
@@ -105,6 +115,7 @@ void CAttackFinal::AttackFinalSwitch(void)
 	// 攻撃されていなかったら
 	if (m_bAttackFinal == false)
 	{
+		m_FinalAttackState = FINAL_ATTACK_STATE_ATTACK;
 		// フラグオン
 		SetAttackFinalFlag(true);
 		// 位置取得
