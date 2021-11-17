@@ -98,7 +98,6 @@ private:
 	static std::vector<CTile*> m_aTileList;
 	D3DXCOLOR m_color;        // カラー
 	CCollision * m_pCollison; // 当たり判定
-	//CAttackArea * m_pAttackArea; // 攻撃範囲クラスポインタ
 	float m_fDistPosY;        // 座標Yの目標値
 	float m_fDistPosYRate;    // 座標Yの変更時の係数
 	bool m_bHitOld;           // 一個前のフレームで当たっていたか保存するよう

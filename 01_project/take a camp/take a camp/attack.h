@@ -83,6 +83,7 @@ private:
 	int				m_nLevel;							// 攻撃のレベル
 	int				m_nMaxLevel;						// 最大レベル保存用
 	int				m_nChargeCount;						// チャージ用のカウント
+	int				m_anChargeValue[MAX_ATTACK_LEVEL];  // チャージ目標値
 
 };
 

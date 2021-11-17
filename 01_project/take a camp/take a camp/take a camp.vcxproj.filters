@@ -327,6 +327,12 @@
     <ClCompile Include="attack_knight.cpp">
       <Filter>ソース ファイル\07_GameModel\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="tile_effect_charge.cpp">
+      <Filter>ソース ファイル\09_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="tile_effect.cpp">
+      <Filter>ソース ファイル\09_Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -540,6 +546,15 @@
       <Filter>ヘッダー ファイル\07_GameModel\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="charge_tile.h">
+      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="tile_effect_charge.h">
+      <Filter>ヘッダー ファイル\09_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="tile_effect.h">
+      <Filter>ヘッダー ファイル\09_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="color_tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
   </ItemGroup>

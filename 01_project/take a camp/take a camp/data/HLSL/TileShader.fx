@@ -47,7 +47,7 @@ VS_OUTPUT VS(float3 Position : POSITION, float3 Normal : NORMAL ,float4 Diffuse 
 float4 PS(VS_OUTPUT In) :COLOR
 {
 	float4 outCol = In.Color;
-	outCol.a = 1.0f;
+	outCol.a = DiffuseColor.a;
 
 	return outCol;
 }

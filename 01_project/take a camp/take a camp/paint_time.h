@@ -13,6 +13,7 @@
 //インクルード
 //*****************************
 #include "scene3d.h"
+#include "tile_effect.h"
 
 //*****************************
 //マクロ定義
@@ -29,7 +30,7 @@ class CScene3d;
 //*****************************
 
 // 再塗可能時間の可視化
-class CPaintTime : public CScene
+class CPaintTime : public CTileEffect
 {
 public:
 	// 列挙
@@ -53,15 +54,12 @@ public:
 	void SetPos(D3DXVECTOR3 pos);
 	void SetPaintTime(int nFrame);
 
-	bool GetDrawFlag(void) { return m_bDraw; }
-	void SetDrawFlag(bool bFlag);
 private:
 	// メンバ変数
-	bool m_bDraw;// 描画フラグ
 	CScene3d* m_apPolygon[PAINT_TIME_POLYGON_NUM];
 	int m_nFrame; // フレーム数
 	int m_nCntFrame;
-	float m_fAlpha; // アルファ値
+	
 };
 
 

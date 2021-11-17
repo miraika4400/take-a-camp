@@ -16,18 +16,17 @@
 //******************************
 // マクロ定義
 //******************************
-#define COLOR D3DXCOLOR(0.8f,0.8f,0.8f,m_fAlpha)
+#define COLOR D3DXCOLOR(0.8f,0.8f,0.8f,GetAlpha())
 #define ALPHA_RATE 0.1f
 
 //******************************
 // コンストラクタ
 //******************************
-CPaintTime::CPaintTime():CScene(OBJTYPE_EFFECT)
+CPaintTime::CPaintTime()
 {
-	m_bDraw = false;
 	m_nCntFrame = 0;
 	m_nFrame = 0;
-	m_fAlpha = 0.0f;
+	
 }
 
 //******************************
@@ -56,6 +55,8 @@ CPaintTime * CPaintTime::Create(void)
 //******************************
 HRESULT CPaintTime::Init(void)
 {
+	CTileEffect::Init();
+
 	// 初期化
 	for (int nCntPolygon = 0; nCntPolygon < PAINT_TIME_POLYGON_NUM; nCntPolygon++)
 	{
@@ -71,9 +72,7 @@ HRESULT CPaintTime::Init(void)
 	// カウントの初期化
 	m_nCntFrame = 0;
 	m_nFrame = 0;
-	m_bDraw = false;
-	m_fAlpha = 0.0f;
-
+	
 	return S_OK;
 }
 
@@ -92,7 +91,7 @@ void CPaintTime::Uninit(void)
 		}
 	}
 
-	Release();
+	CTileEffect::Uninit();
 }
 
 //******************************
@@ -100,7 +99,7 @@ void CPaintTime::Uninit(void)
 //******************************
 void CPaintTime::Update(void)
 {
-	if (m_bDraw)
+	if (GetDrawFlag())
 	{
 		m_nCntFrame++;
 		// 針を回す
@@ -109,12 +108,8 @@ void CPaintTime::Update(void)
 
 		if (m_nCntFrame > m_nFrame)
 		{
-			m_bDraw = false;
+			SetDrawFlag(false);
 		}
-	}
-	else
-	{
-		m_fAlpha += (0.0f - m_fAlpha)*ALPHA_RATE;
 	}
 
 	// カラーの設定
@@ -122,6 +117,9 @@ void CPaintTime::Update(void)
 	{
 		m_apPolygon[nCntPolygon]->SetColor(COLOR);
 	}
+
+	// タイルエフェクト更新
+	CTileEffect::Update();
 }
 
 //******************************
@@ -159,22 +157,9 @@ void CPaintTime::SetPos(D3DXVECTOR3 pos)
 //******************************
 void CPaintTime::SetPaintTime(int nFrame)
 {
-	m_bDraw = true;
+	SetDrawFlag(true);
 	m_apPolygon[PARTS_HANDS]->SetRot(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	m_nCntFrame = 0;
 	m_nFrame = nFrame;
-	m_fAlpha = 1.0f;
-}
-
-//******************************
-// 描画フラグのセット
-//******************************
-void CPaintTime::SetDrawFlag(bool bFlag)
-{
-	m_bDraw = bFlag;
-
-	if (!m_bDraw)
-	{
-		m_fAlpha = 0.0f;
-	}
+	
 }

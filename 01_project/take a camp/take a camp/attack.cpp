@@ -35,6 +35,7 @@ CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 	m_nLevel		= 0;
 	m_nChargeCount	= 0;
 	ZeroMemory(&m_apAttackArea, sizeof(m_apAttackArea));
+	ZeroMemory(&m_anChargeValue, sizeof(m_anChargeValue));
 }
 
 //=============================================================================
@@ -59,6 +60,9 @@ HRESULT CAttackBased::Init(void)
 		{
 			nMaxAttackNum = m_AttackSquare[nLevel].nMaxHitRange;
 		}
+		
+		// チャージ時間の取得
+		m_anChargeValue[nLevel] = CResourceCharacter::GetResourceCharacter()->GetCharacterData(GetAttackType()).anChargeTime[nLevel];
 	}
 
 	for(int nCntArea = 0 ; nCntArea < nMaxAttackNum; nCntArea++)
@@ -93,6 +97,7 @@ void CAttackBased::Update(void)
 		{
 			//初期化
 			m_nLevel = 0;
+			m_nChargeCount = 0;
 
 			// チャージをしているプレイヤーの取得
 			CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
@@ -112,6 +117,7 @@ void CAttackBased::Update(void)
 			}
 		}
 	}
+	break;
 	case ATTACK_STATE_CHARGE:	//チャージ状態
 								// チャージ処理
 		Charge();
@@ -193,25 +199,26 @@ void CAttackBased::ChargeFlag(int nMaxLevel)
 
 //=============================================================================
 // チャージ処理関数
-// Akuthor: 吉田 悠人
+// Akuthor: 吉田 悠人、増澤未来
 //=============================================================================
 void CAttackBased::Charge(void)
 {
 	//カウントアップ
 	m_nChargeCount++;
 
-	//一定に達しているか
-	if (m_nChargeCount>CHARGE_COUNT)
+	for (int nCntLevel = 0; nCntLevel < MAX_ATTACK_LEVEL; nCntLevel++)
 	{
-		//現在のレベルが限界のレベルより低い
-		if (m_nLevel<m_nMaxLevel)
+		// 最大レベルの判定
+		if (nCntLevel > m_nMaxLevel)
 		{
-			m_nLevel++;
+			break;
 		}
-		//カウント初期化
-		m_nChargeCount = 0;
+		// チャージ時間に応じたレベルにする
+		if (m_nChargeCount > m_anChargeValue[nCntLevel])
+		{
+			m_nLevel = nCntLevel;
+		}
 	}
-
 }
 
 //=============================================================================

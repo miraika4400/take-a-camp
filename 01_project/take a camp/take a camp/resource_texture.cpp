@@ -48,7 +48,8 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/attack_area.png",	      // 攻撃範囲
 	"./data/Textures/clock_frame.png",	      // 時計の枠
 	"./data/Textures/clock_hands.png",	      // 時計の針
-	"./data/Textures/Toon_Shadow.png",	      // 
+	"./data/Textures/Toon_Shadow.png",	      // トゥーンシャドウ
+	"./data/Textures/tile_effect_charge.png", // タイルのチャージ
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]
