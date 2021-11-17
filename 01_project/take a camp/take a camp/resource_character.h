@@ -33,10 +33,10 @@ public:
 	// キャラクターの種類
 	typedef enum
 	{
-		CHARACTER_KNIGHT = 0,  // 騎士
-		CHARACTER_LANCER,      // 槍兵
-		CHARACTER_WIZARD,      // 魔術師
-		CHARACTER_MAX // キャラクタ数
+		CHARACTER_KNIGHT = 0,	// 騎士
+		CHARACTER_LANCER,		// 槍兵
+		CHARACTER_WIZARD,		// 魔術師
+		CHARACTER_MAX			// キャラクタ数
 	}CHARACTER_TYPE;
 	//モーション
 	typedef enum
