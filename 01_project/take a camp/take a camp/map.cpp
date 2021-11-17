@@ -265,7 +265,7 @@ void CMap::ItemSpawn(void)
 				}
 			}
 			//アイテム生成
-			CItem::Create(ItemPos , CItem::ITEM_EFFECT_DASH);
+			CItem::Create(ItemPos , CItem::ITEM_EFFECT_REVERSE);
 		}
 	
 		//カウント初期化

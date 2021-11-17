@@ -18,7 +18,7 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define ATTACK_PATTARN_NUM (4) // 攻撃パターン数
+#define ATTACK_PATTARN_NUM (3) // 攻撃パターン数
 
 //*****************************
 //クラス定義
@@ -33,10 +33,10 @@ public:
 	// キャラクターの種類
 	typedef enum
 	{
-		CHARACTER_KNIGHT = 0,  // 騎士
-		CHARACTER_LANCER,      // 槍兵
-		CHARACTER_WIZARD,      // 魔術師
-		CHARACTER_MAX // キャラクタ数
+		CHARACTER_KNIGHT = 0,	// 騎士
+		CHARACTER_LANCER,		// 槍兵
+		CHARACTER_WIZARD,		// 魔術師
+		CHARACTER_MAX			// キャラクタ数
 	}CHARACTER_TYPE;
 	//モーション
 	typedef enum

@@ -108,6 +108,7 @@ private:
 	void Respawn(void);		// リスポーン処理
 	void Invincible(void);	// 無敵処理
 	void ManageMotion(void);// モーション管理
+	void ManageItemState(void); // アイテムステートの管理
 	void DrawModel(void);	// モデルの描画処理
 	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData);// シェーダに値を送る
 

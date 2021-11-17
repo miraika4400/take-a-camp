@@ -31,6 +31,8 @@ const std::string CResourceModel::m_aModelPath[CResourceModel::MODEL_MAX]
 	"data/Models/stage.x",  // ステージ
 	"data/Models/bullet.x",	// バレット
 	"data/Models/needle.x",	// とげ
+	"data/Models/00_speedup.x",	// ダッシュ
+	"data/Models/00_hatena.x",	// 反転
 };
 
 //===================================
