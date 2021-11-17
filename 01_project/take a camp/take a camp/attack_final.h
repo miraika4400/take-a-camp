@@ -33,6 +33,15 @@ class CPeintCollision;
 class CAttackFinal : public CScene
 {
 public:
+	// 列挙
+	typedef enum
+	{
+		FINAL_ATTACK_STATE_NONE = -1,
+		FINAL_ATTACK_STATE_NOMAL,		// 通常状態
+		FINAL_ATTACK_STATE_ATTACK,		// 攻撃状態
+		FINAL_ATTACK_STATE_MAX
+	}FINAL_ATTACK_STATE;
+
 	CAttackFinal();		// コンストラクタ
 	~CAttackFinal();	// デストラクタ
 
@@ -56,20 +65,22 @@ public:
 	D3DXVECTOR3 GetRot(void)			{ return m_rot; }		// 向き取得
 	void		SetAttackFinalFlag(bool bAttackFinal)	{ m_bAttackFinal = bAttackFinal; }	// 必殺技フラグ設定
 	bool		GetAttackFinalFlag(void)				{ return m_bAttackFinal; }			// 必殺技フラグ取得
-	void		SetPlayer(CPlayer* pPlayer) { m_pPlayer = pPlayer; }						// プレイヤ情報取得
-	CPlayer*	GetPlayer(void)				{ return m_pPlayer; }							// プレイヤー情報設定
-
+	void		SetPlayer(CPlayer* pPlayer)				{ m_pPlayer = pPlayer; }			// プレイヤ情報取得
+	CPlayer*	GetPlayer(void)							{ return m_pPlayer; }				// プレイヤー情報設定
+	void		SetState(FINAL_ATTACK_STATE State)		{ m_FinalAttackState = State; }		// 状態設定
+	FINAL_ATTACK_STATE GetState(void)					{ return m_FinalAttackState; }		// 状態取得
 	virtual void AttackFinalCreate(void) = 0;						// 必殺技生成処理
 	void		VisualizationAttackArea(int AttackFinalType = 0);	// 攻撃の範囲のブロックの枠の色を変える処理
 	void        ResetAttackArea(void);								// 攻撃範囲ポリゴンのリセット
 private:
-	CPlayer* m_pPlayer;	// プレイヤークラス
-	CAttackArea *	m_apAttackArea[MAX_ATTACK_FINAL_AREA_NUM];// 攻撃範囲ポインタ
-	D3DXVECTOR3 m_pos;	// 位置
-	D3DXVECTOR3 m_rot;	// 向き
-	bool m_bAttackFinal;		// 攻撃フラグ
-	CResourceCharacter::CHARACTER_TYPE			m_FinalAttackType;	// 攻撃タイプ
+	CPlayer* m_pPlayer;		// プレイヤークラス
+	CAttackArea *	m_apAttackArea[MAX_ATTACK_FINAL_AREA_NUM];			// 攻撃範囲ポインタ
+	D3DXVECTOR3 m_pos;						// 位置
+	D3DXVECTOR3 m_rot;						// 向き
+	FINAL_ATTACK_STATE m_FinalAttackState;	// 状態
+	bool m_bAttackFinal;					// 攻撃フラグ
+	CResourceCharacter::CHARACTER_TYPE			m_FinalAttackType;		// 攻撃タイプ
 	CFinalAttackManager::FINAL_ATTACK_SQUARE_DATA m_FinalAttackSquare;	// 必殺技マスデータ
-	CPeintCollision* m_pPeintCollision[MAX_FINAL_PEINT];
+	CPeintCollision* m_pPeintCollision[MAX_FINAL_PEINT];				// 色
 };
 #endif // !_ATTACK_FINAL_H_
