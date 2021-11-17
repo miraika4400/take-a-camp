@@ -32,7 +32,8 @@
 #include "kill_count.h"
 #include "particle.h"
 #include "resource_model_hierarchy.h"
-
+#include "attack_final.h"
+#include "attack_final_knight.h"
 //*****************************
 // マクロ定義
 //*****************************
@@ -60,10 +61,10 @@
 //*****************************
 int CPlayer::m_anControllKey[MAX_PLAYER][CPlayer::KEY_MAX] =
 {
-	{ DIK_W,DIK_S,DIK_A,DIK_D,DIK_E },
-	{ DIK_UP,DIK_DOWN,DIK_LEFT,DIK_RIGHT,DIK_NUMPAD1 },
-	{ DIK_U,DIK_J,DIK_H,DIK_K,DIK_I },
-	{ DIK_NUMPAD8,DIK_NUMPAD5,DIK_NUMPAD4,DIK_NUMPAD6,DIK_NUMPAD9 }
+	{ DIK_W,DIK_S,DIK_A,DIK_D,DIK_E,DIK_Q },
+	{ DIK_UP,DIK_DOWN,DIK_LEFT,DIK_RIGHT,DIK_NUMPAD1,DIK_RSHIFT },
+	{ DIK_U,DIK_J,DIK_H,DIK_K,DIK_I,DIK_Y },
+	{ DIK_NUMPAD8,DIK_NUMPAD5,DIK_NUMPAD4,DIK_NUMPAD6,DIK_NUMPAD9,DIK_NUMPAD7 }
 };
 
 //******************************
@@ -130,6 +131,9 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 
 	//攻撃用クラス生成(今後職業ごとにcreateする攻撃処理を変える)
 	pPlayer->m_pAttack = CAttackKnight::Create(pPlayer);
+
+	// 必殺用クラス生成
+	pPlayer->m_pAttackFinal = CAttackFinalknight::Create(pPlayer);
 
 	//移動範囲クラスの生成
 	pPlayer->m_pActRange = CActRange::Create(pPlayer);
@@ -248,6 +252,8 @@ void CPlayer::Update(void)
 		Invincible();
 		// 弾の処理
 		Attack();
+		// 必殺の処理
+		AttackFinal();
 
 		// 当たり判定の位置
 		if (m_pCollision == NULL)
@@ -585,7 +591,8 @@ void CPlayer::Attack(void)
 		{
 			//攻撃スイッチ処理
 			m_pAttack->AttackSwitch();
-			m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);		}
+			m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);		
+		}
 	}
 
 	//攻撃範囲をリセット
@@ -596,6 +603,43 @@ void CPlayer::Attack(void)
 		{
 			m_pAttack->ResetAttackArea();
 		}
+	}
+}
+
+//******************************
+// 必殺処理
+//******************************
+void CPlayer::AttackFinal(void)
+{
+	// キーボードとジョイパッドの取得
+	CInputKeyboard * pKey = CManager::GetKeyboard();
+	CInputJoypad* pJoypad = CManager::GetJoypad();
+
+	// 当たっているタイルの取得
+	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
+
+	// 攻撃ボタンを押したら
+	if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+		|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
+	{
+		//攻撃範囲の枠の色を変える
+		m_pAttackFinal->VisualizationAttackArea();
+	}
+
+	// 離したら弾がでるように
+	if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+		|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
+	{
+		//必殺スイッチ処理
+		m_pAttackFinal->AttackFinalSwitch();
+		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
+	}
+
+	//攻撃範囲をリセット
+	if (!m_bController && !pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+		|| m_bController && !pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
+	{
+		m_pAttackFinal->ResetAttackArea();
 	}
 }
 
