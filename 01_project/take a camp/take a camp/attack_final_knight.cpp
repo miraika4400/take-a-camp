@@ -80,6 +80,8 @@ void CAttackFinalknight::AttackFinalCreate(void)
 			// タイプが一定になったら
 			if (m_nType == MAX_FINAL_HIT_TYPE)
 			{
+				// 状態の初期化
+				SetState(FINAL_ATTACK_STATE_NOMAL);
 				// フラグの初期化
 				SetAttackFinalFlag(false);
 				// タイプの初期化

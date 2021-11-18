@@ -127,6 +127,7 @@ private:
 	bool m_bController;         // コントローラー捜査課キーボード操作か
 	bool m_bMove;				// 移動可否フラグ
 	bool m_bAttack;				// 攻撃可否フラグ
+	bool m_bFinalAttacl;		// 必殺可否フラグ
 	bool m_bInvincible;			// 無敵フラグ
 	PLAYER_STATE m_PlayerState;	// プレイヤーステータス
 	int	m_nRespawnCount;		// リスポーンまでのカウント

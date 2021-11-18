@@ -128,7 +128,7 @@ void CAttackBased::Update(void)
 		Charge();				// ƒ`ƒƒ[ƒWˆ—
 		break;
 
-	case ATTACK_STATE_ATTACK:	//UŒ‚ó‘Ô			
+	case ATTACK_STATE_ATTACK:	// UŒ‚ó‘Ô			
 		AttackCreate();			// UŒ‚¶¬ˆ—
 		break;
 

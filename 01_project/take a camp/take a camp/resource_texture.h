@@ -26,34 +26,39 @@ public:
 	// テクスチャ種類
 	typedef enum
 	{
-		TEXTURE_TITLE = 0,       // タイトル
-		TEXTURE_TUTORIAL,        // チュートリアル
-		TEXTURE_TUTORIAL_FLAG,   // チュートリアル(はたあげ)
-		TEXTURE_TUTORIAL_FRY,    // チュートリアル(連打)
-		TEXTURE_TUTORIAL_REMEMBER,// チュートリアル(記憶)
+		TEXTURE_TITLE = 0,			// タイトル
+		TEXTURE_TUTORIAL,			// チュートリアル
+		TEXTURE_TUTORIAL_FLAG,		// チュートリアル(はたあげ)
+		TEXTURE_TUTORIAL_FRY,		// チュートリアル(連打)
+		TEXTURE_TUTORIAL_REMEMBER,	// チュートリアル(記憶)
+		TEXTURE_RESULT_KNIGHT,		// リザルト(ナイトの背景)
+		TEXTURE_RESULT_LANCER,		// リザルト(ランサーの背景)
+		TEXTURE_RESULT_ARCHER,		// リザルト(アーチャーの背景)
+		TEXTURE_RESULT_KILL,		// リザルトのキルUI
+		TEXTURE_RESULT_TILE,		// リザルトのタイルUI
 		TEXTURE_PARTICLE_SQUARE,    // パーティクル*箱
-		TEXTURE_PARTICLE_TEARS,  // パーティクル*涙
-		TEXTURE_PARTICLE_CIRCLE, // パーティクル*円
-		TEXTURE_PARTICLE_GURUGURU, // ぐるぐる
-		TEXTURE_NUMBER,          // ナンバー
-		TEXTURE_FRAME,           // 枠
-		TEXTURE_CROSS_MARK,      // ×マーク
-		TEXTURE_NEEDLE,          // とげ穴
-		TEXTURE_SHADOW,			 // 影
-		TEXTURE_PLAYERNUMBER,	 // プレイヤー番号
-		TEXTURE_NONE,			 // NONE
-		TEXTURE_CONTROLLER,		 // コントローラーアイコン
-		TEXTURE_KEYBOARD,		 // キーボードアイコン
-		TEXTURE_CHARASELECT_BACK,// キャラ選択背景
-		TEXTURE_BUTTON_START,	 // タイトルのボタン(スタート)
-		TEXTYRE_BUTTON_TUTORIAL, // タイトルのボタン(チュートリアル)
-		TEXTURE_MAX_COLOR_EFFECT,// 最大塗段階時のエフェクト
-		TEXTURE_ATTACK_AREA,      // 攻撃範囲
-		TEXTURE_CLOCK_FRAME,      // 時計の枠
-		TEXTURE_CLOCK_HANDS,      // 時計の針
-		TEXTURE_TOON_SHADOW,      // トゥーンシャドウ
+		TEXTURE_PARTICLE_TEARS,		// パーティクル*涙
+		TEXTURE_PARTICLE_CIRCLE,	// パーティクル*円
+		TEXTURE_PARTICLE_GURUGURU,	// ぐるぐる
+		TEXTURE_NUMBER,				// ナンバー
+		TEXTURE_FRAME,				// 枠
+		TEXTURE_CROSS_MARK,			// ×マーク
+		TEXTURE_NEEDLE,				// とげ穴
+		TEXTURE_SHADOW,				// 影
+		TEXTURE_PLAYERNUMBER,		// プレイヤー番号
+		TEXTURE_NONE,				// NONE
+		TEXTURE_CONTROLLER,			// コントローラーアイコン
+		TEXTURE_KEYBOARD,			// キーボードアイコン
+		TEXTURE_CHARASELECT_BACK,	// キャラ選択背景
+		TEXTURE_BUTTON_START,		// タイトルのボタン(スタート)
+		TEXTYRE_BUTTON_TUTORIAL,	// タイトルのボタン(チュートリアル)
+		TEXTURE_MAX_COLOR_EFFECT,	// 最大塗段階時のエフェクト
+		TEXTURE_ATTACK_AREA,		// 攻撃範囲
+		TEXTURE_CLOCK_FRAME,		// 時計の枠
+		TEXTURE_CLOCK_HANDS,		// 時計の針
+		TEXTURE_TOON_SHADOW,		// トゥーンシャドウ
 		TEXTURE_TILE_CHARGE,       // タイルのチャージ
-		TEXTURE_MAX              // テクスチャ数
+		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類
 	typedef enum
