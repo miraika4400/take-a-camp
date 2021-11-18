@@ -259,8 +259,8 @@ void CPlayer::Update(void)
 			Move();
 			// UŒ‚ˆ—
 			Attack();
-			//// •KE‚Ìˆ—
-			//AttackFinal();
+			// •KE‚Ìˆ—
+			AttackFinal();
 		}
 
 		//–³“Gˆ—
