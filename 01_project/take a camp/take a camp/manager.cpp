@@ -19,6 +19,7 @@
 #include "resource_model.h"
 #include "resource_shader.h"
 #include "resource_attack.h"
+#include "resource_model_hierarchy.h"
 #include "resource_final_attack.h"
 #include "camera_base.h"
 #include "debug_log.h"
@@ -30,6 +31,7 @@
 #include "chara_select.h"
 #include "total_result.h"
 #include "tile_factory.h"
+#include "resource_character.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -51,6 +53,7 @@ CCamera         *CManager::m_pCamera = NULL;         // カメラクラス
 CLight			*CManager::m_pLight = NULL;			 // ライトクラス
 bool             CManager::m_bPause = false;         // ポーズフラグ
 CCharaSelect    *CManager::m_pCharaSelectMode = NULL;// キャラ選択
+
 //=============================
 // コンストラクタ
 //=============================
@@ -127,6 +130,10 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CResourceModel::Create();
 	// シェーダーリソースクラスの生成
 	CResourceShader::Create();
+	// 階層構造リソースクラス
+	CResourceModelHierarchy::Create();
+	// キャラクターリソースの生成
+	CResourceCharacter::Create();
 
 	// テクスチャ・モデルの読み込み
 	CPause::Load();    // ポーズ
@@ -136,9 +143,6 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CAttackManager::Create();
 	//必殺技範囲読み込み
 	CFinalAttackManager::Create();
-
-	// プレイヤー階層構造
-	CPlayer::Load();
 
 	// カラーマネージャーの生成
 	CColorManager::Create();
@@ -161,12 +165,19 @@ void CManager::Uninit(void)
 	CMapManager::Release();
 	//攻撃範囲読み込みクラスの破棄
 	CAttackManager::Release();
+	//必殺技の範囲読み込みクラスの破棄
+	CFinalAttackManager::Release();
 	// テクスチャクラスの破棄
 	CResourceTexture::Release();
 	// モデルリソースクラスの破棄
 	CResourceModel::Release();
 	// シェーダーリソースクラスの破棄
 	CResourceShader::Release();
+	// 階層構造リソースクラス
+	CResourceModelHierarchy::Release();
+	// キャラクターリソースの破棄
+	CResourceCharacter::Release();
+
 	// カラーマーマネージャーの破棄
 	CColorManager::Release();
 	// タイルファクトリーの破棄
@@ -174,9 +185,6 @@ void CManager::Uninit(void)
 
 	// テクスチャのアンロード
 	CPause::Unload();    // ポーズ
-
-	// プレイヤー階層構造
-	CPlayer::Unload();
 
 	if (m_pSound != NULL)
 	{

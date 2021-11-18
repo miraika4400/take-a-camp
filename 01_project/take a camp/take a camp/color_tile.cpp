@@ -17,6 +17,8 @@
 #include "particle.h"
 #include "peint_collision.h"
 #include "max_color_effect.h"
+#include "paint_time.h"
+#include "tile_effect_charge.h"
 
 #ifdef _DEBUG
 #include "manager.h"
@@ -26,9 +28,11 @@
 //*****************************
 // マクロ定義
 //*****************************
-
-#define PEINT_COUNT 60  // 再度塗れるようになるまでのカウント
-#define PLAYER_HIT_POS_Y TILE_POS_Y - 3.0f
+#define PEINT_COUNT (60)		// 再度塗れるようになるまでのカウント
+#define PLAYER_HIT_POS_Y (TILE_POS_Y - 3.0f)
+#define BLIKING_COLOR (D3DXCOLOR(TILE_DEFAULT_COLOR.r,TILE_DEFAULT_COLOR.g,TILE_DEFAULT_COLOR.b,0.8f))
+#define BLIKING_INTERVAL (20) // 点滅の間隔
+#define BLIKING_RATE (0.1f) // 点滅係数
 
 //*****************************
 // 静的メンバ変数宣言
@@ -40,12 +44,18 @@ int CColorTile::m_anTileNum[MAX_TILE_COLOR_NUM][COLOR_STEP_NUM + 1] = {};
 //******************************
 CColorTile::CColorTile()
 {
-	m_pFrame = NULL;
-	m_nPrevNum = -1;                             // 今塗られているカラーの番号*デフォルトは-1
-	m_nStep = 0;                                 // 今の塗段階
-	m_nCntStep = 0;                              // 再度塗り可能カウント
-	m_nLastHitPlayerNum = -1;                    // 現在の塗られている番号4
-	m_nCntFrem = 0;
+	m_ColorTileState = COLOR_TILE_NORMAL;
+	m_pFrame	= NULL;
+	m_nPrevNum	= -1;					// 今塗られているカラーの番号*デフォルトは-1
+	m_nStep		= 0;					// 今の塗段階
+	m_nCntStep	= 0;					// 再度塗り可能カウント
+	m_nLastHitPlayerNum = -1;			// 現在の塗られている番号4
+	m_nCntFrem	= 0;
+	m_distColor	= TILE_DEFAULT_COLOR;
+	m_oldColor  = TILE_DEFAULT_COLOR;
+	m_pPaintTime = NULL;
+	m_nBlinking = 0;
+	m_bBlinkingColor = false;
 }
 
 //******************************
@@ -160,6 +170,12 @@ HRESULT CColorTile::Init(void)
 	
 	SetPriority(OBJTYPE_COLOR_TILE); // オブジェクトタイプ
 
+	m_pPaintTime = CPaintTime::Create();
+	m_pCharge = CTileEffectCharge::Create();
+
+	m_nBlinking = 0;
+	m_bBlinkingColor = false;
+
 	return S_OK;
 }
 
@@ -176,19 +192,14 @@ void CColorTile::Uninit(void)
 //******************************
 void CColorTile::Update(void)
 {
-	//プレイヤーのポインター所得
-	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
 
 	// タイルのアップデート
 	CTile::Update();
 
 	// アイコンの管理
-	ManageFrame();
-
-	if (m_nCntStep > 0)
-	{
-		m_nCntStep--;
-	}
+	ManageEffect();
+	// 色の管理
+	ManageColor();
 
 	if (m_nStep == 3)
 	{
@@ -196,10 +207,8 @@ void CColorTile::Update(void)
 
 		if(m_nCntFrem % 10 <= 0)
 		{
-
 			D3DXVECTOR3 pos = m_pFrame->GetPos();
 			CParticle::Create(D3DXVECTOR3(pos.x + (float)(rand() % 16 -8), pos.y, pos.z + (float)(rand() % 16 - 8)), D3DXVECTOR3(0.0f, 0.25f, 0.0f), D3DXVECTOR3(3.0f, 3.0f, 3.0f), 500, GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_SQUARE);
-			
 		}
 	}
 
@@ -228,7 +237,33 @@ void CColorTile::ResetTile(void)
 	m_nStep = 0;                                 // 今の塗段階
 	m_nCntStep = 0;                              // 再度塗り可能カウント
 	m_nLastHitPlayerNum = -1;                    // 最後に当たったプレイヤー番号
+	m_distColor = TILE_DEFAULT_COLOR;
+	m_oldColor = TILE_DEFAULT_COLOR;
 	
+}
+
+//******************************
+// タイルの塗り段階下げ
+//******************************
+void CColorTile::ColorDown(int nCount)
+{
+	//塗り段階を引く
+	m_nStep = m_nStep - nCount;
+	// カウントの初期化
+	m_nCntStep = PEINT_COUNT;
+
+	//0より小さい場合
+	if (m_nStep <= 0)
+	{
+		//タイルリセット
+		ResetTile();
+	}
+	//ゼロ以上の場合
+	else
+	{
+		// 色の取得
+		m_distColor = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1);
+	}
 }
 
 //******************************
@@ -248,26 +283,20 @@ void CColorTile::HitPlayerActionTrigger(CPlayer * pPlayer)
 //******************************
 void CColorTile::HItPeint(CPeintCollision * pPeint)
 {
-	//
+	//塗り処理
 	Peint(pPeint->GetColorNumber(), pPeint->GetPlayerNum());
 	//死亡フラグ
 	pPeint->Death();
 }
 
 //******************************
-// アイコンの管理
+// エフェクト類の管理
 //******************************
-void CColorTile::ManageFrame(void)
+void CColorTile::ManageEffect(void)
 {
-	// 位置の調整
-	D3DXVECTOR3 pos = m_pFrame->GetPos();
-	if (pos != D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z))
-	{
-		pos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z);
-
-		m_pFrame->SetPos(pos);
-	}
-
+	// 枠
+	D3DXVECTOR3 effectPos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z);
+	m_pFrame->SetPos(effectPos);
 	// 色の設定
 	if (m_nStep != 0)
 	{
@@ -277,6 +306,80 @@ void CColorTile::ManageFrame(void)
 	{
 		m_pFrame->SetColor(TILE_DEFAULT_COLOR);
 	}
+
+	// 塗時間
+	m_pPaintTime->SetPos(effectPos);
+
+	// チャージエフェクト
+	m_pCharge->SetPos(effectPos);
+	if (m_ColorTileState == COLOR_TILE_CHARGE)
+	{
+		m_pCharge->SetDrawFlag(true);
+		m_nBlinking++;
+		if ((m_nBlinking % BLIKING_INTERVAL) == 0)
+		{
+			m_bBlinkingColor ^= true;
+		}
+	}
+	else
+	{
+		// 初期化
+		m_nBlinking = 0;
+		m_bBlinkingColor = false;
+		m_pCharge->SetDrawFlag(false);
+	}
+
+	
+}
+
+//******************************
+// 色の管理
+//******************************
+void CColorTile::ManageColor(void)
+{
+	if (m_nPrevNum == -1)
+	{
+		return;
+	}
+
+	if (m_nCntStep > 0)
+	{
+		m_nCntStep--;
+
+		D3DXCOLOR col = GetColor();
+
+		float fRate = ((float)PEINT_COUNT - (float)m_nCntStep) / (float)PEINT_COUNT;
+
+		col.r = m_oldColor.r + ((m_distColor.r - m_oldColor.r) * fRate);
+		col.g = m_oldColor.g + ((m_distColor.g - m_oldColor.g) * fRate);
+		col.b = m_oldColor.b + ((m_distColor.b - m_oldColor.b) * fRate);
+
+		SetColor(col);
+	}
+	else
+	{
+		if (m_bBlinkingColor)
+		{// 点滅カラー
+			D3DXCOLOR col = GetColor();
+
+			col.r += ((BLIKING_COLOR.r - col.r) * BLIKING_RATE);
+			col.g += ((BLIKING_COLOR.g - col.g) * BLIKING_RATE);
+			col.b += ((BLIKING_COLOR.b - col.b) * BLIKING_RATE);
+
+			SetColor(col);
+		}
+		else
+		{// 通常カラー
+			D3DXCOLOR col = GetColor();
+
+			col.r += ((m_distColor.r - col.r) * BLIKING_RATE);
+			col.g += ((m_distColor.g - col.g) * BLIKING_RATE);
+			col.b += ((m_distColor.b - col.b) * BLIKING_RATE);
+
+			SetColor(col);
+		}
+	}
+
 }
 
 //******************************
@@ -284,60 +387,96 @@ void CColorTile::ManageFrame(void)
 //******************************
 void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 {
-
-	if (m_nCntStep <= 0 || nPlayerNum != m_nLastHitPlayerNum)
+	//ステートが通常か
+	if (m_ColorTileState == COLOR_TILE_NORMAL)
 	{
-		// カウントの初期化
-		m_nCntStep = PEINT_COUNT;
+		if (m_nCntStep <= 0 || nPlayerNum != m_nLastHitPlayerNum)
+		{
+			// カウントの初期化
+			m_nCntStep = PEINT_COUNT;
+			m_pPaintTime->SetPaintTime(PEINT_COUNT);
 
-		// 最後に当たったプレイヤーの保存
-		m_nLastHitPlayerNum = nPlayerNum;
+			// 最後に当たったプレイヤーの保存
+			m_nLastHitPlayerNum = nPlayerNum;
 
-		if (m_nPrevNum == -1)
-		{// 今何も塗られていない
+			// 今の色の保存
+			m_oldColor = GetColor();
+
+			if (m_nPrevNum == -1)
+			{// 今何も塗られていない
 
 			 // カラー番号の保存
-			m_nPrevNum = nColorNumber;
-			// 色の取得
-			SetColor(GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep));
-			// 色段階を進める
-			m_nStep++;
-		}
-		else if (m_nPrevNum == nColorNumber)
-		{// 今塗られているとから塗る番号が一致
-
-			if (m_nStep < COLOR_STEP_NUM)
-			{
-				// 段階を進める
-				m_nStep++;
+				m_nPrevNum = nColorNumber;
 				// 色の取得
-				SetColor(GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1));
+				m_distColor = GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep);
 
-				if (m_nStep == COLOR_STEP_NUM)
+				// 色段階を進める
+				m_nStep++;
+			}
+			else if (m_nPrevNum == nColorNumber)
+			{// 今塗られているとから塗る番号が一致
+
+				if (m_nStep < COLOR_STEP_NUM)
 				{
-					CMaxColorEffect::Create(GetPos(), GET_COLORMANAGER->GetIconColor(m_nPrevNum));
+					// 段階を進める
+					m_nStep++;
+					// 色の取得
+					m_distColor = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1);
+
+					if (m_nStep == COLOR_STEP_NUM)
+					{
+						// 塗最大
+						CMaxColorEffect::Create(GetPos(), GET_COLORMANAGER->GetIconColor(m_nPrevNum));
+						// ペイントタイムは出さない
+						m_pPaintTime->SetDrawFlag(false);
+					}
+				}
+				else
+				{
+					// ペイントタイムは出さない
+					m_pPaintTime->SetDrawFlag(false);
+					m_nCntStep = 0;
+				}
+			}
+			else
+			{// 今塗られてる色と塗る色が違う
+
+				if (m_nStep == 1)
+				{// 段階が一の時
+				 // カラー番号の保存
+					m_nPrevNum = nColorNumber;
+					// カラーの取得
+					m_distColor = GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep - 1);
+				}
+				else
+				{// 段階が2以上の時
+
+				 // 段階を減らす
+					m_nStep--;
+					// 色の取得
+					m_distColor = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1);
 				}
 			}
 		}
-		else
-		{// 今塗られてる色と塗る色が違う
 
-			if (m_nStep == 1)
-			{// 段階が一の時
-			 // カラー番号の保存
-				m_nPrevNum = nColorNumber;
-				// カラーの取得
-				SetColor(GET_COLORMANAGER->GetStepColor(nColorNumber, m_nStep - 1));
-			}
-			else
-			{// 段階が2以上の時
+	}
+}
 
-			 // 段階を減らす
-				m_nStep--;
-				// 色の取得
-				SetColor(GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1));
-			}
+//******************************
+// チャージフラグ処理
+//******************************
+bool CColorTile::ChargeFlag(int nPlayerNum)
+{
+	//ステートが通常状態か
+	if (m_ColorTileState == COLOR_TILE_NORMAL)
+	{
+		//プレイヤーが塗ったタイルか
+		if (nPlayerNum == m_nLastHitPlayerNum&&m_nStep > 0)
+		{
+			//ステートをチャージ状態に移行
+			m_ColorTileState = COLOR_TILE_CHARGE;
+			return true;
 		}
 	}
-
+	return false;
 }

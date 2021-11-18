@@ -15,6 +15,7 @@
 #include "keyboard.h"
 #include "manager.h"
 #include "fade.h"
+#include "player.h"
 
 //=============================
 // ƒ}ƒNƒ’è‹`
@@ -94,7 +95,7 @@ void CCharaSelect::Update(void)
 
 #ifdef _DEBUG
 
-	if(CManager::GetKeyboard()->GetKeyTrigger(DIK_F1))
+	if(CManager::GetKeyboard()->GetKeyTrigger(DIK_F1)|| CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
 	{
 		CManager::GetFade()->SetFade(CManager::MODE_GAME);
 	}
@@ -122,7 +123,7 @@ void CCharaSelect::ResetEntryPlayer(void)
 		m_aEntryData[nCntData].bEntry = false;
 		m_aEntryData[nCntData].nColorNum = nCntData; // ‰¼
 		m_aEntryData[nCntData].nControllNum = -1;
-		m_aEntryData[nCntData].charaType = CPlayer::CHARA_TYPE_FIGHTER;
+		m_aEntryData[nCntData].charaType = CResourceCharacter::CHARACTER_KNIGHT;
 	}
 
 	m_nEntryPlayerNum = 0;

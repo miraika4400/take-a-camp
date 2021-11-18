@@ -69,9 +69,26 @@ void CActRange::PlayerPos(void)
 //=============================================================================
 // マップ上のプレイヤーの移動判定関数
 //=============================================================================
-void CActRange::ActMove(int nMoveX, int nMoveZ)
+bool CActRange::ActMove(int nMoveX, int nMoveZ)
 {
-	m_ActPos = D3DXVECTOR3((float)nMoveX, 0.0f, (float)nMoveZ) + m_ActPos;
+	if (nMoveX<0)
+	{
+		return m_bPlayerMove[PLAYER_MOVE_RIGHT];
+	}
+	if (nMoveX>0)
+	{
+		return m_bPlayerMove[PLAYER_MOVE_LEFT];
+	}
+	if (nMoveZ<0)
+	{
+		return m_bPlayerMove[PLAYER_MOVE_UP];
+	}
+	if (nMoveZ>0)
+	{
+		return m_bPlayerMove[PLAYER_MOVE_DOWN];
+	}
+
+	return NULL;
 }
 
 //=============================================================================
@@ -109,9 +126,9 @@ void CActRange::ActRange(void)
 	D3DXVECTOR3 Range[PLAYER_MOVE_MAX] =
 	{
 		D3DXVECTOR3(0,0,-1),
-		D3DXVECTOR3(-1,0,0),
+		D3DXVECTOR3(0,0,1),
 		D3DXVECTOR3(1,0,0),
-		D3DXVECTOR3(0,0,1)
+		D3DXVECTOR3(-1,0,0)
 	};
 
 	//上下左右にプレイヤーが移動できるか
@@ -198,6 +215,9 @@ void CActRange::Update(void)
 	OtherPlayer();
 	// プレイヤーの移動範囲
 	ActRange();
+	//プレイヤーの位置取得
+	PlayerPos();
+
 }
 
 //=============================================================================

@@ -39,6 +39,7 @@ public:
 		PARTICLE_SQUARE = 0, // 四角
 		PARTICLE_TEARS,   // 涙
 		PARTICLE_CIRCLE,  // 丸
+		PARTICLE_GURUGURU, // ぐるぐる
 		PARTICLE_MAX,     // タイプの最大数
 	}PARTICLE_TYPE;
 
@@ -61,6 +62,7 @@ public:
 	D3DXVECTOR3 GetMove(void) { return m_move; }
 	void SetMove(D3DXVECTOR3 move) { m_move = move; }
 
+	void SetAddRotValue(float fAdd) { m_fRotAngle = fAdd; }
 private:
 	//============
 	// メンバ変数

@@ -28,10 +28,16 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/tutorial_1.png",   // チュートリアル
     "./data/Textures/tutorial_2.png",   // チュートリアル
     "./data/Textures/tutorial_3.png",   // チュートリアル
-	"./data/Textures/effect/kirakira.png",		// パーティクル*四角
-	"./data/Textures/Tears.png",              // パーティクル*涙
-	"./data/Textures/particle004.png",        // パーティクル*円
-	"./data/Textures/number.png",             // ナンバー
+	"./data/Textures/knight_flame.png",	// リザルト(ナイトの背景)
+	"./data/Textures/lancer_flame.png",	// リザルト(ランサーの背景)
+	"./data/Textures/archer_flame.png",	// リザルト(アーチャーの背景)
+	"./data/Textures/kill.png",			// リザルトのキルUI
+	"./data/Textures/tile.png",			// リザルトのタイルUI
+	"./data/Textures/effect/kirakira.png",	// パーティクル*四角
+	"./data/Textures/Tears.png",			// パーティクル*涙
+	"./data/Textures/particle004.png",		// パーティクル*円
+	"./data/Textures/guruguru.png",			// パーティクル*円
+	"./data/Textures/number.png",			// ナンバー
 	"./data/Textures/frame.png",              // 枠
 	"./data/Textures/cross_mark.png",         // バツマーク
 	"./data/Textures/needle_hole.png",        // とげ穴
@@ -43,6 +49,12 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/chara_select_frame.png", // キャラ選択背景
 	"./data/Textures/suma.png",				  // タイトルのボタン(スタート)
 	"./data/Textures/ka-bi-.jpg",			  // タイトルのボタン(チュートリアル)
+	"./data/Textures/tile_effect_00.png",	  // 最大塗段階時のエフェクト
+	"./data/Textures/attack_area.png",	      // 攻撃範囲
+	"./data/Textures/clock_frame.png",	      // 時計の枠
+	"./data/Textures/clock_hands.png",	      // 時計の針
+	"./data/Textures/Toon_Shadow.png",	      // トゥーンシャドウ
+	"./data/Textures/tile_effect_charge.png", // タイルのチャージ
 	"./data/Textures/taile_effect_00.png",	  // 最大塗段階時のエフェクト
 	"./data/Textures/icon_bg.png",	      // 剣アイコン
 	"./data/Textures/sword_icon.png",	      // 剣アイコン

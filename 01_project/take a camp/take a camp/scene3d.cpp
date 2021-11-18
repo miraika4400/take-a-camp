@@ -199,17 +199,17 @@ void CScene3d::SetPos(const D3DXVECTOR3 pos)
 {
 	VERTEX_3D *pVtx;// 頂点情報ポインタ
 
-					//posの代入
+	//posの代入
 	m_pos = pos;
 
 	// ロック
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(+m_size.x/2, +m_size.y/2, -m_size.z/2);
-	pVtx[1].pos = D3DXVECTOR3(-m_size.x/2, +m_size.y/2, -m_size.z/2);
-	pVtx[2].pos = D3DXVECTOR3(+m_size.x/2, -m_size.y/2, +m_size.z/2);
-	pVtx[3].pos = D3DXVECTOR3(-m_size.x/2, -m_size.y/2, +m_size.z/2);
+	pVtx[0].pos = D3DXVECTOR3(+m_size.x/ 2.0f, +m_size.y/2.0f, -m_size.z/ 2.0f);
+	pVtx[1].pos = D3DXVECTOR3(-m_size.x/ 2.0f, +m_size.y/2.0f, -m_size.z/ 2.0f);
+	pVtx[2].pos = D3DXVECTOR3(+m_size.x/ 2.0f, -m_size.y/2.0f, +m_size.z/ 2.0f);
+	pVtx[3].pos = D3DXVECTOR3(-m_size.x/ 2.0f, -m_size.y/2.0f, +m_size.z/ 2.0f);
 
 
 	// アンロック

@@ -1,0 +1,22 @@
+CHARACTER_DATA
+
+	LABEL = KNIGHT
+	MOVE_FRAME = 15
+	MOVE_FRAME_DASH = 12
+	ATTACK_PATH = data/Text/attack/attack_1.csv
+	FINAL_ATTACK_PATH = data/Text/final_attack/final_attack_1.csv
+	FINAL_ATTACK_TIME = 60
+	
+	CHARGE_TIME_LIST
+		0 = 0
+		1 = 60
+		2 = 120
+	CHARGE_TIME_LIST_END
+	
+	MOTION_LIST
+		IDLE   = data/Text/motion/motion_knight_neutral.txt
+		CHARGE = data/Text/motion/motion_knight_neutral.txt
+		ATTACK = data/Text/motion/motion_knight_attack.txt
+	MOTION_LIST_END
+	
+CHARACTER_DATA_END

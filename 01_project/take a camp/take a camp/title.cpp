@@ -95,8 +95,8 @@ HRESULT CTitle::Init(void)
 	CManager::SetLight();
 
 	// É{É^ÉìÇÃê∂ê¨
-	m_pButton = CButton_Title::Create(D3DXVECTOR3(800.0f, 600.0f, 0.0f), CButton_Title::BUTTON_START);
-	m_pButton = CButton_Title::Create(D3DXVECTOR3(800.0f, 660.0f, 0.0f), CButton_Title::BUTTON_TUTORIAL);
+	m_pButton = CButton_Title::Create(D3DXVECTOR3(SCREEN_WIDTH/2, 500.0f, 0.0f), CButton_Title::BUTTON_START);
+	m_pButton = CButton_Title::Create(D3DXVECTOR3(SCREEN_WIDTH/2, 630.0f, 0.0f), CButton_Title::BUTTON_TUTORIAL);
 
 	return S_OK;
 }
