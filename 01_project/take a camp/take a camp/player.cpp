@@ -170,6 +170,7 @@ HRESULT CPlayer::Init(void)
 	// コントロール番号
 	m_nControllNum = CCharaSelect::GetEntryData(m_nPlayerNumber).nControllNum;
 	m_bController = CCharaSelect::GetEntryData(m_nPlayerNumber).bController;
+	// カラー番号の取得
 	m_nColor = CCharaSelect::GetEntryData(m_nPlayerNumber).nColorNum;
 	CColorManager::GetColorManager()->SetUsePlayerNum(m_nPlayerNumber, m_nColor);
 	
