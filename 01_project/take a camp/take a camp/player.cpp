@@ -604,7 +604,7 @@ void CPlayer::AttackFinal(void)
 	// •KŽE‹Zƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚½‚ç
 	if (m_bFinalAttack)
 	{
-		if (m_pAttack->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
+		if (m_pAttackFinal->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
 		{
 			// UŒ‚ƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½‚ç
 			if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
