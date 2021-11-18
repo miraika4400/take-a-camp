@@ -37,8 +37,8 @@
 #define	WINDOW_POS_Y	(0)
 
 // âÊñ ÇÃïù
-#define SCREEN_WIDTH	(1280)
-#define SCREEN_HEIGHT	(720)
+#define SCREEN_WIDTH	(1920)
+#define SCREEN_HEIGHT	(1080)
 
 // í∏ì_Ç∆É|ÉäÉSÉì
 #define NUM_VERTEX	(4)
