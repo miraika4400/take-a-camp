@@ -86,9 +86,9 @@ void CNeedleTile::Update(void)
 
 	// ŒŠˆÊ’u‚Ì’²®
 	D3DXVECTOR3 pos = m_pHole->GetPos();
-	if (pos != D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z))
+	if (pos != D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.2f, GetPos().z))
 	{
-		pos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z);
+		pos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.2f, GetPos().z);
 
 		m_pHole->SetPos(pos);
 	}

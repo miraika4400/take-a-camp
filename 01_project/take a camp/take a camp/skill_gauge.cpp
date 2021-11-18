@@ -16,11 +16,16 @@
 #include "polygon.h"
 #include "player.h"
 #include "color_tile.h"
+#include "keyboard.h"
+#include "joypad.h"
+#include "attack_final.h"
 
 //==================================
 // マクロ定義
 //==================================
 #define SKILLGAUGE_ADDPOS (D3DXVECTOR3(0.0f, 35.0f, 0.0f))
+#define SKILLGAUGE_ADDFLAME (10.0f)
+#define SKILLGAUGE_SIZE (D3DXVECTOR3(20.0f, 20.0f, 0.0f))
 
 //==================================
 // コンストラクタ
@@ -39,6 +44,18 @@ CSkillgauge::CSkillgauge()
 //==================================
 CSkillgauge::~CSkillgauge()
 {
+}
+
+//==================================
+// スキルゲージすべてのクリエイト
+// nPlayerNum：プレイヤーの番号
+//==================================
+void CSkillgauge::AllCreate(const int nPlayerNum)
+{
+	// 上からスキルゲージの背景、色つけるやつ、アイコン
+	CSkillgauge::Create(SKILLGAUGE_SIZE, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), nPlayerNum, CSkillgauge::SKILLGAUGE_BG);
+	CSkillgauge::Create(SKILLGAUGE_SIZE, GET_COLORMANAGER->GetIconColor(nPlayerNum), nPlayerNum, CSkillgauge::SKILLGAUGE_STENCIL);
+	CSkillgauge::Create(SKILLGAUGE_SIZE, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), nPlayerNum, CSkillgauge::SKILLGAUGE_ICON);
 }
 
 //==================================
@@ -76,21 +93,19 @@ HRESULT CSkillgauge::Init()
 	// 頂点座標の設定
 	D3DXVECTOR3 Pos[NUM_VERTEX];
 
+	// 座標、サイズ、色のセット
+	SetPos(m_pos);
+	SetSize(m_size);
+	SetColor(m_col);
+
 	switch (m_SkillGaugeType)
 	{
 	case SKILLGAUGE_BG:
 		BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ICON_BG));
-
-		SetPos(m_pos);
-		SetSize(m_size);
-		SetColor(m_col);
 		break;
 
 	case SKILLGAUGE_STENCIL:
-		SetPos(m_pos);
-		SetSize(m_size);
-		SetColor(m_col);
-
+		// ステンシルを表示する座標
 		Pos[0] = D3DXVECTOR3(-m_size.x / 2.0f, -m_size.y / 2.0f - m_fGauge, 0.0f);
 		Pos[1] = D3DXVECTOR3(+m_size.x / 2.0f, -m_size.y / 2.0f - m_fGauge, 0.0f);
 		Pos[2] = D3DXVECTOR3(-m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f);
@@ -100,11 +115,22 @@ HRESULT CSkillgauge::Init()
 		break;
 
 	case SKILLGAUGE_ICON:
-		BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+		// キャラクターのタイプごとにテクスチャを変える
+		switch (GetPlayerinfo(m_nPlayerNum)->GetCharacterType())
+		{
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_KNIGHT:
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+			break;
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_LANCER:
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+			break;
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_WIZARD:
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+			break;
+		default:
+			break;
+		}
 
-		SetPos(m_pos);
-		SetSize(m_size);
-		SetColor(m_col);
 		break;
 
 	default:
@@ -131,46 +157,18 @@ void CSkillgauge::Update(void)
 	// 更新処理
 	CBillboard::Update();
 
+	// 座標のセット
+	SetPos(m_pos + SKILLGAUGE_ADDPOS);
+
 	// プレイヤーの座標を取得
-	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
-	while (pPlayer != NULL)
-	{
-		if (pPlayer->GetPlayerNumber() == m_nPlayerNum)
-		{
-			m_pos = pPlayer->GetPos();
-		}
-
-		pPlayer = (CPlayer*)pPlayer->GetNext();
-	}
-
-	// 頂点座標の設定
-	D3DXVECTOR3 Pos[NUM_VERTEX];
+	CPlayer * pPlayer = GetPlayerinfo(m_nPlayerNum);
+	m_pos = pPlayer->GetPos();
 
 	switch (m_SkillGaugeType)
 	{
-	case SKILLGAUGE_BG:
-		SetPos(m_pos + SKILLGAUGE_ADDPOS);
-		break;
-
 	case SKILLGAUGE_STENCIL:
-		m_fGauge = (float)CColorTile::GetTileNum(m_nPlayerNum);
-
-		if (m_fGauge > m_size.y)
-		{
-			m_fGauge = m_size.y;
-		}
-
-		Pos[0] = D3DXVECTOR3(-m_size.x / 2.0f, -m_size.y / 2.0f + m_fGauge, 0.0f);
-		Pos[1] = D3DXVECTOR3(+m_size.x / 2.0f, -m_size.y / 2.0f + m_fGauge, 0.0f);
-		Pos[2] = D3DXVECTOR3(-m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f);
-		Pos[3] = D3DXVECTOR3(+m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f);
-
-		SetPos(m_pos + SKILLGAUGE_ADDPOS);
-		SetVertexPos(Pos);
-		break;
-
-	case SKILLGAUGE_ICON:
-		SetPos(m_pos + SKILLGAUGE_ADDPOS);
+		// ステンシルの更新
+		UpdateStencil();
 		break;
 
 	default:
@@ -251,4 +249,73 @@ void CSkillgauge::Draw(void)
 
 	// ステンシルテストを無効に
 	pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
+}
+
+//==================================
+// プレイヤーの情報取得処理
+//==================================
+CPlayer * CSkillgauge::GetPlayerinfo(int nPlayerNum)
+{
+	// プレイヤーのポインタを取得
+	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+	while (pPlayer != NULL)
+	{
+		if (pPlayer->GetPlayerNumber() == m_nPlayerNum)
+		{
+			break;
+		}
+
+		pPlayer = (CPlayer*)pPlayer->GetNext();
+	}
+
+	return pPlayer;
+}
+
+//==================================
+// ステンシルの更新処理
+//==================================
+void CSkillgauge::UpdateStencil(void)
+{
+	// キーボードとジョイパッドの取得
+	CInputKeyboard * pKey = CManager::GetKeyboard();
+	CInputJoypad* pJoypad = CManager::GetJoypad();
+
+	// 頂点座標の設定
+	D3DXVECTOR3 Pos[NUM_VERTEX];
+
+	// キャラデータの取得
+	CResourceCharacter::CharacterData charaData =
+		CResourceCharacter::GetResourceCharacter()->GetCharacterData(GetPlayerinfo(m_nPlayerNum)->GetCharacterType());
+
+	// キャラクターごとの必殺技秒数*1秒間のフレーム数
+	m_fGauge += m_size.y / ((float)charaData.nFinalAttackTime * SKILLGAUGE_ADDFLAME);
+
+	// サイズ分を超えないように
+	if (m_fGauge > m_size.y)
+	{
+		m_fGauge = m_size.y;
+
+	}
+	
+	// ゲージが溜まったら
+	if(m_fGauge == m_size.y)
+	{
+		// 必殺技のフラグ立て
+		GetPlayerinfo(m_nPlayerNum)->SetFinalAttack(true);
+
+		// 必殺技を打ったら
+		if (GetPlayerinfo(m_nPlayerNum)->GetAttackFinal()->GetAttackFinalFlag() == true)
+		{
+			GetPlayerinfo(m_nPlayerNum)->SetFinalAttack(false);
+			m_fGauge = 0.0f;
+		}
+	}
+
+	// ゲージ用ポリゴンの座標
+	Pos[0] = D3DXVECTOR3(-m_size.x / 2.0f, -m_size.y / 2.0f + m_fGauge, 0.0f);
+	Pos[1] = D3DXVECTOR3(+m_size.x / 2.0f, -m_size.y / 2.0f + m_fGauge, 0.0f);
+	Pos[2] = D3DXVECTOR3(-m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f);
+	Pos[3] = D3DXVECTOR3(+m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f);
+
+	SetVertexPos(Pos);
 }

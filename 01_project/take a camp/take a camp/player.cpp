@@ -93,6 +93,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_nDashCnt = 1;					// 速度アップカウント
 	m_bController = false;
 	m_bAttack = false;
+	m_bFinalAttack = false;
 	m_pKillCount = NULL;
 	m_characterType = CResourceCharacter::CHARACTER_KNIGHT;
 	m_nMoveFrameData = 0;
@@ -127,12 +128,6 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 	pPlayer->SetPriority(OBJTYPE_PLAYER); // オブジェクトタイプ
 	pPlayer->m_Move = pos;
 	pPlayer->m_RespawnPos = pos;
-	CSkillgauge::Create(D3DXVECTOR3(20.0f, 20.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), pPlayer->m_nColor, CSkillgauge::SKILLGAUGE_BG);
-	CSkillgauge::Create(D3DXVECTOR3(20.0f, 20.0f, 0.0f), GET_COLORMANAGER->GetIconColor(pPlayer->m_nColor), pPlayer->m_nColor, CSkillgauge::SKILLGAUGE_STENCIL);
-	CSkillgauge::Create(D3DXVECTOR3(20.0f, 20.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), pPlayer->m_nColor, CSkillgauge::SKILLGAUGE_ICON);
-	
-	// プレイヤーの頭上に出すスコア生成
-	CNumberArray::Create(0, pos, D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(pPlayer->m_nColor), pPlayer->m_nColor);
 
 	//攻撃用クラス生成(今後職業ごとにcreateする攻撃処理を変える)
 	pPlayer->m_pAttack = CAttackKnight::Create(pPlayer);
@@ -186,7 +181,12 @@ HRESULT CPlayer::Init(void)
 	// モデルのサイズの設定
 	SetSize(MODEL_SIZE);
 
-	//CNumberArray::Create(10, GetPos() + D3DXVECTOR3(0.0f, 100.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	// スキルゲージの生成(後々ここに職種入れてアイコン変える)
+	CSkillgauge::AllCreate(m_nColor);
+
+	// プレイヤーの頭上に出すスコア生成
+	CNumberArray::Create(0, GetPos(), D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(m_nColor), m_nColor);
+
 	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);	
 
 	for (int nCntAnim = 0; nCntAnim < CResourceCharacter::MOTION_MAX; nCntAnim++)
@@ -259,12 +259,12 @@ void CPlayer::Update(void)
 			Move();
 			// 攻撃処理
 			Attack();
+			//// 必殺の処理
+			//AttackFinal();
 		}
 
 		//無敵処理
 		Invincible();
-		// 必殺の処理
-		AttackFinal();
 
 		// 当たり判定の位置
 		if (m_pCollision == NULL)
@@ -586,17 +586,6 @@ void CPlayer::Attack(void)
 		m_pAttack->AttackSwitch();
 		//アニメーション処理
 		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
-
-	}
-
-	//攻撃範囲をリセット
-	if (!m_bController && !pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
-		|| m_bController &&!pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
-	{
-		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK)
-		{
-			m_pAttack->ResetAttackArea();
-		}
 	}
 }
 
@@ -612,44 +601,40 @@ void CPlayer::AttackFinal(void)
 	// 当たっているタイルの取得
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 
-	if (m_pAttack->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
+	// 必殺技フラグが立っていたら
+	if (m_bFinalAttack)
 	{
-		// 攻撃ボタンを押したら
-		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
-			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
+		if (m_pAttack->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
 		{
-			//攻撃範囲の枠の色を変える
-			m_pAttackFinal->VisualizationAttackArea();
+			// 攻撃ボタンを押したら
+			if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+				|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
+			{
+				//攻撃範囲の枠の色を変える
+				m_pAttackFinal->VisualizationAttackArea();
+			}
+		}
+
+		// 離したら弾がでるように
+		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
+		{
+			//必殺スイッチ処理
+			m_pAttackFinal->AttackFinalSwitch();
+			m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
+
+			//攻撃フラグが立っている＆移動フラグが立っていない状態
+			if (m_bMove)
+			{
+				//攻撃スイッチ処理
+				m_pAttackFinal->AttackFinalSwitch();
+				//アニメーション処理
+				m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
+			}
 		}
 	}
 
-	// 離したら弾がでるように
-	if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
-		|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
-	{
-		//必殺スイッチ処理
-		m_pAttackFinal->AttackFinalSwitch();
-		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
-	}
 
-	//攻撃フラグが立っている＆移動フラグが立っていない状態
-	if (m_bAttack&&m_bMove)
-	{
-		//フラグを回収
-		m_bFinalAttacl = false;
-		//攻撃スイッチ処理
-		m_pAttackFinal->AttackFinalSwitch();
-		//アニメーション処理
-		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
-
-	}
-
-	//攻撃範囲をリセット
-	if (!m_bController && !pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
-		|| m_bController && !pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
-	{
-		m_pAttackFinal->ResetAttackArea();
-	}
 }
 
 //******************************

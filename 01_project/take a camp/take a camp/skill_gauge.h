@@ -19,6 +19,7 @@
 // 前方宣言
 //=============================================================================
 class CPolygon;
+class CPlayer;
 
 //=============================================================================
 // クラス定義
@@ -42,7 +43,7 @@ public:
 	//============
 	CSkillgauge();
 	~CSkillgauge();
-	static CSkillgauge *Create(const D3DXVECTOR3 size, const D3DXCOLOR col, const int nPlayerNum, const SKILLGAUGE_TYPE SkillGaugeType); // クラス生成
+	static void AllCreate(const int nPlayerNum);
 
 	HRESULT Init(void); // 初期化
 	void Uninit(void);	// 終了
@@ -50,6 +51,13 @@ public:
 	void Draw(void);	// 描画
 
 private:
+	//============
+	// メンバ関数
+	//============
+	static CSkillgauge *Create(const D3DXVECTOR3 size, const D3DXCOLOR col, const int nPlayerNum, const SKILLGAUGE_TYPE SkillGaugeType); // クラス生成
+	CPlayer *GetPlayerinfo(int nPlayerNum);
+	void UpdateStencil(void); // ステンシルの更新処理
+
 	//============
 	// メンバ変数
 	//============
@@ -59,7 +67,6 @@ private:
 	D3DXCOLOR m_col;		// 色
 	int m_nPlayerNum;		// プレイヤーの番号
 	float m_fGauge;
-
 };
 
 #endif
