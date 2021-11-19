@@ -31,7 +31,7 @@ public:
 		TEXTURE_TUTORIAL_FLAG,   // チュートリアル(はたあげ)
 		TEXTURE_TUTORIAL_FRY,    // チュートリアル(連打)
 		TEXTURE_TUTORIAL_REMEMBER,// チュートリアル(記憶)
-		TEXTURE_PARTICLE_SQUARE,    // パーティクル*箱
+		TEXTURE_PARTICLE_SQUARE,    // パーティクル*ダイヤ
 		TEXTURE_PARTICLE_TEARS,  // パーティクル*涙
 		TEXTURE_PARTICLE_CIRCLE, // パーティクル*円
 		TEXTURE_PARTICLE_GURUGURU, // ぐるぐる

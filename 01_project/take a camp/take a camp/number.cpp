@@ -126,6 +126,7 @@ void CNumber::Draw(void)
 	pDevice->SetTexture(0, CResourceTexture::GetTexture(CResourceTexture::TEXTURE_NUMBER));
 
 	//ƒ|ƒŠƒSƒ“‚Ì•`‰æ
+
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 
 	pDevice->SetTexture(0, 0);

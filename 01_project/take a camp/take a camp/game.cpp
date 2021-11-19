@@ -27,7 +27,7 @@
 #include "color_manager.h"
 #include "color_tile.h"
 #include "kill_count.h"
-
+#include "base_Cylinder.h"
 //=============================
 // マクロ定義
 //=============================
@@ -83,13 +83,16 @@ HRESULT CGame::Init(void)
 	CBg::Create();
 	
 	//ステージ生成
-	m_pMap = CMap::Create(m_MapType);
+	//m_pMap = CMap::Create(m_MapType);
 	
+
+
 	// ライトクラスの生成
 	CManager::SetLight();
 
 	CTime::Create();
 
+	Cbase_Cylinder::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 100.0f));
 	return S_OK;
 }
 

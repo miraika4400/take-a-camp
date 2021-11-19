@@ -327,6 +327,9 @@
     <ClCompile Include="attack_knight.cpp">
       <Filter>ソース ファイル\07_GameModel\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="base_Cylinder.cpp">
+      <Filter>ソース ファイル\09_Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -541,6 +544,9 @@
     </ClInclude>
     <ClInclude Include="charge_tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="base_Cylinder.h">
+      <Filter>ヘッダー ファイル\09_Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

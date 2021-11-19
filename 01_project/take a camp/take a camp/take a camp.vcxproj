@@ -210,6 +210,7 @@
     <ClCompile Include="scene3d.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="shadow.cpp" />
+    <ClCompile Include="base_Cylinder.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="resource_texture.cpp" />
     <ClCompile Include="map.cpp" />
@@ -281,6 +282,7 @@
     <ClInclude Include="scene3d.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="shadow.h" />
+    <ClInclude Include="base_Cylinder.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="resource_texture.h" />
     <ClInclude Include="map.h" />
