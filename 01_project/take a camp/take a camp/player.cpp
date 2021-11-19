@@ -173,7 +173,7 @@ HRESULT CPlayer::Init(void)
 	// カラー番号の取得
 	m_nColor = CCharaSelect::GetEntryData(m_nPlayerNumber).nColorNum;
 	CColorManager::GetColorManager()->SetUsePlayerNum(m_nPlayerNumber, m_nColor);
-	
+
 	// キルカウント用のクラス
 	m_pKillCount = CKillCount::Create(m_nPlayerNumber);
 	// モデルのサイズの設定
@@ -621,13 +621,6 @@ void CPlayer::AttackFinal(void)
 		//アニメーション処理
 		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
 
-	}
-
-	//攻撃範囲をリセット
-	if (!m_bController && !pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
-		|| m_bController && !pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
-	{
-		m_pAttackFinal->ResetAttackArea();
 	}
 }
 
