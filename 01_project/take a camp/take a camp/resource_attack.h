@@ -11,6 +11,7 @@
 //=============================================================================
 #include "model.h"
 #include "scene.h"
+#include "resource_character.h"
 
 //=============================================================================
 // マクロ定義
@@ -66,31 +67,21 @@ public:
 		int			nAttackFrame[MAX_HIT_TYPE];					// 攻撃速度
 	}ATTACK_SQUARE_DATA;
 
-	typedef enum	//攻撃の種類
-	{
-		ATTACK_TYPE_1 = 0,	//なし
-		ATTACK_TYPE_2,
-		ATTACK_TYPE_3,
-		ATTACK_TYPE_4,
-		ATTACK_TYPE_MAX
-	}ATTACK_TYPE;
-
 	//関数定義
 	CAttackManager();
 	~CAttackManager();
 	static CAttackManager * Create(void);	// クラス生成
 	static void Release(void);				// クラス破棄
-	static ATTACK_RANGE_DATA GetAttackData(ATTACK_TYPE Attack,int nLevel);
-	static ATTACK_SQUARE_DATA GetAttack(ATTACK_TYPE AttackType, int nLevel);
+	static ATTACK_RANGE_DATA GetAttackData(CResourceCharacter::CHARACTER_TYPE type,int nLevel);
+	static ATTACK_SQUARE_DATA GetAttack(CResourceCharacter::CHARACTER_TYPE type, int nLevel);
 
 private:
 	void	Load(void);		//攻撃範囲読み込み
 	void	PosCalc(void);	//位置計算
 
-	static char*			m_pFileName[ATTACK_TYPE_MAX];		// ファイルネーム
 	static CAttackManager*	m_pAttackBasis;						// 攻撃範囲クラスのポインタ
-	ATTACK_RANGE_DATA		m_AttackData[ATTACK_TYPE_MAX][MAX_ATTACK_LEVEL];		// 攻撃の情報
-	ATTACK_SQUARE_DATA		m_AttackSwuare[ATTACK_TYPE_MAX][MAX_ATTACK_LEVEL];	// 攻撃マスの情報
+	ATTACK_RANGE_DATA		m_AttackData[CResourceCharacter::CHARACTER_MAX][MAX_ATTACK_LEVEL];		// 攻撃の情報
+	ATTACK_SQUARE_DATA		m_AttackSwuare[CResourceCharacter::CHARACTER_MAX][MAX_ATTACK_LEVEL];	// 攻撃マスの情報
 
 };
 #endif

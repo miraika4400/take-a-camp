@@ -81,7 +81,7 @@ HRESULT CGame::Init(void)
 
 	// 背景の生成
 	CBg::Create();
-	
+
 	//ステージ生成
 	//m_pMap = CMap::Create(m_MapType);
 	
@@ -89,7 +89,7 @@ HRESULT CGame::Init(void)
 
 	// ライトクラスの生成
 	CManager::SetLight();
-
+	// 制限時間クラス
 	CTime::Create();
 
 	Cbase_Cylinder::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 100.0f));

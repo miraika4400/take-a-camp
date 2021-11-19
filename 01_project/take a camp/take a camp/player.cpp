@@ -32,12 +32,14 @@
 #include "kill_count.h"
 #include "particle.h"
 #include "resource_model_hierarchy.h"
+#include "attack_final.h"
+#include "attack_final_knight.h"
+#include "skill_gauge.h"
 
 //*****************************
 // マクロ定義
 //*****************************
 #define MOVE_DIST				(TILE_ONE_SIDE)	// 移動距離
-#define MOVE_FRAME				(15)			// 移動速度
 #define COLLISION_RADIUS		(18.0f)			// 当たり判定の大きさ
 #define MODL_COLOR				(D3DXCOLOR(0.3f,0.3f,0.3f,1.0f))	// モデルカラー
 #define MODEL_SIZE				(D3DXVECTOR3(1.4f,1.4f,1.4f))		// モデルサイズ
@@ -52,7 +54,6 @@
 #define ROT_FACING_02			(360)			// 回転向き
 #define RIM_POWER				(2.5f)			// リムライトの強さ
 #define DASH_FRAME				(300)			// ダッシュ時有効フレーム数
-#define DASH_MOVE_FRAME			(MOVE_FRAME*0.8f)	// ダッシュ時の速度
 #define STICK_DECISION_RANGE	(32768.0f / 1.001f)	// スティックの上下左右の判定する範囲
 
 //*****************************
@@ -60,10 +61,10 @@
 //*****************************
 int CPlayer::m_anControllKey[MAX_PLAYER][CPlayer::KEY_MAX] =
 {
-	{ DIK_W,DIK_S,DIK_A,DIK_D,DIK_E },
-	{ DIK_UP,DIK_DOWN,DIK_LEFT,DIK_RIGHT,DIK_NUMPAD1 },
-	{ DIK_U,DIK_J,DIK_H,DIK_K,DIK_I },
-	{ DIK_NUMPAD8,DIK_NUMPAD5,DIK_NUMPAD4,DIK_NUMPAD6,DIK_NUMPAD9 }
+	{ DIK_W,DIK_S,DIK_A,DIK_D,DIK_E,DIK_Q },
+	{ DIK_UP,DIK_DOWN,DIK_LEFT,DIK_RIGHT,DIK_NUMPAD1,DIK_RSHIFT },
+	{ DIK_U,DIK_J,DIK_H,DIK_K,DIK_I,DIK_Y },
+	{ DIK_NUMPAD8,DIK_NUMPAD5,DIK_NUMPAD4,DIK_NUMPAD6,DIK_NUMPAD9,DIK_NUMPAD7 }
 };
 
 //******************************
@@ -89,11 +90,14 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_pAttack = NULL;
 	memset(&m_apMotion, 0, sizeof(m_apMotion));	// アニメーションポインタ
 	m_ItemState = ITEM_STATE_NONE;	// アイテム用ステート
-	m_nMoveframe = 0;				// 移動速度
 	m_nDashCnt = 1;					// 速度アップカウント
 	m_bController = false;
+	m_bAttack = false;
+	m_bFinalAttack = false;
 	m_pKillCount = NULL;
 	m_characterType = CResourceCharacter::CHARACTER_KNIGHT;
+	m_nMoveFrameData = 0;
+	m_nMoveFrameDataDash = 0;
 }
 
 //******************************
@@ -124,12 +128,12 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 	pPlayer->SetPriority(OBJTYPE_PLAYER); // オブジェクトタイプ
 	pPlayer->m_Move = pos;
 	pPlayer->m_RespawnPos = pos;
-	
-	// プレイヤーの頭上に出すスコア生成
-	CNumberArray::Create(0, pos, D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(pPlayer->m_nColor), pPlayer->m_nColor);
 
 	//攻撃用クラス生成(今後職業ごとにcreateする攻撃処理を変える)
 	pPlayer->m_pAttack = CAttackKnight::Create(pPlayer);
+
+	// 必殺用クラス生成
+	pPlayer->m_pAttackFinal = CAttackFinalknight::Create(pPlayer);
 
 	//移動範囲クラスの生成
 	pPlayer->m_pActRange = CActRange::Create(pPlayer);
@@ -143,12 +147,17 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 HRESULT CPlayer::Init(void)
 {
 	// キャラデータの取得
+	//m_characterType = CCharaSelect::GetEntryData(m_nPlayerNumber).charaType;
 	CResourceCharacter::CharacterData charaData = CResourceCharacter::GetResourceCharacter()->GetCharacterData(m_characterType);
 
 	if (FAILED(CModelHierarchy::Init(charaData.modelType)))
 	{
 		return E_FAIL;
 	}
+
+	// キャラデータの反映
+	m_nMoveFrameData = charaData.nMoveFrame; // 移動時フレーム数
+	m_nMoveFrameDataDash = charaData.nMoveFrameDash;// 移動時フレーム数*ダッシュ時
 
 	// 移動フラグの初期化
 	m_bMove = true;
@@ -161,19 +170,21 @@ HRESULT CPlayer::Init(void)
 	// コントロール番号
 	m_nControllNum = CCharaSelect::GetEntryData(m_nPlayerNumber).nControllNum;
 	m_bController = CCharaSelect::GetEntryData(m_nPlayerNumber).bController;
-
-	////////////////////////////////////////
-	// 仮	
-	m_nColor = m_nPlayerNumber;
+	// カラー番号の取得
+	m_nColor = CCharaSelect::GetEntryData(m_nPlayerNumber).nColorNum;
 	CColorManager::GetColorManager()->SetUsePlayerNum(m_nPlayerNumber, m_nColor);
-	////////////////////////////////////////
-	
+
 	// キルカウント用のクラス
 	m_pKillCount = CKillCount::Create(m_nPlayerNumber);
 	// モデルのサイズの設定
 	SetSize(MODEL_SIZE);
 
-	//CNumberArray::Create(10, GetPos() + D3DXVECTOR3(0.0f, 100.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	// スキルゲージの生成(後々ここに職種入れてアイコン変える)
+	CSkillgauge::AllCreate(m_nColor);
+
+	// プレイヤーの頭上に出すスコア生成
+	CNumberArray::Create(0, GetPos(), D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(m_nColor), m_nColor);
+
 	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);	
 
 	for (int nCntAnim = 0; nCntAnim < CResourceCharacter::MOTION_MAX; nCntAnim++)
@@ -188,7 +199,7 @@ HRESULT CPlayer::Init(void)
 	// アイテムステート
 	m_ItemState = ITEM_STATE_NONE;
 
-	m_nMoveframe = MOVE_FRAME;				// 移動速度
+	m_nMoveFrame = m_nMoveFrameData;
 	m_nDashCnt = 1;		//速度アップカウント
 	return S_OK;
 }
@@ -237,17 +248,21 @@ void CPlayer::Update(void)
 	case PLAYER_STATE_NORMAL:	//通常状態
 
 		//攻撃可否フラグが立っているか
-		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK)
+		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
+			&&m_pAttackFinal->GetState() != CAttackFinal::FINAL_ATTACK_STATE_ATTACK)
 		{
 			// 向きの管理
 			ManageRot();
 			// 移動処理
 			Move();
+			// 攻撃処理
+			Attack();
+			// 必殺の処理
+			AttackFinal();
 		}
+
 		//無敵処理
 		Invincible();
-		// 弾の処理
-		Attack();
 
 		// 当たり判定の位置
 		if (m_pCollision == NULL)
@@ -264,10 +279,11 @@ void CPlayer::Update(void)
 		Respawn();
 		// 攻撃範囲を消す
 		m_pAttack->ResetAttackArea();
-		// 攻撃のキャンセル
-		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		break;
 	}
+
+	// アイテムステートの管理
+	ManageItemState();
 
 	// モーション管理
 	ManageMotion();
@@ -338,6 +354,8 @@ void CPlayer::Death(void)
 
 		//行動クラスに死亡状態になったフラグを送る
 		m_pActRange->SetDeath(true);
+		//攻撃状態の初期化
+		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		//透明にする
 		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -368,6 +386,8 @@ void CPlayer::SkillDeath(void)
 
 		//行動クラスに死亡状態になったフラグを送る
 		m_pActRange->SetDeath(true);
+		//攻撃状態の初期化
+		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		//透明にする
 		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -406,8 +426,6 @@ void CPlayer::Move(void)
 					m_Move += move;
 					m_bMove = false;
 					m_rotDest.y = fRotDistY;
-
-					if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
 				}
 			}
 			//操作逆転状態の時
@@ -419,8 +437,6 @@ void CPlayer::Move(void)
 					m_Move += move*-1;
 					m_bMove = false;
 					m_rotDest.y = fRotDistY - D3DXToRadian(180);
-
-					if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
 				}
 			}
 
@@ -458,7 +474,7 @@ void CPlayer::Move(void)
 		D3DXVECTOR3 pos = GetPos();
 
 		//移動計算
-		pos += (m_Move - pos) / (float)(m_nMoveframe - m_MoveCount);
+		pos += (m_Move - pos) / (float)(m_nMoveFrame - m_MoveCount);
 
 		//位置設定
 		SetPos(pos);
@@ -467,49 +483,12 @@ void CPlayer::Move(void)
 		m_MoveCount++;
 
 		//カウントが一定に達する
-		if (m_MoveCount >= m_nMoveframe)
+		if (m_MoveCount >= m_nMoveFrame)
 		{
 			//カウント初期化
 			m_MoveCount = 0;
 			//移動できるように
 			m_bMove = true;
-		}
-
-		switch (m_ItemState)
-		{
-		case ITEM_STATE_NONE:
-			break;
-		case ITEM_STATE_DASH:
-
-			//ダッシュタイムをカウント
-			m_nDashCnt++;
-
-			m_nMoveframe = (int)(DASH_MOVE_FRAME);
-
-			if (m_nDashCnt % DASH_FRAME == 0)
-			{
-				m_nDashCnt = 0;
-				m_nMoveframe = MOVE_FRAME;
-				m_ItemState = ITEM_STATE_NONE;
-			}
-			break;
-		case ITEM_STATE_REVERSE:
-			CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
-
-			while (pPlayer != NULL)
-			{
-				if (pPlayer->m_PlayerState != PLAYER_STATE_DEATH)
-				{
-					if (pPlayer->GetPlayerNumber() != m_nPlayerNumber)
-					{
-						pPlayer->SetState(PLAYER_STATE_REVERSE);
-						m_ItemState = ITEM_STATE_NONE;
-						//return;
-					}
-				}
-				pPlayer = (CPlayer*)pPlayer->GetNext();
-			}
-			break;
 		}
 	}
 }
@@ -552,49 +531,100 @@ void CPlayer::Attack(void)
 	// 当たっているタイルの取得
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 	
-	//攻撃処理
+	//触れているタイルの識別＆攻撃の状況が攻撃中になっていないか
 	if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor 
-		&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK)
+		&& m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL)
 	{
 		// 攻撃ボタンを押したら
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
 		{
-			// チャージ処理
-			if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL)
+			//タイルがチャージ出来るか取得
+			if (pHitTile->ChargeFlag(m_nPlayerNumber))
 			{
-				//タイルがチャージ出来ているか取得
-				if (pHitTile->ChargeFlag(m_nPlayerNumber))
-				{
-					//攻撃チャージを開始
-					m_pAttack->ChargeFlag(pHitTile->GetStepNum()-1);
+				//攻撃チャージを開始
+				m_pAttack->ChargeFlag(pHitTile->GetStepNum()-1);
 
-				}
 			}
 			//チャージできる状態になりフラグが立つ
 			else
 			{
-				//攻撃範囲の枠の色を変える
+				//攻撃範囲の可視化
 				m_pAttack->VisualizationAttackArea();
 			}
 		}
 	
-		// 離したら弾がでるように
-		if (  !m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
-			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
-		{
-			//攻撃スイッチ処理
-			m_pAttack->AttackSwitch();
-			m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);		}
 	}
 
-	//攻撃範囲をリセット
-	if (!m_bController && !pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
-		|| m_bController &&!pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
+	//チャージ状態か
+	if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_CHARGE)
 	{
-		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK)
+		//攻撃範囲の枠の色を変える
+		m_pAttack->VisualizationAttackArea();
+
+		// 離したら攻撃がでるように
+		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
+			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
 		{
-			m_pAttack->ResetAttackArea();
+			//攻撃フラグを立てる
+			m_bAttack = true;
+		}
+
+	}
+	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
+	if (m_bAttack&&m_bMove)
+	{
+		//フラグを回収
+		m_bAttack = false;
+		//攻撃スイッチ処理
+		m_pAttack->AttackSwitch();
+		//アニメーション処理
+		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
+	}
+}
+
+//******************************
+// 必殺処理
+//******************************
+void CPlayer::AttackFinal(void)
+{
+	// キーボードとジョイパッドの取得
+	CInputKeyboard * pKey = CManager::GetKeyboard();
+	CInputJoypad* pJoypad = CManager::GetJoypad();
+
+	// 当たっているタイルの取得
+	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
+
+	// 必殺技フラグが立っていたら
+	if (m_bFinalAttack)
+	{
+		if (m_pAttackFinal->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
+		{
+			// 攻撃ボタンを押したら
+			if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+				|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
+			{
+				//攻撃範囲の枠の色を変える
+				m_pAttackFinal->VisualizationAttackArea();
+			}
+		}
+
+		// 離したら弾がでるように
+		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
+		{
+			//必殺スイッチ処理
+			m_pAttackFinal->AttackFinalSwitch();
+			m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
+
+			//攻撃フラグが立っている＆移動フラグが立っていない状態
+			if (m_bMove)
+			{
+				//攻撃スイッチ処理
+				m_pAttackFinal->AttackFinalSwitch();
+				//アニメーション処理
+				m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
+			}
 		}
 	}
 }
@@ -699,6 +729,49 @@ void CPlayer::ManageMotion(void)
 			}
 			m_apMotion[CResourceCharacter::MOTION_IDLE]->SetActiveMotion(true);
 		}
+	}
+}
+
+//******************************
+// アイテムステートの管理
+//******************************
+void CPlayer::ManageItemState(void)
+{
+	switch (m_ItemState)
+	{
+	case ITEM_STATE_NONE:
+		break;
+	case ITEM_STATE_DASH:
+
+		//ダッシュタイムをカウント
+		m_nDashCnt++;
+
+		m_nMoveFrame = (int)(m_nMoveFrameDataDash);
+
+		if (m_nDashCnt % DASH_FRAME == 0)
+		{
+			m_nDashCnt = 0;
+			m_nMoveFrame = m_nMoveFrameData;
+			m_ItemState = ITEM_STATE_NONE;
+		}
+		break;
+	case ITEM_STATE_REVERSE:
+		CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+
+		while (pPlayer != NULL)
+		{
+			if (pPlayer->m_PlayerState != PLAYER_STATE_DEATH)
+			{
+				if (pPlayer->GetPlayerNumber() != m_nPlayerNumber)
+				{
+					pPlayer->SetState(PLAYER_STATE_REVERSE);
+					m_ItemState = ITEM_STATE_NONE;
+					//return;
+				}
+			}
+			pPlayer = (CPlayer*)pPlayer->GetNext();
+		}
+		break;
 	}
 }
 

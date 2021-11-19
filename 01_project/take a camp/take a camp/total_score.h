@@ -44,8 +44,9 @@ private:
 	//============
 	// メンバ変数
 	//============
-	CScene2d* m_pBg;
-
+	CScene2d* m_pBg;	// 背景用ポインタ
+	CScene2d* m_pKillUi;// キルUI用ポインタ
+	CScene2d* m_pTileUI;// タイルUI用ポインタ
 };
 
 #endif
