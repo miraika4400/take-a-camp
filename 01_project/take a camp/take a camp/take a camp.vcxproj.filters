@@ -46,9 +46,6 @@
     <Filter Include="ヘッダー ファイル\07_GameModel">
       <UniqueIdentifier>{676ec372-2592-4e59-b48a-c6683b0b0555}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\07_GameModel\Player">
-      <UniqueIdentifier>{bbb444a8-47c0-450a-b866-185b782f98fb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\01_Scene">
       <UniqueIdentifier>{27ff2b05-e2a8-4aff-87b7-5e9f0915ad16}</UniqueIdentifier>
     </Filter>
@@ -123,6 +120,9 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\07_GameModel\Bullet\AttackFinal">
       <UniqueIdentifier>{48fe2af5-5dd2-475e-9211-8d78fb033855}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\08_Map\Player">
+      <UniqueIdentifier>{bbb444a8-47c0-450a-b866-185b782f98fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -208,7 +208,7 @@
       <Filter>ソース ファイル\02_Camera</Filter>
     </ClCompile>
     <ClCompile Include="collision.cpp">
-      <Filter>ソース ファイル\07_GameModel\Player</Filter>
+      <Filter>ソース ファイル\08_Map\Player</Filter>
     </ClCompile>
     <ClCompile Include="debug_log.cpp">
       <Filter>ソース ファイル\System</Filter>
@@ -229,13 +229,13 @@
       <Filter>ソース ファイル\01_Scene</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">
-      <Filter>ソース ファイル\07_GameModel\Player</Filter>
+      <Filter>ソース ファイル\08_Map\Player</Filter>
     </ClCompile>
     <ClCompile Include="color_manager.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
     <ClCompile Include="act_range.cpp">
-      <Filter>ソース ファイル\07_GameModel\Player</Filter>
+      <Filter>ソース ファイル\08_Map\Player</Filter>
     </ClCompile>
     <ClCompile Include="bullet.cpp">
       <Filter>ソース ファイル\07_GameModel\Bullet</Filter>
@@ -286,7 +286,7 @@
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="kill_count.cpp">
-      <Filter>ソース ファイル\07_GameModel\Player</Filter>
+      <Filter>ソース ファイル\08_Map\Player</Filter>
     </ClCompile>
     <ClCompile Include="button_title.cpp">
       <Filter>ソース ファイル\10_Ui\Button</Filter>
@@ -350,6 +350,12 @@
     </ClCompile>
     <ClCompile Include="attack_final_knight.cpp">
       <Filter>ソース ファイル\07_GameModel\Bullet\AttackFinal</Filter>
+    </ClCompile>
+    <ClCompile Include="total_score.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_gauge.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -580,6 +586,12 @@
     </ClInclude>
     <ClInclude Include="attack_knight.h">
       <Filter>ヘッダー ファイル\07_GameModel\Bullet\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="total_score.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_gauge.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

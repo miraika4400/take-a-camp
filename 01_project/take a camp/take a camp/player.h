@@ -99,7 +99,9 @@ public:
 	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }	// アイテム状態セット
 	ITEM_STATE GetItemState(void) { return m_ItemState; }					// アイテム状態取得
 	CKillCount * GetKillCount(void) { return m_pKillCount; }				// キルカウントポインタ取得
-
+	void SetFinalAttack(bool bFinalAttack) { m_bFinalAttack = bFinalAttack; } // 必殺技フラグのセット
+	CResourceCharacter::CHARACTER_TYPE GetCharacterType(void) { return m_characterType; } // キャラクタータイプの取得
+	CAttackFinal * GetAttackFinal(void) { return m_pAttackFinal; }                        // 必殺技ポインタの取得
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 private:
 
@@ -124,10 +126,10 @@ private:
 	int m_nPlayerNumber;		// プレイヤー番号
 	int m_nColor;				// 色ナンバー
 	int m_nControllNum;         // コントロール番号
-	bool m_bController;         // コントローラー捜査課キーボード操作か
+	bool m_bController;         // コントローラー操作かキーボード操作か
 	bool m_bMove;				// 移動可否フラグ
 	bool m_bAttack;				// 攻撃可否フラグ
-	bool m_bFinalAttacl;		// 必殺可否フラグ
+	bool m_bFinalAttack;		// 必殺可否フラグ
 	bool m_bInvincible;			// 無敵フラグ
 	PLAYER_STATE m_PlayerState;	// プレイヤーステータス
 	int	m_nRespawnCount;		// リスポーンまでのカウント

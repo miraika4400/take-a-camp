@@ -57,7 +57,9 @@ public:
 		TEXTURE_CLOCK_FRAME,		// 時計の枠
 		TEXTURE_CLOCK_HANDS,		// 時計の針
 		TEXTURE_TOON_SHADOW,		// トゥーンシャドウ
-		TEXTURE_TILE_CHARGE,       // タイルのチャージ
+		TEXTURE_TILE_CHARGE,		// タイルのチャージ
+		TEXTURE_ICON_BG,			// アイコンの背景
+		TEXTURE_SWORD_ICON,		 	// 剣アイコン
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類
