@@ -147,6 +147,7 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 HRESULT CPlayer::Init(void)
 {
 	// キャラデータの取得
+	//m_characterType = CCharaSelect::GetEntryData(m_nPlayerNumber).charaType;
 	CResourceCharacter::CharacterData charaData = CResourceCharacter::GetResourceCharacter()->GetCharacterData(m_characterType);
 
 	if (FAILED(CModelHierarchy::Init(charaData.modelType)))
@@ -169,13 +170,10 @@ HRESULT CPlayer::Init(void)
 	// コントロール番号
 	m_nControllNum = CCharaSelect::GetEntryData(m_nPlayerNumber).nControllNum;
 	m_bController = CCharaSelect::GetEntryData(m_nPlayerNumber).bController;
-
-	////////////////////////////////////////
-	// 仮	
-	m_nColor = m_nPlayerNumber;
+	// カラー番号の取得
+	m_nColor = CCharaSelect::GetEntryData(m_nPlayerNumber).nColorNum;
 	CColorManager::GetColorManager()->SetUsePlayerNum(m_nPlayerNumber, m_nColor);
-	////////////////////////////////////////
-	
+
 	// キルカウント用のクラス
 	m_pKillCount = CKillCount::Create(m_nPlayerNumber);
 	// モデルのサイズの設定
@@ -428,8 +426,6 @@ void CPlayer::Move(void)
 					m_Move += move;
 					m_bMove = false;
 					m_rotDest.y = fRotDistY;
-
-					//if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
 				}
 			}
 			//操作逆転状態の時
@@ -441,8 +437,6 @@ void CPlayer::Move(void)
 					m_Move += move*-1;
 					m_bMove = false;
 					m_rotDest.y = fRotDistY - D3DXToRadian(180);
-
-					//if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
 				}
 			}
 
@@ -633,8 +627,6 @@ void CPlayer::AttackFinal(void)
 			}
 		}
 	}
-
-
 }
 
 //******************************
