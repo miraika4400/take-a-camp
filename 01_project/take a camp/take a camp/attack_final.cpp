@@ -208,7 +208,7 @@ void CAttackFinal::VisualizationAttackArea(int AttackFinalType)
 				if (m_apAttackArea[nAttack] != NULL)
 				{
 					m_apAttackArea[nAttack]->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
-					m_apAttackArea[nAttack]->SetPos(CreatePos + GetPlayer()->GetPosDest() + D3DXVECTOR3(0.0f, 10.0f, 0.0f));
+					m_apAttackArea[nAttack]->SetPos(CreatePos + GetPlayer()->GetPos() + D3DXVECTOR3(0.0f, 10.0f, 0.0f));
 					m_apAttackArea[nAttack]->SetDrawFlag(true);
 				}
 			}

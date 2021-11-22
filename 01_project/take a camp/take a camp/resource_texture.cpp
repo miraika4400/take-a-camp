@@ -23,7 +23,7 @@ CResourceTexture *CResourceTexture::m_pSingleTex = NULL; // テクスチャクラスのポ
 // テクスチャのパス
 const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 {
-	"./data/Textures/title.png",        // タイトル背景
+	"./data/Textures/00_title.png",     // タイトル背景
 	"./data/Textures/tutorial_0.png",   // チュートリアル
     "./data/Textures/tutorial_1.png",   // チュートリアル
     "./data/Textures/tutorial_2.png",   // チュートリアル
@@ -47,8 +47,8 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/joypad.png",		      // コントローラーアイコン
 	"./data/Textures/keyboars.png",		      // キーボードアイコン
 	"./data/Textures/chara_select_frame.png", // キャラ選択背景
-	"./data/Textures/suma.png",				  // タイトルのボタン(スタート)
-	"./data/Textures/ka-bi-.jpg",			  // タイトルのボタン(チュートリアル)
+	"./data/Textures/00_gamestart.png",		  // タイトルのボタン(スタート)
+	"./data/Textures/00_tutorial.png",		  // タイトルのボタン(チュートリアル)
 	"./data/Textures/tile_effect_00.png",	  // 最大塗段階時のエフェクト
 	"./data/Textures/attack_area.png",	      // 攻撃範囲
 	"./data/Textures/clock_frame.png",	      // 時計の枠

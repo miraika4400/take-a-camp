@@ -147,6 +147,7 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 HRESULT CPlayer::Init(void)
 {
 	// キャラデータの取得
+	//m_characterType = CCharaSelect::GetEntryData(m_nPlayerNumber).charaType;
 	CResourceCharacter::CharacterData charaData = CResourceCharacter::GetResourceCharacter()->GetCharacterData(m_characterType);
 
 	if (FAILED(CModelHierarchy::Init(charaData.modelType)))
@@ -169,13 +170,10 @@ HRESULT CPlayer::Init(void)
 	// コントロール番号
 	m_nControllNum = CCharaSelect::GetEntryData(m_nPlayerNumber).nControllNum;
 	m_bController = CCharaSelect::GetEntryData(m_nPlayerNumber).bController;
-
-	////////////////////////////////////////
-	// 仮	
-	m_nColor = m_nPlayerNumber;
+	// カラー番号の取得
+	m_nColor = CCharaSelect::GetEntryData(m_nPlayerNumber).nColorNum;
 	CColorManager::GetColorManager()->SetUsePlayerNum(m_nPlayerNumber, m_nColor);
-	////////////////////////////////////////
-	
+
 	// キルカウント用のクラス
 	m_pKillCount = CKillCount::Create(m_nPlayerNumber);
 	// モデルのサイズの設定
@@ -272,6 +270,7 @@ void CPlayer::Update(void)
 
 		//無敵処理
 		Invincible();
+
 
 		// 当たり判定の位置
 		if (m_pCollision == NULL)
@@ -435,8 +434,6 @@ void CPlayer::Move(void)
 					m_Move += move;
 					m_bMove = false;
 					m_rotDest.y = fRotDistY;
-
-					//if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
 				}
 			}
 			//操作逆転状態の時
@@ -448,8 +445,6 @@ void CPlayer::Move(void)
 					m_Move += move*-1;
 					m_bMove = false;
 					m_rotDest.y = fRotDistY - D3DXToRadian(180);
-
-					//if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK) m_pAttack->ResetAttackArea();
 				}
 			}
 
@@ -608,8 +603,7 @@ void CPlayer::AttackFinal(void)
 	// 当たっているタイルの取得
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 
-	// 必殺技フラグが立っていたら
-	if (m_bFinalAttack)
+	if (m_pAttack->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
 	{
 		if (m_pAttackFinal->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
 		{
@@ -621,27 +615,19 @@ void CPlayer::AttackFinal(void)
 				m_pAttackFinal->VisualizationAttackArea();
 			}
 		}
-
-		// 離したら弾がでるように
-		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
-			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
-		{
-			//必殺スイッチ処理
-			m_pAttackFinal->AttackFinalSwitch();
-			m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
-
-			//攻撃フラグが立っている＆移動フラグが立っていない状態
-			if (m_bMove)
-			{
-				//攻撃スイッチ処理
-				m_pAttackFinal->AttackFinalSwitch();
-				//アニメーション処理
-				m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
-			}
-		}
 	}
 
+	// 離したら弾がでるように
+	if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+		|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
+	{
+		//必殺スイッチ処理
+		m_pAttackFinal->AttackFinalSwitch();
+		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
 
+		//攻撃フラグを立てる
+		//m_bFinalAttacl = true;
+	}
 }
 
 //******************************
