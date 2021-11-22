@@ -55,6 +55,8 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/clock_hands.png",	      // 時計の針
 	"./data/Textures/Toon_Shadow.png",	      // トゥーンシャドウ
 	"./data/Textures/tile_effect_charge.png", // タイルのチャージ
+	"./data/Textures/icon_bg.png",	          // アイコンの背景
+	"./data/Textures/sword_icon.png",	      // 剣アイコン
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]

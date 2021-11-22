@@ -83,4 +83,5 @@ private:
 	CFinalAttackManager::FINAL_ATTACK_SQUARE_DATA m_FinalAttackSquare;	// 必殺技マスデータ
 	CPeintCollision* m_pPeintCollision[MAX_FINAL_PEINT];				// 色
 };
+
 #endif // !_ATTACK_FINAL_H_

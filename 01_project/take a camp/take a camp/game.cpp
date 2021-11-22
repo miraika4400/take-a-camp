@@ -81,13 +81,13 @@ HRESULT CGame::Init(void)
 
 	// 背景の生成
 	CBg::Create();
-	
+
 	//ステージ生成
 	m_pMap = CMap::Create(m_MapType);
 	
 	// ライトクラスの生成
 	CManager::SetLight();
-
+	// 制限時間クラス
 	CTime::Create();
 
 	return S_OK;
