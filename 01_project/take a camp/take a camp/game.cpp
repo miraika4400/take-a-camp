@@ -92,7 +92,9 @@ HRESULT CGame::Init(void)
 	// êßå¿éûä‘ÉNÉâÉX
 	CTime::Create();
 
-	Cbase_Cylinder::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 100.0f));
+	Cbase_Cylinder::Create(D3DXVECTOR3(0.0f,10.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 50.0f));
+
+	Cbase_Cylinder::Create(D3DXVECTOR3(0.0f,0.0f, 0.0f), D3DXVECTOR3(70.0f, 70.0f, 70.0f));
 	return S_OK;
 }
 

@@ -37,7 +37,7 @@ public:
 		TEXTURE_RESULT_KILL,		// リザルトのキルUI
 		TEXTURE_RESULT_TILE,		// リザルトのタイルUI
 		TEXTURE_PARTICLE_SQUARE,    // パーティクル*ダイヤ
-		TEXTURE_PARTICLE_TEARS,		// パーティクル*涙
+		TEXTURE_PARTICLE_SKILL,		// パーティクル*涙
 		TEXTURE_PARTICLE_CIRCLE,	// パーティクル*円
 		TEXTURE_PARTICLE_GURUGURU,	// ぐるぐる
 		TEXTURE_NUMBER,				// ナンバー
