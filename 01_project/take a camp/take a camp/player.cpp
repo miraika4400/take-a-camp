@@ -257,10 +257,17 @@ void CPlayer::Update(void)
 			ManageRot();
 			// ˆÚ“®ˆ—
 			Move();
+
+			//UŒ‚‚Ú
+			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE)
+			{
+				// •KE‚Ìˆ—
+				AttackFinal();
+			}
+			
 			// UŒ‚ˆ—
 			Attack();
-			// •KE‚Ìˆ—
-			AttackFinal();
+			
 		}
 
 		//–³“Gˆ—
