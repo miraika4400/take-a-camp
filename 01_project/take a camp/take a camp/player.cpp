@@ -254,12 +254,13 @@ void CPlayer::Update(void)
 			Move();
 			// 攻撃処理
 			Attack();
+			// 必殺の処理
+			AttackFinal();
 		}
 
 		//無敵処理
 		Invincible();
-		// 必殺の処理
-		AttackFinal();
+
 
 		// 当たり判定の位置
 		if (m_pCollision == NULL)
@@ -607,7 +608,7 @@ void CPlayer::AttackFinal(void)
 	// 当たっているタイルの取得
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 
-	if (m_pAttack->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
+	if (m_pAttackFinal->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
 	{
 		// 攻撃ボタンを押したら
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
@@ -625,15 +626,18 @@ void CPlayer::AttackFinal(void)
 		//必殺スイッチ処理
 		m_pAttackFinal->AttackFinalSwitch();
 		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
+
+		//攻撃フラグを立てる
+		m_bFinalAttacl = true;
 	}
 
 	//攻撃フラグが立っている＆移動フラグが立っていない状態
-	if (m_bAttack&&m_bMove)
+	if (m_bFinalAttacl&&m_bMove)
 	{
 		//フラグを回収
 		m_bFinalAttacl = false;
 		//攻撃スイッチ処理
-		m_pAttackFinal->AttackFinalSwitch();
+		//m_pAttackFinal->AttackFinalSwitch();
 		//アニメーション処理
 		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
 
