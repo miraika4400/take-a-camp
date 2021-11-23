@@ -39,8 +39,10 @@ public:
 	}PLAYER_MOVE;
 	typedef struct
 	{
-		D3DXVECTOR3 OtherActPos;	//位置
-		bool		bDeath;		//死亡フラグ
+		D3DXVECTOR3 OtherActPos;	// 位置
+		D3DXVECTOR3 OtherNewActPos;	// 移動位置
+		bool		bMove;			// 移動フラグ
+		bool		bDeath;			// 死亡フラグ
 	}OTHER_ACT;
 
 
@@ -56,17 +58,22 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	bool GetPlayerMove(int nPlayerMove) { return m_bPlayerMove[nPlayerMove]; }	//プレイヤーの移動できる方向ゲッター
-	D3DXVECTOR3 GetActPos(void) { return m_ActPos; }							//マップ上のプレイヤーの位置ゲッター
+	bool GetPlayerMove(int nPlayerMove) { return m_bPlayerMove[nPlayerMove]; }	// プレイヤーの移動できる方向ゲッター
+	D3DXVECTOR3 GetActPos(void) { return m_ActPos; }							// マップ上のプレイヤーの位置ゲッター
+	D3DXVECTOR3 GetNewActPos(void) { return m_NewActPos; }						// マップ上のプレイヤーの移動位置ゲッター
 	void SetDeath(bool bDeath) { m_bDeath = bDeath; }
 	bool GetDeath(void) { return m_bDeath; }
+	void SetMove(bool bMove) { m_bMove = bMove; }
+	bool GetMove(void) { return m_bMove; }
 private:
 	CPlayer*		 m_pPlayer;							// プレイヤーポインタ
 	CMapManager::MAP_DATA m_MapData;					// マップデータ
 	D3DXVECTOR3		 m_ActPos;							// マップ上のプレイヤーの位置
+	D3DXVECTOR3		 m_NewActPos;						// マップ上のプレイヤーの移動後の位置
 	OTHER_ACT		 m_OtherAct[PLAYER_MOVE_MAX - 1];	// 他プレイヤーの情報
 	bool			 m_bPlayerMove[PLAYER_MOVE_MAX];	// プレイヤーが移動できるか
 	bool			 m_bDeath;							// 死亡フラグ
+	bool			 m_bMove;							// 移動フラグ
 };
 
 #endif

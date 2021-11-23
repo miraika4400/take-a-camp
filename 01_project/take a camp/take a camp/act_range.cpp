@@ -26,6 +26,7 @@ CActRange::CActRange()
 	memset(&m_ActPos, 0, sizeof(m_ActPos));
 	memset(&m_bPlayerMove, true, sizeof(m_bPlayerMove));
 	memset(&m_OtherAct, 0, sizeof(m_OtherAct));
+	memset(&m_NewActPos, 0, sizeof(m_NewActPos));
 }
 
 //=============================================================================
@@ -59,6 +60,7 @@ void CActRange::PlayerPos(void)
 					//位置取得
 					m_ActPos.x = (float)nBlockX;
 					m_ActPos.z = (float)nBlockY;
+					
 				}
 			}
 		}
@@ -71,6 +73,9 @@ void CActRange::PlayerPos(void)
 //=============================================================================
 bool CActRange::ActMove(int nMoveX, int nMoveZ)
 {
+	//移動方向取得
+	m_NewActPos.x = nMoveX + m_ActPos.x;
+	m_NewActPos.z = nMoveZ + m_ActPos.z;
 	if (nMoveX<0)
 	{
 		return m_bPlayerMove[PLAYER_MOVE_RIGHT];
@@ -88,7 +93,7 @@ bool CActRange::ActMove(int nMoveX, int nMoveZ)
 		return m_bPlayerMove[PLAYER_MOVE_DOWN];
 	}
 
-	return NULL;
+	return false;
 }
 
 //=============================================================================
@@ -96,10 +101,12 @@ bool CActRange::ActMove(int nMoveX, int nMoveZ)
 //=============================================================================
 void CActRange::OtherPlayer(void)
 {
+
 	//リストのトップ取得
 	CActRange* pActRange = (CActRange*)GetTop(OBJTYPE_ACT_RANGE);
 	//他プレイヤー
 	int nOtherPlayer = 0;
+
 	//NULLチェック
 	while (pActRange != NULL)
 	{
@@ -108,8 +115,12 @@ void CActRange::OtherPlayer(void)
 		{
 			//プレイヤーのマップ位置取得
 			m_OtherAct[nOtherPlayer].OtherActPos = pActRange->GetActPos();
+			//プレイヤーのマップ移動位置取得
+			m_OtherAct[nOtherPlayer].OtherNewActPos = pActRange->GetNewActPos();
 			//プレイヤーが死んでいるか
 			m_OtherAct[nOtherPlayer].bDeath = pActRange->GetDeath();
+			//プレイヤーが移動しているか
+			m_OtherAct[nOtherPlayer].bMove = pActRange->GetMove();
 			//次のプレイヤーへ
 			nOtherPlayer++;
 		}
@@ -146,9 +157,18 @@ void CActRange::ActRange(void)
 		}
 		else
 		{
+			//プレイヤーの確認
 			for (int nPlayer = 0; nPlayer<MAX_PLAYER - 1; nPlayer++)
 			{
 				if ((m_ActPos + Range[nMove]) == m_OtherAct[nPlayer].OtherActPos && !m_OtherAct[nPlayer].bDeath)
+				{
+					//移動できないためfalse
+					m_bPlayerMove[nMove] = false;
+					break;
+				}
+				else if ((m_ActPos + Range[nMove]) == m_OtherAct[nPlayer].OtherNewActPos 
+					&& !m_OtherAct[nPlayer].bDeath
+					&& !m_OtherAct[nPlayer].bMove)
 				{
 					//移動できないためfalse
 					m_bPlayerMove[nMove] = false;
@@ -194,6 +214,8 @@ HRESULT CActRange::Init(void)
 
 	//最初の位置取得
 	PlayerPos();
+
+	m_NewActPos = m_ActPos;
 	return S_OK;
 }
 
@@ -211,11 +233,12 @@ void CActRange::Uninit(void)
 //=============================================================================
 void CActRange::Update(void)
 {
-	//他のプレイヤーのマップ位置
+
+	// 他のプレイヤーのマップ位置
 	OtherPlayer();
 	// プレイヤーの移動範囲
 	ActRange();
-	//プレイヤーの位置取得
+	// プレイヤーの位置取得
 	PlayerPos();
 
 }

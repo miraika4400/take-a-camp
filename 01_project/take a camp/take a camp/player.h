@@ -64,14 +64,6 @@ public:
 		ITEM_STATE_REVERSE,		//操作逆転
 		ITEM_STATE_MAX
 	}ITEM_STATE;
-	//// キャラタイプ
-	//typedef enum
-	//{
-	//	CHARA_TYPE_FIGHTER = 0, // 戦士
-	//	CHARA_TYPE_LANCER,      // 槍使い
-	//	CHARA_TYPE_WIZARD,      // 魔法使い
-	//	CHARA_TYPE_MAX
-	//}CHARA_TYPE;
 
 	//メンバ関数
 	CPlayer();
@@ -88,6 +80,7 @@ public:
 	void Attack(void);		// 攻撃処理
 	void AttackFinal(void); // 必殺技処理
 
+	CActRange* GetActRange(void) { return m_pActRange; }
 	int GetColorNumber(void) { return m_nColor; }				// カラー番号取得
 	CCollision * GetCollision(void) { return  m_pCollision; }	// 当たり判定取得
 	int GetPlayerNumber(void) { return m_nPlayerNumber; }		// プレイヤー番号取得
