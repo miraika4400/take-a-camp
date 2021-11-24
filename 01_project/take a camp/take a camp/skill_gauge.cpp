@@ -280,10 +280,6 @@ CPlayer * CSkillgauge::GetPlayerinfo(int nPlayerNum)
 //==================================
 void CSkillgauge::UpdateStencil(void)
 {
-	// キーボードとジョイパッドの取得
-	CInputKeyboard * pKey = CManager::GetKeyboard();
-	CInputJoypad* pJoypad = CManager::GetJoypad();
-
 	// 頂点座標の設定
 	D3DXVECTOR3 Pos[NUM_VERTEX];
 
@@ -300,6 +296,16 @@ void CSkillgauge::UpdateStencil(void)
 		m_fGauge = m_size.y;
 	}
 	
+#ifdef _DEBUG
+	// ゲージ満タンコマンド
+	// キーボードの取得
+	CInputKeyboard * pKey = CManager::GetKeyboard();
+	if (pKey->GetKeyTrigger(DIK_F4))
+	{
+		m_fGauge = m_size.y;
+	}
+#endif // _DEBUG
+
 	// ゲージが溜まったら
 	if(m_fGauge == m_size.y)
 	{
