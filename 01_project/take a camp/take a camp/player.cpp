@@ -142,6 +142,25 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 }
 
 //******************************
+// プレイヤーの取得処理*プレイヤー番号参照
+//******************************
+CPlayer * CPlayer::GetPlayerByPlayerNumber(int nPlayerNum)
+{
+	CPlayer*pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+
+	while (pPlayer != NULL)
+	{
+		if (pPlayer->GetPlayerNumber() == nPlayerNum)
+		{
+			return pPlayer;
+		}
+		pPlayer = (CPlayer*)pPlayer->GetNext();
+	}
+
+	return pPlayer;
+}
+
+//******************************
 // 初期化処理
 //******************************
 HRESULT CPlayer::Init(void)
