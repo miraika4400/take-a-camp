@@ -77,6 +77,7 @@ public:
 	CPlayer();
 	~CPlayer();
 	static CPlayer *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber);
+	static CPlayer* GetPlayerByPlayerNumber(int nPlayerNum);
 
 	HRESULT Init(void);
 	void Uninit(void);
