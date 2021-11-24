@@ -276,7 +276,7 @@ void CPlayer::Update(void)
 			// ˆÚ“®ˆ—
 			Move();
 
-			//UŒ‚‚Ú
+			//UŒ‚
 			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE)
 			{
 				// •KE‚Ìˆ—
@@ -285,7 +285,6 @@ void CPlayer::Update(void)
 			
 			// UŒ‚ˆ—
 			Attack();
-			
 		}
 
 		//–³“Gˆ—
@@ -467,6 +466,7 @@ void CPlayer::Move(void)
 					m_rotDest.y = fRotDistY - D3DXToRadian(180);
 				}
 			}
+			m_pActRange->SetMove(m_bMove);
 
 		};
 
@@ -517,10 +517,11 @@ void CPlayer::Move(void)
 			m_MoveCount = 0;
 			//ˆÚ“®‚Å‚«‚é‚æ‚¤‚É
 			m_bMove = true;
+
+			m_pActRange->SetMove(m_bMove);
 		}
 	}
 }
-
 
 //******************************
 // Œü‚«‚ÌŠÇ—ˆ—
