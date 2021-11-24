@@ -42,7 +42,7 @@ CAttackFinalknight * CAttackFinalknight::Create(CPlayer* pPlayer)
 		pAttackFinalKnight->SetPlayer(pPlayer);	// プレイヤークラス取得
 		pAttackFinalKnight->SetPos(pPlayer->GetPos());	// 位置設定
 		pAttackFinalKnight->SetRot(pPlayer->GetRot());	// 向き設定
-		pAttackFinalKnight->SetAttackFinalType(CResourceCharacter::CHARACTER_KNIGHT);	// タイプ設定
+		pAttackFinalKnight->SetAttackType(CResourceCharacter::CHARACTER_KNIGHT);	// タイプ設定
 		pAttackFinalKnight->Init();				// 初期化処理
 	}
 	return pAttackFinalKnight;
@@ -54,7 +54,7 @@ CAttackFinalknight * CAttackFinalknight::Create(CPlayer* pPlayer)
 HRESULT CAttackFinalknight::Init(void)
 {
 	// 初期化処理
-	CAttackFinal::Init();
+	CAttackBased::Init();
 
 	return S_OK;
 }
@@ -62,10 +62,10 @@ HRESULT CAttackFinalknight::Init(void)
 //=============================================================================
 // 必殺生成関数
 //=============================================================================
-void CAttackFinalknight::AttackFinalCreate(void)
+void CAttackFinalknight::AttackCreate(void)
 {
 	// 必殺フラグが立っているか
-	if (GetAttackFinalFlag())
+	if (GetState() == ATTACK_STATE_ATTACK)
 	{
 		// カウントアップ
 		m_nAttackFinalCount++;
@@ -73,19 +73,19 @@ void CAttackFinalknight::AttackFinalCreate(void)
 		VisualizationAttackArea(m_nType);
 
 		// カウントが一定になったら
-		if (m_nAttackFinalCount >= GetFinalAttackSquare().nAttackFrame[m_nType])
+		if (m_nAttackFinalCount >= GetAttackSquare().nAttackFrame[m_nType])
 		{
 			// 必殺処理
-			AttackFinal(m_nType);
+			Attack(m_nType);
 			// タイプが一定になったら
-			if (m_nType == MAX_FINAL_HIT_TYPE)
+			if (m_nType == MAX_HIT_TYPE)
 			{
-				// 状態の初期化
-				SetState(FINAL_ATTACK_STATE_NOMAL);
-				// フラグの初期化
-				SetAttackFinalFlag(false);
-				// タイプの初期化
+				//フラグの初期化
+				SetState(ATTACK_STATE_NORMAL);
+				//タイプ初期化
 				m_nType = 0;
+				//レベルの初期化
+				CAttackBased::SetLevel(0);
 			}
 			else
 			{

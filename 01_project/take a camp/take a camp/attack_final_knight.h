@@ -10,13 +10,13 @@
 //=============================================================================
 // ヘッダファイルのインクルード
 //=============================================================================
-#include "attack_final.h"
+#include "attack.h"
 #include "scene.h"
 
 //=============================================================================
 // クラス定義
 //=============================================================================
-class CAttackFinalknight : public CAttackFinal
+class CAttackFinalknight : public CAttackBased
 {
 public:
 	CAttackFinalknight();
@@ -25,7 +25,7 @@ public:
 	HRESULT Init(void);
 
 private:
-	void AttackFinalCreate(void);	// 必殺生成処理
+	void AttackCreate(void);	// 必殺生成処理
 	int m_nAttackFinalCount;		// 必殺までのカウント
 	int m_nType;					// 必殺の間隔用のタイプ
 };

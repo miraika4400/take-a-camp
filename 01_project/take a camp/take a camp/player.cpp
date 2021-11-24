@@ -133,7 +133,7 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 	pPlayer->m_pAttack = CAttackKnight::Create(pPlayer);
 
 	// 必殺用クラス生成
-	pPlayer->m_pAttackFinal = CAttackFinalknight::Create(pPlayer);
+	pPlayer->m_pAttack = CAttackFinalknight::Create(pPlayer);
 
 	//移動範囲クラスの生成
 	pPlayer->m_pActRange = CActRange::Create(pPlayer);
