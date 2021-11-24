@@ -274,14 +274,22 @@ void CPlayer::Update(void)
 			ManageRot();
 			// 移動処理
 			Move();
+
+			//攻撃ぼ
+			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE)
+			{
+				// 必殺の処理
+				AttackFinal();
+			}
+			
 			// 攻撃処理
 			Attack();
-			// 必殺の処理
-			AttackFinal();
+			
 		}
 
 		//無敵処理
 		Invincible();
+
 
 		// 当たり判定の位置
 		if (m_pCollision == NULL)
@@ -614,8 +622,7 @@ void CPlayer::AttackFinal(void)
 	// 当たっているタイルの取得
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 
-	// 必殺技フラグが立っていたら
-	if (m_bFinalAttack)
+	if (m_pAttack->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
 	{
 		if (m_pAttackFinal->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
 		{
@@ -627,24 +634,18 @@ void CPlayer::AttackFinal(void)
 				m_pAttackFinal->VisualizationAttackArea();
 			}
 		}
+	}
 
-		// 離したら弾がでるように
-		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
-			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
-		{
-			//必殺スイッチ処理
-			m_pAttackFinal->AttackFinalSwitch();
-			m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
+	// 離したら弾がでるように
+	if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+		|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
+	{
+		//必殺スイッチ処理
+		m_pAttackFinal->AttackFinalSwitch();
+		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
 
-			//攻撃フラグが立っている＆移動フラグが立っていない状態
-			if (m_bMove)
-			{
-				//攻撃スイッチ処理
-				m_pAttackFinal->AttackFinalSwitch();
-				//アニメーション処理
-				m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
-			}
-		}
+		//攻撃フラグを立てる
+		//m_bFinalAttacl = true;
 	}
 }
 
