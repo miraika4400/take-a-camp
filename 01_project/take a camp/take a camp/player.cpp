@@ -98,6 +98,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_characterType = CResourceCharacter::CHARACTER_KNIGHT;
 	m_nMoveFrameData = 0;
 	m_nMoveFrameDataDash = 0;
+	m_pSkillgauge = NULL;
 }
 
 //******************************
@@ -199,7 +200,7 @@ HRESULT CPlayer::Init(void)
 	SetSize(MODEL_SIZE);
 
 	// スキルゲージの生成(後々ここに職種入れてアイコン変える)
-	CSkillgauge::AllCreate(m_nColor);
+	m_pSkillgauge = CSkillgauge::AllCreate(m_nColor);
 
 	// プレイヤーの頭上に出すスコア生成
 	CNumberArray::Create(0, GetPos(), D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(m_nColor), m_nColor);
