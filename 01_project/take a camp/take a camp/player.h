@@ -25,6 +25,7 @@ class CAttackBased;
 class CMotion;
 class CKillCount;
 class CAttackFinal;
+class CSkillgauge;
 
 //*****************************
 // クラス定義
@@ -104,6 +105,7 @@ public:
 	CResourceCharacter::CHARACTER_TYPE GetCharacterType(void) { return m_characterType; } // キャラクタータイプの取得
 	CAttackFinal * GetAttackFinal(void) { return m_pAttackFinal; }                        // 必殺技ポインタの取得
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
+	CSkillgauge *GetSkillgauge(void) { return m_pSkillgauge; }                            // 必殺技ゲージポインタの取得
 private:
 
 	void Move(void);		// 移動処理
@@ -146,6 +148,7 @@ private:
 	D3DXVECTOR3  m_rotDest;		// 回転(目標の値)
 	D3DXVECTOR3  m_RespawnPos;	// リスポーン位置
 	CResourceCharacter::CHARACTER_TYPE m_characterType; // キャラタイプ
+	CSkillgauge * m_pSkillgauge;                        // 必殺技ゲージ
 
 	// モーション用変数
 	CMotion *m_apMotion[CResourceCharacter::MOTION_MAX];  // アニメーションポインタ
