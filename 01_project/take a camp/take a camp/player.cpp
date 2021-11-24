@@ -142,6 +142,25 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 }
 
 //******************************
+// プレイヤーの取得処理*プレイヤー番号参照
+//******************************
+CPlayer * CPlayer::GetPlayerByPlayerNumber(int nPlayerNum)
+{
+	CPlayer*pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+
+	while (pPlayer != NULL)
+	{
+		if (pPlayer->GetPlayerNumber() == nPlayerNum)
+		{
+			return pPlayer;
+		}
+		pPlayer = (CPlayer*)pPlayer->GetNext();
+	}
+
+	return pPlayer;
+}
+
+//******************************
 // 初期化処理
 //******************************
 HRESULT CPlayer::Init(void)
@@ -255,10 +274,16 @@ void CPlayer::Update(void)
 			ManageRot();
 			// 移動処理
 			Move();
+
+			//攻撃
+			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE)
+			{
+				// 必殺の処理
+				AttackFinal();
+			}
+			
 			// 攻撃処理
 			Attack();
-			// 必殺の処理
-			AttackFinal();
 		}
 
 		//無敵処理
@@ -440,6 +465,7 @@ void CPlayer::Move(void)
 					m_rotDest.y = fRotDistY - D3DXToRadian(180);
 				}
 			}
+			m_pActRange->SetMove(m_bMove);
 
 		};
 
@@ -490,10 +516,11 @@ void CPlayer::Move(void)
 			m_MoveCount = 0;
 			//移動できるように
 			m_bMove = true;
+
+			m_pActRange->SetMove(m_bMove);
 		}
 	}
 }
-
 
 //******************************
 // 向きの管理処理
