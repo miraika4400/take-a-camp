@@ -112,14 +112,8 @@
     <Filter Include="ソース ファイル\07_GameModel\Bullet\Attack">
       <UniqueIdentifier>{62383b5c-5af1-4688-917d-0bc9b7a89476}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\07_GameModel\Bullet\AttackFinal">
-      <UniqueIdentifier>{83ad9c87-1e44-44dc-a165-4c8612d1104a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\07_GameModel\Bullet\Attack">
       <UniqueIdentifier>{b728de14-7bfa-4596-ab98-f8fec1b4fd67}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\07_GameModel\Bullet\AttackFinal">
-      <UniqueIdentifier>{48fe2af5-5dd2-475e-9211-8d78fb033855}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\07_GameModel\Player">
       <UniqueIdentifier>{bbb444a8-47c0-450a-b866-185b782f98fb}</UniqueIdentifier>
@@ -344,12 +338,6 @@
     </ClCompile>
     <ClCompile Include="tile_effect.cpp">
       <Filter>ソース ファイル\09_Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="attack_final.cpp">
-      <Filter>ソース ファイル\07_GameModel\Bullet\AttackFinal</Filter>
-    </ClCompile>
-    <ClCompile Include="attack_final_knight.cpp">
-      <Filter>ソース ファイル\07_GameModel\Bullet\AttackFinal</Filter>
     </ClCompile>
     <ClCompile Include="total_score.cpp">
       <Filter>ソース ファイル</Filter>
@@ -577,12 +565,6 @@
     </ClInclude>
     <ClInclude Include="attack.h">
       <Filter>ヘッダー ファイル\07_GameModel\Bullet\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="attack_final.h">
-      <Filter>ヘッダー ファイル\07_GameModel\Bullet\AttackFinal</Filter>
-    </ClInclude>
-    <ClInclude Include="attack_final_knight.h">
-      <Filter>ヘッダー ファイル\07_GameModel\Bullet\AttackFinal</Filter>
     </ClInclude>
     <ClInclude Include="attack_knight.h">
       <Filter>ヘッダー ファイル\07_GameModel\Bullet\Attack</Filter>

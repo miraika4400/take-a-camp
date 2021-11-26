@@ -32,8 +32,6 @@
 #include "kill_count.h"
 #include "particle.h"
 #include "resource_model_hierarchy.h"
-#include "attack_final.h"
-#include "attack_final_knight.h"
 #include "skill_gauge.h"
 
 //*****************************
@@ -133,7 +131,7 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 	pPlayer->m_pAttack = CAttackKnight::Create(pPlayer);
 
 	// 必殺用クラス生成
-	pPlayer->m_pAttack = CAttackFinalknight::Create(pPlayer);
+	//pPlayer->m_pAttack = CAttackFinalknight::Create(pPlayer);
 
 	//移動範囲クラスの生成
 	pPlayer->m_pActRange = CActRange::Create(pPlayer);
@@ -267,8 +265,7 @@ void CPlayer::Update(void)
 	case PLAYER_STATE_NORMAL:	//通常状態
 
 		//攻撃可否フラグが立っているか
-		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
-			&&m_pAttackFinal->GetState() != CAttackFinal::FINAL_ATTACK_STATE_ATTACK)
+		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK)
 		{
 			// 向きの管理
 			ManageRot();
@@ -623,30 +620,40 @@ void CPlayer::AttackFinal(void)
 	// 当たっているタイルの取得
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 
-	if (m_pAttack->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
+	// アタックタイプが通常状態なら
+	if (m_bFinalAttack)
 	{
-		if (m_pAttackFinal->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
+		// 攻撃状態じゃないなら
+		if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL
+			|| m_pAttack->GetState() == CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
 		{
 			// 攻撃ボタンを押したら
 			if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
 				|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
 			{
 				//攻撃範囲の枠の色を変える
-				m_pAttackFinal->VisualizationAttackArea();
+				m_pAttack->VisualizationAttackArea();
+				m_pAttack->SetState(CAttackBased::ATTACK_STATE_FINALATTACKWAITING);
+			}
+
+			// 離したら弾がでるように
+			if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+				|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
+			{
+				m_bAttack = true;
 			}
 		}
 	}
 
-	// 離したら弾がでるように
-	if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
-		|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
+	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
+	if (m_bAttack&&m_bMove)
 	{
-		//必殺スイッチ処理
-		m_pAttackFinal->AttackFinalSwitch();
+		//フラグを回収
+		m_bAttack = false;
+		//攻撃スイッチ処理
+		m_pAttack->AttackFinalSwitch();
+		//アニメーション処理
 		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
-
-		//攻撃フラグを立てる
-		//m_bFinalAttacl = true;
 	}
 }
 

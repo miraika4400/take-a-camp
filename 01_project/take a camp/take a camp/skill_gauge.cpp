@@ -18,7 +18,7 @@
 #include "color_tile.h"
 #include "keyboard.h"
 #include "joypad.h"
-#include "attack_final.h"
+#include "attack.h"
 
 //==================================
 // ƒ}ƒNƒ’è‹`
@@ -38,6 +38,7 @@ CSkillgauge::CSkillgauge()
 	memset(&m_size, 0, sizeof(m_size));
 	memset(&m_col, 0, sizeof(m_col));
 	m_fGauge = 0.0f;
+	m_pAttack = NULL;
 }
 
 //==================================
@@ -305,12 +306,15 @@ void CSkillgauge::UpdateStencil(void)
 	{
 		// •KŽE‹Z‚Ìƒtƒ‰ƒO—§‚Ä
 		GetPlayerinfo(m_nPlayerNum)->SetFinalAttack(true);
-
+		
 		// •KŽE‹Z‚ð‘Å‚Á‚½‚ç
-		if (GetPlayerinfo(m_nPlayerNum)->GetAttackFinal()->GetAttackFinalFlag() == true)
+		if (GetPlayerinfo(m_nPlayerNum)->GetAttack()->GetState() == CAttackBased::ATTACK_STATE_FINALATTACK)
 		{
-			GetPlayerinfo(m_nPlayerNum)->SetFinalAttack(false);
+			// ƒQ[ƒW‰Šú‰»
 			m_fGauge = 0.0f;
+
+			// •KŽE‹Z‚Ìƒtƒ‰ƒO‚ðÜ‚é
+			GetPlayerinfo(m_nPlayerNum)->SetFinalAttack(false);
 		}
 	}
 

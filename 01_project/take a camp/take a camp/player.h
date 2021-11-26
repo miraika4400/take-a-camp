@@ -24,7 +24,6 @@ class CActRange;
 class CAttackBased;
 class CMotion;
 class CKillCount;
-class CAttackFinal;
 
 //*****************************
 // クラス定義
@@ -93,9 +92,10 @@ public:
 	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }	// アイテム状態セット
 	ITEM_STATE GetItemState(void) { return m_ItemState; }					// アイテム状態取得
 	CKillCount * GetKillCount(void) { return m_pKillCount; }				// キルカウントポインタ取得
-	void SetFinalAttack(bool bFinalAttack) { m_bFinalAttack = bFinalAttack; } // 必殺技フラグのセット
+	void SetAttack(bool bAttack) { m_bAttack = bAttack; }					// 攻撃フラグのセット
+	void SetFinalAttack(bool bFinalAttack) { m_bFinalAttack = bFinalAttack; }	// 必殺技フラグのセット
 	CResourceCharacter::CHARACTER_TYPE GetCharacterType(void) { return m_characterType; } // キャラクタータイプの取得
-	CAttackFinal * GetAttackFinal(void) { return m_pAttackFinal; }                        // 必殺技ポインタの取得
+	CAttackBased * GetAttack(void) { return m_pAttack; }                      // 必殺技ポインタの取得
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 private:
 
@@ -116,7 +116,6 @@ private:
 	int m_nMoveFrame;			// 移動速度
 	int m_nDashCnt;				// 速度アップカウント
 	CAttackBased* m_pAttack;	// 攻撃用クラス
-	CAttackFinal* m_pAttackFinal; // 必殺用クラス
 	int m_nPlayerNumber;		// プレイヤー番号
 	int m_nColor;				// 色ナンバー
 	int m_nControllNum;         // コントロール番号

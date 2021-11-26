@@ -20,6 +20,7 @@
 //=============================================================================
 class CPolygon;
 class CPlayer;
+class CAttackBased;
 
 //=============================================================================
 // クラス定義
@@ -67,6 +68,7 @@ private:
 	D3DXCOLOR m_col;		// 色
 	int m_nPlayerNum;		// プレイヤーの番号
 	float m_fGauge;
+	CAttackBased* m_pAttack;	// 攻撃用クラス
 };
 
 #endif
