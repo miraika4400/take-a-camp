@@ -441,11 +441,6 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 			else
 			{// 今塗られてる色と塗る色が違う
 
-				// プレイヤーの取得
-				CPlayer*pPlayer = CPlayer::GetPlayerByPlayerNumber(nPlayerNum);
-				// 必殺技チャージ加算処理
-				/////////////////////////////////
-
 				if (m_nStep == 1)
 				{// 段階が一の時
 				 // カラー番号の保存

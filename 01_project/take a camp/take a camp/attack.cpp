@@ -193,6 +193,7 @@ void CAttackBased::Attack(int AttackType)
 			//“–‚½‚è”»’è¶¬
 			CBullet::Create(CreatePos + m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_pPlayer->GetPlayerNumber());
 
+			// •KE‹Z‚Ì‘Å‚Ä‚éƒŒƒxƒ‹‚È‚ç
 			if (m_nLevel == LEVEL_MAX - 1)
 			{
 				// F“h‚éˆ—
