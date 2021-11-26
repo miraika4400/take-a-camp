@@ -140,6 +140,25 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 }
 
 //******************************
+// プレイヤーの取得処理*プレイヤー番号参照
+//******************************
+CPlayer * CPlayer::GetPlayerByPlayerNumber(int nPlayerNum)
+{
+	CPlayer*pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+
+	while (pPlayer != NULL)
+	{
+		if (pPlayer->GetPlayerNumber() == nPlayerNum)
+		{
+			return pPlayer;
+		}
+		pPlayer = (CPlayer*)pPlayer->GetNext();
+	}
+
+	return pPlayer;
+}
+
+//******************************
 // 初期化処理
 //******************************
 HRESULT CPlayer::Init(void)
@@ -178,7 +197,7 @@ HRESULT CPlayer::Init(void)
 	SetSize(MODEL_SIZE);
 
 	// スキルゲージの生成(後々ここに職種入れてアイコン変える)
-	CSkillgauge::AllCreate(m_nColor);
+	m_pSkillgauge = CSkillgauge::AllCreate(m_nColor);
 
 	// プレイヤーの頭上に出すスコア生成
 	CNumberArray::Create(0, GetPos(), D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(m_nColor), m_nColor);
