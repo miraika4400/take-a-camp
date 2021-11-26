@@ -43,13 +43,14 @@ public:
 	//============
 	CSkillgauge();
 	~CSkillgauge();
-	static void AllCreate(const int nPlayerNum);
+	static CSkillgauge* AllCreate(const int nPlayerNum);
 
 	HRESULT Init(void); // 初期化
 	void Uninit(void);	// 終了
 	void Update(void);	// 更新
 	void Draw(void);	// 描画
 
+	void Repaint_AddSkillGauge(void); // スキルゲージを加算させる処理
 private:
 	//============
 	// メンバ関数

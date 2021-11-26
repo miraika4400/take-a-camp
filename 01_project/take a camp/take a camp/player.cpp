@@ -98,6 +98,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_characterType = CResourceCharacter::CHARACTER_KNIGHT;
 	m_nMoveFrameData = 0;
 	m_nMoveFrameDataDash = 0;
+	m_pSkillgauge = NULL;
 }
 
 //******************************
@@ -199,7 +200,7 @@ HRESULT CPlayer::Init(void)
 	SetSize(MODEL_SIZE);
 
 	// スキルゲージの生成(後々ここに職種入れてアイコン変える)
-	CSkillgauge::AllCreate(m_nColor);
+	m_pSkillgauge = CSkillgauge::AllCreate(m_nColor);
 
 	// プレイヤーの頭上に出すスコア生成
 	CNumberArray::Create(0, GetPos(), D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(m_nColor), m_nColor);
@@ -275,7 +276,7 @@ void CPlayer::Update(void)
 			// 移動処理
 			Move();
 
-			//攻撃ぼ
+			//攻撃
 			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE)
 			{
 				// 必殺の処理
@@ -284,7 +285,6 @@ void CPlayer::Update(void)
 			
 			// 攻撃処理
 			Attack();
-			
 		}
 
 		//無敵処理
@@ -466,6 +466,7 @@ void CPlayer::Move(void)
 					m_rotDest.y = fRotDistY - D3DXToRadian(180);
 				}
 			}
+			m_pActRange->SetMove(m_bMove);
 
 		};
 
@@ -516,10 +517,11 @@ void CPlayer::Move(void)
 			m_MoveCount = 0;
 			//移動できるように
 			m_bMove = true;
+
+			m_pActRange->SetMove(m_bMove);
 		}
 	}
 }
-
 
 //******************************
 // 向きの管理処理

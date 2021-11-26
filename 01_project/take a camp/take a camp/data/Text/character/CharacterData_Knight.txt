@@ -5,7 +5,7 @@ CHARACTER_DATA
 	MOVE_FRAME_DASH = 12
 	ATTACK_PATH = data/Text/attack/attack_1.csv
 	FINAL_ATTACK_PATH = data/Text/final_attack/final_attack_1.csv
-	FINAL_ATTACK_TIME = 1
+	FINAL_ATTACK_TIME = 60
 	
 	CHARGE_TIME_LIST
 		0 = 0
