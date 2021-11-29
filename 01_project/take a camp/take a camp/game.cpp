@@ -81,7 +81,7 @@ HRESULT CGame::Init(void)
 
 	// 背景の生成
 	CBg::Create();
-
+	CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), CResourceModel::MODEL_DESK,D3DXVECTOR3(0.4f, 0.4f, 0.4f));
 	//ステージ生成
 	m_pMap = CMap::Create(m_MapType);
 	

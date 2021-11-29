@@ -769,6 +769,7 @@ void CPlayer::ManageItemState(void)
 	switch (m_ItemState)
 	{
 	case ITEM_STATE_NONE:
+		m_nMoveFrame = m_nMoveFrameData;
 		break;
 	case ITEM_STATE_DASH:
 
