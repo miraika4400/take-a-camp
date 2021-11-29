@@ -35,7 +35,7 @@
 //==================================
 CSkillgauge::CSkillgauge()
 {
-	m_SkillGaugeType = SKILLGAUGE_BG;
+	m_SkillGaugeType = SKILLGAUGE_STENCIL;
 	memset(&m_pos, 0, sizeof(m_pos));
 	memset(&m_size, 0, sizeof(m_size));
 	memset(&m_col, 0, sizeof(m_col));
@@ -57,9 +57,10 @@ CSkillgauge::~CSkillgauge()
 CSkillgauge* CSkillgauge::AllCreate(const int nPlayerNum)
 {
 	// 上からスキルゲージの背景、色つけるやつ、アイコン
-	CSkillgauge::Create(SKILLGAUGE_SIZE, DEFAULT_COLOR, nPlayerNum, CSkillgauge::SKILLGAUGE_BG);
-	CSkillgauge * pSkillgauge = CSkillgauge::Create(SKILLGAUGE_SIZE, GET_COLORMANAGER->GetIconColor(nPlayerNum), nPlayerNum, CSkillgauge::SKILLGAUGE_STENCIL);
+	//CSkillgauge::Create(SKILLGAUGE_SIZE, DEFAULT_COLOR, nPlayerNum, CSkillgauge::SKILLGAUGE_BG);
 	CSkillgauge::Create(SKILLGAUGE_SIZE, DEFAULT_COLOR, nPlayerNum, CSkillgauge::SKILLGAUGE_ICON);
+	CSkillgauge * pSkillgauge = CSkillgauge::Create(SKILLGAUGE_SIZE, GET_COLORMANAGER->GetIconColor(nPlayerNum), nPlayerNum, CSkillgauge::SKILLGAUGE_STENCIL);
+
 
 	return pSkillgauge;
 }
@@ -106,9 +107,9 @@ HRESULT CSkillgauge::Init()
 
 	switch (m_SkillGaugeType)
 	{
-	case SKILLGAUGE_BG:
-		BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ICON_BG));
-		break;
+	//case SKILLGAUGE_BG:
+	//	BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ICON_BG));
+	//	break;
 
 	case SKILLGAUGE_STENCIL:
 		// ステンシルを表示する座標
@@ -194,15 +195,15 @@ void CSkillgauge::Draw(void)
 	pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
 
 	//アルファテストを有効化
-	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	//アルファテスト基準値の設定
-	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
-	//アルファテストの比較方法の設定
-	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	//pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	////アルファテスト基準値の設定
+	//pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	////アルファテストの比較方法の設定
+	//pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	switch (m_SkillGaugeType)
 	{
-	case SKILLGAUGE_BG:
+	case SKILLGAUGE_ICON:
 		// ステンシルテストと比較する参照値設定
 		pDevice->SetRenderState(D3DRS_STENCILREF, 0x01);
 
@@ -241,10 +242,11 @@ void CSkillgauge::Draw(void)
 	// 描画処理
 	CBillboard::Draw();
 
-	//アルファテストを無効化
-	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	//アルファテスト基準値の設定
-	pDevice->SetRenderState(D3DRS_ALPHAREF, 1);
+	////アルファテストを無効化
+	//pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	////アルファテスト基準値の設定
+	//pDevice->SetRenderState(D3DRS_ALPHAREF, 1);
+
 	// ステンシルテストを無効に
 	pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
 }
