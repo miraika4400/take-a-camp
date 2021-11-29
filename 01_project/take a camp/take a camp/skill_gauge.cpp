@@ -15,7 +15,7 @@
 #include "renderer.h"
 #include "polygon.h"
 #include "player.h"
-#include "color_tile.h"
+#include "color_manager.h"
 #include "keyboard.h"
 #include "joypad.h"
 #include "attack_final.h"
@@ -28,7 +28,7 @@
 #define DEFAULT_COLOR (D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f))  // 色の初期値
 #define SKILLGAUGE_FLAME (60.0f)                           // フレーム数
 #define REPAINT_RATE (0.5f)                                // 塗替えした際の倍率
-//#define REPAINT_RATE (0.5f)                                // 塗替えした際の倍率
+//#define REPAINT_RATE (0.5f)                              // 塗替えした際の倍率
 
 //==================================
 // コンストラクタ
@@ -193,9 +193,6 @@ void CSkillgauge::Draw(void)
 	// ステンシルテストを有効に
 	pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
 
-	// Zバッファ有効化
-	//pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
-
 	//アルファテストを有効化
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	//アルファテスト基準値の設定
@@ -243,9 +240,6 @@ void CSkillgauge::Draw(void)
 
 	// 描画処理
 	CBillboard::Draw();
-
-	// Zバッファを戻す
-	//pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 
 	//アルファテストを無効化
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
@@ -335,6 +329,6 @@ void CSkillgauge::UpdateStencil(void)
 //==================================
 void CSkillgauge::Repaint_AddSkillGauge(void)
 {
-	// キャラクターごとの必殺技秒数*1秒間のフレーム数
-	m_fGauge += m_size.y / (REPAINT_RATE * SKILLGAUGE_FLAME);
+	// 倍率によって加算値を変える
+	m_fGauge += REPAINT_RATE * (m_size.y / SKILLGAUGE_FLAME);
 }

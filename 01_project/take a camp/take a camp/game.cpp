@@ -27,6 +27,7 @@
 #include "color_manager.h"
 #include "color_tile.h"
 #include "kill_count.h"
+#include "paintnum.h"
 
 //=============================
 // マクロ定義
@@ -85,6 +86,9 @@ HRESULT CGame::Init(void)
 	//ステージ生成
 	m_pMap = CMap::Create(m_MapType);
 	
+	// プレイヤーごとの色の割合の表示
+	CPaintnum::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 25.0f, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, 50.0f, 0.0f));
+
 	// ライトクラスの生成
 	CManager::SetLight();
 	// 制限時間クラス
