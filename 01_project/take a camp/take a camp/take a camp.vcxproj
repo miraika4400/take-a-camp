@@ -165,6 +165,8 @@
     <ClCompile Include="item.cpp" />
     <ClCompile Include="kill_count.cpp" />
     <ClCompile Include="max_color_effect.cpp" />
+    <ClCompile Include="move_around_tile.cpp" />
+    <ClCompile Include="move_tile.cpp" />
     <ClCompile Include="needle_tile.cpp" />
     <ClCompile Include="paint_time.cpp" />
     <ClCompile Include="peint_collision.cpp" />
@@ -238,11 +240,12 @@
     <ClInclude Include="chara_select_ui.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="button_title.h" />
-    <ClInclude Include="charge_tile.h" />
     <ClInclude Include="color_tile.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="kill_count.h" />
     <ClInclude Include="max_color_effect.h" />
+    <ClInclude Include="move_tile.h" />
+    <ClInclude Include="move_around_tile.h" />
     <ClInclude Include="needle_tile.h" />
     <ClInclude Include="paint_time.h" />
     <ClInclude Include="peint_collision.h" />

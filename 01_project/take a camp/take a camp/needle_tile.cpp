@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////
 //
-//    tileクラスの処理[tile.cpp]
+//    トゲタイルの処理[needle_tile.cpp]
 //    Author:増澤 未来
 //
 ////////////////////////////////////////////////////
@@ -19,12 +19,12 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define NEEDLE_POS_Y     (0) // 
-#define NEEDLE_POS_Y_UP (TILE_SIZE_Y / 2) // 
-#define NEEDLE_POS_RATE   0.2f			   // 
-#define DEATH_FRAME       10.0f            // 触れてから死ぬまでのフレーム数
-#define UP_FRAME          80               // とげが上がっている間のカウント
-#define DOWN_FRAME        180               // とげが下がっている間のカウント
+#define NEEDLE_POS_Y	(0)					// 
+#define NEEDLE_POS_Y_UP (TILE_SIZE_Y / 2)	// 
+#define NEEDLE_POS_RATE	(0.2f)				// 
+#define DEATH_FRAME		(10.0f)				// 触れてから死ぬまでのフレーム数
+#define UP_FRAME		(80)				// とげが上がっている間のカウント
+#define DOWN_FRAME		(180)				// とげが下がっている間のカウント
 
 //*****************************
 // 静的メンバ変数宣言

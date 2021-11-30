@@ -67,7 +67,7 @@ public:
 	static int GetNumAll(void) { return m_nIDAll; } // これまで生成されたオブジェクトの数
 	 
 	void SetPriority(const int  nPriority);   // プライオリティの設定
-	OBJTYPE GetType(void) { return m_type; }  // オブジェクトタイプの取得
+	int GetType(void) { return m_nPriority; }  // オブジェクトタイプの取得
 	int GetID(void) { return m_nNumID; }      // 配列番号の取得
 
 	static CScene*GetTop(int nIndex) { return m_pTop[nIndex]; }  // リスト構造トップの取得
