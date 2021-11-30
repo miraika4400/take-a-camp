@@ -29,12 +29,12 @@ class CAttackArea;
 //*****************************
 //マクロ定義
 //*****************************
-#define TILE_ONE_SIDE 20.0f			// タイルのサイズ*一辺
-#define TILE_SIZE_Y TILE_ONE_SIDE/2
-#define TILE_SIZE D3DXVECTOR3(TILE_ONE_SIDE,TILE_SIZE_Y,TILE_ONE_SIDE)  // タイルのサイズ
-#define MAX_TILE_COLOR_NUM 16
-#define TILE_DEFAULT_COLOR D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
-#define TILE_POS_Y -TILE_SIZE_Y/2
+#define TILE_ONE_SIDE		(20.0f)			// タイルのサイズ*一辺
+#define TILE_SIZE_Y			(TILE_ONE_SIDE/2)
+#define TILE_SIZE			(D3DXVECTOR3(TILE_ONE_SIDE,TILE_SIZE_Y,TILE_ONE_SIDE))  // タイルのサイズ
+#define MAX_TILE_COLOR_NUM	(16)
+#define TILE_DEFAULT_COLOR	(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f))
+#define TILE_POS_Y			(-TILE_SIZE_Y/2)
 
 //*****************************
 // クラス定義
@@ -76,11 +76,13 @@ public:
 	// ヒットフラグ
 	bool GetHitPlayerFlag(void) { return m_bHitPlayer; }
 	bool GetHitBulletFlag(void) { return m_bHitBullet; }
-
 	// タイルリストの取得
 	static std::vector<CTile*>GetTileList(void) { return m_aTileList; }
 	// タイルリストのクリア
 	static void ResetTileList(void) { m_aTileList.clear(); }
+	// タイルを使えるかのフラグ取得
+	void SetRide(bool bRide) { m_bRide = bRide; }
+	bool GetRide(void) { return m_bRide; }
 
 private:
 	void DrawModel(void);
@@ -96,14 +98,14 @@ private:
 
 	// メンバ変数
 	static std::vector<CTile*> m_aTileList;
-	D3DXCOLOR m_color;        // カラー
-	CCollision * m_pCollison; // 当たり判定
-	float m_fDistPosY;        // 座標Yの目標値
-	float m_fDistPosYRate;    // 座標Yの変更時の係数
-	bool m_bHitOld;           // 一個前のフレームで当たっていたか保存するよう
-	bool m_bHitPlayer;        // プレイヤーが当たっているフラグ
-	bool m_bHitBullet;        // 弾が当たっているフラグ
-
+	D3DXCOLOR m_color;			// カラー
+	CCollision * m_pCollison;	// 当たり判定
+	float m_fDistPosY;			// 座標Yの目標値
+	float m_fDistPosYRate;		// 座標Yの変更時の係数
+	bool m_bHitOld;				// 一個前のフレームで当たっていたか保存するよう
+	bool m_bHitPlayer;			// プレイヤーが当たっているフラグ
+	bool m_bHitBullet;			// 弾が当たっているフラグ
+	bool m_bRide;				// 乗れかのフラグ
 };
 
 

@@ -24,7 +24,6 @@ class CActRange;
 class CAttackBased;
 class CMotion;
 class CKillCount;
-class CAttackFinal;
 class CSkillgauge;
 
 //*****************************
@@ -54,6 +53,7 @@ public:
 	{
 		PLAYER_STATE_NORMAL = 0,	//通常状態
 		PLAYER_STATE_REVERSE,		//操作逆転
+		PLAYER_STATE_STOP,			//停止状態
 		PLAYER_STATE_DEATH			//死亡状態
 	}PLAYER_STATE;
 
@@ -65,43 +65,49 @@ public:
 		ITEM_STATE_REVERSE,		//操作逆転
 		ITEM_STATE_MAX
 	}ITEM_STATE;
+	//// キャラタイプ
+	//typedef enum
+	//{
+	//	CHARA_TYPE_FIGHTER = 0, // 戦士
+	//	CHARA_TYPE_LANCER,      // 槍使い
+	//	CHARA_TYPE_WIZARD,      // 魔法使い
+	//	CHARA_TYPE_MAX
+	//}CHARA_TYPE;
 
 	//メンバ関数
 	CPlayer();
 	~CPlayer();
 	static CPlayer *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber);
-	static CPlayer* GetPlayerByPlayerNumber(int nPlayerNum);
-
+	static CPlayer*GetPlayerByPlayerNumber(int nPlayerNum);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
 	void Death(void);		// 死亡処理関数
-	void SkillDeath(void);	// スキルでの死亡処理関数
 	void Attack(void);		// 攻撃処理
 	void AttackFinal(void); // 必殺技処理
 
-	CActRange* GetActRange(void) { return m_pActRange; }
 	int GetColorNumber(void) { return m_nColor; }				// カラー番号取得
 	CCollision * GetCollision(void) { return  m_pCollision; }	// 当たり判定取得
 	int GetPlayerNumber(void) { return m_nPlayerNumber; }		// プレイヤー番号取得
-	void SetState(PLAYER_STATE PlayerState) {m_PlayerState = PlayerState;}	// プレイヤー状態取得
-	PLAYER_STATE GetState(void) { return m_PlayerState; }					// プレイヤー状態セット
-	bool GetInvincible(void) { return m_bInvincible; }						// 無敵状態取得
+	void SetState(PLAYER_STATE PlayerState) { m_PlayerState = PlayerState; }	// プレイヤー状態取得
+	PLAYER_STATE GetState(void) { return m_PlayerState; }						// プレイヤー状態セット
+	bool GetInvincible(void) { return m_bInvincible; }							// 無敵状態取得
 	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }					
 	D3DXVECTOR3 GetPosDest(void) { return m_Move; }
 	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }	// アイテム状態セット
 	ITEM_STATE GetItemState(void) { return m_ItemState; }					// アイテム状態取得
 	CKillCount * GetKillCount(void) { return m_pKillCount; }				// キルカウントポインタ取得
-	void SetFinalAttack(bool bFinalAttack) { m_bFinalAttack = bFinalAttack; } // 必殺技フラグのセット
+	void SetAttack(bool bAttack) { m_bAttack = bAttack; }					// 攻撃フラグのセット
+	void SetFinalAttack(bool bFinalAttack) { m_bFinalAttack = bFinalAttack; }	// 必殺技フラグのセット
 	CResourceCharacter::CHARACTER_TYPE GetCharacterType(void) { return m_characterType; } // キャラクタータイプの取得
-	CAttackFinal * GetAttackFinal(void) { return m_pAttackFinal; }                        // 必殺技ポインタの取得
+	CAttackBased * GetAttack(void) { return m_pAttack; }                      // 必殺技ポインタの取得
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 	CSkillgauge *GetSkillgauge(void) { return m_pSkillgauge; }                            // 必殺技ゲージポインタの取得
 private:
-
 	void Move(void);		// 移動処理
+	void ControlMove(void);	// コントロール処理
 	void ManageRot(void);   // 向きの管理
 	void Respawn(void);		// リスポーン処理
 	void Invincible(void);	// 無敵処理
@@ -118,7 +124,6 @@ private:
 	int m_nMoveFrame;			// 移動速度
 	int m_nDashCnt;				// 速度アップカウント
 	CAttackBased* m_pAttack;	// 攻撃用クラス
-	CAttackFinal* m_pAttackFinal; // 必殺用クラス
 	int m_nPlayerNumber;		// プレイヤー番号
 	int m_nColor;				// 色ナンバー
 	int m_nControllNum;         // コントロール番号

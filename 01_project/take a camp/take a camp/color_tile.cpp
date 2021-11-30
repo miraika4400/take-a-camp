@@ -458,7 +458,7 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 				else
 				{// ’iŠK‚ª2ˆÈã‚ÌŽž
 
-				 // ’iŠK‚ðŒ¸‚ç‚·
+					// ’iŠK‚ðŒ¸‚ç‚·
 					m_nStep--;
 					// F‚ÌŽæ“¾
 					m_distColor = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1);

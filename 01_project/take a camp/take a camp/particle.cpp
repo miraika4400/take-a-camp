@@ -177,12 +177,5 @@ void CParticle::Update(void)
 //******************************
 void CParticle::Draw(void)
 {
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-	// Zバッファを無効化
-	pDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
-
 	CBillboard::Draw();
-
-	// Zバッファを無効化
-	pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 }

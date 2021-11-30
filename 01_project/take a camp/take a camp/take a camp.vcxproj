@@ -154,8 +154,6 @@
   <ItemGroup>
     <ClCompile Include="act_range.cpp" />
     <ClCompile Include="attack.cpp" />
-    <ClCompile Include="attack_final.cpp" />
-    <ClCompile Include="attack_final_knight.cpp" />
     <ClCompile Include="attack_knight.cpp" />
     <ClCompile Include="attack_area.cpp" />
     <ClCompile Include="button.cpp" />
@@ -165,6 +163,8 @@
     <ClCompile Include="item.cpp" />
     <ClCompile Include="kill_count.cpp" />
     <ClCompile Include="max_color_effect.cpp" />
+    <ClCompile Include="move_around_tile.cpp" />
+    <ClCompile Include="move_tile.cpp" />
     <ClCompile Include="needle_tile.cpp" />
     <ClCompile Include="paintnum.cpp" />
     <ClCompile Include="paint_time.cpp" />
@@ -189,7 +189,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="resource_character.cpp" />
-    <ClCompile Include="resource_final_attack.cpp" />
     <ClCompile Include="resource_map.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="model_hierarchy.cpp" />
@@ -231,19 +230,18 @@
   <ItemGroup>
     <ClInclude Include="act_range.h" />
     <ClInclude Include="attack.h" />
-    <ClInclude Include="attack_final.h" />
-    <ClInclude Include="attack_final_knight.h" />
     <ClInclude Include="attack_knight.h" />
     <ClInclude Include="attack_area.h" />
     <ClInclude Include="chara_select.h" />
     <ClInclude Include="chara_select_ui.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="button_title.h" />
-    <ClInclude Include="charge_tile.h" />
     <ClInclude Include="color_tile.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="kill_count.h" />
     <ClInclude Include="max_color_effect.h" />
+    <ClInclude Include="move_tile.h" />
+    <ClInclude Include="move_around_tile.h" />
     <ClInclude Include="needle_tile.h" />
     <ClInclude Include="paintnum.h" />
     <ClInclude Include="paint_time.h" />
@@ -260,7 +258,6 @@
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="resource_character.h" />
-    <ClInclude Include="resource_final_attack.h" />
     <ClInclude Include="resource_map.h" />
     <ClInclude Include="number_array.h" />
     <ClInclude Include="gauge.h" />

@@ -40,13 +40,14 @@ public:
 
 	typedef enum	//タイルの種類
 	{
-		BLOCK_TYPE_NONE = 0,	//なし
-		BLOCK_TYPE_1P_START,	//1Pスタート位置
-		BLOCK_TYPE_2P_START,	//2Pスタート位置
-		BLOCK_TYPE_3P_START,	//3Pスタート位置
-		BLOCK_TYPE_4P_START,	//4Pスタート位置
-		BLOCK_TYPE_BLOCK,		//仮置きブロック
+		BLOCK_TYPE_NONE = 0,	// なし
+		BLOCK_TYPE_1P_START,	// 1Pスタート位置
+		BLOCK_TYPE_2P_START,	// 2Pスタート位置
+		BLOCK_TYPE_3P_START,	// 3Pスタート位置
+		BLOCK_TYPE_4P_START,	// 4Pスタート位置
+		BLOCK_TYPE_BLOCK,		// 仮置きブロック
 		BLOCK_TYPE_NEEDLE_BLOCK,// とげブロック
+		BLOCK_TYPE_MOVE_BLOCK,	// 移動ブロック
 	}BLOCK_TYPE;
 
 	typedef enum	//マップの種類

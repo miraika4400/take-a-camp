@@ -13,7 +13,6 @@
 #include "map.h"
 #include "game.h"
 
-
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -21,7 +20,7 @@ CActRange::CActRange()
 {
 	//変数初期化
 	m_pPlayer = nullptr;
-	m_bDeath  = false;
+	m_bDeath = false;
 	memset(&m_MapData, 0, sizeof(m_MapData));
 	memset(&m_ActPos, 0, sizeof(m_ActPos));
 	memset(&m_bPlayerMove, true, sizeof(m_bPlayerMove));
@@ -51,16 +50,16 @@ void CActRange::PlayerPos(void)
 		{
 			for (int nBlockX = 0; nBlockX < m_MapData.BlockData[nBlockY].nStageSizeX; nBlockX++)
 			{
-				D3DXVECTOR3 BlockPos = D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY)+ m_MapData.m_pos;
-				if (PlayerPos.x>BlockPos.x - TILE_ONE_SIDE/2
-					&&PlayerPos.x<BlockPos.x + TILE_ONE_SIDE/2
-					&&PlayerPos.z>BlockPos.z - TILE_ONE_SIDE/2
-					&&PlayerPos.z<BlockPos.z + TILE_ONE_SIDE/2)
+				D3DXVECTOR3 BlockPos = D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos;
+				if (PlayerPos.x>BlockPos.x - TILE_ONE_SIDE / 2
+					&& PlayerPos.x<BlockPos.x + TILE_ONE_SIDE / 2
+					&& PlayerPos.z>BlockPos.z - TILE_ONE_SIDE / 2
+					&& PlayerPos.z<BlockPos.z + TILE_ONE_SIDE / 2)
 				{
 					//位置取得
 					m_ActPos.x = (float)nBlockX;
 					m_ActPos.z = (float)nBlockY;
-					
+
 				}
 			}
 		}
@@ -144,44 +143,64 @@ void CActRange::ActRange(void)
 
 	//上下左右にプレイヤーが移動できるか
 	for (int nMove = 0; nMove<PLAYER_MOVE_MAX; nMove++)
-	{
-		//上下左右のタイルがあるか
-		if (m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CMapManager::BLOCK_TYPE_NONE
-			||m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CMapManager::BLOCK_TYPE_1P_START
-			|| m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CMapManager::BLOCK_TYPE_2P_START
-			|| m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CMapManager::BLOCK_TYPE_3P_START
-			|| m_MapData.BlockData[(int)(m_ActPos.z + Range[nMove].z)].nBlockType[(int)(m_ActPos.x + Range[nMove].x)] == CMapManager::BLOCK_TYPE_4P_START)
+	{		
+		//タイルポインタ取得
+		CTile * pTile = CTile::GetHitTile(D3DXVECTOR3(-(m_ActPos.x + Range[nMove].x)*TILE_ONE_SIDE, -TILE_POS_Y, (m_ActPos.z + Range[nMove].z)*TILE_ONE_SIDE)+ m_MapData.m_pos);
+		
+		//NULLチェック
+		if (pTile != NULL)
+		{
+			//タイルが乗れる状態か
+			if (!pTile->GetRide())
+			{
+				if (pTile->GetType() == CScene::OBJTYPE_COLOR_TILE
+					|| pTile->GetType() == CScene::OBJTYPE_TILE)
+				{
+					//プレイヤーの確認
+					for (int nPlayer = 0; nPlayer<MAX_PLAYER - 1; nPlayer++)
+					{
+						if ((m_ActPos + Range[nMove]) == m_OtherAct[nPlayer].OtherActPos && !m_OtherAct[nPlayer].bDeath)
+						{
+							//移動できないためfalse
+							m_bPlayerMove[nMove] = false;
+							break;
+						}
+						else if ((m_ActPos + Range[nMove]) == m_OtherAct[nPlayer].OtherNewActPos
+							&& !m_OtherAct[nPlayer].bDeath
+							&& !m_OtherAct[nPlayer].bMove)
+						{
+							//移動できないためfalse
+							m_bPlayerMove[nMove] = false;
+							break;
+						}
+						else
+						{
+							//移動できるためtrue
+							m_bPlayerMove[nMove] = true;
+
+						}
+					}
+				}
+				else
+				{
+					//移動できないためfalse
+					m_bPlayerMove[nMove] = false;
+				}
+			}
+			else
+			{
+				//移動できないためfalse
+				m_bPlayerMove[nMove] = false;
+			}
+		}
+		else
 		{
 			//移動できないためfalse
 			m_bPlayerMove[nMove] = false;
 		}
-		else
-		{
-			//プレイヤーの確認
-			for (int nPlayer = 0; nPlayer<MAX_PLAYER - 1; nPlayer++)
-			{
-				if ((m_ActPos + Range[nMove]) == m_OtherAct[nPlayer].OtherActPos && !m_OtherAct[nPlayer].bDeath)
-				{
-					//移動できないためfalse
-					m_bPlayerMove[nMove] = false;
-					break;
-				}
-				else if ((m_ActPos + Range[nMove]) == m_OtherAct[nPlayer].OtherNewActPos 
-					&& !m_OtherAct[nPlayer].bDeath
-					&& !m_OtherAct[nPlayer].bMove)
-				{
-					//移動できないためfalse
-					m_bPlayerMove[nMove] = false;
-					break;
-				}
-				else
-				{
-					//移動できるためtrue
-					m_bPlayerMove[nMove] = true;
-				}
-			}
-		}
 	}
+
+
 }
 
 //=============================================================================
@@ -192,7 +211,7 @@ CActRange * CActRange::Create(CPlayer * pPlayer)
 	//メモリ確保
 	CActRange *pActRange = nullptr;
 	pActRange = new CActRange;
-	
+
 	//NULLチェック
 	if (pActRange != NULL)
 	{

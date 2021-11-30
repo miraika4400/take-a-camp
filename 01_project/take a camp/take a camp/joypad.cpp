@@ -19,7 +19,7 @@ CInputJoypad::CInputJoypad()
 	memset(m_aJoyState, 0, sizeof(m_aJoyState));
 	memset(m_aJoyStateTrigger, 0, sizeof(m_aJoyStateTrigger));
 	memset(m_aJoyStateRelease, 0, sizeof(m_aJoyStateRelease));
-	
+
 	memset(m_aJoyStateLTRT, 0, sizeof(m_aJoyStateLTRT));
 	memset(m_aJoyStateTriggerLTRT, 0, sizeof(m_aJoyStateTriggerLTRT));
 	memset(m_aJoyStateReleaseLTRT, 0, sizeof(m_aJoyStateReleaseLTRT));

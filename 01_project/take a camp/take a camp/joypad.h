@@ -80,9 +80,9 @@ public:
 	void EnableVibration(const float L_vib, const float R_vib, const float fVibTime, const int nJoystickNum);	// バイブレーションの開始
 	void DisableVibration(const int nJoystickNum);																// バイブレーションの終了
 
-	//============
-	// ゲッター
-	//============
+																												//============
+																												// ゲッター
+																												//============
 	bool GetButtonState(const WORD pad_state, const BUTTON_PUSH_STATE Push_Stateint, const int nJoystickNum);				// ボタンの押し込みの取得
 	bool GetTriggerState(const PAD_TRRIGER_STATE pad_state, const BUTTON_PUSH_STATE Push_State, const int nJoystickNum);	// LT、RTの押し込みの取得
 	int GetTriggerPushCondition(const PAD_TRRIGER_STATE pad_state, const int nJoystickNum);									// LT、RTの押し込み具合の取得
