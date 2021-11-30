@@ -164,6 +164,7 @@
     <ClCompile Include="kill_count.cpp" />
     <ClCompile Include="max_color_effect.cpp" />
     <ClCompile Include="move_around_tile.cpp" />
+    <ClCompile Include="move_sideways_tile.cpp" />
     <ClCompile Include="move_tile.cpp" />
     <ClCompile Include="needle_tile.cpp" />
     <ClCompile Include="paintnum.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="item.h" />
     <ClInclude Include="kill_count.h" />
     <ClInclude Include="max_color_effect.h" />
+    <ClInclude Include="move_sideways_tile.h" />
     <ClInclude Include="move_tile.h" />
     <ClInclude Include="move_around_tile.h" />
     <ClInclude Include="needle_tile.h" />

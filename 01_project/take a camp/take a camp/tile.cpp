@@ -320,25 +320,37 @@ bool CTile::CollisionPlayer(void)
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
-
+	if (m_bHitOld)
+	{
+		HitPlayerActionRelease();
+	}
 	// ヒットフラグの保存*当たってない
 	m_bHitOld = false;
 	return false;
 }
 
 //******************************
-// 弾と当たったときのアクション*プレス
+// プレイヤーと当たったときのアクション*プレス
 //******************************
 void CTile::HitPlayerAction(CPlayer * pPlayer)
 {
 }
 
 //******************************
-// 弾と当たったときのアクション*トリガー
+// プレイヤーと当たったときのアクション*トリガー
 //******************************
 void CTile::HitPlayerActionTrigger(CPlayer * pPlayer)
 {
 }
+
+//******************************
+// プレイヤーと当たったときのアクション*リリース
+//******************************
+void CTile::HitPlayerActionRelease(void)
+{
+}
+
+
 
 //******************************
 // 弾との当たり判定

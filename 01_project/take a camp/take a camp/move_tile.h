@@ -34,7 +34,8 @@ public:
 	typedef enum
 	{
 		MOVE_STATE_NORMAL = 0,	//通常状態
-		MOVE_STATE_MOVE			//移動状態
+		MOVE_STATE_MOVE,		//移動状態
+		MOVE_STATE_STOP,		//停止状態
 	}MOVE_STATE;
 
 	//メンバ関数
@@ -57,7 +58,9 @@ public:
 
 	virtual void MoveRot(bool bReversal) = 0;
 private:
-	void HitPlayerAction(CPlayer*pPlayer);	// プレイヤーが乗っているか
+	void HitPlayerAction(CPlayer*pPlayer);			// プレイヤーが乗っているか
+	void HitPlayerActionRelease(void);	// プレイヤーが降りたか
+
 	void Move(void);						// 移動処理
 	void HitTile(void);						// 他のタイルとの当たり判定
 

@@ -316,7 +316,6 @@ void CPlayer::Update(void)
 	// モーション管理
 	ManageMotion();
 
-	// 
 #ifdef _DEBUG
 	// キーボードの取得
 	if (m_nPlayerNumber == 0)
@@ -335,7 +334,6 @@ void CPlayer::Update(void)
 			m_pAttack->AttackSwitch();
 		}
 	}
-
 #endif // _DEBUG
 
 }
@@ -556,9 +554,7 @@ void CPlayer::Attack(void)
 				m_pAttack->VisualizationAttackArea();
 			}
 		}
-	
 	}
-
 	//チャージ状態か
 	if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_CHARGE)
 	{
@@ -571,6 +567,11 @@ void CPlayer::Attack(void)
 		{
 			//攻撃フラグを立てる
 			m_bAttack = true;
+		}
+		//攻撃キャンセル
+		else if(m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, pJoypad->BUTTON_TRIGGER, m_nControllNum))
+		{
+			m_pAttack->CancelSwitch();
 		}
 
 	}
@@ -620,8 +621,15 @@ void CPlayer::AttackFinal(void)
 			{
 				m_bAttack = true;
 			}
+			//攻撃キャンセル
+			else if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB, pJoypad->BUTTON_RELEASE, m_nControllNum))
+			{
+				m_pAttack->CancelSwitch();
+			}
+
 		}
 	}
+
 
 	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
 	if (m_bAttack&&m_bMove)
