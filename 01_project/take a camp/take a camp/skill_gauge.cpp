@@ -29,6 +29,8 @@
 #define SKILLGAUGE_FLAME (60.0f)                           // フレーム数
 #define REPAINT_RATE (0.5f)                                // 塗替えした際の倍率
 //#define REPAINT_RATE (0.5f)                              // 塗替えした際の倍率
+#define MINORADJUSSTMENT_POS (D3DXVECTOR3(0.5f,1.0f,0.0f)) // 微調整用の座標
+#define DEFAULT_ANGLE (D3DXToRadian(-40.0f))               // ポリゴンを回転させる角度
 
 //==================================
 // コンストラクタ
@@ -56,11 +58,9 @@ CSkillgauge::~CSkillgauge()
 //==================================
 CSkillgauge* CSkillgauge::AllCreate(const int nPlayerNum)
 {
-	// 上からスキルゲージの背景、色つけるやつ、アイコン
-	//CSkillgauge::Create(SKILLGAUGE_SIZE, DEFAULT_COLOR, nPlayerNum, CSkillgauge::SKILLGAUGE_BG);
+	// アイコンとステンシル
 	CSkillgauge::Create(SKILLGAUGE_SIZE, DEFAULT_COLOR, nPlayerNum, CSkillgauge::SKILLGAUGE_ICON);
 	CSkillgauge * pSkillgauge = CSkillgauge::Create(SKILLGAUGE_SIZE, GET_COLORMANAGER->GetIconColor(nPlayerNum), nPlayerNum, CSkillgauge::SKILLGAUGE_STENCIL);
-
 
 	return pSkillgauge;
 }
@@ -97,9 +97,6 @@ HRESULT CSkillgauge::Init()
 	// 初期化処理
 	CBillboard::Init();
 
-	// 頂点座標の設定
-	D3DXVECTOR3 Pos[NUM_VERTEX];
-
 	// 座標、サイズ、色のセット
 	SetPos(m_pos);
 	SetSize(m_size);
@@ -107,18 +104,9 @@ HRESULT CSkillgauge::Init()
 
 	switch (m_SkillGaugeType)
 	{
-	//case SKILLGAUGE_BG:
-	//	BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ICON_BG));
-	//	break;
-
 	case SKILLGAUGE_STENCIL:
 		// ステンシルを表示する座標
-		Pos[0] = D3DXVECTOR3(-m_size.x / 2.0f, -m_size.y / 2.0f - m_fGauge, 0.0f);
-		Pos[1] = D3DXVECTOR3(+m_size.x / 2.0f, -m_size.y / 2.0f - m_fGauge, 0.0f);
-		Pos[2] = D3DXVECTOR3(-m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f);
-		Pos[3] = D3DXVECTOR3(+m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f);
-
-		SetVertexPos(Pos);
+		SetPolygonPos();
 		break;
 
 	case SKILLGAUGE_ICON:
@@ -194,18 +182,11 @@ void CSkillgauge::Draw(void)
 	// ステンシルテストを有効に
 	pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
 
-	//アルファテストを有効化
-	//pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	////アルファテスト基準値の設定
-	//pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
-	////アルファテストの比較方法の設定
-	//pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
 	switch (m_SkillGaugeType)
 	{
 	case SKILLGAUGE_ICON:
 		// ステンシルテストと比較する参照値設定
-		pDevice->SetRenderState(D3DRS_STENCILREF, 0x01);
+		pDevice->SetRenderState(D3DRS_STENCILREF, m_nPlayerNum + 0x01);
 
 		// ステンシルテストの値に対してのマスク設定 0xff(全て真)
 		pDevice->SetRenderState(D3DRS_STENCILMASK, 0xff);
@@ -221,7 +202,7 @@ void CSkillgauge::Draw(void)
 
 	case SKILLGAUGE_STENCIL:
 		// ステンシルテストと比較する参照値設定
-		pDevice->SetRenderState(D3DRS_STENCILREF, 0x01);
+		pDevice->SetRenderState(D3DRS_STENCILREF, m_nPlayerNum + 0x01);
 
 		// ステンシルテストの値に対してのマスク設定 0xff(全て真)
 		pDevice->SetRenderState(D3DRS_STENCILMASK, 0xff);
@@ -241,11 +222,6 @@ void CSkillgauge::Draw(void)
 
 	// 描画処理
 	CBillboard::Draw();
-
-	////アルファテストを無効化
-	//pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	////アルファテスト基準値の設定
-	//pDevice->SetRenderState(D3DRS_ALPHAREF, 1);
 
 	// ステンシルテストを無効に
 	pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
@@ -276,9 +252,6 @@ CPlayer * CSkillgauge::GetPlayerinfo(int nPlayerNum)
 //==================================
 void CSkillgauge::UpdateStencil(void)
 {
-	// 頂点座標の設定
-	D3DXVECTOR3 Pos[NUM_VERTEX];
-
 	// キャラデータの取得
 	CResourceCharacter::CharacterData charaData =
 		CResourceCharacter::GetResourceCharacter()->GetCharacterData(GetPlayerinfo(m_nPlayerNum)->GetCharacterType());
@@ -316,11 +289,34 @@ void CSkillgauge::UpdateStencil(void)
 		}
 	}
 
-	// ゲージ用ポリゴンの座標
-	Pos[0] = D3DXVECTOR3(-m_size.x / 2.0f, -m_size.y / 2.0f + m_fGauge, 0.0f);
-	Pos[1] = D3DXVECTOR3(+m_size.x / 2.0f, -m_size.y / 2.0f + m_fGauge, 0.0f);
-	Pos[2] = D3DXVECTOR3(-m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f);
-	Pos[3] = D3DXVECTOR3(+m_size.x / 2.0f, -m_size.y / 2.0f, 0.0f);
+	// ステンシルを表示する座標
+	SetPolygonPos();
+}
+
+//==================================
+// ステンシルを表示する座標
+//==================================
+void CSkillgauge::SetPolygonPos(void)
+{
+	// 頂点座標の設定
+	D3DXVECTOR3 Pos[NUM_VERTEX];
+	ZeroMemory(&Pos, sizeof(Pos));
+
+	// 中心からの間隔
+	float fDistance = sqrtf(powf(m_size.x / sqrtf(2.0f), 2) + powf(m_size.y / sqrtf(2.0f), 2));
+	// 右上と左上の頂点
+	float fAngle = atan2f(m_size.y / 2.0f, m_size.x / 2.0f);
+	float fAngle2 = atan2f(m_size.y / 2.0f, -m_size.x / 2.0f);
+
+	// 各頂点の座標
+	Pos[0] = D3DXVECTOR3(cosf(-fAngle2 + DEFAULT_ANGLE) * fDistance + m_fGauge - MINORADJUSSTMENT_POS.x,
+		sinf(-fAngle2 + DEFAULT_ANGLE) * fDistance + m_fGauge + MINORADJUSSTMENT_POS.y, 0.0f);
+	Pos[1] = D3DXVECTOR3(cosf(-fAngle + DEFAULT_ANGLE) * fDistance + m_fGauge - MINORADJUSSTMENT_POS.x,
+		sinf(-fAngle + DEFAULT_ANGLE) * fDistance + m_fGauge + MINORADJUSSTMENT_POS.y, 0.0f);
+	Pos[2] = D3DXVECTOR3(cosf(-fAngle2 + DEFAULT_ANGLE) * fDistance - MINORADJUSSTMENT_POS.x,
+		sinf(-fAngle2 + DEFAULT_ANGLE) * fDistance + MINORADJUSSTMENT_POS.y, 0.0f);
+	Pos[3] = D3DXVECTOR3(cosf(-fAngle + DEFAULT_ANGLE) * fDistance - MINORADJUSSTMENT_POS.x,
+		sinf(-fAngle + DEFAULT_ANGLE) * fDistance + MINORADJUSSTMENT_POS.y, 0.0f);
 
 	// 頂点ごとの座標設定
 	SetVertexPos(Pos);
