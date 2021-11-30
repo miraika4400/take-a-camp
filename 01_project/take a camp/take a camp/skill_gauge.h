@@ -51,6 +51,7 @@ public:
 	void Draw(void);	// 描画
 
 	void Repaint_AddSkillGauge(void); // スキルゲージを加算させる処理
+
 private:
 	//============
 	// メンバ関数
@@ -58,6 +59,7 @@ private:
 	static CSkillgauge *Create(const D3DXVECTOR3 size, const D3DXCOLOR col, const int nPlayerNum, const SKILLGAUGE_TYPE SkillGaugeType); // クラス生成
 	CPlayer *GetPlayerinfo(int nPlayerNum);
 	void UpdateStencil(void); // ステンシルの更新処理
+	void SetPolygonPos(void); // ステンシルを表示する座標
 
 	//============
 	// メンバ変数
