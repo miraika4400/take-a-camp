@@ -15,13 +15,14 @@
 #include "scene3d.h"
 #include "attack_area.h"
 #include "color_tile.h"
+#include "peint_collision.h"
 
 //=============================================================================
 // マクロ定義
 //=============================================================================
 #define ATTACK_AREA_EFFECT_POS (D3DXVECTOR3(0.0f,10.0f,0.0f))
 #define CHARGE_COUNT (60*1)	//チャージにかかる時間
-
+#define LEVEL_MAX    (4)	// 最大レベル
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -34,8 +35,10 @@ CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 	m_pPlayer		= NULL;
 	m_nLevel		= 0;
 	m_nChargeCount	= 0;
+	m_AttackState = ATTACK_STATE_NORMAL;
 	ZeroMemory(&m_apAttackArea, sizeof(m_apAttackArea));
 	ZeroMemory(&m_anChargeValue, sizeof(m_anChargeValue));
+	m_bAttack = false;	// 必殺フラグ
 }
 
 //=============================================================================
@@ -124,12 +127,20 @@ void CAttackBased::Update(void)
 	break;
 
 	
-	case ATTACK_STATE_CHARGE:	//チャージ状態					
-		Charge();				// チャージ処理
+	case ATTACK_STATE_CHARGE:		//チャージ状態					
+		Charge();					// チャージ処理
 		break;
 
-	case ATTACK_STATE_ATTACK:	// 攻撃状態			
-		AttackCreate();			// 攻撃生成処理
+	case ATTACK_STATE_ATTACK:		// 攻撃状態			
+		AttackCreate();				// 攻撃生成処理
+		break;
+
+	case ATTACK_STATE_FINALATTACKWAITING:	// 必殺技待機状態			
+		m_nLevel = LEVEL_MAX - 1;		// レベルを最大値にする
+		break;
+
+	case ATTACK_STATE_FINALATTACK:		// 必殺技使用状態			
+		AttackCreate();				// 攻撃生成処理
 		break;
 
 		//それ以外の状態
@@ -181,8 +192,14 @@ void CAttackBased::Attack(int AttackType)
 			CreatePos.z = ((-sinf(m_rot.y)*AttackPos.x) + (cosf(m_rot.y)*AttackPos.z));
 			//当たり判定生成
 			CBullet::Create(CreatePos + m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_pPlayer->GetPlayerNumber());
-		}
 
+			// 必殺技の打てるレベルなら
+			if (m_nLevel == LEVEL_MAX - 1)
+			{
+				// 色塗る処理
+				m_pPeintCollision[nAttack] = CPeintCollision::Create(CreatePos + m_pos, m_pPlayer->GetPlayerNumber());
+			}
+		}
 	}
 }
 
@@ -260,8 +277,23 @@ void CAttackBased::AttackSwitch(void)
 			// リストを進める
 			pColorTile = (CColorTile*)pColorTile->GetNext();
 		}
+	}
+}
 
-
+//=============================================================================
+// 必殺技スイッチ関数
+//=============================================================================
+void CAttackBased::AttackFinalSwitch(void)
+{
+	// 必殺技待機中なら
+	if (m_AttackState == ATTACK_STATE_FINALATTACKWAITING)
+	{
+		//必殺技使用状態に移行
+		m_AttackState = ATTACK_STATE_FINALATTACK;
+		//位置取得
+		SetPos(m_pPlayer->GetPos());
+		//向き取得
+		SetRot(m_pPlayer->GetRotDest());
 	}
 }
 
@@ -287,8 +319,9 @@ CAttackManager::ATTACK_SQUARE_DATA CAttackBased::GetAttackSquare()
 //=============================================================================
 void CAttackBased::VisualizationAttackArea(int nAttackType)
 {
-	//攻撃フラグが立っているか
-	if (m_AttackState == ATTACK_STATE_ATTACK)
+	//攻撃フラグと必殺技フラグが立っているか
+	if (m_AttackState == ATTACK_STATE_ATTACK
+		|| m_AttackState == ATTACK_STATE_FINALATTACK)
 	{
 		//タイプが一致しているか
 		for (int nAttack = 0; nAttack < GetAttackSquare().nMaxHitRange; nAttack++)

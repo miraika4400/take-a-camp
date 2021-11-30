@@ -24,7 +24,7 @@ class CActRange;
 class CAttackBased;
 class CMotion;
 class CKillCount;
-class CAttackFinal;
+class CSkillgauge;
 
 //*****************************
 // クラス定義
@@ -65,13 +65,20 @@ public:
 		ITEM_STATE_REVERSE,		//操作逆転
 		ITEM_STATE_MAX
 	}ITEM_STATE;
+	//// キャラタイプ
+	//typedef enum
+	//{
+	//	CHARA_TYPE_FIGHTER = 0, // 戦士
+	//	CHARA_TYPE_LANCER,      // 槍使い
+	//	CHARA_TYPE_WIZARD,      // 魔法使い
+	//	CHARA_TYPE_MAX
+	//}CHARA_TYPE;
 
 	//メンバ関数
 	CPlayer();
 	~CPlayer();
 	static CPlayer *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber);
-	static CPlayer* GetPlayerByPlayerNumber(int nPlayerNum);
-
+	static CPlayer*GetPlayerByPlayerNumber(int nPlayerNum);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
@@ -81,7 +88,6 @@ public:
 	void Attack(void);		// 攻撃処理
 	void AttackFinal(void); // 必殺技処理
 
-	CActRange* GetActRange(void) { return m_pActRange; }
 	int GetColorNumber(void) { return m_nColor; }				// カラー番号取得
 	CCollision * GetCollision(void) { return  m_pCollision; }	// 当たり判定取得
 	int GetPlayerNumber(void) { return m_nPlayerNumber; }		// プレイヤー番号取得
@@ -93,10 +99,12 @@ public:
 	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }	// アイテム状態セット
 	ITEM_STATE GetItemState(void) { return m_ItemState; }					// アイテム状態取得
 	CKillCount * GetKillCount(void) { return m_pKillCount; }				// キルカウントポインタ取得
-	void SetFinalAttack(bool bFinalAttack) { m_bFinalAttack = bFinalAttack; } // 必殺技フラグのセット
+	void SetAttack(bool bAttack) { m_bAttack = bAttack; }					// 攻撃フラグのセット
+	void SetFinalAttack(bool bFinalAttack) { m_bFinalAttack = bFinalAttack; }	// 必殺技フラグのセット
 	CResourceCharacter::CHARACTER_TYPE GetCharacterType(void) { return m_characterType; } // キャラクタータイプの取得
-	CAttackFinal * GetAttackFinal(void) { return m_pAttackFinal; }                        // 必殺技ポインタの取得
+	CAttackBased * GetAttack(void) { return m_pAttack; }                      // 必殺技ポインタの取得
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
+	CSkillgauge *GetSkillgauge(void) { return m_pSkillgauge; }                            // 必殺技ゲージポインタの取得
 private:
 	void Move(void);		// 移動処理
 	void ControlMove(void);	// コントロール処理
@@ -116,7 +124,6 @@ private:
 	int m_nMoveFrame;			// 移動速度
 	int m_nDashCnt;				// 速度アップカウント
 	CAttackBased* m_pAttack;	// 攻撃用クラス
-	CAttackFinal* m_pAttackFinal; // 必殺用クラス
 	int m_nPlayerNumber;		// プレイヤー番号
 	int m_nColor;				// 色ナンバー
 	int m_nControllNum;         // コントロール番号
@@ -139,6 +146,7 @@ private:
 	D3DXVECTOR3  m_rotDest;		// 回転(目標の値)
 	D3DXVECTOR3  m_RespawnPos;	// リスポーン位置
 	CResourceCharacter::CHARACTER_TYPE m_characterType; // キャラタイプ
+	CSkillgauge * m_pSkillgauge;                        // 必殺技ゲージ
 
 	// モーション用変数
 	CMotion *m_apMotion[CResourceCharacter::MOTION_MAX];  // アニメーションポインタ

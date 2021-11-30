@@ -32,8 +32,6 @@
 #include "kill_count.h"
 #include "particle.h"
 #include "resource_model_hierarchy.h"
-#include "attack_final.h"
-#include "attack_final_knight.h"
 #include "skill_gauge.h"
 
 //*****************************
@@ -132,7 +130,7 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nPlayerNumber)
 	pPlayer->m_pAttack = CAttackKnight::Create(pPlayer);
 
 	// 必殺用クラス生成
-	pPlayer->m_pAttackFinal = CAttackFinalknight::Create(pPlayer);
+	//pPlayer->m_pAttack = CAttackFinalknight::Create(pPlayer);
 
 	//移動範囲クラスの生成
 	pPlayer->m_pActRange = CActRange::Create(pPlayer);
@@ -198,7 +196,7 @@ HRESULT CPlayer::Init(void)
 	SetSize(MODEL_SIZE);
 
 	// スキルゲージの生成(後々ここに職種入れてアイコン変える)
-	CSkillgauge::AllCreate(m_nColor);
+	m_pSkillgauge = CSkillgauge::AllCreate(m_nColor);
 
 	// プレイヤーの頭上に出すスコア生成
 	CNumberArray::Create(0, GetPos(), D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(m_nColor), m_nColor);
@@ -266,45 +264,34 @@ void CPlayer::Update(void)
 	case PLAYER_STATE_NORMAL:	//通常状態
 
 		//攻撃可否フラグが立っているか
-		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
-			&&m_pAttackFinal->GetState() != CAttackFinal::FINAL_ATTACK_STATE_ATTACK)
+		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK)
 		{
 			// 向きの管理
 			ManageRot();
 			// 移動処理
 			ControlMove();
 
-			//攻撃
+			//攻撃をチャージしていないとき
 			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE)
 			{
 				// 必殺の処理
 				AttackFinal();
 			}
-			
-			// 攻撃処理
-			Attack();
+			//必殺技を使っていないとき
+			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
+			{
+				// 攻撃処理
+				Attack();
+			}
 		}
-
-		// 無敵処理
-		Invincible();
 		// 当たり判定の位置
 		if (m_pCollision == NULL)
 		{
 			m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y + COLLISION_RADIUS / 2, GetPos().z), COLLISION_RADIUS / 2);
 		}
-		else
-		{
-			m_pCollision->SetPos(D3DXVECTOR3(GetPos().x, GetPos().y + COLLISION_RADIUS / 2, GetPos().z));
-		}
 
 		break;
 	case PLAYER_STATE_STOP:
-	
-		// 向きの管理
-		ManageRot();
-		//無敵処理
-		Invincible();
-
 		break;
 	case PLAYER_STATE_DEATH:	//死亡状態
 		//リスポーン処理
@@ -316,7 +303,13 @@ void CPlayer::Update(void)
 
 	//死亡している以外の時移動計算処理
 	if (m_PlayerState != PLAYER_STATE_DEATH) Move();
-	
+	//当たり判定の位置更新処理
+	if (m_pCollision != NULL) m_pCollision->SetPos(D3DXVECTOR3(GetPos().x, GetPos().y + COLLISION_RADIUS / 2, GetPos().z));
+	//無敵処理
+	Invincible();
+	// 向きの管理
+	ManageRot();
+
 	// アイテムステートの管理
 	ManageItemState();
 
@@ -472,7 +465,6 @@ void CPlayer::ControlMove(void)
 					m_rotDest.y = fRotDistY - D3DXToRadian(180);
 				}
 			}
-			m_pActRange->SetMove(m_bMove);
 
 		};
 
@@ -500,8 +492,10 @@ void CPlayer::ControlMove(void)
 		{
 			MoveValue(D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
 		}
+		m_pActRange->SetMove(m_bMove);
 	}
 }
+
 
 //******************************
 // 向きの管理処理
@@ -604,26 +598,39 @@ void CPlayer::AttackFinal(void)
 	// 当たっているタイルの取得
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 
-	if (m_pAttack->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
+	// アタックタイプが通常状態なら
+	if (m_bFinalAttack)
 	{
-		if (m_pAttackFinal->GetState() == CAttackFinal::FINAL_ATTACK_STATE_NOMAL)
+		// 攻撃状態じゃないなら
+		if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL
+			|| m_pAttack->GetState() == CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
 		{
 			// 攻撃ボタンを押したら
 			if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
 				|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
 			{
 				//攻撃範囲の枠の色を変える
-				m_pAttackFinal->VisualizationAttackArea();
+				m_pAttack->VisualizationAttackArea();
+				m_pAttack->SetState(CAttackBased::ATTACK_STATE_FINALATTACKWAITING);
+			}
+
+			// 離したら弾がでるように
+			if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+				|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
+			{
+				m_bAttack = true;
 			}
 		}
 	}
 
-	// 離したら弾がでるように
-	if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
-		|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
+	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
+	if (m_bAttack&&m_bMove)
 	{
-		//必殺スイッチ処理
-		m_pAttackFinal->AttackFinalSwitch();
+		//フラグを回収
+		m_bAttack = false;
+		//攻撃スイッチ処理
+		m_pAttack->AttackFinalSwitch();
+		//アニメーション処理
 		m_apMotion[CResourceCharacter::MOTION_ATTACK]->SetActiveMotion(true);
 	}
 }

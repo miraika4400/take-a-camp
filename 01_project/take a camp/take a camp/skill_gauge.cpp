@@ -15,28 +15,31 @@
 #include "renderer.h"
 #include "polygon.h"
 #include "player.h"
-#include "color_tile.h"
+#include "color_manager.h"
 #include "keyboard.h"
 #include "joypad.h"
-#include "attack_final.h"
+#include "attack.h"
 
 //==================================
 // マクロ定義
 //==================================
 #define SKILLGAUGE_ADDPOS (D3DXVECTOR3(0.0f, 35.0f, 0.0f)) // スキルゲージの座標
-#define SKILLGAUGE_FLAME (60.0f)                           // フレーム数
 #define SKILLGAUGE_SIZE (D3DXVECTOR3(20.0f, 20.0f, 0.0f))  // スキルゲージの大きさ
 #define DEFAULT_COLOR (D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f))  // 色の初期値
+#define SKILLGAUGE_FLAME (60.0f)                           // フレーム数
+#define REPAINT_RATE (0.5f)                                // 塗替えした際の倍率
+//#define REPAINT_RATE (0.5f)                              // 塗替えした際の倍率
 
 //==================================
 // コンストラクタ
 //==================================
 CSkillgauge::CSkillgauge()
 {
-	m_SkillGaugeType = SKILLGAUGE_BG;
+	m_SkillGaugeType = SKILLGAUGE_STENCIL;
 	memset(&m_pos, 0, sizeof(m_pos));
 	memset(&m_size, 0, sizeof(m_size));
 	memset(&m_col, 0, sizeof(m_col));
+	m_nPlayerNum = 0;
 	m_fGauge = 0.0f;
 }
 
@@ -51,12 +54,15 @@ CSkillgauge::~CSkillgauge()
 // スキルゲージすべてのクリエイト
 // nPlayerNum：プレイヤーの番号
 //==================================
-void CSkillgauge::AllCreate(const int nPlayerNum)
+CSkillgauge* CSkillgauge::AllCreate(const int nPlayerNum)
 {
 	// 上からスキルゲージの背景、色つけるやつ、アイコン
-	CSkillgauge::Create(SKILLGAUGE_SIZE, DEFAULT_COLOR, nPlayerNum, CSkillgauge::SKILLGAUGE_BG);
-	CSkillgauge::Create(SKILLGAUGE_SIZE, GET_COLORMANAGER->GetIconColor(nPlayerNum), nPlayerNum, CSkillgauge::SKILLGAUGE_STENCIL);
+	//CSkillgauge::Create(SKILLGAUGE_SIZE, DEFAULT_COLOR, nPlayerNum, CSkillgauge::SKILLGAUGE_BG);
 	CSkillgauge::Create(SKILLGAUGE_SIZE, DEFAULT_COLOR, nPlayerNum, CSkillgauge::SKILLGAUGE_ICON);
+	CSkillgauge * pSkillgauge = CSkillgauge::Create(SKILLGAUGE_SIZE, GET_COLORMANAGER->GetIconColor(nPlayerNum), nPlayerNum, CSkillgauge::SKILLGAUGE_STENCIL);
+
+
+	return pSkillgauge;
 }
 
 //==================================
@@ -101,9 +107,9 @@ HRESULT CSkillgauge::Init()
 
 	switch (m_SkillGaugeType)
 	{
-	case SKILLGAUGE_BG:
-		BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ICON_BG));
-		break;
+	//case SKILLGAUGE_BG:
+	//	BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ICON_BG));
+	//	break;
 
 	case SKILLGAUGE_STENCIL:
 		// ステンシルを表示する座標
@@ -122,11 +128,11 @@ HRESULT CSkillgauge::Init()
 		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_KNIGHT:
 			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
 			break;
-		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_LANCER:
-			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
-			break;
-		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_WIZARD:
-			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+		//case CResourceCharacter::CHARACTER_TYPE::CHARACTER_LANCER:
+		//	BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+		//	break;
+		//case CResourceCharacter::CHARACTER_TYPE::CHARACTER_WIZARD:
+		//	BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
 			break;
 		default:
 			break;
@@ -165,7 +171,6 @@ void CSkillgauge::Update(void)
 	// 座標のセット
 	SetPos(m_pos + SKILLGAUGE_ADDPOS);
 
-
 	switch (m_SkillGaugeType)
 	{
 	case SKILLGAUGE_STENCIL:
@@ -190,18 +195,15 @@ void CSkillgauge::Draw(void)
 	pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
 
 	//アルファテストを有効化
-	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	//アルファテスト基準値の設定
-	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
-	//アルファテストの比較方法の設定
-	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	//pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	////アルファテスト基準値の設定
+	//pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	////アルファテストの比較方法の設定
+	//pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	switch (m_SkillGaugeType)
 	{
-	case SKILLGAUGE_BG:
-		pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-		pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
-
+	case SKILLGAUGE_ICON:
 		// ステンシルテストと比較する参照値設定
 		pDevice->SetRenderState(D3DRS_STENCILREF, 0x01);
 
@@ -209,7 +211,7 @@ void CSkillgauge::Draw(void)
 		pDevice->SetRenderState(D3DRS_STENCILMASK, 0xff);
 
 		// この描画での参照値 == ステンシルバッファの参照値なら合格
-		pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_GREATER);
+		pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_GREATEREQUAL);
 
 		// ステンシルテストの結果に対しての反映設定
 		pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_REPLACE);
@@ -218,9 +220,6 @@ void CSkillgauge::Draw(void)
 		break;
 
 	case SKILLGAUGE_STENCIL:
-		pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-		pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
-
 		// ステンシルテストと比較する参照値設定
 		pDevice->SetRenderState(D3DRS_STENCILREF, 0x01);
 
@@ -243,13 +242,11 @@ void CSkillgauge::Draw(void)
 	// 描画処理
 	CBillboard::Draw();
 
-	// Zバッファを戻す
-	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+	////アルファテストを無効化
+	//pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	////アルファテスト基準値の設定
+	//pDevice->SetRenderState(D3DRS_ALPHAREF, 1);
 
-	//アルファテストを無効化
-	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	//アルファテスト基準値の設定
-	pDevice->SetRenderState(D3DRS_ALPHAREF, 1);
 	// ステンシルテストを無効に
 	pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
 }
@@ -279,10 +276,6 @@ CPlayer * CSkillgauge::GetPlayerinfo(int nPlayerNum)
 //==================================
 void CSkillgauge::UpdateStencil(void)
 {
-	// キーボードとジョイパッドの取得
-	CInputKeyboard * pKey = CManager::GetKeyboard();
-	CInputJoypad* pJoypad = CManager::GetJoypad();
-
 	// 頂点座標の設定
 	D3DXVECTOR3 Pos[NUM_VERTEX];
 
@@ -297,9 +290,18 @@ void CSkillgauge::UpdateStencil(void)
 	if (m_fGauge > m_size.y)
 	{
 		m_fGauge = m_size.y;
-
 	}
 	
+#ifdef _DEBUG
+	// ゲージ満タンコマンド
+	// キーボードの取得
+	CInputKeyboard * pKey = CManager::GetKeyboard();
+	if (pKey->GetKeyTrigger(DIK_F4))
+	{
+		m_fGauge = m_size.y;
+	}
+#endif // _DEBUG
+
 	// ゲージが溜まったら
 	if(m_fGauge == m_size.y)
 	{
@@ -307,7 +309,7 @@ void CSkillgauge::UpdateStencil(void)
 		GetPlayerinfo(m_nPlayerNum)->SetFinalAttack(true);
 
 		// 必殺技を打ったら
-		if (GetPlayerinfo(m_nPlayerNum)->GetAttackFinal()->GetAttackFinalFlag() == true)
+		if (GetPlayerinfo(m_nPlayerNum)->GetAttack()->GetState() == CAttackBased:: ATTACK_STATE_FINALATTACK)
 		{
 			GetPlayerinfo(m_nPlayerNum)->SetFinalAttack(false);
 			m_fGauge = 0.0f;
@@ -322,4 +324,13 @@ void CSkillgauge::UpdateStencil(void)
 
 	// 頂点ごとの座標設定
 	SetVertexPos(Pos);
+}
+
+//==================================
+// 塗替えしたときゲージを加算する処理
+//==================================
+void CSkillgauge::Repaint_AddSkillGauge(void)
+{
+	// 倍率によって加算値を変える
+	m_fGauge += REPAINT_RATE * (m_size.y / SKILLGAUGE_FLAME);
 }

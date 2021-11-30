@@ -20,7 +20,7 @@ CActRange::CActRange()
 {
 	//変数初期化
 	m_pPlayer = nullptr;
-	m_bDeath  = false;
+	m_bDeath = false;
 	memset(&m_MapData, 0, sizeof(m_MapData));
 	memset(&m_ActPos, 0, sizeof(m_ActPos));
 	memset(&m_bPlayerMove, true, sizeof(m_bPlayerMove));
@@ -50,16 +50,16 @@ void CActRange::PlayerPos(void)
 		{
 			for (int nBlockX = 0; nBlockX < m_MapData.BlockData[nBlockY].nStageSizeX; nBlockX++)
 			{
-				D3DXVECTOR3 BlockPos = D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY)+ m_MapData.m_pos;
-				if (PlayerPos.x>BlockPos.x - TILE_ONE_SIDE/2
-					&&PlayerPos.x<BlockPos.x + TILE_ONE_SIDE/2
-					&&PlayerPos.z>BlockPos.z - TILE_ONE_SIDE/2
-					&&PlayerPos.z<BlockPos.z + TILE_ONE_SIDE/2)
+				D3DXVECTOR3 BlockPos = D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, -TILE_SIZE_Y / 2, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos;
+				if (PlayerPos.x>BlockPos.x - TILE_ONE_SIDE / 2
+					&& PlayerPos.x<BlockPos.x + TILE_ONE_SIDE / 2
+					&& PlayerPos.z>BlockPos.z - TILE_ONE_SIDE / 2
+					&& PlayerPos.z<BlockPos.z + TILE_ONE_SIDE / 2)
 				{
 					//位置取得
 					m_ActPos.x = (float)nBlockX;
 					m_ActPos.z = (float)nBlockY;
-					
+
 				}
 			}
 		}
@@ -211,7 +211,7 @@ CActRange * CActRange::Create(CPlayer * pPlayer)
 	//メモリ確保
 	CActRange *pActRange = nullptr;
 	pActRange = new CActRange;
-	
+
 	//NULLチェック
 	if (pActRange != NULL)
 	{

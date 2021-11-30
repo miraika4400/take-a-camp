@@ -154,8 +154,6 @@
   <ItemGroup>
     <ClCompile Include="act_range.cpp" />
     <ClCompile Include="attack.cpp" />
-    <ClCompile Include="attack_final.cpp" />
-    <ClCompile Include="attack_final_knight.cpp" />
     <ClCompile Include="attack_knight.cpp" />
     <ClCompile Include="attack_area.cpp" />
     <ClCompile Include="button.cpp" />
@@ -168,6 +166,7 @@
     <ClCompile Include="move_around_tile.cpp" />
     <ClCompile Include="move_tile.cpp" />
     <ClCompile Include="needle_tile.cpp" />
+    <ClCompile Include="paintnum.cpp" />
     <ClCompile Include="paint_time.cpp" />
     <ClCompile Include="peint_collision.cpp" />
     <ClCompile Include="resource_attack.cpp" />
@@ -232,8 +231,6 @@
   <ItemGroup>
     <ClInclude Include="act_range.h" />
     <ClInclude Include="attack.h" />
-    <ClInclude Include="attack_final.h" />
-    <ClInclude Include="attack_final_knight.h" />
     <ClInclude Include="attack_knight.h" />
     <ClInclude Include="attack_area.h" />
     <ClInclude Include="chara_select.h" />
@@ -247,6 +244,7 @@
     <ClInclude Include="move_tile.h" />
     <ClInclude Include="move_around_tile.h" />
     <ClInclude Include="needle_tile.h" />
+    <ClInclude Include="paintnum.h" />
     <ClInclude Include="paint_time.h" />
     <ClInclude Include="peint_collision.h" />
     <ClInclude Include="resource_attack.h" />

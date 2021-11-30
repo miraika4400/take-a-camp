@@ -64,7 +64,8 @@ HRESULT CAttackKnight::Init(void)
 void CAttackKnight::AttackCreate(void)
 {
 	//攻撃フラグが立っているか
-	if (GetState() == ATTACK_STATE_ATTACK)
+	if (GetState() == ATTACK_STATE_ATTACK
+		|| GetState() == ATTACK_STATE_FINALATTACK)
 	{
 		//カウントアップ
 		m_nAttackCount++;

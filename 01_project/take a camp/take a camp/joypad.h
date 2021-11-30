@@ -77,30 +77,42 @@ public:
 	void Uninit(void);								// 終了
 	void Update(void);								// 更新
 
-	// ゲッター
-	bool GetButtonState(const WORD pad_state, const BUTTON_PUSH_STATE Push_Stateint, int nJoystickNum = 0);				// ボタンの押し込みの取得
-	bool GetTriggerState(const PAD_TRRIGER_STATE pad_state, const BUTTON_PUSH_STATE Push_State, int nJoystickNum = 0);	// LT、RTの押し込みの取得
-	int GetTriggerPushCondition(const PAD_TRRIGER_STATE pad_state, int nJoystickNum = 0);								// LT、RTの押し込み具合の取得
-	D3DXVECTOR2 GetStickState(const PAD_STICK_STATE Pad_Stick_State, int nJoystickNum = 0);								// スティックの取得
+	void EnableVibration(const float L_vib, const float R_vib, const float fVibTime, const int nJoystickNum);	// バイブレーションの開始
+	void DisableVibration(const int nJoystickNum);																// バイブレーションの終了
 
-	void EnableVibration(const float L_vib, const float R_vib, int nJoystickNum = 0);	// バイブレーションの開始
-	void DisableVibration(int nJoystickNum = 0);										// バイブレーションの終了
+																												//============
+																												// ゲッター
+																												//============
+	bool GetButtonState(const WORD pad_state, const BUTTON_PUSH_STATE Push_Stateint, const int nJoystickNum);				// ボタンの押し込みの取得
+	bool GetTriggerState(const PAD_TRRIGER_STATE pad_state, const BUTTON_PUSH_STATE Push_State, const int nJoystickNum);	// LT、RTの押し込みの取得
+	int GetTriggerPushCondition(const PAD_TRRIGER_STATE pad_state, const int nJoystickNum);									// LT、RTの押し込み具合の取得
+	D3DXVECTOR2 GetStickState(const PAD_STICK_STATE Pad_Stick_State, const int nJoystickNum);								// スティックの取得
 private:
+	//============
+	// メンバ関数
+	//============
 	WORD Return_XInput(const PAD_BUTTON_STATE Pad_Botton_State);	// Xinputのボタンを返す処理
 	int Return_Button(const WORD Xinput_Gamepad);					// 列挙型のボタンを返す処理
 
-	void UpdateTriggerState(const int nTriggerPush, const int nPadTrigger, int nJoystickNum = 0);	// トリガーの更新処理
+	void UpdateButton(const XINPUT_STATE state, const int nJoystickNum);							// ボタンの更新処理
+	void UpdateTrigger(const XINPUT_STATE state, const int nJoystickNum);							// トリガーの更新処理
+	void UpdateTriggerState(const int nTriggerPush, const int nPadTrigger, const int nJoystickNum);	// トリガーの情報更新処理
+	void UpdateVibration(const int nJoystickNum);													// 振動の更新
 
+	//============
 	// ゲッター
-	DWORD GetPadState(XINPUT_STATE& state, int nJoystickNum = 0);									// ジョイパッドの情報の取得
-	bool GetJoystickPress(const WORD wPad_State, const int nPad_Bottan, int nJoystickNum = 0);		// ボタンのプレス情報の取得
-	bool GetJoystickTrigger(const WORD wPad_State, const int nPad_Bottan, int nJoystickNum = 0);	// ボタンのトリガー情報の取得
-	bool GetJoystickRelease(const WORD wPad_State, const int nPad_Bottan, int nJoystickNum = 0);	// ボタンのリリース情報の取得
-	bool GetJoystickPressLTRT(const int nPad_Trigger, int nJoystickNum = 0);						// LTRTのプレス情報の取得
-	bool GetJoystickTriggerLTRT(const int nPad_Trigger, int nJoystickNum = 0);						// LTRTのトリガー情報の取得
-	bool GetJoystickReleaseLTRT(const int nPad_Trigger, int nJoystickNum = 0);						// LTRTのリリース情報の取得
+	//============
+	DWORD GetPadState(XINPUT_STATE& state, const int nJoystickNum);									// ジョイパッドの情報の取得
+	bool GetJoystickPress(const WORD wPad_State, const int nPad_Bottan, const int nJoystickNum);	// ボタンのプレス情報の取得
+	bool GetJoystickTrigger(const WORD wPad_State, const int nPad_Bottan, const int nJoystickNum);	// ボタンのトリガー情報の取得
+	bool GetJoystickRelease(const WORD wPad_State, const int nPad_Bottan, const int nJoystickNum);	// ボタンのリリース情報の取得
+	bool GetJoystickPressLTRT(const int nPad_Trigger, const int nJoystickNum);						// LTRTのプレス情報の取得
+	bool GetJoystickTriggerLTRT(const int nPad_Trigger, const int nJoystickNum);					// LTRTのトリガー情報の取得
+	bool GetJoystickReleaseLTRT(const int nPad_Trigger, const int nJoystickNum);					// LTRTのリリース情報の取得
 
+	//============
 	// メンバ変数
+	//============
 	WORD m_aJoyState[MAX_JOYSTICK_NUM][MAX_PAD_BUTTON];			// ジョイパッドの入力情報ワーク
 	WORD m_aJoyStateTrigger[MAX_JOYSTICK_NUM][MAX_PAD_BUTTON];	// ジョイパッドのトリガー情報
 	WORD m_aJoyStateRelease[MAX_JOYSTICK_NUM][MAX_PAD_BUTTON];	// ジョイパッドのリリース情報
@@ -108,5 +120,7 @@ private:
 	bool m_aJoyStateLTRT[MAX_JOYSTICK_NUM][MAX_PAD_TRIGGER];		// LTRTの入力情報ワーク
 	bool m_aJoyStateTriggerLTRT[MAX_JOYSTICK_NUM][MAX_PAD_TRIGGER];	// LTRTのトリガー情報
 	bool m_aJoyStateReleaseLTRT[MAX_JOYSTICK_NUM][MAX_PAD_TRIGGER];	// LTRTのリリース情報
+
+	float m_fVibrationTime[MAX_JOYSTICK_NUM];	// 振動する時間
 };
 #endif
