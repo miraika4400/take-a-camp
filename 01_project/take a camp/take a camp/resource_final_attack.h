@@ -18,7 +18,7 @@
 //=============================================================================
 #define MAX_FINAL_ATTACK_SIZE_X	(20)	//最大ブロック数
 #define MAX_FINAL_ATTACK_SIZE_Y	(20)	//最大ステージサイズ
-#define MAX_FINAL_HIT_TYPE			(4)		//ヒットマスタイプの最大数
+#define MAX_FINAL_HIT_TYPE		(8)		//ヒットマスタイプの最大数
 //=============================================================================
 // クラス定義
 //=============================================================================
@@ -35,7 +35,7 @@ public:
 	{
 		RANGE_DATA	RangeData[MAX_FINAL_ATTACK_SIZE_Y];	// ブロック
 		int			nAttackRangeY;						// ブロックの列
-		int			nAttackFrame[MAX_FINAL_HIT_TYPE];			// フレーム数の保存
+		int			nAttackFrame[MAX_FINAL_HIT_TYPE];	// フレーム数の保存
 	}FINAL_ATTACK_RANGE_DATA;
 
 

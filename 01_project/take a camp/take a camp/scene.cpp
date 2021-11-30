@@ -180,6 +180,7 @@ void CScene::SetPriority(const int nPriority)
 
 	// プライオリティの設定
 	m_nPriority = nPriority;
+	m_type = (OBJTYPE)nPriority;
 
 	if (m_pTop[m_nPriority] == NULL)
 	{// 最初が空の時

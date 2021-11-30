@@ -32,8 +32,8 @@ public:
 
 	typedef enum
 	{
-		SKILLGAUGE_BG = 0,	// ゲージの背景
-		SKILLGAUGE_STENCIL,	// ステンシル
+		//SKILLGAUGE_BG = 0,	// ゲージの背景
+		SKILLGAUGE_STENCIL = 0,	// ステンシル
 		SKILLGAUGE_ICON,	// スキルゲージのアイコン
 		SKILLGAUGE_MAX,		// タイプの最大数
 	}SKILLGAUGE_TYPE;

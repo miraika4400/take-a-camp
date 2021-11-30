@@ -28,10 +28,9 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define POS_Y_RATE_BASE   0.03f
-#define POS_Y_RATE_UP     0.1f
-#define BULLET_HIT_POS_Y TILE_POS_Y + 6.0f
-#define TILE_DEFAULT_COLOR D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
+#define POS_Y_RATE_BASE		(0.03f)
+#define POS_Y_RATE_UP		(0.1f)
+#define BULLET_HIT_POS_Y	(TILE_POS_Y + 6.0f)
 
 //*****************************
 // 静的メンバ変数宣言
@@ -50,6 +49,7 @@ CTile::CTile() :CModel(OBJTYPE_TILE)
 	m_bHitOld = false;
 	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
 	m_bHitBullet = false;        // 弾が当たっているフラグ
+	m_bRide		 = false;		 // 乗れるかフラグ
 	m_aTileList.push_back(this);
 }
 

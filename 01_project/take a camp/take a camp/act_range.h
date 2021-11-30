@@ -37,6 +37,7 @@ public:
 		PLAYER_MOVE_RIGHT,	//右
 		PLAYER_MOVE_MAX
 	}PLAYER_MOVE;
+		
 	typedef struct
 	{
 		D3DXVECTOR3 OtherActPos;	// 位置
@@ -74,6 +75,8 @@ private:
 	bool			 m_bPlayerMove[PLAYER_MOVE_MAX];	// プレイヤーが移動できるか
 	bool			 m_bDeath;							// 死亡フラグ
 	bool			 m_bMove;							// 移動フラグ
+	
+
 };
 
 #endif
