@@ -164,7 +164,7 @@ CPlayer * CPlayer::GetPlayerByPlayerNumber(int nPlayerNum)
 HRESULT CPlayer::Init(void)
 {
 	// キャラデータの取得
-	//m_characterType = CCharaSelect::GetEntryData(m_nPlayerNumber).charaType;
+	m_characterType = CCharaSelect::GetEntryData(m_nPlayerNumber).charaType;
 	CResourceCharacter::CharacterData charaData = CResourceCharacter::GetResourceCharacter()->GetCharacterData(m_characterType);
 
 	if (FAILED(CModelHierarchy::Init(charaData.modelType)))
@@ -199,8 +199,8 @@ HRESULT CPlayer::Init(void)
 	// スキルゲージの生成(後々ここに職種入れてアイコン変える)
 	m_pSkillgauge = CSkillgauge::AllCreate(m_nColor);
 
-	// プレイヤーの頭上に出すスコア生成
-	CNumberArray::Create(0, GetPos(), D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(m_nColor), m_nColor);
+	//// プレイヤーの頭上に出すスコア生成
+	//CNumberArray::Create(0, GetPos(), D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(m_nColor), m_nColor);
 
 	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);	
 
@@ -286,7 +286,6 @@ void CPlayer::Update(void)
 
 		//無敵処理
 		Invincible();
-
 
 		// 当たり判定の位置
 		if (m_pCollision == NULL)

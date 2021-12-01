@@ -105,84 +105,83 @@ void CMotion::Uninit(void)
 //******************************
 void CMotion::Update(void)
 {
-	if (m_bMotion)
+	if (!m_bMotion)
 	{
+		return;
+	}
 
-		// フレームカウントを進める
-		m_nCntFrame++;
-		if (m_nCntFrame > m_nNumFrame[m_nCntKey])
-		{
-			m_nCntFrame = 0;
-			// キーカウントを進める
-			m_nCntKey++;
+	// フレームカウントを進める
+	m_nCntFrame++;
+	if (m_nCntFrame > m_nNumFrame[m_nCntKey])
+	{
+		m_nCntFrame = 0;
+		// キーカウントを進める
+		m_nCntKey++;
 
-			if (m_nCntKey >= m_nNumKey)
-			{// 一周終えてループしないとき
-				if (!m_bLoop)
-				{
-					// アニメーションの終了
-					m_bMotion = false;
-					return;
-				}
-				else
-				{
-					m_nCntKey = 0;
-				}
-			}
-
-			// 加算値の更新
-			for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
+		if (m_nCntKey >= m_nNumKey)
+		{// 一周終えてループしないとき
+			if (!m_bLoop)
 			{
-				if (m_nCntKey == 0)
-				{// 一番最初のフレーム
-					m_addPos[nCntParts] = (m_pos[m_nCntKey][nCntParts] - m_pos[m_nNumKey - 1][nCntParts]) / (float)m_nNumFrame[m_nCntKey];
-					m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_rot[m_nNumKey - 1][nCntParts]) / (float)m_nNumFrame[m_nCntKey];
-				}
-				else
-				{
-					// グルんと回転しないよう調整
-
-					// グルんと回転しないよう調整
-					//x
-					if (m_rot[m_nCntKey][nCntParts].x - m_pModel[nCntParts].rot.x > D3DXToRadian(180))
-					{
-						m_pModel[nCntParts].rot.x+= D3DXToRadian(360);
-					}
-					if (m_rot[m_nCntKey][nCntParts].x - m_pModel[nCntParts].rot.x < D3DXToRadian(-180))
-					{
-						m_pModel[nCntParts].rot.x -= D3DXToRadian(360);
-					}
-					//y
-					if (m_rot[m_nCntKey][nCntParts].y - m_pModel[nCntParts].rot.y > D3DXToRadian(180))
-					{
-						m_pModel[nCntParts].rot.y += D3DXToRadian(360);
-					}
-					if (m_rot[m_nCntKey][nCntParts].y - m_pModel[nCntParts].rot.y < D3DXToRadian(-180))
-					{
-						m_pModel[nCntParts].rot.y -= D3DXToRadian(360);
-					}
-					//z
-					if (m_rot[m_nCntKey][nCntParts].z - m_pModel[nCntParts].rot.z > D3DXToRadian(180))
-					{
-						m_pModel[nCntParts].rot.z += D3DXToRadian(360);
-					}
-					if (m_rot[m_nCntKey][nCntParts].z - m_pModel[nCntParts].rot.z < D3DXToRadian(-180))
-					{
-						m_pModel[nCntParts].rot.z -= D3DXToRadian(360);
-					}
-
-					m_addPos[nCntParts] = (m_pos[m_nCntKey][nCntParts] - m_pos[m_nCntKey - 1][nCntParts]) / (float)m_nNumFrame[m_nCntKey];
-					m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_pModel[nCntParts].rot) / (float)m_nNumFrame[m_nCntKey];
-				}
+				// アニメーションの終了
+				m_bMotion = false;
+				return;
+			}
+			else
+			{
+				m_nCntKey = 0;
 			}
 		}
 
-		// 加算値を足す
+		// 加算値の更新
 		for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
 		{
-			m_pModel[nCntParts].pos += m_addPos[nCntParts];
-			m_pModel[nCntParts].rot += m_addRot[nCntParts];
+			if (m_nCntKey == 0)
+			{// 一番最初のフレーム
+				m_addPos[nCntParts] = (m_pos[m_nCntKey][nCntParts] - m_pos[m_nNumKey - 1][nCntParts]) / (float)m_nNumFrame[m_nCntKey];
+				m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_rot[m_nNumKey - 1][nCntParts]) / (float)m_nNumFrame[m_nCntKey];
+			}
+			else
+			{
+				// グルんと回転しないよう調整
+				//x
+				if (m_rot[m_nCntKey][nCntParts].x - m_pModel[nCntParts].rot.x > D3DXToRadian(180))
+				{
+					m_pModel[nCntParts].rot.x += D3DXToRadian(360);
+				}
+				if (m_rot[m_nCntKey][nCntParts].x - m_pModel[nCntParts].rot.x < D3DXToRadian(-180))
+				{
+					m_pModel[nCntParts].rot.x -= D3DXToRadian(360);
+				}
+				//y
+				if (m_rot[m_nCntKey][nCntParts].y - m_pModel[nCntParts].rot.y > D3DXToRadian(180))
+				{
+					m_pModel[nCntParts].rot.y += D3DXToRadian(360);
+				}
+				if (m_rot[m_nCntKey][nCntParts].y - m_pModel[nCntParts].rot.y < D3DXToRadian(-180))
+				{
+					m_pModel[nCntParts].rot.y -= D3DXToRadian(360);
+				}
+				//z
+				if (m_rot[m_nCntKey][nCntParts].z - m_pModel[nCntParts].rot.z > D3DXToRadian(180))
+				{
+					m_pModel[nCntParts].rot.z += D3DXToRadian(360);
+				}
+				if (m_rot[m_nCntKey][nCntParts].z - m_pModel[nCntParts].rot.z < D3DXToRadian(-180))
+				{
+					m_pModel[nCntParts].rot.z -= D3DXToRadian(360);
+				}
+
+				m_addPos[nCntParts] = (m_pos[m_nCntKey][nCntParts] - m_pos[m_nCntKey - 1][nCntParts]) / (float)m_nNumFrame[m_nCntKey];
+				m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_pModel[nCntParts].rot) / (float)m_nNumFrame[m_nCntKey];
+			}
 		}
+	}
+
+	// 加算値を足す
+	for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
+	{
+		m_pModel[nCntParts].pos += m_addPos[nCntParts];
+		m_pModel[nCntParts].rot += m_addRot[nCntParts];
 	}
 }
 
