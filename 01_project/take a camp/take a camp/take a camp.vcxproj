@@ -170,6 +170,7 @@
     <ClCompile Include="paintnum.cpp" />
     <ClCompile Include="paint_time.cpp" />
     <ClCompile Include="peint_collision.cpp" />
+    <ClCompile Include="player_model.cpp" />
     <ClCompile Include="resource_attack.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="billboard.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="paintnum.h" />
     <ClInclude Include="paint_time.h" />
     <ClInclude Include="peint_collision.h" />
+    <ClInclude Include="player_model.h" />
     <ClInclude Include="resource_attack.h" />
     <ClInclude Include="bg.h" />
     <ClInclude Include="billboard.h" />

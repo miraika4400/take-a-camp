@@ -35,9 +35,9 @@ public:
 	HRESULT Init(void); // 純関数用
 	HRESULT Init(CResourceModelHierarchy::MODEL_HIERARCHY_TYPE modelType); // 初期化
 
-	void Uninit(void);                                             // 終了
-	void Update(void);                                             // 更新
-	void Draw(void);                                       // 描画 
+	virtual void Uninit(void);                                             // 終了
+	virtual void Update(void);                                             // 更新
+	virtual void Draw(void);                                       // 描画 
 	
 	// 各変数の取得・セット
 

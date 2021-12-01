@@ -187,6 +187,7 @@ void CCharaSelect::EntryPlayer(void)
 				if (!m_abUseJoy[nCntJoy] && pJoy->GetButtonState(XINPUT_GAMEPAD_START, CInputJoypad::BUTTON_TRIGGER, nCntJoy))
 				{// コントローラーでエントリー
 					EntryPlayer(nCntData, nCntJoy, true);
+					pJoy->EnableVibration(1.0f, 1.0f, 10.0f, nCntJoy);
 					break;
 				}
 
