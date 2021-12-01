@@ -451,7 +451,7 @@ void CPlayer::Move(void)
 //******************************
 void CPlayer::ControlMove(void)
 {
-	if (m_bMove)
+	if (m_bMove&&!m_bAttack)
 	{
 		// キーボードとジョイパッドの取得
 		CInputKeyboard * pKey = CManager::GetKeyboard();
@@ -684,6 +684,8 @@ void CPlayer::Respawn(void)
 			SetState(PLAYER_STATE_NORMAL);
 			//位置セット
 			SetPos(m_RespawnPos);
+			//移動量セット
+			m_bMove = true;
 			//行動クラスに通常状態になったフラグを送る
 			m_pActRange->SetDeath(false);
 			//行動クラスに位置設定をするように送る
