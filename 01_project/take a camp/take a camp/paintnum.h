@@ -36,6 +36,7 @@ public:
 	void Update(void);	// 更新
 	void Draw(void);	// 描画
 
+	int GetRank(int nPlayer) { return m_nRank[nPlayer]; } // プレイヤーの順位獲得処理
 private:
 	struct PaintInfo
 	{
