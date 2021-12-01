@@ -18,6 +18,7 @@
 #include "attack_area.h"
 #include "peint_collision.h"
 #include "collision.h"
+#include "base_Cylinder.h"
 //=============================================================================
 // ƒ}ƒNƒ’è‹`
 //=============================================================================
@@ -178,6 +179,7 @@ void CAttackFinal::VisualizationAttackArea(int AttackFinalType)
 					m_apAttackArea[nAttack]->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
 					m_apAttackArea[nAttack]->SetPos(CreatePos + m_pos + D3DXVECTOR3(0.0f, 10.0f, 0.0f));
 					m_apAttackArea[nAttack]->SetDrawFlag(true);
+					
 				}
 			}
 			else
@@ -210,6 +212,7 @@ void CAttackFinal::VisualizationAttackArea(int AttackFinalType)
 					m_apAttackArea[nAttack]->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
 					m_apAttackArea[nAttack]->SetPos(CreatePos + GetPlayer()->GetPos() + D3DXVECTOR3(0.0f, 10.0f, 0.0f));
 					m_apAttackArea[nAttack]->SetDrawFlag(true);
+					
 				}
 			}
 		}

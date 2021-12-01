@@ -145,6 +145,7 @@ private:
 	D3DXVECTOR3  m_rotDest;		// 回転(目標の値)
 	D3DXVECTOR3  m_RespawnPos;	// リスポーン位置
 	CResourceCharacter::CHARACTER_TYPE m_characterType; // キャラタイプ
+	int m_nChargeTilelevel;			// チャージ開始タイルの塗り段階
 
 	// モーション用変数
 	CMotion *m_apMotion[CResourceCharacter::MOTION_MAX];  // アニメーションポインタ

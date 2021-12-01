@@ -35,6 +35,8 @@
 #include "attack_final.h"
 #include "attack_final_knight.h"
 #include "skill_gauge.h"
+#include "base_Cylinder.h"
+#include "skill_circle.h"
 
 //*****************************
 // マクロ定義
@@ -98,6 +100,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_characterType = CResourceCharacter::CHARACTER_KNIGHT;
 	m_nMoveFrameData = 0;
 	m_nMoveFrameDataDash = 0;
+	m_nChargeTilelevel = 0;
 }
 
 //******************************
@@ -531,6 +534,7 @@ void CPlayer::Attack(void)
 	// 当たっているタイルの取得
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 	
+
 	//触れているタイルの識別＆攻撃の状況が攻撃中になっていないか
 	if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor 
 		&& m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL)
@@ -539,12 +543,13 @@ void CPlayer::Attack(void)
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
 		{
+
 			//タイルがチャージ出来るか取得
 			if (pHitTile->ChargeFlag(m_nPlayerNumber))
 			{
 				//攻撃チャージを開始
 				m_pAttack->ChargeFlag(pHitTile->GetStepNum()-1);
-
+				m_nChargeTilelevel = pHitTile->GetStepNum();
 			}
 			//チャージできる状態になりフラグが立つ
 			else
@@ -568,8 +573,9 @@ void CPlayer::Attack(void)
 		{
 			//攻撃フラグを立てる
 			m_bAttack = true;
+			CSkill_circle::Create(GetPos() + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel),CSkill_circle::EFFECTTYPE_SKIIL);
+			CSkill_circle::Create(GetPos() + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE + D3DXVECTOR3(3.0f,0.0f, 3.0f), GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel - 1 ), CSkill_circle::EFFECTTYPE_SKIILMINI);
 		}
-
 	}
 	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
 	if (m_bAttack&&m_bMove)

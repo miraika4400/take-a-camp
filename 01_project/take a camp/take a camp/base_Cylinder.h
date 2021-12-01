@@ -23,7 +23,6 @@
 #define NUM_CYL_VERTEX (20)
 
 
-
 //=============================================================================
 // クラス定義
 //=============================================================================
@@ -37,14 +36,14 @@ public:
 	~Cbase_Cylinder();
 
 	// static
-	static Cbase_Cylinder *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size); // クラス生成
+	static Cbase_Cylinder *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size ,const D3DXCOLOR col); // クラス生成
 
 	 HRESULT Init(void); // 初期化
 	 void Uninit(void);  // 終了
 	 void Update(void);  // 更新
 	 void Draw(void);    // 描画
-	 LPDIRECT3DTEXTURE9 GetTexture(void) { return m_pTexture; }
-	 void BindTexture(const LPDIRECT3DTEXTURE9 pTexture) { m_pTexture = pTexture; }
+	 LPDIRECT3DTEXTURE9 GetTexture(void) { return m_apTexture; }
+	 void BindTexture(const LPDIRECT3DTEXTURE9 pTexture) { m_apTexture = pTexture; }
 
 	// 中心座標のセット、取得
 	void SetPos(const D3DXVECTOR3 pos);
@@ -56,7 +55,7 @@ public:
 	D3DXVECTOR3 GetMove(void) { return m_move; }
 	void SetMove(D3DXVECTOR3 move) { m_move = move; }
 	// 回転角度のセット、取得
-	void SetAddRotValue(const float fAdd) { m_fRotAngle = fAdd; SetPos(m_pos);}
+	void SetAddRotValue(const float fAdd) { m_fRotAngle = fAdd;}
 	float GetAddRotValue(void) { return m_fRotAngle; }
 	// サイズのセット、取得
 	void SetSize(const D3DXVECTOR3 size);
@@ -64,19 +63,26 @@ public:
 	// カラーのセット、取得
 	void SetColor(const D3DXCOLOR col);
 	D3DXCOLOR GetColor(void) { return m_col; }
-	
+
+	void SetHighRot(const float rot) { m_fHighRot = rot; }
+	void SetRowRot(const float rot) { m_fRowRot = rot; }
+
+	void SetAddMode(bool bBool) { m_bAddMode = bBool; }
 	void SetTextureUV(const float pos); // テクスチャのUV座標のセット
 private:
 	//============
 	// メンバ変数
 	//============
-	LPDIRECT3DTEXTURE9		m_pTexture;	    // テクスチャへのポインタ
+	LPDIRECT3DTEXTURE9		m_apTexture;	    // テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	    // 頂点バッファへのポインタ
 	D3DXVECTOR3			    m_pos;	 	    // 位置
 	D3DXVECTOR3			    m_move;	 	    // 移動量
 	D3DXVECTOR3			    m_rot;	 	    // 向き
 	D3DXVECTOR3	            m_size;		    // 大きさ
+	
 	int                     m_nLife;	    // 寿命
+	float					m_fHighRot;		// 上辺角度
+	float					m_fRowRot;		// 下辺角度
 	float		            m_fRotAngle;    // 回転角度
 	float		            m_fFadeout;	    // フェードアウト　
 	bool		            m_bFadeoutFlag; // フェードアウトのフラグ
