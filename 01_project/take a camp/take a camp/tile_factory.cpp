@@ -13,6 +13,9 @@
 #include "color_tile.h"
 #include "needle_tile.h"
 #include "spawn_tile.h"
+#include "move_around_tile.h"
+#include "move_sideways_tile.h"
+
 //*****************************
 // É}ÉNÉçíËã`
 //*****************************
@@ -30,6 +33,8 @@ const std::vector<CTileFactory::LabelData> CTileFactory::m_cLabelData =
 	{ "TILE_NORMAL" , CColorTile::Create },
 	{ "TILE_PLAYER" , CSpawnTile::Create },
 	{ "TILE_NEEDLE" , CNeedleTile::Create },
+	{ "TILE_AROUND_MOVE", CAroundTile::Create },
+	{ "TILE_SIDEWAYS_MOVE",CSidewaysTile::Create },
 };
 
 //******************************

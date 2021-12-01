@@ -32,8 +32,8 @@ public:
 
 	typedef enum
 	{
-		SKILLGAUGE_BG = 0,	// ゲージの背景
-		SKILLGAUGE_STENCIL,	// ステンシル
+		//SKILLGAUGE_BG = 0,	// ゲージの背景
+		SKILLGAUGE_STENCIL = 0,	// ステンシル
 		SKILLGAUGE_ICON,	// スキルゲージのアイコン
 		SKILLGAUGE_MAX,		// タイプの最大数
 	}SKILLGAUGE_TYPE;
@@ -43,12 +43,14 @@ public:
 	//============
 	CSkillgauge();
 	~CSkillgauge();
-	static void AllCreate(const int nPlayerNum);
+	static CSkillgauge* AllCreate(const int nPlayerNum);
 
 	HRESULT Init(void); // 初期化
 	void Uninit(void);	// 終了
 	void Update(void);	// 更新
 	void Draw(void);	// 描画
+
+	void Repaint_AddSkillGauge(void); // スキルゲージを加算させる処理
 
 private:
 	//============
@@ -57,6 +59,7 @@ private:
 	static CSkillgauge *Create(const D3DXVECTOR3 size, const D3DXCOLOR col, const int nPlayerNum, const SKILLGAUGE_TYPE SkillGaugeType); // クラス生成
 	CPlayer *GetPlayerinfo(int nPlayerNum);
 	void UpdateStencil(void); // ステンシルの更新処理
+	void SetPolygonPos(void); // ステンシルを表示する座標
 
 	//============
 	// メンバ変数

@@ -20,7 +20,6 @@
 #include "resource_shader.h"
 #include "resource_attack.h"
 #include "resource_model_hierarchy.h"
-#include "resource_final_attack.h"
 #include "camera_base.h"
 #include "debug_log.h"
 #include "pause.h"
@@ -141,8 +140,6 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CMapManager::Create();
 	//攻撃範囲読み込み
 	CAttackManager::Create();
-	//必殺技範囲読み込み
-	CFinalAttackManager::Create();
 
 	// カラーマネージャーの生成
 	CColorManager::Create();
@@ -165,8 +162,6 @@ void CManager::Uninit(void)
 	CMapManager::Release();
 	//攻撃範囲読み込みクラスの破棄
 	CAttackManager::Release();
-	//必殺技の範囲読み込みクラスの破棄
-	CFinalAttackManager::Release();
 	// テクスチャクラスの破棄
 	CResourceTexture::Release();
 	// モデルリソースクラスの破棄

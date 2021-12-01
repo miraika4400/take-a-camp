@@ -158,31 +158,6 @@ void CMapManager::Load(void)
 						break;
 					}
 				}
-				// ï∂éöóÒì«Ç›çûÇ›
-				//switch (atoi(cFileString))
-				//{
-				//case BLOCK_TYPE_NONE:
-				//	m_MapData[nMap].BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_NONE;
-				//	break;
-				//case BLOCK_TYPE_1P_START:
-				//	m_MapData[nMap].BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_1P_START;
-				//	break;
-				//case BLOCK_TYPE_2P_START:
-				//	m_MapData[nMap].BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_2P_START;
-				//	break;
-				//case BLOCK_TYPE_3P_START:
-				//	m_MapData[nMap].BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_3P_START;
-				//	break;
-				//case BLOCK_TYPE_4P_START:
-				//	m_MapData[nMap].BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_4P_START;
-				//	break;
-				//case BLOCK_TYPE_BLOCK:
-				//	m_MapData[nMap].BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_BLOCK;
-				//	break;
-				//case BLOCK_TYPE_NEEDLE_BLOCK:
-				//	m_MapData[nMap].BlockData[nRow].nBlockType[nCol] = BLOCK_TYPE_NEEDLE_BLOCK;
-				//	break;
-				//}
 
 				m_MapData[nMap].BlockData[nRow].nBlockType[nCol] = atoi(cFileString);
 

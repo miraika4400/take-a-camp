@@ -19,6 +19,7 @@
 #include "max_color_effect.h"
 #include "paint_time.h"
 #include "tile_effect_charge.h"
+#include "skill_gauge.h"
 
 #ifdef _DEBUG
 #include "manager.h"
@@ -442,6 +443,12 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 			else
 			{// ¡“h‚ç‚ê‚Ä‚éF‚Æ“h‚éF‚ªˆá‚¤
 
+				// ƒvƒŒƒCƒ„[‚ÌŽæ“¾
+				CPlayer*pPlayer = CPlayer::GetPlayerByPlayerNumber(nPlayerNum);
+
+				// •KŽE‹ZƒQ[ƒW‰ÁŽZˆ—
+				pPlayer->GetSkillgauge()->Repaint_AddSkillGauge();
+
 				if (m_nStep == 1)
 				{// ’iŠK‚ªˆê‚ÌŽž
 				 // ƒJƒ‰[”Ô†‚Ì•Û‘¶
@@ -452,7 +459,7 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 				else
 				{// ’iŠK‚ª2ˆÈã‚ÌŽž
 
-				 // ’iŠK‚ðŒ¸‚ç‚·
+					// ’iŠK‚ðŒ¸‚ç‚·
 					m_nStep--;
 					// F‚ÌŽæ“¾
 					m_distColor = GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1);
