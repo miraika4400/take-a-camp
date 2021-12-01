@@ -91,6 +91,9 @@ private:
 	bool CollisionPlayer(void);								// プレイヤーとの当たり判定
 	virtual void HitPlayerAction(CPlayer * pPlayer);        // 弾と当たったときのアクション*プレス
 	virtual void HitPlayerActionTrigger(CPlayer * pPlayer); // 弾と当たったときのアクション*トリガー
+	virtual void HitPlayerActionRelease(void); // 弾と当たったときのアクション*リリース
+
+
 	bool CollisionBullet(void);								// 弾との当たり判定
 	virtual void HitBulletAction(CBullet * pBullet);		// 弾と当たったときのアクション
 	bool CollisionPeint(void);								// 塗り判定に当たった時

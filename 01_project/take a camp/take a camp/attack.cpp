@@ -281,6 +281,38 @@ void CAttackBased::AttackSwitch(void)
 }
 
 //=============================================================================
+// 攻撃キャンセルスイッチ関数
+//=============================================================================
+void CAttackBased::CancelSwitch(void)
+{
+	//攻撃をしていなかったら
+	if (m_AttackState == ATTACK_STATE_CHARGE
+		|| m_AttackState== ATTACK_STATE_FINALATTACKWAITING)
+	{
+		//通常状態に移行
+		m_AttackState = ATTACK_STATE_NORMAL;
+		// チャージをしているプレイヤーの取得
+		CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
+		// 攻撃範囲のリセット
+		ResetAttackArea();
+		while (pColorTile != NULL)
+		{
+			//チャージをしているタイル取得
+			if (pColorTile->GetColorTileState() == CColorTile::COLOR_TILE_CHARGE
+				&&pColorTile->GetLasthitPlayerNum() == m_pPlayer->GetPlayerNumber())
+			{
+				//タイルステート
+				pColorTile->SetColorTileState(CColorTile::COLOR_TILE_NORMAL);
+				return;
+			}
+			// リストを進める
+			pColorTile = (CColorTile*)pColorTile->GetNext();
+		}
+
+	}
+}
+
+//=============================================================================
 // 必殺技スイッチ関数
 //=============================================================================
 void CAttackBased::AttackFinalSwitch(void)
