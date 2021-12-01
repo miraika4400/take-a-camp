@@ -78,6 +78,7 @@ public:
 
 	void		VisualizationAttackArea(int nAttackType = 0);	// 攻撃範囲の可視化
 	void        ResetAttackArea(void);							// 攻撃範囲ポリゴンのリセット
+	void        ReleaseAttakcArea(void);                        // 攻撃範囲のリリース
 private:
 	void		Charge(void);								    // 攻撃のチャージ処理
 

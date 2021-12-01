@@ -433,3 +433,22 @@ void CAttackBased::ResetAttackArea(void)
 		}
 	}
 }
+
+//=============================================================================
+// 攻撃範囲のリリース
+// Akuthor: 増澤 未来
+//=============================================================================
+void CAttackBased::ReleaseAttakcArea(void)
+{
+	//攻撃エリアの解放
+	for (int nCntArea = 0; nCntArea < MAX_ATTACK_AREA_NUM; nCntArea++)
+	{
+		if (m_apAttackArea[nCntArea] != NULL)
+		{
+			m_apAttackArea[nCntArea]->ReConnection();
+			m_apAttackArea[nCntArea]->Uninit();
+			delete m_apAttackArea[nCntArea];
+			m_apAttackArea[nCntArea] = NULL;
+		}
+	}
+}

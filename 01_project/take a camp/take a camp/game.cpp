@@ -28,6 +28,7 @@
 #include "color_tile.h"
 #include "kill_count.h"
 #include "paintnum.h"
+#include "player_model.h"
 
 //=============================
 // ƒ}ƒNƒ’è‹`

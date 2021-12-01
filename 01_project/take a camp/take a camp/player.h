@@ -13,7 +13,7 @@
 // インクルード
 //*****************************
 #include "main.h"
-#include "model_hierarchy.h"
+#include "player_model.h"
 #include "resource_character.h"
 
 //*****************************
@@ -31,7 +31,7 @@ class CSkillgauge;
 //*****************************
 
 // プレイヤークラス
-class CPlayer : public CModelHierarchy
+class CPlayer : public CPlayerModel
 {
 public:
 	// 列挙
@@ -65,14 +65,6 @@ public:
 		ITEM_STATE_REVERSE,		//操作逆転
 		ITEM_STATE_MAX
 	}ITEM_STATE;
-	//// キャラタイプ
-	//typedef enum
-	//{
-	//	CHARA_TYPE_FIGHTER = 0, // 戦士
-	//	CHARA_TYPE_LANCER,      // 槍使い
-	//	CHARA_TYPE_WIZARD,      // 魔法使い
-	//	CHARA_TYPE_MAX
-	//}CHARA_TYPE;
 
 	//メンバ関数
 	CPlayer();
@@ -113,8 +105,6 @@ public:
 	// 攻撃関係フラグ
 	void SetAttack(bool bAttack) { m_bAttack = bAttack; }				
 	void SetFinalAttack(bool bFinalAttack) { m_bFinalAttack = bFinalAttack; }	
-	// キャラクタータイプ
-	CResourceCharacter::CHARACTER_TYPE GetCharacterType(void) { return m_characterType; } 
 	// 攻撃ポインタ
 	CAttackBased * GetAttack(void) { return m_pAttack; }		
 	//プレイヤー
@@ -122,15 +112,13 @@ public:
 	// 必殺技ゲージポインタ
 	CSkillgauge *GetSkillgauge(void) { return m_pSkillgauge; }
 private:
+	void InitCharacterData(void); // キャラデータの初期化
 	void Move(void);			// 移動処理
 	void ControlMove(void);		// コントロール処理
 	void ManageRot(void);		// 向きの管理
 	void Respawn(void);			// リスポーン処理
 	void Invincible(void);		// 無敵処理
-	void ManageMotion(void);	// モーション管理
 	void ManageItemState(void); // アイテムステートの管理
-	void DrawModel(void);		// モデルの描画処理
-	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData);// シェーダに値を送る
 
 	// メンバ変数
 	static int m_anControllKey[MAX_PLAYER][KEY_MAX];
@@ -161,12 +149,7 @@ private:
 	CActRange *	 m_pActRange;	// 行動判定
 	D3DXVECTOR3  m_rotDest;		// 回転(目標の値)
 	D3DXVECTOR3  m_RespawnPos;	// リスポーン位置
-	CResourceCharacter::CHARACTER_TYPE m_characterType; // キャラタイプ
 	CSkillgauge * m_pSkillgauge;                        // 必殺技ゲージ
-
-	// モーション用変数
-	CMotion *m_apMotion[CResourceCharacter::MOTION_MAX];  // アニメーションポインタ
-
 };
 
 #endif

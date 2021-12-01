@@ -24,7 +24,7 @@
 //******************************
 CPlayerModel::CPlayerModel() :CModelHierarchy(OBJTYPE_BG)
 {
-	m_charaType = CResourceCharacter::CHARACTER_KNIGHT;
+	m_charaType = CResourceCharacter::CHARACTER_NONE;
 	memset(&m_apMotion, 0, sizeof(m_apMotion));	// アニメーションポインタ
 	m_RimColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
@@ -45,11 +45,10 @@ CPlayerModel * CPlayerModel::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CResourceC
 	CPlayerModel *pPlayerModel;
 	pPlayerModel = new CPlayerModel;
 
-	// initで使うから先に代入
-	pPlayerModel->m_charaType = charaType;
-
 	// 初期化
 	pPlayerModel->Init();
+	// initで使うから先に代入
+	pPlayerModel->SetCharacterType(charaType);
 
 	// 各値の代入・セット
 	pPlayerModel->SetPos(pos);
@@ -65,19 +64,7 @@ CPlayerModel * CPlayerModel::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CResourceC
 HRESULT CPlayerModel::Init(void)
 {
 	// キャラデータの取得
-	CResourceCharacter::CharacterData charaData = CResourceCharacter::GetResourceCharacter()->GetCharacterData(m_charaType);
-
-	if (FAILED(CModelHierarchy::Init(charaData.modelType)))
-	{
-		return E_FAIL;
-	}
-
-	for (int nCntAnim = 0; nCntAnim < CResourceCharacter::MOTION_MAX; nCntAnim++)
-	{
-		m_apMotion[nCntAnim] = CMotion::Create(GetPartsNum(), charaData.aMotionTextPath[nCntAnim].c_str(), GetModelData());
-	}
-
-	m_apMotion[CResourceCharacter::MOTION_IDLE]->SetActiveMotion(true);
+	SetCharacterType(m_charaType);
 
 	return S_OK;
 }
@@ -90,12 +77,71 @@ void CPlayerModel::Update(void)
 	ManageMotion();
 }
 
+//******************************
+// キャラタイプのセット
+//******************************
+void CPlayerModel::SetCharacterType(CResourceCharacter::CHARACTER_TYPE type)
+{
+	// キャラタイプの取得
+	if (m_charaType == type)
+	{
+		return;
+	}
+	// タイプの切り替え
+	m_charaType = type;
+	// キャラデータの取得
+	CResourceCharacter::CharacterData charaData = CResourceCharacter::GetResourceCharacter()->GetCharacterData(m_charaType);
+	// モデルの初期化
+	CModelHierarchy::Init(charaData.modelType);
+
+	for (int nCntAnim = 0; nCntAnim < CResourceCharacter::MOTION_MAX; nCntAnim++)
+	{
+		if (m_apMotion[nCntAnim] != NULL)
+		{// 既存のモーションの削除
+			m_apMotion[nCntAnim]->ReConnection();
+			m_apMotion[nCntAnim]->Uninit();
+			delete m_apMotion[nCntAnim];
+			m_apMotion[nCntAnim] = NULL;
+		}
+		// 新しいモーションの生成
+		m_apMotion[nCntAnim] = CMotion::Create(GetPartsNum(), charaData.aMotionTextPath[nCntAnim].c_str(), GetModelData());
+	}
+	// アイドルモーションの再生
+	m_apMotion[CResourceCharacter::MOTION_IDLE]->SetActiveMotion(true);
+}
 
 //******************************
 // モーション管理
 //******************************
 void CPlayerModel::ManageMotion(void)
 {
+	for (int nCntMotion = 0; nCntMotion < CResourceCharacter::MOTION_MAX; nCntMotion++)
+	{
+		if (m_apMotion[CResourceCharacter::MOTION_IDLE]->GetActiveMotion())
+		{
+			if (nCntMotion == CResourceCharacter::MOTION_IDLE)
+			{
+				continue;
+			}
+
+			if (m_apMotion[nCntMotion]->GetActiveMotion())
+			{
+				m_apMotion[CResourceCharacter::MOTION_IDLE]->SetActiveMotion(false);
+			}
+		}
+		else
+		{
+			if (nCntMotion == CResourceCharacter::MOTION_IDLE)
+			{
+				continue;
+			}
+			if (m_apMotion[nCntMotion]->GetActiveMotion())
+			{
+				break;
+			}
+			m_apMotion[CResourceCharacter::MOTION_IDLE]->SetActiveMotion(true);
+		}
+	}
 }
 
 //******************************

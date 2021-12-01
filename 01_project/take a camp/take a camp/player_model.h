@@ -24,7 +24,7 @@ class CMotion;
 //*****************************
 // マクロ定義
 //****************************
-#define RIM_POWER				(2.5f)			// リムライトの強さ
+#define RIM_POWER	(2.5f)			// リムライトの強さ
 
 //*****************************
 // クラス定義
@@ -45,9 +45,10 @@ public:
 
 	D3DXCOLOR GetRimColor(void) { return m_RimColor; }
 	void SetRimColor(D3DXCOLOR col) { m_RimColor = col; }
-	CResourceCharacter::CHARACTER_TYPE GetCharaType(void) { return m_charaType; }
-	void SetCharaType(CResourceCharacter::CHARACTER_TYPE type) { m_charaType = type; }
+	CResourceCharacter::CHARACTER_TYPE GetCharacterType(void) { return m_charaType; }
+	void SetCharacterType(CResourceCharacter::CHARACTER_TYPE type);
 
+	CMotion*GetMotion(int nIndex) { return m_apMotion[nIndex]; }
 private:
 	void ManageMotion(void);// モーション管理
 	void DrawModel(void);	                                                          // モデルの描画処理
@@ -56,7 +57,7 @@ private:
 	// モーション用変数
 	CResourceCharacter::CHARACTER_TYPE m_charaType;
 	CMotion *m_apMotion[CResourceCharacter::MOTION_MAX];  // アニメーションポインタ
-	D3DXCOLOR m_RimColor;
+	D3DXCOLOR m_RimColor; // リムから―
 };
 
 #endif

@@ -206,6 +206,9 @@ void CMotion::SetActiveMotion(bool bActive)
 	}
 }
 
+//******************************
+// ロード
+//******************************
 void CMotion::Load(const char * pPath)
 {
 	// ファイルオープン
