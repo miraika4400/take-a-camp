@@ -98,7 +98,7 @@ void CPlayerModel::SetCharacterType(CResourceCharacter::CHARACTER_TYPE type)
 	{
 		if (m_apMotion[nCntAnim] != NULL)
 		{// 既存のモーションの削除
-			m_apMotion[nCntAnim]->ReConnection();
+			m_apMotion[nCntAnim]->OutList();
 			m_apMotion[nCntAnim]->Uninit();
 			delete m_apMotion[nCntAnim];
 			m_apMotion[nCntAnim] = NULL;
@@ -245,7 +245,7 @@ void CPlayerModel::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model
 		D3DXVECTOR3 lightDir = CManager::GetLight()->GetDir();
 		pEffect->SetFloatArray("LightDirection", (float*)&D3DXVECTOR3(lightDir.x, -lightDir.y, -lightDir.z), 3);
 		// 視点位置
-		D3DXVECTOR3 eye = CManager::GetCamera()->GetPos();
+		D3DXVECTOR3 eye = CManager::GetCamera()->GetPosV();
 		pEffect->SetFloatArray("Eye", (float*)&D3DXVECTOR3(eye.x, eye.y, eye.z), 3);
 		// スペキュラの情報を送る
 		pEffect->SetFloatArray("SpecularColor", (float*)&D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 4);

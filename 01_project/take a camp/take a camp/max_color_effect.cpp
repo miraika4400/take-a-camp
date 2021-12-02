@@ -102,7 +102,7 @@ HRESULT CMaxColorEffect::Init(void)
 			m_apPolygon[nCntPolygon]->SetRot(D3DXVECTOR3(0.0f, D3DXToRadian(90.0f), 0.0f));
 		}
 		m_apPolygon[nCntPolygon]->SetColor(m_polygonColor);
-		m_apPolygon[nCntPolygon]->ReConnection();
+		m_apPolygon[nCntPolygon]->OutList();
 		m_apPolygon[nCntPolygon]->SetTextureUV(uv);
 		m_apPolygon[nCntPolygon]->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_MAX_COLOR_EFFECT));
 	}

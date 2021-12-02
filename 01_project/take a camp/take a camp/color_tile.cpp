@@ -124,7 +124,7 @@ CColorTile * CColorTile::GetHitColorTile(D3DXVECTOR3 pos)
 		{
 			if (pCollision != NULL)
 			{
-				pCollision->ReConnection();
+				pCollision->OutList();
 				pCollision->Uninit();
 				delete pCollision;
 				pCollision = NULL;
@@ -138,7 +138,7 @@ CColorTile * CColorTile::GetHitColorTile(D3DXVECTOR3 pos)
 
 	if (pCollision != NULL)
 	{
-		pCollision->ReConnection();
+		pCollision->OutList();
 		pCollision->Uninit();
 		delete pCollision;
 		pCollision = NULL;

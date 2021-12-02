@@ -16,6 +16,7 @@
 #include "kill_count.h"
 #include "scene2d.h"
 #include "resource_texture.h"
+#include "character_polygon.h"
 
 //**********************************
 //インクルード
@@ -24,7 +25,7 @@
 #define KILL_POS_Y		(600.0f)
 #define SCORE_SPACE		(SCREEN_WIDTH/4)
 #define TOTAL_BG_SIZE	(D3DXVECTOR3(320.0f,650.0f,0.0f))
-
+#define CHARACTER_POLYGON_POS_Y 320.0f
 //==================================
 // コンストラクタ
 //==================================
@@ -99,6 +100,11 @@ HRESULT CTotalScore::Init(void)
 			m_pBg->SetColor(pColor->GetIconColor(CCharaSelect::GetEntryData(nPlayer).nColorNum));
 			m_pBg->BindTexture(CResourceTexture::GetTexture(nTexture[(int)CCharaSelect::GetEntryData(nPlayer).charaType]));
 			m_pBg->SetPriority(OBJTYPE_BG);
+
+			// キャラポリゴンの生成
+			CCharacterPolygon*pCharaPolygon = CCharacterPolygon::Create(D3DXVECTOR3(fPosX, CHARACTER_POLYGON_POS_Y, 0.0f));
+			pCharaPolygon->SetCharaType(CCharaSelect::GetEntryData(nPlayer).charaType);
+			pCharaPolygon->SetRimColor(pColor->GetStepColor(CCharaSelect::GetEntryData(nPlayer).nColorNum, 1));
 
 			//キル用UI
 			m_pTileUI = CScene2d::Create();

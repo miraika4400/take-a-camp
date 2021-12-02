@@ -31,10 +31,10 @@ public:
 
 	static CScene2d *Create(void); // クラス生成
 
-	HRESULT Init(void);                                                            // 初期化
-	void Uninit(void);                                                             // 終了
-	void Update(void);                                                             // 更新
-	void Draw(void);                                                               // 描画
+	virtual HRESULT Init(void);                                                            // 初期化
+	virtual void Uninit(void);                                                             // 終了
+	virtual void Update(void);                                                             // 更新
+	virtual void Draw(void);                                                               // 描画
 	void BindTexture(const LPDIRECT3DTEXTURE9 pTexture) { m_pTexture = pTexture; } // テクスチャの割り当て
 	LPDIRECT3DTEXTURE9 GetTexture(void) { return m_pTexture; }                     // テクスチャの取得
 
