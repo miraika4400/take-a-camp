@@ -165,11 +165,13 @@
     <ClCompile Include="kill_count.cpp" />
     <ClCompile Include="max_color_effect.cpp" />
     <ClCompile Include="move_around_tile.cpp" />
+    <ClCompile Include="move_sideways_tile.cpp" />
     <ClCompile Include="move_tile.cpp" />
     <ClCompile Include="needle_tile.cpp" />
     <ClCompile Include="paintnum.cpp" />
     <ClCompile Include="paint_time.cpp" />
     <ClCompile Include="peint_collision.cpp" />
+    <ClCompile Include="player_model.cpp" />
     <ClCompile Include="resource_attack.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="billboard.cpp" />
@@ -190,7 +192,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="resource_character.cpp" />
-    <ClCompile Include="resource_final_attack.cpp" />
     <ClCompile Include="resource_map.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="model_hierarchy.cpp" />
@@ -243,12 +244,14 @@
     <ClInclude Include="item.h" />
     <ClInclude Include="kill_count.h" />
     <ClInclude Include="max_color_effect.h" />
+    <ClInclude Include="move_sideways_tile.h" />
     <ClInclude Include="move_tile.h" />
     <ClInclude Include="move_around_tile.h" />
     <ClInclude Include="needle_tile.h" />
     <ClInclude Include="paintnum.h" />
     <ClInclude Include="paint_time.h" />
     <ClInclude Include="peint_collision.h" />
+    <ClInclude Include="player_model.h" />
     <ClInclude Include="resource_attack.h" />
     <ClInclude Include="bg.h" />
     <ClInclude Include="billboard.h" />
@@ -261,7 +264,6 @@
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="resource_character.h" />
-    <ClInclude Include="resource_final_attack.h" />
     <ClInclude Include="resource_map.h" />
     <ClInclude Include="number_array.h" />
     <ClInclude Include="gauge.h" />

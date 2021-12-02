@@ -13,7 +13,7 @@
 // インクルード
 //*****************************
 #include "main.h"
-#include "model_hierarchy.h"
+#include "player_model.h"
 #include "resource_character.h"
 
 //*****************************
@@ -31,7 +31,7 @@ class CSkillgauge;
 //*****************************
 
 // プレイヤークラス
-class CPlayer : public CModelHierarchy
+class CPlayer : public CPlayerModel
 {
 public:
 	// 列挙
@@ -65,14 +65,6 @@ public:
 		ITEM_STATE_REVERSE,		//操作逆転
 		ITEM_STATE_MAX
 	}ITEM_STATE;
-	//// キャラタイプ
-	//typedef enum
-	//{
-	//	CHARA_TYPE_FIGHTER = 0, // 戦士
-	//	CHARA_TYPE_LANCER,      // 槍使い
-	//	CHARA_TYPE_WIZARD,      // 魔法使い
-	//	CHARA_TYPE_MAX
-	//}CHARA_TYPE;
 
 	//メンバ関数
 	CPlayer();
@@ -88,33 +80,45 @@ public:
 	void Attack(void);		// 攻撃処理
 	void AttackFinal(void); // 必殺技処理
 
-	int GetColorNumber(void) { return m_nColor; }				// カラー番号取得
-	CCollision * GetCollision(void) { return  m_pCollision; }	// 当たり判定取得
-	int GetPlayerNumber(void) { return m_nPlayerNumber; }		// プレイヤー番号取得
-	void SetState(PLAYER_STATE PlayerState) { m_PlayerState = PlayerState; }	// プレイヤー状態取得
-	PLAYER_STATE GetState(void) { return m_PlayerState; }						// プレイヤー状態セット
-	bool GetInvincible(void) { return m_bInvincible; }							// 無敵状態取得
+	//セッター・ゲッター
+	// カラー番号取得
+	int GetColorNumber(void) { return m_nColor; }		
+	// 当たり判定取得
+	CCollision * GetCollision(void) { return  m_pCollision; }	
+	// プレイヤー番号取得
+	int GetPlayerNumber(void) { return m_nPlayerNumber; }		
+	// プレイヤー状態
+	void SetState(PLAYER_STATE PlayerState) { m_PlayerState = PlayerState; }	
+	PLAYER_STATE GetState(void) { return m_PlayerState; }			
+	// 無敵状態取得
+	bool GetInvincible(void) { return m_bInvincible; }		
+	//向きと位置の移動量
 	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }					
 	D3DXVECTOR3 GetPosDest(void) { return m_Move; }
-	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }	// アイテム状態セット
-	ITEM_STATE GetItemState(void) { return m_ItemState; }					// アイテム状態取得
-	CKillCount * GetKillCount(void) { return m_pKillCount; }				// キルカウントポインタ取得
-	void SetAttack(bool bAttack) { m_bAttack = bAttack; }					// 攻撃フラグのセット
-	void SetFinalAttack(bool bFinalAttack) { m_bFinalAttack = bFinalAttack; }	// 必殺技フラグのセット
-	CResourceCharacter::CHARACTER_TYPE GetCharacterType(void) { return m_characterType; } // キャラクタータイプの取得
-	CAttackBased * GetAttack(void) { return m_pAttack; }                      // 必殺技ポインタの取得
+	// アイテム状態
+	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }	
+	ITEM_STATE GetItemState(void) { return m_ItemState; }		
+	// キルカウントポインタ
+	CKillCount * GetKillCount(void) { return m_pKillCount; }
+	// 移動フラグ
+	bool GetMoveFlag(void) { return m_bMove; }
+	// 攻撃関係フラグ
+	void SetAttack(bool bAttack) { m_bAttack = bAttack; }				
+	void SetFinalAttack(bool bFinalAttack) { m_bFinalAttack = bFinalAttack; }	
+	// 攻撃ポインタ
+	CAttackBased * GetAttack(void) { return m_pAttack; }		
+	//プレイヤー
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
-	CSkillgauge *GetSkillgauge(void) { return m_pSkillgauge; }                            // 必殺技ゲージポインタの取得
+	// 必殺技ゲージポインタ
+	CSkillgauge *GetSkillgauge(void) { return m_pSkillgauge; }
 private:
-	void Move(void);		// 移動処理
-	void ControlMove(void);	// コントロール処理
-	void ManageRot(void);   // 向きの管理
-	void Respawn(void);		// リスポーン処理
-	void Invincible(void);	// 無敵処理
-	void ManageMotion(void);// モーション管理
+	void InitCharacterData(void); // キャラデータの初期化
+	void Move(void);			// 移動処理
+	void ControlMove(void);		// コントロール処理
+	void ManageRot(void);		// 向きの管理
+	void Respawn(void);			// リスポーン処理
+	void Invincible(void);		// 無敵処理
 	void ManageItemState(void); // アイテムステートの管理
-	void DrawModel(void);	// モデルの描画処理
-	void SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pModelData);// シェーダに値を送る
 
 	// メンバ変数
 	static int m_anControllKey[MAX_PLAYER][KEY_MAX];
@@ -137,20 +141,15 @@ private:
 	int m_nInvincibleCount;		// 無敵時間のカウント
 	D3DXVECTOR3	 m_Move;		// 移動量
 	int			 m_MoveCount;	// 移動時のカウント
-	int          m_nMoveFrameData;   // 移動時フレーム数
-	int          m_nMoveFrameDataDash; // 移動時のフレーム数*ダッシュ時
+	int          m_nMoveFrameData;		// 移動時フレーム数
+	int          m_nMoveFrameDataDash;	// 移動時のフレーム数*ダッシュ時
 	int			m_ReverseCount;	// 操作反転カウント
 	D3DXCOLOR	 m_color;		// 色
 	CCollision * m_pCollision;	// 当たり判定
 	CActRange *	 m_pActRange;	// 行動判定
 	D3DXVECTOR3  m_rotDest;		// 回転(目標の値)
 	D3DXVECTOR3  m_RespawnPos;	// リスポーン位置
-	CResourceCharacter::CHARACTER_TYPE m_characterType; // キャラタイプ
 	CSkillgauge * m_pSkillgauge;                        // 必殺技ゲージ
-
-	// モーション用変数
-	CMotion *m_apMotion[CResourceCharacter::MOTION_MAX];  // アニメーションポインタ
-
 };
 
 #endif

@@ -38,29 +38,6 @@ CMoveTile::~CMoveTile()
 {
 }
 
-////******************************
-//// クラス生成
-////******************************
-//void CMoveTile::Create(D3DXVECTOR3 pos, D3DXCOLOR col)
-//{
-//	// メモリの確保
-//	CMoveTile *pTile;
-//	pTile = new CMoveTile;
-//	
-//	//NULLチェック
-//	if (pTile != NULL)
-//	{
-//		// 初期化
-//		pTile->Init();
-//
-//		// 各値の代入・セット
-//		pTile->m_Move = D3DXVECTOR3(0.0f, 0.0f, -20.0f) + pos;
-//		pTile->SetPos(pos);
-//		pTile->SetPriority(OBJTYPE_TILE); // オブジェクトタイプ
-//
-//	}
-//}
-
 //******************************
 // 初期化関数
 //******************************
@@ -73,6 +50,7 @@ HRESULT CMoveTile::Init(void)
 	SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
 	//移動方向の判定
 	HitTile();
+	m_MoveState = MOVE_STATE_NORMAL;
 
 	return S_OK;
 }
@@ -89,12 +67,13 @@ void CMoveTile::Update(void)
 		
 		break;
 	case MOVE_STATE_MOVE:
-
 		//移動処理
 		Move();
 		//当たり判定
 		HitTile();
-		
+		break;
+	case MOVE_STATE_STOP:
+
 		break;
 	default:
 		
@@ -107,28 +86,48 @@ void CMoveTile::Update(void)
 //******************************
 void CMoveTile::HitPlayerAction(CPlayer * pPlayer)
 {
-	//通常状態の時
-	if (m_MoveState == MOVE_STATE_NORMAL)
+	//タイルの状態が停止じゃなければ
+	if (m_MoveState != MOVE_STATE_STOP)
+	{
+		//通常状態の時
+		if (m_MoveState == MOVE_STATE_NORMAL)
+		{
+			//タイルのステートを変化
+			m_MoveState = MOVE_STATE_MOVE;
+		}
+
+		if (pPlayer->GetState() != CPlayer::PLAYER_STATE_STOP
+			&&pPlayer->GetState() != CPlayer::PLAYER_STATE_DEATH)
+		{
+			//プレイヤーが動いてないときにステートを停止状態に変更
+			if (pPlayer->GetMoveFlag())pPlayer->SetState(CPlayer::PLAYER_STATE_STOP);
+		}
+		else if (pPlayer->GetState() == CPlayer::PLAYER_STATE_STOP)
+		{
+			//現在位置
+			D3DXVECTOR3 pos = GetPos();
+			//プレイヤーを移動させる処理
+			pPlayer->SetPos(D3DXVECTOR3(pos.x, pPlayer->GetPos().y, pos.z));
+		}
+	}
+	//停止状態の場合
+	else
+	{
+		//プレイヤーのステートを停止状態に変更
+		pPlayer->SetState(CPlayer::PLAYER_STATE_NORMAL);
+	}
+}
+
+//******************************
+// プレイヤーが降りた処理
+//******************************
+void CMoveTile::HitPlayerActionRelease(void)
+{
+	if (m_MoveState == MOVE_STATE_STOP)
 	{
 		//タイルのステートを変化
-		m_MoveState = MOVE_STATE_MOVE;
+		m_MoveState = MOVE_STATE_NORMAL;
 	}
-
-	//プレイヤーの動きを止める
-	if (pPlayer->GetState() != CPlayer::PLAYER_STATE_STOP
-		&&pPlayer->GetState() != CPlayer::PLAYER_STATE_DEATH)
-	{
-		pPlayer->SetState(CPlayer::PLAYER_STATE_STOP);
-	}
-
-
-	//現在位置
-	D3DXVECTOR3 pos = GetPos();
-
-
-	//プレイヤーを移動させる処理
-	pPlayer->SetPos(D3DXVECTOR3(pos.x, pPlayer->GetPos().y, pos.z));
-
 }
 
 //******************************
@@ -177,7 +176,7 @@ void CMoveTile::HitTile(void)
 		// 反転しているか
 		MoveRot(m_bReversal);
 		//ステートを通常状態に変更
-		m_MoveState = MOVE_STATE_NORMAL;
+		m_MoveState = MOVE_STATE_STOP;
 	}
 }
 

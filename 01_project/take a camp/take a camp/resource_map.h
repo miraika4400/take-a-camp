@@ -45,9 +45,10 @@ public:
 		BLOCK_TYPE_2P_START,	// 2Pスタート位置
 		BLOCK_TYPE_3P_START,	// 3Pスタート位置
 		BLOCK_TYPE_4P_START,	// 4Pスタート位置
-		BLOCK_TYPE_BLOCK,		// 仮置きブロック
+		BLOCK_TYPE_BLOCK,		// ノーマルブロック
 		BLOCK_TYPE_NEEDLE_BLOCK,// とげブロック
-		BLOCK_TYPE_MOVE_BLOCK,	// 移動ブロック
+		BLOCK_TYPE_AROUND_MOVE_BLOCK,	// 前後移動ブロック
+		BLOCK_TYPE_SIDEWAYS_MOVE_BLOCK, // 横移動ブロック
 	}BLOCK_TYPE;
 
 	typedef enum	//マップの種類

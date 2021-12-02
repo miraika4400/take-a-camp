@@ -30,7 +30,7 @@ class CCollision;
 //*****************************
 
 // パーティクルクラス
-class CMotion :CScene
+class CMotion : public CScene
 {
 public:
 

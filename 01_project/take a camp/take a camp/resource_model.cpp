@@ -33,8 +33,7 @@ const std::string CResourceModel::m_aModelPath[CResourceModel::MODEL_MAX]
 	"data/Models/needle.x",	// とげ
 	"data/Models/00_speedup.x",	// ダッシュ
 	"data/Models/00_hatena.x",	// 反転
-	"data/Models/stage/00_frontwall.x",	// 壁*正面
-	"data/Models/stage/01_sidewall.x",	// 壁*サイド
+	"data/Models/stage/desk.x",	// 机
 };
 
 //===================================
