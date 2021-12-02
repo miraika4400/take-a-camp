@@ -360,6 +360,9 @@
     <ClCompile Include="paintnum.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
+    <ClCompile Include="game_start.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -594,6 +597,9 @@
       <Filter>ヘッダー ファイル\08_Map\Tile\Move</Filter>
     </ClInclude>
     <ClInclude Include="paintnum.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="game_start.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
   </ItemGroup>

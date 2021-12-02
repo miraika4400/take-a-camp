@@ -160,6 +160,7 @@
     <ClCompile Include="chara_select.cpp" />
     <ClCompile Include="chara_select_ui.cpp" />
     <ClCompile Include="button_title.cpp" />
+    <ClCompile Include="game_start.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="kill_count.cpp" />
     <ClCompile Include="max_color_effect.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="button.h" />
     <ClInclude Include="button_title.h" />
     <ClInclude Include="color_tile.h" />
+    <ClInclude Include="game_start.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="kill_count.h" />
     <ClInclude Include="max_color_effect.h" />
