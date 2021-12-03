@@ -39,6 +39,9 @@ CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 	ZeroMemory(&m_apAttackArea, sizeof(m_apAttackArea));
 	ZeroMemory(&m_anChargeValue, sizeof(m_anChargeValue));
 	m_bAttack = false;	// 必殺フラグ
+	m_nAttackCount = 0;
+	m_nType = 0;
+
 }
 
 //=============================================================================
@@ -46,6 +49,26 @@ CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 //=============================================================================
 CAttackBased::~CAttackBased()
 {
+}
+
+//=============================================================================
+// 生成処理
+//=============================================================================
+CAttackBased * CAttackBased::Create(CPlayer * pPlayer, CResourceCharacter::CHARACTER_TYPE Type)
+{
+	//メモリ確保
+	CAttackBased* pAttack = NULL;
+	pAttack = new CAttackBased;
+
+	if (pAttack != NULL)
+	{
+		pAttack->SetPlayer(pPlayer);		//プレイヤークラス取得
+		pAttack->SetRot(pPlayer->GetRot());	//向き設定
+		pAttack->SetPos(pPlayer->GetPos());	//位置設定
+		pAttack->SetAttackType(Type);	//タイプセット
+		pAttack->Init();					//初期化処理
+	}
+	return pAttack;
 }
 
 //=============================================================================
@@ -343,6 +366,48 @@ void CAttackBased::SetAttackSquare(CAttackManager::ATTACK_SQUARE_DATA AttackSqua
 CAttackManager::ATTACK_SQUARE_DATA CAttackBased::GetAttackSquare()
 {
 	return m_AttackSquare[m_nLevel];
+}
+//=============================================================================
+// 攻撃生成処理
+//=============================================================================
+void CAttackBased::AttackCreate(void)
+{
+	//攻撃フラグが立っているか
+	if (GetState() == ATTACK_STATE_ATTACK
+		|| GetState() == ATTACK_STATE_FINALATTACK)
+	{
+		//カウントアップ
+		m_nAttackCount++;
+
+		// 攻撃範囲の可視化
+		VisualizationAttackArea(m_nType);
+
+		//カウントが一定になったら
+		if (m_nAttackCount >= GetAttackSquare().nAttackFrame[m_nType])
+		{
+			//攻撃処理
+			Attack(m_nType);
+			//タイプが一定になったら
+			if (m_nType == MAX_HIT_TYPE)
+			{
+				//フラグの初期化
+				SetState(ATTACK_STATE_NORMAL);
+				//タイプ初期化
+				m_nType = 0;
+				//レベルの初期化
+				CAttackBased::SetLevel(0);
+			}
+			else
+			{
+				//次の攻撃タイプへ
+				m_nType++;
+			}
+			//カウント初期化
+			m_nAttackCount = 0;
+
+		}
+	}
+
 }
 
 //=============================================================================

@@ -44,8 +44,8 @@ CTile::CTile() :CModel(OBJTYPE_TILE)
 {                       
 	m_color = TILE_DEFAULT_COLOR;
 	m_pCollison = NULL;
-	m_fDistPosY = TILE_POS_Y;        // 座標Yの目標値
-	m_fDistPosYRate = POS_Y_RATE_BASE;    // 座標Yの変更時の係数
+	m_fDistPosY = TILE_POS_Y;			// 座標Yの目標値
+	m_fDistPosYRate = POS_Y_RATE_BASE;	// 座標Yの変更時の係数
 	m_bHitOld = false;
 	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
 	m_bHitBullet = false;        // 弾が当たっているフラグ
@@ -320,10 +320,12 @@ bool CTile::CollisionPlayer(void)
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
+	
 	if (m_bHitOld)
 	{
 		HitPlayerActionRelease();
 	}
+
 	// ヒットフラグの保存*当たってない
 	m_bHitOld = false;
 	return false;

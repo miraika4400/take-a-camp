@@ -23,7 +23,6 @@ public:
 	CAttackKnight();
 	~CAttackKnight();
 	static CAttackKnight *Create(CPlayer* pPlayer);
-	HRESULT Init(void);
 
 private:
 	void	AttackCreate(void);	//UŒ‚¶¬ˆ—

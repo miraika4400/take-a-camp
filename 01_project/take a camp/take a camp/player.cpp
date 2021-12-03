@@ -197,7 +197,8 @@ HRESULT CPlayer::Init(void)
 
 	//// プレイヤーの頭上に出すスコア生成
 	//CNumberArray::Create(0, GetPos(), D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(m_nColor), m_nColor);
-
+	
+	//向きの移動量
 	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);
 
 	// アイテムステート
@@ -227,7 +228,7 @@ void CPlayer::InitCharacterData(void)
 		m_pAttack = NULL;
 	}
 	//攻撃用クラス生成(今後職業ごとにcreateする攻撃処理を変える)
-	m_pAttack = CAttackKnight::Create(this);
+	m_pAttack = CAttackBased::Create(this, CResourceCharacter::CHARACTER_KNIGHT);
 }
 
 //******************************
