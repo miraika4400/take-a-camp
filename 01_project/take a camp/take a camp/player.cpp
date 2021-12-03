@@ -35,6 +35,7 @@
 #include "skill_gauge.h"
 #include "base_Cylinder.h"
 #include "skill_circle.h"
+#include "skill_effect.h"
 
 //*****************************
 // マクロ定義
@@ -535,8 +536,8 @@ void CPlayer::Attack(void)
 	// 当たっているタイルの取得
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 	
-	//触れているタイルの識別(NULLチェック,カラーの確認)＆攻撃の状況が攻撃中になっていないか	if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor 
-		&& m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL)
+	//触れているタイルの識別(NULLチェック,カラーの確認)＆攻撃の状況が攻撃中になっていないか	
+	if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor && m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL)
 	{
 		// 攻撃ボタンを押したら
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
@@ -570,8 +571,10 @@ void CPlayer::Attack(void)
 		{
 			//攻撃フラグを立てる
 			m_bAttack = true;
-			CSkill_circle::Create(GetPos() + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel),CSkill_circle::EFFECTTYPE_SKIIL);
-			CSkill_circle::Create(GetPos() + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE + D3DXVECTOR3(3.0f,0.0f, 3.0f), GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel - 1 ), CSkill_circle::EFFECTTYPE_SKIILMINI);
+			CSkill_effect::Create(GetPos() + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel), 
+																				  GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel - 1), 
+																				  GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel + 1),CSkill_effect::SKILLTYPE_KNIGHT);
+
 		}
 		//攻撃キャンセル
 		else if(m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, pJoypad->BUTTON_TRIGGER, m_nControllNum))

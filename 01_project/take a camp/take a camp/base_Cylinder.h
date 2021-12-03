@@ -38,10 +38,11 @@ public:
 	// static
 	static Cbase_Cylinder *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size ,const D3DXCOLOR col); // クラス生成
 
-	 HRESULT Init(void); // 初期化
-	 void Uninit(void);  // 終了
-	 void Update(void);  // 更新
-	 void Draw(void);    // 描画
+	virtual HRESULT Init(void); // 初期化
+	virtual void Uninit(void);  // 終了
+	virtual void Update(void);  // 更新
+	virtual void Draw(void);    // 描画
+
 	 LPDIRECT3DTEXTURE9 GetTexture(void) { return m_apTexture; }
 	 void BindTexture(const LPDIRECT3DTEXTURE9 pTexture) { m_apTexture = pTexture; }
 
