@@ -71,7 +71,7 @@ void CNeedleTile::Create(D3DXVECTOR3 pos , D3DXCOLOR col )
 	pTile->m_pHole = CScene3d::Create(pTile->GetPos(), D3DXVECTOR3(TILE_ONE_SIDE-1, 0.0f, TILE_ONE_SIDE-1));
 	pTile->m_pHole->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_NEEDLE));
 	pTile->m_pHole->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
-	pTile->m_pHole->SetPriority(OBJTYPE_UI);
+	pTile->m_pHole->SetPriority(OBJTYPE_MAP);
 
 }
 

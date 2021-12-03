@@ -10,11 +10,7 @@
 //******************************
 #include "camera_tps.h"
 #include "manager.h"
-#include "renderer.h"
-#include "keyboard.h"
-#include "game.h"
 #include "mouse.h"
-#include "joypad.h"
 
 //******************************
 // マクロ定義
@@ -68,10 +64,14 @@ HRESULT CTpsCamera::Init(void)
 	m_fTheta = D3DXToRadian(90);  // 角度シータ
 	m_fPhi = CAMERA_THETA_BASE;   // 角度ファイ
 	
+	D3DXVECTOR3 pos = GetPosV();
+	D3DXVECTOR3 posR = GetPosR();
 	// 球面座標の設定
-	m_posV.x = m_posR.x + (m_fRad)* sinf(m_fPhi)*cosf(m_fTheta);
-	m_posV.y = m_posR.y + (m_fRad)* cosf(m_fPhi);
-	m_posV.z = m_posR.z + (m_fRad)* sinf(m_fPhi)*sinf(m_fTheta);
+	pos.x = posR.x + (m_fRad)* sinf(m_fPhi)*cosf(m_fTheta);
+	pos.y = posR.y + (m_fRad)* cosf(m_fPhi);
+	pos.z = posR.z + (m_fRad)* sinf(m_fPhi)*sinf(m_fTheta);
+
+	SetPosV(pos);
 	return S_OK;
 }
 
@@ -82,9 +82,13 @@ void CTpsCamera::Update(void)
 {
 	m_fTheta -= CManager::GetMouse()->GetMouseMove().x;
 	m_fPhi -= CManager::GetMouse()->GetMouseMove().y;
-	
+
+	D3DXVECTOR3 pos = GetPosV();
+	D3DXVECTOR3 posR = GetPosR();
 	// 球面座標の設定
-	m_posV.x = m_posR.x + (m_fRad)* sinf(m_fPhi)*cosf(m_fTheta);
-	m_posV.y = m_posR.y + (m_fRad)* cosf(m_fPhi);
-	m_posV.z = m_posR.z + (m_fRad)* sinf(m_fPhi)*sinf(m_fTheta);
+	pos.x = posR.x + (m_fRad)* sinf(m_fPhi)*cosf(m_fTheta);
+	pos.y = posR.y + (m_fRad)* cosf(m_fPhi);
+	pos.z = posR.z + (m_fRad)* sinf(m_fPhi)*sinf(m_fTheta);
+
+	SetPosV(pos);
 }
