@@ -52,7 +52,6 @@
 #define ROT_FACING_02			(360)							// 回転向き
 #define RIM_POWER				(2.5f)							// リムライトの強さ
 #define DASH_FRAME				(300)							// ダッシュ時有効フレーム数
-#define STICK_DECISION_RANGE	(32768.0f / 1.001f)				// スティックの上下左右の判定する範囲
 
 //*****************************
 // 静的メンバ変数宣言
@@ -221,14 +220,14 @@ void CPlayer::InitCharacterData(void)
 	// 既存の攻撃の破棄
 	if (m_pAttack != NULL)
 	{
-		m_pAttack->ReConnection();
+		m_pAttack->OutList();
 		m_pAttack->ReleaseAttakcArea();
 		m_pAttack->Uninit();
 		delete m_pAttack;
 		m_pAttack = NULL;
 	}
 	//攻撃用クラス生成(今後職業ごとにcreateする攻撃処理を変える)
-	m_pAttack = CAttackBased::Create(this, CResourceCharacter::CHARACTER_KNIGHT);
+	m_pAttack = CAttackBased::Create(this, CCharaSelect::GetEntryData(m_nPlayerNumber).charaType);
 }
 
 //******************************
@@ -239,7 +238,7 @@ void CPlayer::Uninit(void)
 	//当たり判定の終了処理
 	if (m_pCollision != NULL)
 	{
-		m_pCollision->ReConnection();
+		m_pCollision->OutList();
 		m_pCollision->Uninit();
 		delete m_pCollision;
 		m_pCollision = NULL;
@@ -349,20 +348,6 @@ void CPlayer::Update(void)
 		{
 			m_pAttack->AttackSwitch();
 		}
-
-		if (pKey->GetKeyTrigger(DIK_0))
-		{
-			if (GetCharacterType() == CResourceCharacter::CHARACTER_KNIGHT)
-			{
-				SetCharacterType(CResourceCharacter::CHARACTER_WIZARD);
-			}
-			else
-			{
-				SetCharacterType(CResourceCharacter::CHARACTER_KNIGHT);
-			}
-			
-			InitCharacterData();
-		}
 	}
 #endif // _DEBUG
 
@@ -402,7 +387,7 @@ void CPlayer::Death(void)
 		//当たり判定を消す
 		if (m_pCollision != NULL)
 		{
-			m_pCollision->ReConnection();
+			m_pCollision->OutList();
 			m_pCollision->Uninit();
 			delete m_pCollision;
 			m_pCollision = NULL;

@@ -203,7 +203,7 @@ void CNumberArray::SetNumber(void)
 		if (m_apNumber[nIndex] == NULL)
 		{
 			m_apNumber[nIndex] = CBillboard::Create(D3DXVECTOR3(m_pos.x + fKerning, m_pos.y, m_pos.z), m_size);
-			m_apNumber[nIndex]->ReConnection();
+			m_apNumber[nIndex]->OutList();
 			m_apNumber[nIndex]->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_NUMBER));
 		}
 

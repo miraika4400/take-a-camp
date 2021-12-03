@@ -512,7 +512,7 @@ void CAttackBased::ReleaseAttakcArea(void)
 	{
 		if (m_apAttackArea[nCntArea] != NULL)
 		{
-			m_apAttackArea[nCntArea]->ReConnection();
+			m_apAttackArea[nCntArea]->OutList();
 			m_apAttackArea[nCntArea]->Uninit();
 			delete m_apAttackArea[nCntArea];
 			m_apAttackArea[nCntArea] = NULL;

@@ -90,7 +90,7 @@ CTile * CTile::GetHitTile(D3DXVECTOR3 pos)
 		{
 			if (pCollision != NULL)
 			{
-				pCollision->ReConnection();
+				pCollision->OutList();
 				pCollision->Uninit();
 				delete pCollision;
 				pCollision = NULL;
@@ -102,7 +102,7 @@ CTile * CTile::GetHitTile(D3DXVECTOR3 pos)
 
 	if (pCollision != NULL)
 	{
-		pCollision->ReConnection();
+		pCollision->OutList();
 		pCollision->Uninit();
 		delete pCollision;
 		pCollision = NULL;
@@ -290,7 +290,7 @@ void CTile::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pMod
 		pEffect->SetFloatArray("LightDirection", (float*)&D3DXVECTOR3(lightDir.x, lightDir.y, lightDir.z), 3);
 
 		// 視点位置
-		D3DXVECTOR3 eye = CManager::GetCamera()->GetPos();
+		D3DXVECTOR3 eye = CManager::GetCamera()->GetPosV();
 		pEffect->SetFloatArray("Eye", (float*)&D3DXVECTOR3(eye.x, eye.y, eye.z), 3);
 
 		// スペキュラの情報を送る
