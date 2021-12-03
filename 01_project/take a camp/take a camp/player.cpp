@@ -303,12 +303,17 @@ void CPlayer::Update(void)
 
 		break;
 	case PLAYER_STATE_STOP:
+		//UŒ‚‚ðƒ`ƒƒ[ƒW‚ð‚µ‚Ä‚¢‚éÛ‚É
+		if (m_pAttack->GetState()== CAttackBased::ATTACK_STATE_CHARGE
+			|| m_pAttack->GetState() == CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
+		{
+			//UŒ‚ƒLƒƒƒ“ƒZƒ‹
+			m_pAttack->CancelSwitch();
+		}
 		break;
 	case PLAYER_STATE_DEATH:	//Ž€–Só‘Ô
 		//ƒŠƒXƒ|[ƒ“ˆ—
 		Respawn();
-		// UŒ‚”ÍˆÍ‚ðÁ‚·
-		m_pAttack->ResetAttackArea();
 		break;
 	}
 
