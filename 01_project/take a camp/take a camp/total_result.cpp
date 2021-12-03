@@ -16,6 +16,7 @@
 #include "mouse.h"
 #include "fade.h"
 #include "scene2d.h"
+#include "camera_charaselect.h"
 
 //**********************************
 // マクロ定義
@@ -72,6 +73,9 @@ HRESULT CTotalResult::Init(void)
 	m_pBg->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.6f));
 	m_pBg->SetPriority(OBJTYPE_BG);
 
+	// カメラ生成
+	CManager::SetCamera(CCharaSelectCamera::Create());
+
 	//スコア生成
 	CTotalScore::Create();
 	return S_OK;
@@ -82,6 +86,14 @@ HRESULT CTotalResult::Init(void)
 //=============================
 void CTotalResult::Uninit(void)
 {
+	// カメラクラスの解放処理
+	CCamera * pCamera = CManager::GetCamera();
+	if (pCamera != NULL)
+	{
+		CManager::SetCamera(NULL);
+		pCamera = NULL;
+	}
+
 	// 開放処理
 	Release();
 }
@@ -92,6 +104,13 @@ void CTotalResult::Uninit(void)
 //=============================
 void CTotalResult::Update(void)
 {
+	// カメラクラス更新処理
+	CCamera * pCamera = CManager::GetCamera();
+	if (pCamera != NULL)
+	{
+		pCamera->Update();
+	}
+
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) ||
 		CManager::GetMouse()->GetMouseTrigger(0) /*||
 												 CManager::GetJoypad()->GetJoystickTrigger(3, 0) ||
@@ -108,6 +127,11 @@ void CTotalResult::Update(void)
 //=============================
 void CTotalResult::Draw(void)
 {
-
+	// カメラクラス更新処理
+	CCamera * pCamera = CManager::GetCamera();
+	if (pCamera != NULL)
+	{
+		pCamera->SetCamera();
+	}
 }
 

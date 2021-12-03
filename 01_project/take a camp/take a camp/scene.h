@@ -81,7 +81,7 @@ public:
 	virtual void Update(void) = 0;  // 更新
 	virtual void Draw(void) = 0;    // 描画
 
-	void ReConnection(void); // リスト構造から自身を消してつなぎなおす
+	void OutList(void); // リスト構造から自身を消してつなぎなおす
 protected:
 	void Release(void);      // 解放処理
 private:

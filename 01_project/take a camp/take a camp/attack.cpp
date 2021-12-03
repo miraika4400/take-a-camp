@@ -39,6 +39,9 @@ CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 	ZeroMemory(&m_apAttackArea, sizeof(m_apAttackArea));
 	ZeroMemory(&m_anChargeValue, sizeof(m_anChargeValue));
 	m_bAttack = false;	// 必殺フラグ
+	m_nAttackCount = 0;
+	m_nType = 0;
+
 }
 
 //=============================================================================
@@ -46,6 +49,26 @@ CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 //=============================================================================
 CAttackBased::~CAttackBased()
 {
+}
+
+//=============================================================================
+// 生成処理
+//=============================================================================
+CAttackBased * CAttackBased::Create(CPlayer * pPlayer, CResourceCharacter::CHARACTER_TYPE Type)
+{
+	//メモリ確保
+	CAttackBased* pAttack = NULL;
+	pAttack = new CAttackBased;
+
+	if (pAttack != NULL)
+	{
+		pAttack->SetPlayer(pPlayer);		//プレイヤークラス取得
+		pAttack->SetRot(pPlayer->GetRot());	//向き設定
+		pAttack->SetPos(pPlayer->GetPos());	//位置設定
+		pAttack->SetAttackType(Type);	//タイプセット
+		pAttack->Init();					//初期化処理
+	}
+	return pAttack;
 }
 
 //=============================================================================
@@ -100,9 +123,9 @@ void CAttackBased::Update(void)
 		{
 			m_nLevel = 0;
 			m_nChargeCount = 0;
-
 		}
-		
+		//攻撃範囲のリセット
+		ResetAttackArea();
 		//プレイヤーが死んでいるとき
 		if (m_pPlayer->GetState() == CPlayer::PLAYER_STATE_DEATH)
 		{
@@ -127,7 +150,8 @@ void CAttackBased::Update(void)
 	break;
 
 	
-	case ATTACK_STATE_CHARGE:		//チャージ状態					
+	case ATTACK_STATE_CHARGE:		//チャージ状態	
+		VisualizationAttackArea();
 		Charge();					// チャージ処理
 		break;
 
@@ -135,7 +159,8 @@ void CAttackBased::Update(void)
 		AttackCreate();				// 攻撃生成処理
 		break;
 
-	case ATTACK_STATE_FINALATTACKWAITING:	// 必殺技待機状態			
+	case ATTACK_STATE_FINALATTACKWAITING:	// 必殺技待機状態	
+		VisualizationAttackArea();
 		m_nLevel = LEVEL_MAX - 1;		// レベルを最大値にする
 		break;
 
@@ -289,26 +314,29 @@ void CAttackBased::CancelSwitch(void)
 	if (m_AttackState == ATTACK_STATE_CHARGE
 		|| m_AttackState== ATTACK_STATE_FINALATTACKWAITING)
 	{
-		//通常状態に移行
-		m_AttackState = ATTACK_STATE_NORMAL;
-		// チャージをしているプレイヤーの取得
-		CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
-		// 攻撃範囲のリセット
-		ResetAttackArea();
-		while (pColorTile != NULL)
+		if (m_AttackState == ATTACK_STATE_CHARGE)
 		{
-			//チャージをしているタイル取得
-			if (pColorTile->GetColorTileState() == CColorTile::COLOR_TILE_CHARGE
-				&&pColorTile->GetLasthitPlayerNum() == m_pPlayer->GetPlayerNumber())
+			// チャージをしているプレイヤーの取得
+			CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
+			// 攻撃範囲のリセット
+			ResetAttackArea();
+			while (pColorTile != NULL)
 			{
-				//タイルステート
-				pColorTile->SetColorTileState(CColorTile::COLOR_TILE_NORMAL);
-				return;
+				//チャージをしているタイル取得
+				if (pColorTile->GetColorTileState() == CColorTile::COLOR_TILE_CHARGE
+					&&pColorTile->GetLasthitPlayerNum() == m_pPlayer->GetPlayerNumber())
+				{
+					//タイルステート
+					pColorTile->SetColorTileState(CColorTile::COLOR_TILE_NORMAL);
+					return;
+				}
+				// リストを進める
+				pColorTile = (CColorTile*)pColorTile->GetNext();
 			}
-			// リストを進める
-			pColorTile = (CColorTile*)pColorTile->GetNext();
 		}
 
+		//通常状態に移行
+		m_AttackState = ATTACK_STATE_NORMAL;
 	}
 }
 
@@ -343,6 +371,48 @@ void CAttackBased::SetAttackSquare(CAttackManager::ATTACK_SQUARE_DATA AttackSqua
 CAttackManager::ATTACK_SQUARE_DATA CAttackBased::GetAttackSquare()
 {
 	return m_AttackSquare[m_nLevel];
+}
+//=============================================================================
+// 攻撃生成処理
+//=============================================================================
+void CAttackBased::AttackCreate(void)
+{
+	//攻撃フラグが立っているか
+	if (GetState() == ATTACK_STATE_ATTACK
+		|| GetState() == ATTACK_STATE_FINALATTACK)
+	{
+		//カウントアップ
+		m_nAttackCount++;
+
+		// 攻撃範囲の可視化
+		VisualizationAttackArea(m_nType);
+
+		//カウントが一定になったら
+		if (m_nAttackCount >= GetAttackSquare().nAttackFrame[m_nType])
+		{
+			//攻撃処理
+			Attack(m_nType);
+			//タイプが一定になったら
+			if (m_nType == MAX_HIT_TYPE)
+			{
+				//フラグの初期化
+				SetState(ATTACK_STATE_NORMAL);
+				//タイプ初期化
+				m_nType = 0;
+				//レベルの初期化
+				CAttackBased::SetLevel(0);
+			}
+			else
+			{
+				//次の攻撃タイプへ
+				m_nType++;
+			}
+			//カウント初期化
+			m_nAttackCount = 0;
+
+		}
+	}
+
 }
 
 //=============================================================================
@@ -387,8 +457,8 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 	}
 	else
 	{
-		CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPlayer()->GetPosDest());
-		if (pHitTile != NULL)
+		//CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPlayer()->GetPosDest());
+		//if (pHitTile != NULL)
 		{
 			if (m_nLevel < 0)
 			{
@@ -430,6 +500,25 @@ void CAttackBased::ResetAttackArea(void)
 			m_apAttackArea[nCntArea]->SetDrawFlag(false);
 			m_apAttackArea[nCntArea]->SetRot(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			m_apAttackArea[nCntArea]->SetSize(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		}
+	}
+}
+
+//=============================================================================
+// 攻撃範囲のリリース
+// Akuthor: 増澤 未来
+//=============================================================================
+void CAttackBased::ReleaseAttakcArea(void)
+{
+	//攻撃エリアの解放
+	for (int nCntArea = 0; nCntArea < MAX_ATTACK_AREA_NUM; nCntArea++)
+	{
+		if (m_apAttackArea[nCntArea] != NULL)
+		{
+			m_apAttackArea[nCntArea]->OutList();
+			m_apAttackArea[nCntArea]->Uninit();
+			delete m_apAttackArea[nCntArea];
+			m_apAttackArea[nCntArea] = NULL;
 		}
 	}
 }

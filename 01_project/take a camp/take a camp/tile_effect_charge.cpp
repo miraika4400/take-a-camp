@@ -56,7 +56,7 @@ HRESULT CTileEffectCharge::Init(void)
 	// 初期化
 	m_pPolygon = CScene3d::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(TILE_ONE_SIDE - 5.0f, 0.0, TILE_ONE_SIDE - 5.0f));
 	m_pPolygon->SetColor(COLOR);
-	m_pPolygon->ReConnection();
+	m_pPolygon->OutList();
 	
 	// テクスチャの割り当て
 	m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_TILE_CHARGE));
