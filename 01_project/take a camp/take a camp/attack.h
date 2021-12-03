@@ -48,6 +48,7 @@ public:
 	//関数定義
 	CAttackBased();
 	~CAttackBased();
+	static CAttackBased * Create(CPlayer* pPlayer, CResourceCharacter::CHARACTER_TYPE Type);
 	HRESULT Init(void);
 	void	Uninit(void);
 	void	Update(void);
@@ -74,7 +75,7 @@ public:
 	void		SetAttackFlag(bool bAttack) { m_bAttack = bAttack; }	// 必殺技フラグ設定
 	bool		GetAttackFlag(void) { return m_bAttack; }				// 必殺技フラグ取得
 
-	virtual void AttackCreate(void) = 0;						// 攻撃生成処理 
+	virtual void AttackCreate(void);						// 攻撃生成処理 
 
 	void		VisualizationAttackArea(int nAttackType = 0);	// 攻撃範囲の可視化
 	void        ResetAttackArea(void);							// 攻撃範囲ポリゴンのリセット
@@ -95,6 +96,8 @@ private:
 	int				m_nMaxLevel;						// 最大レベル保存用
 	int				m_nChargeCount;						// チャージ用のカウント
 	int				m_anChargeValue[MAX_ATTACK_LEVEL];  // チャージ目標値
+	int				m_nAttackCount;		//攻撃までのカウント
+	int				m_nType;			//攻撃の間隔用のタイプ
 
 };
 

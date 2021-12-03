@@ -50,15 +50,6 @@ CAttackKnight * CAttackKnight::Create(CPlayer* pPlayer)
 }
 
 //=============================================================================
-// ‰Šú‰»ŠÖ”
-//=============================================================================
-HRESULT CAttackKnight::Init(void)
-{
-	CAttackBased::Init();
-	return S_OK;
-}
-
-//=============================================================================
 // UŒ‚¶¬ŠÖ”
 //=============================================================================
 void CAttackKnight::AttackCreate(void)
@@ -87,7 +78,6 @@ void CAttackKnight::AttackCreate(void)
 				m_nType = 0;
 				//ƒŒƒxƒ‹‚Ì‰Šú‰»
 				CAttackBased::SetLevel(0);
-
 			}
 			else
 			{
