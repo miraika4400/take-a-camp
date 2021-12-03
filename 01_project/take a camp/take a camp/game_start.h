@@ -15,6 +15,7 @@
 //=============================================================================
 // 前方宣言
 //=============================================================================
+class CPolygon;
 
 //=============================================================================
 // マクロ定義
@@ -29,7 +30,7 @@ public:
 	CGame_Start();						// コンストラクタ
 	~CGame_Start();						// デストラクタ
 
-	static CGame_Start*Create(void);	// 生成処理
+	static CGame_Start*Create(D3DXVECTOR3 pos);	// 生成処理
 
 	HRESULT Init(void);					// 初期化処理
 	void Uninit(void);					// 終了処理
@@ -37,5 +38,9 @@ public:
 	void Draw(void);					// 描画処理
 
 private:
+	CPolygon*   m_pPolygon;		// ライフ描画用のポリゴン
+	D3DXVECTOR3 m_pos;			// 位置
+	D3DXCOLOR   m_Col;			// カラー
+
 };
 #endif // !_GAME_START_H_

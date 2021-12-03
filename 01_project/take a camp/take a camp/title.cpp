@@ -84,6 +84,7 @@ HRESULT CTitle::Init(void)
 
 	// 背景の設定
 	CBg::Create();
+	CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), CResourceModel::MODEL_DESK, D3DXVECTOR3(0.4f, 0.4f, 0.4f));
 
 	// エントリー人数の初期化
 	CCharaSelect::ResetEntryPlayer();

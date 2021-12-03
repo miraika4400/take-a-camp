@@ -9,6 +9,8 @@
 // インクルードファイル
 //=============================================================================
 #include "game_start.h"
+#include "polygon.h"
+#include "resource_texture.h"
 
 //=============================================================================
 // マクロ定義
@@ -33,18 +35,25 @@ CGame_Start::~CGame_Start()
 //=============================================================================
 // 生成処理
 //=============================================================================
-CGame_Start * CGame_Start::Create(void)
+CGame_Start * CGame_Start::Create(D3DXVECTOR3 pos)
 {
 	CGame_Start *pStart = NULL;
 
 	// メモリの確保
 	pStart = new CGame_Start;
 
-	// 初期化処理呼び出し
-	pStart->Init();
+	// NULLチェック
+	if (pStart != NULL)
+	{
+		// 位置設定
+		pStart->m_pos = pos;
 
-	// オブジェクトタイプ
-	pStart->SetPriority(OBJTYPE_UI);
+		// 初期化処理呼び出し
+		pStart->Init();
+
+		// オブジェクトタイプ
+		pStart->SetPriority(OBJTYPE_UI);
+	}
 
 	return pStart;
 }
@@ -54,6 +63,14 @@ CGame_Start * CGame_Start::Create(void)
 //=============================================================================
 HRESULT CGame_Start::Init(void)
 {
+	// ポリゴンの生成
+	m_pPolygon = CPolygon::Create(
+		m_pos,
+		D3DXVECTOR3(750.0f, 100.0f, 0.0f),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+	m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_TITLE));
+
 	return S_OK;
 }
 
@@ -62,6 +79,16 @@ HRESULT CGame_Start::Init(void)
 //=============================================================================
 void CGame_Start::Uninit(void)
 {
+	if (m_pPolygon != NULL)
+	{
+		// ポリゴンの終了処理
+		m_pPolygon->Uninit();
+
+		// メモリの解放
+		delete m_pPolygon;
+		m_pPolygon = NULL;
+	}
+
 	// 開放処理
 	Release();
 }
@@ -71,7 +98,8 @@ void CGame_Start::Uninit(void)
 //=============================================================================
 void CGame_Start::Update(void)
 {
-
+	// ポリゴンの更新処理
+	m_pPolygon->Update();
 }
 
 //=============================================================================
@@ -79,5 +107,6 @@ void CGame_Start::Update(void)
 //=============================================================================
 void CGame_Start::Draw(void)
 {
-
+	// ポリゴンの描画処理
+	m_pPolygon->Draw();
 }

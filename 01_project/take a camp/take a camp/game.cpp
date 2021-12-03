@@ -29,6 +29,7 @@
 #include "kill_count.h"
 #include "paintnum.h"
 #include "player_model.h"
+#include "game_start.h"
 
 //=============================
 // マクロ定義
@@ -94,6 +95,9 @@ HRESULT CGame::Init(void)
 	CManager::SetLight();
 	// 制限時間クラス
 	CTime::Create();
+
+	// ready goの生成
+	CGame_Start::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 200.0f, 0.0f));
 
 	return S_OK;
 }
