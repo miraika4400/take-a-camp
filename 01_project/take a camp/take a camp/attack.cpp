@@ -124,6 +124,7 @@ void CAttackBased::Update(void)
 			m_nLevel = 0;
 			m_nChargeCount = 0;
 		}
+		//攻撃範囲のリセット
 		ResetAttackArea();
 		//プレイヤーが死んでいるとき
 		if (m_pPlayer->GetState() == CPlayer::PLAYER_STATE_DEATH)
@@ -149,7 +150,8 @@ void CAttackBased::Update(void)
 	break;
 
 	
-	case ATTACK_STATE_CHARGE:		//チャージ状態					
+	case ATTACK_STATE_CHARGE:		//チャージ状態	
+		VisualizationAttackArea();
 		Charge();					// チャージ処理
 		break;
 
@@ -157,7 +159,8 @@ void CAttackBased::Update(void)
 		AttackCreate();				// 攻撃生成処理
 		break;
 
-	case ATTACK_STATE_FINALATTACKWAITING:	// 必殺技待機状態			
+	case ATTACK_STATE_FINALATTACKWAITING:	// 必殺技待機状態	
+		VisualizationAttackArea();
 		m_nLevel = LEVEL_MAX - 1;		// レベルを最大値にする
 		break;
 
@@ -454,8 +457,8 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 	}
 	else
 	{
-		CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPlayer()->GetPosDest());
-		if (pHitTile != NULL)
+		//CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPlayer()->GetPosDest());
+		//if (pHitTile != NULL)
 		{
 			if (m_nLevel < 0)
 			{

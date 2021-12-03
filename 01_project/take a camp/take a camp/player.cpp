@@ -563,20 +563,11 @@ void CPlayer::Attack(void)
 				m_pAttack->ChargeFlag(pHitTile->GetStepNum()-1);
 
 			}
-			//ƒ`ƒƒ[ƒW‚Å‚«‚éó‘Ô‚É‚È‚èƒtƒ‰ƒO‚ª—§‚Â
-			else
-			{
-				//UŒ‚”ÍˆÍ‚Ì‰ÂŽ‹‰»
-				m_pAttack->VisualizationAttackArea();
-			}
 		}
 	}
 	//ƒ`ƒƒ[ƒWó‘Ô‚©
 	if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_CHARGE)
 	{
-		//UŒ‚”ÍˆÍ‚Ì˜g‚ÌF‚ð•Ï‚¦‚é
-		m_pAttack->VisualizationAttackArea();
-
 		// —£‚µ‚½‚çUŒ‚‚ª‚Å‚é‚æ‚¤‚É
 		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
@@ -626,8 +617,6 @@ void CPlayer::AttackFinal(void)
 			if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
 				|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
 			{
-				//UŒ‚”ÍˆÍ‚Ì˜g‚ÌF‚ð•Ï‚¦‚é
-				m_pAttack->VisualizationAttackArea();
 				m_pAttack->SetState(CAttackBased::ATTACK_STATE_FINALATTACKWAITING);
 			}
 
