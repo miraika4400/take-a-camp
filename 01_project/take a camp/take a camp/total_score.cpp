@@ -82,7 +82,7 @@ HRESULT CTotalScore::Init(void)
 	{
 		CResourceTexture::TEXTURE_RESULT_KNIGHT,
 		CResourceTexture::TEXTURE_RESULT_LANCER,
-		CResourceTexture::TEXTURE_RESULT_ARCHER,
+		CResourceTexture::TEXTURE_RESULT_WIZARD,
 	};
 
 	// Å‘åŒ…”•ªƒ‹[ƒv
@@ -95,7 +95,7 @@ HRESULT CTotalScore::Init(void)
 			
 			//”wŒi
 			m_pBg = CScene2d::Create();
-			m_pBg->SetPos(D3DXVECTOR3(fPosX, SCREEN_HEIGHT / 2, 0.0f));
+			m_pBg->SetPos(D3DXVECTOR3(fPosX, SCREEN_HEIGHT / 2.0f, 0.0f));
 			m_pBg->SetSize(TOTAL_BG_SIZE);
 			m_pBg->SetColor(pColor->GetIconColor(CCharaSelect::GetEntryData(nPlayer).nColorNum));
 			m_pBg->BindTexture(CResourceTexture::GetTexture(nTexture[(int)CCharaSelect::GetEntryData(nPlayer).charaType]));

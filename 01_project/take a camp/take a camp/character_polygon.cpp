@@ -108,6 +108,7 @@ void CCharacterPolygon::Update(void)
 	if (m_pCharacterModel != NULL)
 	{
 		m_pCharacterModel->Update();
+		m_pCharacterModel->SetRot(m_pCharacterModel->GetRot() + D3DXVECTOR3(0.0f, 0.01f, 0.0f));
 	}
 }
 
@@ -150,11 +151,16 @@ void CCharacterPolygon::Draw(void)
 //=============================================================================
 void CCharacterPolygon::SetCharaType(CResourceCharacter::CHARACTER_TYPE type)
 {
+	if (m_charaType == type) return;
 	// タイプセット
 	m_charaType = type;
 
 	// モデルのタイプセット
-	if (type != CResourceCharacter::CHARACTER_NONE) m_pCharacterModel->SetCharacterType(m_charaType);
+	if (type != CResourceCharacter::CHARACTER_NONE)
+	{
+		m_pCharacterModel->SetCharacterType(m_charaType);
+		m_pCharacterModel->SetRot(CHARACTER_ROT);
+	}
 }
 
 //=============================================================================

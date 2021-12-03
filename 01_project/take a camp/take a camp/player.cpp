@@ -227,7 +227,7 @@ void CPlayer::InitCharacterData(void)
 		m_pAttack = NULL;
 	}
 	//UŒ‚—pƒNƒ‰ƒX¶¬(¡ŒãE‹Æ‚²‚Æ‚Écreate‚·‚éUŒ‚ˆ—‚ğ•Ï‚¦‚é)
-	m_pAttack = CAttackBased::Create(this, CResourceCharacter::CHARACTER_KNIGHT);
+	m_pAttack = CAttackBased::Create(this, CCharaSelect::GetEntryData(m_nPlayerNumber).charaType);
 }
 
 //******************************
