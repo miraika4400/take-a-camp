@@ -360,6 +360,10 @@ void CAttackBased::AttackFinalFlag(void)
 			SetState(CAttackBased::ATTACK_STATE_FINALATTACKWAITING);
 		}
 	}
+	else
+	{
+		m_nCancelCount = 0;
+	}
 }
 
 //=============================================================================

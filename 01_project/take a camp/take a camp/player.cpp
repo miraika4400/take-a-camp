@@ -274,12 +274,21 @@ void CPlayer::Update(void)
 	case PLAYER_STATE_NORMAL:	//通常状態
 
 		//攻撃可否フラグが立っているか
-		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK)
+		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
+			&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK)
 		{
 			// 向きの管理
 			ManageRot();
 			// 移動処理
 			ControlMove();
+			//ジョイパットの取得
+			CInputJoypad* pJoypad = CManager::GetJoypad();
+
+			//攻撃キャンセル
+			if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, pJoypad->BUTTON_PRESS, m_nControllNum))
+			{
+				m_pAttack->CancelSwitch();
+			}
 			//攻撃をチャージしていないとき
 			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE)
 			{
@@ -542,12 +551,6 @@ void CPlayer::Attack(void)
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 	CInputJoypad* pJoypad = CManager::GetJoypad();
 
-	//攻撃キャンセル
-	if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, pJoypad->BUTTON_PRESS, m_nControllNum))
-	{
-		m_pAttack->CancelSwitch();
-	}
-
 	// 攻撃ボタンを押したらチャージ
 	if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
 		|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
@@ -589,13 +592,6 @@ void CPlayer::AttackFinal(void)
 	// キーボードとジョイパッドの取得
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 	CInputJoypad* pJoypad = CManager::GetJoypad();
-
-
-	//攻撃キャンセル
-	if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB, pJoypad->BUTTON_RELEASE, m_nControllNum))
-	{
-		m_pAttack->CancelSwitch();
-	}
 
 	// アタックタイプが通常状態なら
 	if (m_bFinalAttack)
