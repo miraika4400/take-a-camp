@@ -548,7 +548,7 @@ void CPlayer::Attack(void)
 		m_pAttack->CancelSwitch();
 	}
 
-	// UŒ‚ƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½‚ç
+	// UŒ‚ƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½‚çƒ`ƒƒ[ƒW
 	if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
 		|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
 	{
@@ -565,14 +565,6 @@ void CPlayer::Attack(void)
 		{
 			//UŒ‚ƒtƒ‰ƒO‚ð—§‚Ä‚é
 			m_bAttack = true;
-		}
-	}
-	else
-	{
-		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
-			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
-		{
-			m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		}
 	}
 
@@ -598,32 +590,32 @@ void CPlayer::AttackFinal(void)
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 	CInputJoypad* pJoypad = CManager::GetJoypad();
 
+
+	//UŒ‚ƒLƒƒƒ“ƒZƒ‹
+	if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB, pJoypad->BUTTON_RELEASE, m_nControllNum))
+	{
+		m_pAttack->CancelSwitch();
+	}
+
 	// ƒAƒ^ƒbƒNƒ^ƒCƒv‚ª’Êíó‘Ô‚È‚ç
 	if (m_bFinalAttack)
 	{
-		// UŒ‚ó‘Ô‚¶‚á‚È‚¢‚È‚ç
-		if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL
-			|| m_pAttack->GetState() == CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
+		// UŒ‚ƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½‚ç
+		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
 		{
-			// UŒ‚ƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½‚ç
-			if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
-				|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
-			{
-				m_pAttack->SetState(CAttackBased::ATTACK_STATE_FINALATTACKWAITING);
-			}
+			m_pAttack->AttackFinalFlag();
+		}
+	}
 
-			// —£‚µ‚½‚ç’e‚ª‚Å‚é‚æ‚¤‚É
-			if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
-				|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
-			{
-				m_bAttack = true;
-			}
-			//UŒ‚ƒLƒƒƒ“ƒZƒ‹
-			else if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB, pJoypad->BUTTON_RELEASE, m_nControllNum))
-			{
-				m_pAttack->CancelSwitch();
-			}
-
+	// UŒ‚ó‘Ô‚¶‚á‚È‚¢‚È‚ç
+	if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
+	{
+		// —£‚µ‚½‚ç’e‚ª‚Å‚é‚æ‚¤‚É
+		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
+			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
+		{
+			m_bAttack = true;
 		}
 	}
 

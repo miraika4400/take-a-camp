@@ -187,23 +187,6 @@ void CAttackBased::Update(void)
 		AttackCreate();					// 攻撃生成処理
 		break;
 
-	case ATTACK_STATE_CANCEL:			// 攻撃キャンセル状態	
-		//カウントアップ
-		m_nCancelCount++;
-		//攻撃範囲のリセット
-		ResetAttackArea();
-
-		if (m_nCancelCount >= CANCEL_COUNT)
-		{		
-			//カウントでステート変更
-			m_AttackState = ATTACK_STATE_NORMAL;
-			//キャンセルカウント初期化
-			m_nCancelCount = 0;
-			//チャージカウント初期化
-			m_nChargeCount = 0;
-		}
-
-		break;
 
 	default:							//それ以外の状態
 		m_AttackState = ATTACK_STATE_NORMAL;
@@ -363,10 +346,41 @@ void CAttackBased::AttackSwitch(void)
 }
 
 //=============================================================================
+// 必殺待機フラグ関数
+//=============================================================================
+void CAttackBased::AttackFinalFlag(void)
+{
+	//キャンセルフラグが立っていないか
+	if (!m_bCancel)
+	{
+		// 攻撃状態じゃないなら
+		if (m_AttackState == CAttackBased::ATTACK_STATE_NORMAL
+			|| m_AttackState == CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
+		{
+			SetState(CAttackBased::ATTACK_STATE_FINALATTACKWAITING);
+		}
+	}
+}
+
+//=============================================================================
+// 必殺技スイッチ関数
+//=============================================================================
+void CAttackBased::AttackFinalSwitch(void)
+{
+	// 必殺技待機中なら
+	if (m_AttackState == ATTACK_STATE_FINALATTACKWAITING)
+	{
+		//必殺技使用状態に移行
+		m_AttackState = ATTACK_STATE_FINALATTACK;
+	}
+}
+
+//=============================================================================
 // 攻撃キャンセルスイッチ関数
 //=============================================================================
 void CAttackBased::CancelSwitch(void)
 {
+
 	//攻撃をチャージしていたら
 	if (m_AttackState == ATTACK_STATE_CHARGE)
 	{
@@ -389,22 +403,10 @@ void CAttackBased::CancelSwitch(void)
 
 	//攻撃範囲のリセット
 	ResetAttackArea();
+	//攻撃キャンセル状態
 	m_bCancel = true;
 	//通常状態に移行
-	m_AttackState = ATTACK_STATE_CANCEL;
-}
-
-//=============================================================================
-// 必殺技スイッチ関数
-//=============================================================================
-void CAttackBased::AttackFinalSwitch(void)
-{
-	// 必殺技待機中なら
-	if (m_AttackState == ATTACK_STATE_FINALATTACKWAITING)
-	{
-		//必殺技使用状態に移行
-		m_AttackState = ATTACK_STATE_FINALATTACK;
-	}
+	m_AttackState = ATTACK_STATE_NORMAL;
 }
 
 //=============================================================================

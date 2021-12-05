@@ -42,7 +42,6 @@ public:
 		ATTACK_STATE_ATTACK,				// 攻撃状態
 		ATTACK_STATE_FINALATTACKWAITING,	// 必殺技待機
 		ATTACK_STATE_FINALATTACK,			// 必殺技使用状態
-		ATTACK_STATE_CANCEL,				// 攻撃キャンセル状態
 	}ATTACK_STATE;
 
 	//関数定義
@@ -54,10 +53,12 @@ public:
 	void	Update(void);
 	void	Draw(void);
 	void	Attack(int AttackType);		// 攻撃処理
-	void	ChargeFlag(void);	// チャージ開始処理
+	void	ChargeFlag(void);			// チャージ開始処理
 	void	AttackSwitch(void);			// 攻撃スイッチ関数
-	void	CancelSwitch(void);			// 攻撃キャンセルスイッチ関数
+	void	AttackFinalFlag(void);		// 必殺待機フラグ処理
 	void    AttackFinalSwitch(void);	// 必殺スイッチ関数
+	void	CancelSwitch(void);			// 攻撃キャンセルスイッチ関数
+
 	void	SetAttackType(CResourceCharacter::CHARACTER_TYPE AttackType);		//攻撃タイプセッター
 	CResourceCharacter::CHARACTER_TYPE GetAttackType(void);						//攻撃タイプゲッター
 	void	SetAttackSquare(CAttackManager::ATTACK_SQUARE_DATA AttackSquare);	//攻撃マスデータセッター
