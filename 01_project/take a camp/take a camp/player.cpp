@@ -280,7 +280,6 @@ void CPlayer::Update(void)
 			ManageRot();
 			// 移動処理
 			ControlMove();
-
 			//攻撃をチャージしていないとき
 			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE)
 			{
@@ -302,12 +301,10 @@ void CPlayer::Update(void)
 
 		break;
 	case PLAYER_STATE_STOP:
-		//攻撃をチャージをしている際に
-		if (m_pAttack->GetState()== CAttackBased::ATTACK_STATE_CHARGE
-			|| m_pAttack->GetState() == CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
+		//攻撃状態を通常に変更
+		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_NORMAL)
 		{
-			//攻撃キャンセル
-			m_pAttack->CancelSwitch();
+			m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
 		}
 		break;
 	case PLAYER_STATE_DEATH:	//死亡状態
@@ -545,26 +542,20 @@ void CPlayer::Attack(void)
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 	CInputJoypad* pJoypad = CManager::GetJoypad();
 
-	// 当たっているタイルの取得
-	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
-	
-	//触れているタイルの識別(NULLチェック,カラーの確認)＆攻撃の状況が攻撃中になっていないか
-	if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_nColor 
-		&& m_pAttack->GetState() == CAttackBased::ATTACK_STATE_NORMAL)
+	//攻撃キャンセル
+	if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, pJoypad->BUTTON_PRESS, m_nControllNum))
 	{
-		// 攻撃ボタンを押したら
-		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
-			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
-		{
-			//タイルがチャージ出来るか取得
-			if (pHitTile->ChargeFlag(m_nPlayerNumber))
-			{
-				//攻撃チャージを開始
-				m_pAttack->ChargeFlag(pHitTile->GetStepNum()-1);
-
-			}
-		}
+		m_pAttack->CancelSwitch();
 	}
+
+	// 攻撃ボタンを押したら
+	if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
+		|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
+	{
+		//攻撃チャージを開始
+		m_pAttack->ChargeFlag();
+	}
+
 	//チャージ状態か
 	if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_CHARGE)
 	{
@@ -575,13 +566,17 @@ void CPlayer::Attack(void)
 			//攻撃フラグを立てる
 			m_bAttack = true;
 		}
-		//攻撃キャンセル
-		else if(m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, pJoypad->BUTTON_TRIGGER, m_nControllNum))
-		{
-			m_pAttack->CancelSwitch();
-		}
-
 	}
+	else
+	{
+		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
+			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
+		{
+			m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
+		}
+	}
+
+
 	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
 	if (m_bAttack&&m_bMove)
 	{
@@ -602,9 +597,6 @@ void CPlayer::AttackFinal(void)
 	// キーボードとジョイパッドの取得
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 	CInputJoypad* pJoypad = CManager::GetJoypad();
-
-	// 当たっているタイルの取得
-	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 
 	// アタックタイプが通常状態なら
 	if (m_bFinalAttack)

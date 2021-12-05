@@ -54,7 +54,7 @@ public:
 	void	Update(void);
 	void	Draw(void);
 	void	Attack(int AttackType);		// 攻撃処理
-	void	ChargeFlag(int nMaxLevel);	// チャージ開始処理
+	void	ChargeFlag(void);	// チャージ開始処理
 	void	AttackSwitch(void);			// 攻撃スイッチ関数
 	void	CancelSwitch(void);			// 攻撃キャンセルスイッチ関数
 	void    AttackFinalSwitch(void);	// 必殺スイッチ関数
@@ -64,10 +64,6 @@ public:
 	CAttackManager::ATTACK_SQUARE_DATA GetAttackSquare(void);					//攻撃マスデータゲッター
 
 	void		SetLevel(int nLevel) { m_nLevel = nLevel; }				// レベルセッター
-	void		SetPos(D3DXVECTOR3 pos) { m_pos = pos; }				// 位置セッター
-	D3DXVECTOR3 GetPos(void) { return m_pos; }							// 位置ゲッター	
-	void		SetRot(D3DXVECTOR3 rot) { m_rot = rot; }				// 向きセッター
-	D3DXVECTOR3 GetRot(void) { return m_rot; }							// 向きゲッター
 	void		SetPlayer(CPlayer* pPlayer) { m_pPlayer = pPlayer; }	// プレイヤーセッター
 	CPlayer*	GetPlayer(void) { return m_pPlayer; }					// プレイヤーゲッター
 	void		SetState(ATTACK_STATE State) { m_AttackState = State; }	// ステートセッター
@@ -88,14 +84,15 @@ private:
 	CResourceCharacter::CHARACTER_TYPE			m_nAttackType;				// 攻撃タイプ
 	CAttackManager::ATTACK_SQUARE_DATA	m_AttackSquare[MAX_ATTACK_LEVEL];	// 攻撃マスデータ
 	CPeintCollision* m_pPeintCollision[MAX_FINAL_PEINT];					// 色
-	D3DXVECTOR3		m_pos;								// 位置
-	D3DXVECTOR3		m_rot;								// 向き
 	ATTACK_STATE	m_AttackState;						// 攻撃ステート
 	bool			m_bAttack;							// 必殺フラグ
+	bool			m_bChargeTile;						// チャージタイルフラグ
+	bool			m_bCancel;							// キャンセルフラグ
 	int				m_nLevel;							// 攻撃のレベル
 	int				m_nMaxLevel;						// 最大レベル保存用
 	int				m_nChargeCount;						// チャージ用のカウント
 	int				m_anChargeValue[MAX_ATTACK_LEVEL];  // チャージ目標値
+	int				m_nCancelCount;						// キャンセルカウント
 	int				m_nAttackCount;		//攻撃までのカウント
 	int				m_nType;			//攻撃の間隔用のタイプ
 
