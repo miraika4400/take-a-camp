@@ -124,7 +124,7 @@ CColorTile * CColorTile::GetHitColorTile(D3DXVECTOR3 pos)
 		{
 			if (pCollision != NULL)
 			{
-				pCollision->ReConnection();
+				pCollision->OutList();
 				pCollision->Uninit();
 				delete pCollision;
 				pCollision = NULL;
@@ -138,7 +138,7 @@ CColorTile * CColorTile::GetHitColorTile(D3DXVECTOR3 pos)
 
 	if (pCollision != NULL)
 	{
-		pCollision->ReConnection();
+		pCollision->OutList();
 		pCollision->Uninit();
 		delete pCollision;
 		pCollision = NULL;
@@ -161,7 +161,7 @@ HRESULT CColorTile::Init(void)
 	m_pFrame = CScene3d::Create(GetPos(), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
 	m_pFrame->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_FRAME));
 	m_pFrame->SetColor(TILE_DEFAULT_COLOR);
-	m_pFrame->SetPriority(OBJTYPE_UI);
+	m_pFrame->SetPriority(OBJTYPE_MAP);
 
 	// 変数の初期化
 	m_nPrevNum = -1;                             // 今塗られているカラーの番号*デフォルトは-1

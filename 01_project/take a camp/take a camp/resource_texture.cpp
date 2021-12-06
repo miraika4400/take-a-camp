@@ -30,6 +30,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/tutorial_3.png",   // チュートリアル
 	"./data/Textures/knight_flame.png",	// リザルト(ナイトの背景)
 	"./data/Textures/lancer_flame.png",	// リザルト(ランサーの背景)
+	"./data/Textures/03_mahouflame.png",// リザルト(ウィザードの背景)
 	"./data/Textures/archer_flame.png",	// リザルト(アーチャーの背景)
 	"./data/Textures/kill.png",			// リザルトのキルUI
 	"./data/Textures/tile.png",			// リザルトのタイルUI

@@ -357,17 +357,23 @@
     <ClCompile Include="paintnum.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
+    <ClCompile Include="player_model.cpp">
+      <Filter>ソース ファイル\07_GameModel\Player</Filter>
+    </ClCompile>
     <ClCompile Include="move_sideways_tile.cpp">
       <Filter>ソース ファイル\08_Map\Tile\Move</Filter>
     </ClCompile>
-    <ClCompile Include="base_Cylinder.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="camera_charaselect.cpp">
+      <Filter>ソース ファイル\02_Camera</Filter>
     </ClCompile>
-    <ClCompile Include="skill_circle.cpp">
-      <Filter>ソース ファイル\09_Effect</Filter>
+    <ClCompile Include="dynamic_texture.cpp">
+      <Filter>ソース ファイル\System</Filter>
     </ClCompile>
-    <ClCompile Include="skill_effect.cpp">
-      <Filter>ソース ファイル\09_Effect</Filter>
+    <ClCompile Include="character_polygon.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="stage_select.cpp">
+      <Filter>ソース ファイル\06_GameScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -602,17 +608,23 @@
     <ClInclude Include="paintnum.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
+    <ClInclude Include="player_model.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Player</Filter>
+    </ClInclude>
     <ClInclude Include="move_sideways_tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile\Move</Filter>
     </ClInclude>
-    <ClInclude Include="base_Cylinder.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="camera_charaselect.h">
+      <Filter>ヘッダー ファイル\02_Camera</Filter>
     </ClInclude>
-    <ClInclude Include="skill_circle.h">
-      <Filter>ヘッダー ファイル\09_Effect</Filter>
+    <ClInclude Include="dynamic_texture.h">
+      <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
-    <ClInclude Include="skill_effect.h">
-      <Filter>ヘッダー ファイル\09_Effect</Filter>
+    <ClInclude Include="character_polygon.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="stage_select.h">
+      <Filter>ヘッダー ファイル\06_GameScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
