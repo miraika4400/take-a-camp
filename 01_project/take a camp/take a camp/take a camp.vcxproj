@@ -219,6 +219,7 @@
     <ClCompile Include="resource_texture.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="spawn_tile.cpp" />
+    <ClCompile Include="text.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="tile_effect.cpp" />
     <ClCompile Include="tile_effect_charge.cpp" />
@@ -297,6 +298,7 @@
     <ClInclude Include="resource_texture.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="spawn_tile.h" />
+    <ClInclude Include="text.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="tile_effect.h" />
     <ClInclude Include="tile_effect_charge.h" />

@@ -46,13 +46,21 @@ public:
 	void Draw(void);    // 描画
 
 private:
+	enum TUTORIALPHASE
+	{
+		PHAZE_MOVE = 0, 
+		PHAZE_PAINT,
+		PHAZE_ATTACK,
+		PHAZE_FINISH,
+	};
+
 	//============
 	// メンバ変数
 	//===========
 	static LPDIRECT3DTEXTURE9 m_pTexture[TUTORIAL_NUM]; // テクスチャへのポインタ
 	CPolygon *m_pPolygon;                               // ポリゴン
 	int m_nNumTutorial;                                 // チュートリアル数
-
+	TUTORIALPHASE m_Tutorialphase;
 };
 
 #endif
