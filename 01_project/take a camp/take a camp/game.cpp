@@ -97,7 +97,7 @@ HRESULT CGame::Init(void)
 	CTime::Create();
 
 	// ready goÇÃê∂ê¨
-	CGame_Start::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 200.0f, 0.0f));
+	//CGame_Start::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 200.0f, 0.0f), D3DXVECTOR3(750.0f, 200.0f, 0.0f),CGame_Start::TYPE_START_READEY);
 
 	return S_OK;
 }

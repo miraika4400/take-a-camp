@@ -16,7 +16,6 @@
 // 前方宣言
 //=============================================================================
 class CPolygon;
-
 //=============================================================================
 // マクロ定義
 //=============================================================================
@@ -27,10 +26,18 @@ class CPolygon;
 class CGame_Start :public CScene
 {
 public:
+	// UIの種類
+	typedef enum
+	{
+		TYPE_START_READEY = 0,
+		TYPE_START_GO,
+		TYPE_START_MAX
+	}TYPE_START;
+
 	CGame_Start();						// コンストラクタ
 	~CGame_Start();						// デストラクタ
 
-	static CGame_Start*Create(D3DXVECTOR3 pos);	// 生成処理
+	static CGame_Start*Create(D3DXVECTOR3 pos, D3DXVECTOR3 size,TYPE_START type);	// 生成処理
 
 	HRESULT Init(void);					// 初期化処理
 	void Uninit(void);					// 終了処理
@@ -40,7 +47,10 @@ public:
 private:
 	CPolygon*   m_pPolygon;		// ライフ描画用のポリゴン
 	D3DXVECTOR3 m_pos;			// 位置
-	D3DXCOLOR   m_Col;			// カラー
-
+	D3DXVECTOR3 m_size;			// サイズ
+	D3DXCOLOR   m_col;			// カラー
+	int			m_nCount;		// カウント
+	TYPE_START  m_type;			// UIのタイプ
+	bool   m_bStart;			// スタートの可否
 };
 #endif // !_GAME_START_H_
