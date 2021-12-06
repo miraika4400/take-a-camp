@@ -141,9 +141,9 @@ private:
 	bool m_bAttack;				// 攻撃可否フラグ
 	bool m_bFinalAttack;		// 必殺可否フラグ
 	bool m_bInvincible;			// 無敵フラグ
+	int m_nInvincibleCount;		// 無敵時間のカウント
 	PLAYER_STATE m_PlayerState;	// プレイヤーステータス
 	int	m_nRespawnCount;		// リスポーンまでのカウント
-	int m_nInvincibleCount;		// 無敵時間のカウント
 	D3DXVECTOR3	 m_Move;		// 移動量
 	int			 m_MoveCount;	// 移動時のカウント
 	int          m_nMoveFrameData;		// 移動時フレーム数
