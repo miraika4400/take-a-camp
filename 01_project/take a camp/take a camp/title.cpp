@@ -147,14 +147,12 @@ void CTitle::Uninit(void)
 //=============================
 void CTitle::Update(void)
 {
-	// カメラクラスの解放処理
 	// カメラクラス更新処理
 	CCamera * pCamera = CManager::GetCamera();
 	if (pCamera != NULL)
 	{
 		pCamera->Update();
 	}
-
 
 	// ポリゴンの更新処理
 	m_pPolygon->Update();

@@ -66,6 +66,8 @@ public:
 private:
 	void EntryPlayer(void);
 	void CountEntryPlayerNum(void);
+	void CharacterSelect(int nCntData);
+
 	//*****************************
 	// メンバ変数
 	//*****************************
@@ -73,6 +75,7 @@ private:
 	static int m_nEntryPlayerNum;               // エントリー人数
 	bool m_abUseJoy[MAX_PLAYER];           // 使っているコントローラーのフラグ
 	bool m_abUseKey[MAX_PLAYER];           // 使っているコントローラーのフラグ
+	int m_anWaitCnt[MAX_PLAYER];                             // キャラ変更から次変更可能までのカウント
 };
 
 #endif

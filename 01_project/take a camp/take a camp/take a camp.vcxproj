@@ -157,9 +157,12 @@
     <ClCompile Include="attack_knight.cpp" />
     <ClCompile Include="attack_area.cpp" />
     <ClCompile Include="button.cpp" />
+    <ClCompile Include="camera_charaselect.cpp" />
+    <ClCompile Include="character_polygon.cpp" />
     <ClCompile Include="chara_select.cpp" />
     <ClCompile Include="chara_select_ui.cpp" />
     <ClCompile Include="button_title.cpp" />
+    <ClCompile Include="dynamic_texture.cpp" />
     <ClCompile Include="game_start.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="kill_count.cpp" />
@@ -220,6 +223,7 @@
     <ClCompile Include="resource_texture.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="spawn_tile.cpp" />
+    <ClCompile Include="stage_select.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="tile_effect.cpp" />
     <ClCompile Include="tile_effect_charge.cpp" />
@@ -235,11 +239,14 @@
     <ClInclude Include="attack.h" />
     <ClInclude Include="attack_knight.h" />
     <ClInclude Include="attack_area.h" />
+    <ClInclude Include="camera_charaselect.h" />
+    <ClInclude Include="character_polygon.h" />
     <ClInclude Include="chara_select.h" />
     <ClInclude Include="chara_select_ui.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="button_title.h" />
     <ClInclude Include="color_tile.h" />
+    <ClInclude Include="dynamic_texture.h" />
     <ClInclude Include="game_start.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="kill_count.h" />
@@ -299,6 +306,7 @@
     <ClInclude Include="resource_texture.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="spawn_tile.h" />
+    <ClInclude Include="stage_select.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="tile_effect.h" />
     <ClInclude Include="tile_effect_charge.h" />

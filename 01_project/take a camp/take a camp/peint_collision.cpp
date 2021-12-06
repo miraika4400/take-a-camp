@@ -87,7 +87,7 @@ void CPeintCollision::Uninit(void)
 {
 	if (m_pCollision != NULL)
 	{
-		m_pCollision->ReConnection();
+		m_pCollision->OutList();
 		m_pCollision->Uninit();
 		delete m_pCollision;
 		m_pCollision = NULL;

@@ -13,6 +13,7 @@
 #include "scene2d.h"
 #include "resource_texture.h"
 #include "color_manager.h"
+#include "character_polygon.h"
 
 //=============================
 // マクロ定義
@@ -28,6 +29,7 @@
 #define ICON_COLOR_ON      D3DXCOLOR(1.0f,1.0f,1.0f,0.7f)    // アイコンのカラー
 #define ICON_COLOR_OFF     D3DXCOLOR(1.0f,1.0f,1.0f,0.0f)    // アイコンのカラー
 #define PLAYER_NUMBER_POS_Y 60.0f
+#define CHARACTER_MODEL_POS_Y 340.0f
 
 //=============================
 // 静的メンバ変数宣言
@@ -105,6 +107,10 @@ HRESULT CCharaSelectUi::Init(void)
 		m_aPolygon[nCntPlayer].pPlayerNumber->SetPriority(OBJTYPE_UI);
 		m_aPolygon[nCntPlayer].pPlayerNumber->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_NONE));
 		m_aPolygon[nCntPlayer].pPlayerNumber->SetTextureUV(uv);
+		
+		// モデルポリゴンの生成
+		m_aPolygon[nCntPlayer].pCharaPolygon = CCharacterPolygon::Create(D3DXVECTOR3(boardPos.x, CHARACTER_MODEL_POS_Y, boardPos.z));
+
 		boardPos.x += UI_SPACE;
 	}
 
@@ -145,7 +151,6 @@ void CCharaSelectUi::Update(void)
 	uv[2] = D3DXVECTOR2(fu*0.0f     , fv*m_nAnimY + fv);
 	uv[3] = D3DXVECTOR2(fu*0.0f + fu, fv*m_nAnimY + fv);
 
-
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
 	{
 		// エントリーデータの取得
@@ -153,6 +158,7 @@ void CCharaSelectUi::Update(void)
 		if (entryData.bEntry)
 		{// エントリー時
 			m_aPolygon[nCntPlayer].pBack->SetColor(GET_COLORMANAGER->GetIconColor(entryData.nColorNum));
+			m_aPolygon[nCntPlayer].pCharaPolygon->SetRimColor(GET_COLORMANAGER->GetStepColor(entryData.nColorNum,1));
 			m_aPolygon[nCntPlayer].pControllIcon->SetColor(ICON_COLOR_ON);
 			if (entryData.bController)
 			{
@@ -182,8 +188,10 @@ void CCharaSelectUi::Update(void)
 			m_aPolygon[nCntPlayer].pPlayerNumber->SetTextureUV(uv);
 			m_aPolygon[nCntPlayer].pPlayerNumber->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_NONE));
 		}
-	}
 
+		// キャラタイプの設定
+		m_aPolygon[nCntPlayer].pCharaPolygon->SetCharaType(entryData.charaType);
+	}
 }
 
 //=============================

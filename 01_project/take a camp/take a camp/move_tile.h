@@ -58,8 +58,8 @@ public:
 
 	virtual void MoveRot(bool bReversal) = 0;
 private:
-	void HitPlayerAction(CPlayer*pPlayer);			// プレイヤーが乗っているか
-	void HitPlayerActionRelease(void);	// プレイヤーが降りたか
+	void HitPlayerAction(CPlayer*pPlayer);	// プレイヤーが乗っているか
+	void HitPlayerActionRelease(void);		// プレイヤーが降りたか
 
 	void Move(void);						// 移動処理
 	void HitTile(void);						// 他のタイルとの当たり判定

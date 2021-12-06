@@ -71,9 +71,18 @@ void CMoveTile::Update(void)
 		Move();
 		//当たり判定
 		HitTile();
+		
 		break;
 	case MOVE_STATE_STOP:
-
+		
+		//プレイヤーが何らかの攻撃で死んでいる時
+		if (!GetHitPlayerFlag())
+		{
+			//タイルのステートを変化
+			m_MoveState = MOVE_STATE_NORMAL;
+			//タイルに乗れるフラグを立てる
+			SetRide(false);
+		}
 		break;
 	default:
 		
@@ -86,22 +95,25 @@ void CMoveTile::Update(void)
 //******************************
 void CMoveTile::HitPlayerAction(CPlayer * pPlayer)
 {
-	//タイルの状態が停止じゃなければ
-	if (m_MoveState != MOVE_STATE_STOP)
+	switch (m_MoveState)
 	{
-		//通常状態の時
-		if (m_MoveState == MOVE_STATE_NORMAL)
-		{
-			//タイルのステートを変化
-			m_MoveState = MOVE_STATE_MOVE;
-		}
 
+	case MOVE_STATE_NORMAL:
+		//タイルのステートを変化
+		m_MoveState = MOVE_STATE_MOVE;
+		//タイルに乗れなくなるフラグを立てる
+		SetRide(true);
+		break;
+
+	case MOVE_STATE_MOVE:
+		//プレイヤーの状況確認
 		if (pPlayer->GetState() != CPlayer::PLAYER_STATE_STOP
 			&&pPlayer->GetState() != CPlayer::PLAYER_STATE_DEATH)
 		{
 			//プレイヤーが動いてないときにステートを停止状態に変更
 			if (pPlayer->GetMoveFlag())pPlayer->SetState(CPlayer::PLAYER_STATE_STOP);
 		}
+		//プレイヤーがストップ状態の時
 		else if (pPlayer->GetState() == CPlayer::PLAYER_STATE_STOP)
 		{
 			//現在位置
@@ -109,12 +121,18 @@ void CMoveTile::HitPlayerAction(CPlayer * pPlayer)
 			//プレイヤーを移動させる処理
 			pPlayer->SetPos(D3DXVECTOR3(pos.x, pPlayer->GetPos().y, pos.z));
 		}
-	}
-	//停止状態の場合
-	else
-	{
+		break;
+
+	case MOVE_STATE_STOP:
 		//プレイヤーのステートを停止状態に変更
 		pPlayer->SetState(CPlayer::PLAYER_STATE_NORMAL);
+		break;
+
+	default:
+		//タイルのステートを変化
+		m_MoveState = MOVE_STATE_NORMAL;
+		break;
+
 	}
 }
 
@@ -127,6 +145,8 @@ void CMoveTile::HitPlayerActionRelease(void)
 	{
 		//タイルのステートを変化
 		m_MoveState = MOVE_STATE_NORMAL;
+		//タイルに乗れるフラグを立てる
+		SetRide(false);
 	}
 }
 

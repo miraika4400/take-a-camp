@@ -16,6 +16,7 @@
 #include "kill_count.h"
 #include "scene2d.h"
 #include "resource_texture.h"
+#include "character_polygon.h"
 
 //**********************************
 //インクルード
@@ -24,7 +25,7 @@
 #define KILL_POS_Y		(600.0f)
 #define SCORE_SPACE		(SCREEN_WIDTH/4)
 #define TOTAL_BG_SIZE	(D3DXVECTOR3(320.0f,650.0f,0.0f))
-
+#define CHARACTER_POLYGON_POS_Y 320.0f
 //==================================
 // コンストラクタ
 //==================================
@@ -81,7 +82,7 @@ HRESULT CTotalScore::Init(void)
 	{
 		CResourceTexture::TEXTURE_RESULT_KNIGHT,
 		CResourceTexture::TEXTURE_RESULT_LANCER,
-		CResourceTexture::TEXTURE_RESULT_ARCHER,
+		CResourceTexture::TEXTURE_RESULT_WIZARD,
 	};
 
 	// 最大桁数分ループ
@@ -94,11 +95,16 @@ HRESULT CTotalScore::Init(void)
 			
 			//背景
 			m_pBg = CScene2d::Create();
-			m_pBg->SetPos(D3DXVECTOR3(fPosX, SCREEN_HEIGHT / 2, 0.0f));
+			m_pBg->SetPos(D3DXVECTOR3(fPosX, SCREEN_HEIGHT / 2.0f, 0.0f));
 			m_pBg->SetSize(TOTAL_BG_SIZE);
 			m_pBg->SetColor(pColor->GetIconColor(CCharaSelect::GetEntryData(nPlayer).nColorNum));
 			m_pBg->BindTexture(CResourceTexture::GetTexture(nTexture[(int)CCharaSelect::GetEntryData(nPlayer).charaType]));
 			m_pBg->SetPriority(OBJTYPE_BG);
+
+			// キャラポリゴンの生成
+			CCharacterPolygon*pCharaPolygon = CCharacterPolygon::Create(D3DXVECTOR3(fPosX, CHARACTER_POLYGON_POS_Y, 0.0f));
+			pCharaPolygon->SetCharaType(CCharaSelect::GetEntryData(nPlayer).charaType);
+			pCharaPolygon->SetRimColor(pColor->GetStepColor(CCharaSelect::GetEntryData(nPlayer).nColorNum, 1));
 
 			//キル用UI
 			m_pTileUI = CScene2d::Create();

@@ -62,7 +62,7 @@ HRESULT CPaintTime::Init(void)
 	{
 		m_apPolygon[nCntPolygon] = CScene3d::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(TILE_ONE_SIDE-5.0f, 0.0, TILE_ONE_SIDE - 5.0f));
 		m_apPolygon[nCntPolygon]->SetColor(COLOR);
-		m_apPolygon[nCntPolygon]->ReConnection();
+		m_apPolygon[nCntPolygon]->OutList();
 	}
 
 	// テクスチャの割り当て
