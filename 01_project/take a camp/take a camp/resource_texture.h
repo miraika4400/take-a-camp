@@ -33,6 +33,7 @@ public:
 		TEXTURE_TUTORIAL_REMEMBER,	// チュートリアル(記憶)
 		TEXTURE_RESULT_KNIGHT,		// リザルト(ナイトの背景)
 		TEXTURE_RESULT_LANCER,		// リザルト(ランサーの背景)
+		TEXTURE_RESULT_WIZARD,		// リザルト(ウィザードの背景)
 		TEXTURE_RESULT_ARCHER,		// リザルト(アーチャーの背景)
 		TEXTURE_RESULT_KILL,		// リザルトのキルUI
 		TEXTURE_RESULT_TILE,		// リザルトのタイルUI

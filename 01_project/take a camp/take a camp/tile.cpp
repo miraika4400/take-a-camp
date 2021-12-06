@@ -44,8 +44,8 @@ CTile::CTile() :CModel(OBJTYPE_TILE)
 {                       
 	m_color = TILE_DEFAULT_COLOR;
 	m_pCollison = NULL;
-	m_fDistPosY = TILE_POS_Y;        // 座標Yの目標値
-	m_fDistPosYRate = POS_Y_RATE_BASE;    // 座標Yの変更時の係数
+	m_fDistPosY = TILE_POS_Y;			// 座標Yの目標値
+	m_fDistPosYRate = POS_Y_RATE_BASE;	// 座標Yの変更時の係数
 	m_bHitOld = false;
 	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
 	m_bHitBullet = false;        // 弾が当たっているフラグ
@@ -90,7 +90,7 @@ CTile * CTile::GetHitTile(D3DXVECTOR3 pos)
 		{
 			if (pCollision != NULL)
 			{
-				pCollision->ReConnection();
+				pCollision->OutList();
 				pCollision->Uninit();
 				delete pCollision;
 				pCollision = NULL;
@@ -102,7 +102,7 @@ CTile * CTile::GetHitTile(D3DXVECTOR3 pos)
 
 	if (pCollision != NULL)
 	{
-		pCollision->ReConnection();
+		pCollision->OutList();
 		pCollision->Uninit();
 		delete pCollision;
 		pCollision = NULL;
@@ -290,7 +290,7 @@ void CTile::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pMod
 		pEffect->SetFloatArray("LightDirection", (float*)&D3DXVECTOR3(lightDir.x, lightDir.y, lightDir.z), 3);
 
 		// 視点位置
-		D3DXVECTOR3 eye = CManager::GetCamera()->GetPos();
+		D3DXVECTOR3 eye = CManager::GetCamera()->GetPosV();
 		pEffect->SetFloatArray("Eye", (float*)&D3DXVECTOR3(eye.x, eye.y, eye.z), 3);
 
 		// スペキュラの情報を送る
@@ -320,10 +320,12 @@ bool CTile::CollisionPlayer(void)
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
+	
 	if (m_bHitOld)
 	{
 		HitPlayerActionRelease();
 	}
+
 	// ヒットフラグの保存*当たってない
 	m_bHitOld = false;
 	return false;

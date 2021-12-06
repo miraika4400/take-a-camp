@@ -211,6 +211,6 @@ void CRenderer::DrawFPS(void)
 	wsprintf(str, "FPS:%d\n", GetFps());
 
 	// テキスト描画
-	m_pFont->DrawText(NULL, str, -1, &rect, DT_LEFT, D3DCOLOR_ARGB(0xff, 0xff, 0xff, 0xff));
+	m_pFont->DrawText(NULL, str, -1, &rect, DT_LEFT, D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f));
 }
 #endif

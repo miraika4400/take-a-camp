@@ -21,8 +21,9 @@
 // マクロ定義
 //=============================================================================
 #define ATTACK_AREA_EFFECT_POS (D3DXVECTOR3(0.0f,10.0f,0.0f))
-#define CHARGE_COUNT (60*1)	//チャージにかかる時間
-#define LEVEL_MAX    (4)	// 最大レベル
+#define CHARGE_COUNT (60*1)		// チャージにかかる時間
+#define LEVEL_MAX    (4)		// 最大レベル
+#define CANCEL_COUNT (60*0.1f)	// 攻撃キャンセルのカウント
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -30,15 +31,20 @@ CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 {
 	//初期化処理
 	m_nAttackType = CResourceCharacter::CHARACTER_KNIGHT;
-	m_pos			= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	memset(&m_AttackSquare, 0, sizeof(m_AttackSquare));
 	m_pPlayer		= NULL;
 	m_nLevel		= 0;
+	m_nCancelCount	= 0;
 	m_nChargeCount	= 0;
 	m_AttackState = ATTACK_STATE_NORMAL;
 	ZeroMemory(&m_apAttackArea, sizeof(m_apAttackArea));
 	ZeroMemory(&m_anChargeValue, sizeof(m_anChargeValue));
 	m_bAttack = false;	// 必殺フラグ
+	m_bChargeTile = false;
+	m_bCancel = false;
+	m_nAttackCount = 0;
+	m_nType = 0;
+
 }
 
 //=============================================================================
@@ -46,6 +52,24 @@ CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 //=============================================================================
 CAttackBased::~CAttackBased()
 {
+}
+
+//=============================================================================
+// 生成処理
+//=============================================================================
+CAttackBased * CAttackBased::Create(CPlayer * pPlayer, CResourceCharacter::CHARACTER_TYPE Type)
+{
+	//メモリ確保
+	CAttackBased* pAttack = NULL;
+	pAttack = new CAttackBased;
+
+	if (pAttack != NULL)
+	{
+		pAttack->SetPlayer(pPlayer);		//プレイヤークラス取得
+		pAttack->SetAttackType(Type);	//タイプセット
+		pAttack->Init();					//初期化処理
+	}
+	return pAttack;
 }
 
 //=============================================================================
@@ -100,11 +124,11 @@ void CAttackBased::Update(void)
 		{
 			m_nLevel = 0;
 			m_nChargeCount = 0;
-
 		}
-		
-		//プレイヤーが死んでいるとき
-		if (m_pPlayer->GetState() == CPlayer::PLAYER_STATE_DEATH)
+		//攻撃範囲のリセット
+		ResetAttackArea();
+		//チャージタイルフラグが立っている際
+		if (m_bChargeTile == true)
 		{
 			// チャージをしているプレイヤーの取得
 			CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
@@ -123,11 +147,30 @@ void CAttackBased::Update(void)
 				pColorTile = (CColorTile*)pColorTile->GetNext();
 			}
 		}
+
+		//キャンセルフラグが立っているか
+		if (m_bCancel == true)
+		{
+			//カウントアップ
+			m_nCancelCount++;
+
+			if (m_nCancelCount >= CANCEL_COUNT)
+			{
+				//キャンセルフラグを回収
+				m_bCancel = false;
+				//キャンセルカウント初期化
+				m_nCancelCount = 0;
+				//チャージカウント初期化
+				m_nChargeCount = 0;
+			}
+
+		}
 	}
 	break;
 
 	
-	case ATTACK_STATE_CHARGE:		//チャージ状態					
+	case ATTACK_STATE_CHARGE:		// チャージ状態	
+		VisualizationAttackArea();	// 攻撃範囲表示
 		Charge();					// チャージ処理
 		break;
 
@@ -135,16 +178,17 @@ void CAttackBased::Update(void)
 		AttackCreate();				// 攻撃生成処理
 		break;
 
-	case ATTACK_STATE_FINALATTACKWAITING:	// 必殺技待機状態			
+	case ATTACK_STATE_FINALATTACKWAITING:	// 必殺技待機状態	
+		VisualizationAttackArea();		// 攻撃範囲表示
 		m_nLevel = LEVEL_MAX - 1;		// レベルを最大値にする
 		break;
 
 	case ATTACK_STATE_FINALATTACK:		// 必殺技使用状態			
-		AttackCreate();				// 攻撃生成処理
+		AttackCreate();					// 攻撃生成処理
 		break;
 
-		//それ以外の状態
-	default:
+
+	default:							//それ以外の状態
 		m_AttackState = ATTACK_STATE_NORMAL;
 		break;
 	}
@@ -185,19 +229,24 @@ void CAttackBased::Attack(int AttackType)
 		{
 			//行列計算
 			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			//位置取得
+			D3DXVECTOR3 pos = m_pPlayer->GetPos();
+			//向き取得
+			D3DXVECTOR3 rot = m_pPlayer->GetRot();
+
 			//攻撃位置
 			D3DXVECTOR3 AttackPos = m_AttackSquare[m_nLevel].SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
-			CreatePos.x = ((cosf(m_rot.y)*AttackPos.x) + (sinf(m_rot.y)*AttackPos.z));
+			CreatePos.x = ((cosf(rot.y)*AttackPos.x) + (sinf(rot.y)*AttackPos.z));
 			CreatePos.y = 1 * AttackPos.y;
-			CreatePos.z = ((-sinf(m_rot.y)*AttackPos.x) + (cosf(m_rot.y)*AttackPos.z));
+			CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
 			//当たり判定生成
-			CBullet::Create(CreatePos + m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_pPlayer->GetPlayerNumber());
+			CBullet::Create(CreatePos + pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_pPlayer->GetPlayerNumber());
 
 			// 必殺技の打てるレベルなら
 			if (m_nLevel == LEVEL_MAX - 1)
 			{
 				// 色塗る処理
-				m_pPeintCollision[nAttack] = CPeintCollision::Create(CreatePos + m_pos, m_pPlayer->GetPlayerNumber());
+				m_pPeintCollision[nAttack] = CPeintCollision::Create(CreatePos + pos, m_pPlayer->GetPlayerNumber());
 			}
 		}
 	}
@@ -206,15 +255,35 @@ void CAttackBased::Attack(int AttackType)
 //=============================================================================
 // チャージフラグ処理関数
 //=============================================================================
-void CAttackBased::ChargeFlag(int nMaxLevel)
+void CAttackBased::ChargeFlag(void)
 {
 	//現在の状態が通常の場合
 	if (m_AttackState == ATTACK_STATE_NORMAL)
 	{
-		//チャージ状態に移行
-		m_AttackState = ATTACK_STATE_CHARGE;
-		//レベルの最大値の取得
-		m_nMaxLevel = nMaxLevel;
+		if (!m_bCancel)
+		{
+			// 当たっているタイルの取得
+			CColorTile*pHitTile = CColorTile::GetHitColorTile(m_pPlayer->GetPos());
+
+			//触れているタイルの識別(NULLチェック, カラーの確認)
+			if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_pPlayer->GetColorNumber())
+			{
+				//タイルがチャージ出来るか取得
+				if (pHitTile->ChargeFlag(m_pPlayer->GetPlayerNumber()))
+				{
+					//チャージタイルフラグを立てる
+					m_bChargeTile = true;
+					//チャージ状態に移行
+					m_AttackState = ATTACK_STATE_CHARGE;
+					//レベルの最大値の取得
+					m_nMaxLevel = pHitTile->GetStepNum() - 1;
+				}
+			}
+		}
+		else
+		{
+			m_nCancelCount = 0;
+		}
 	}
 }
 
@@ -252,10 +321,6 @@ void CAttackBased::AttackSwitch(void)
 	{
 		//攻撃状態に移行
 		m_AttackState = ATTACK_STATE_ATTACK;
-		//位置取得
-		SetPos(m_pPlayer->GetPos());
-		//向き取得
-		SetRot(m_pPlayer->GetRotDest());
 		//カウント初期化
 		m_nChargeCount = 0;
 	
@@ -281,34 +346,23 @@ void CAttackBased::AttackSwitch(void)
 }
 
 //=============================================================================
-// 攻撃キャンセルスイッチ関数
+// 必殺待機フラグ関数
 //=============================================================================
-void CAttackBased::CancelSwitch(void)
+void CAttackBased::AttackFinalFlag(void)
 {
-	//攻撃をしていなかったら
-	if (m_AttackState == ATTACK_STATE_CHARGE
-		|| m_AttackState== ATTACK_STATE_FINALATTACKWAITING)
+	//キャンセルフラグが立っていないか
+	if (!m_bCancel)
 	{
-		//通常状態に移行
-		m_AttackState = ATTACK_STATE_NORMAL;
-		// チャージをしているプレイヤーの取得
-		CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
-		// 攻撃範囲のリセット
-		ResetAttackArea();
-		while (pColorTile != NULL)
+		// 攻撃状態じゃないなら
+		if (m_AttackState == CAttackBased::ATTACK_STATE_NORMAL
+			|| m_AttackState == CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
 		{
-			//チャージをしているタイル取得
-			if (pColorTile->GetColorTileState() == CColorTile::COLOR_TILE_CHARGE
-				&&pColorTile->GetLasthitPlayerNum() == m_pPlayer->GetPlayerNumber())
-			{
-				//タイルステート
-				pColorTile->SetColorTileState(CColorTile::COLOR_TILE_NORMAL);
-				return;
-			}
-			// リストを進める
-			pColorTile = (CColorTile*)pColorTile->GetNext();
+			SetState(CAttackBased::ATTACK_STATE_FINALATTACKWAITING);
 		}
-
+	}
+	else
+	{
+		m_nCancelCount = 0;
 	}
 }
 
@@ -322,11 +376,41 @@ void CAttackBased::AttackFinalSwitch(void)
 	{
 		//必殺技使用状態に移行
 		m_AttackState = ATTACK_STATE_FINALATTACK;
-		//位置取得
-		SetPos(m_pPlayer->GetPos());
-		//向き取得
-		SetRot(m_pPlayer->GetRotDest());
 	}
+}
+
+//=============================================================================
+// 攻撃キャンセルスイッチ関数
+//=============================================================================
+void CAttackBased::CancelSwitch(void)
+{
+
+	//攻撃をチャージしていたら
+	if (m_AttackState == ATTACK_STATE_CHARGE)
+	{
+		// チャージをしているプレイヤーの取得
+		CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
+		while (pColorTile != NULL)
+		{
+			//チャージをしているタイル取得
+			if (pColorTile->GetColorTileState() == CColorTile::COLOR_TILE_CHARGE
+				&&pColorTile->GetLasthitPlayerNum() == m_pPlayer->GetPlayerNumber())
+			{
+				//タイルステート
+				pColorTile->SetColorTileState(CColorTile::COLOR_TILE_NORMAL);
+				break;
+			}
+			// リストを進める
+			pColorTile = (CColorTile*)pColorTile->GetNext();
+		}
+	}
+
+	//攻撃範囲のリセット
+	ResetAttackArea();
+	//攻撃キャンセル状態
+	m_bCancel = true;
+	//通常状態に移行
+	m_AttackState = ATTACK_STATE_NORMAL;
 }
 
 //=============================================================================
@@ -343,6 +427,48 @@ void CAttackBased::SetAttackSquare(CAttackManager::ATTACK_SQUARE_DATA AttackSqua
 CAttackManager::ATTACK_SQUARE_DATA CAttackBased::GetAttackSquare()
 {
 	return m_AttackSquare[m_nLevel];
+}
+//=============================================================================
+// 攻撃生成処理
+//=============================================================================
+void CAttackBased::AttackCreate(void)
+{
+	//攻撃フラグが立っているか
+	if (GetState() == ATTACK_STATE_ATTACK
+		|| GetState() == ATTACK_STATE_FINALATTACK)
+	{
+		//カウントアップ
+		m_nAttackCount++;
+
+		// 攻撃範囲の可視化
+		VisualizationAttackArea(m_nType);
+
+		//カウントが一定になったら
+		if (m_nAttackCount >= GetAttackSquare().nAttackFrame[m_nType])
+		{
+			//攻撃処理
+			Attack(m_nType);
+			//タイプが一定になったら
+			if (m_nType == MAX_HIT_TYPE)
+			{
+				//フラグの初期化
+				SetState(ATTACK_STATE_NORMAL);
+				//タイプ初期化
+				m_nType = 0;
+				//レベルの初期化
+				CAttackBased::SetLevel(0);
+			}
+			else
+			{
+				//次の攻撃タイプへ
+				m_nType++;
+			}
+			//カウント初期化
+			m_nAttackCount = 0;
+
+		}
+	}
+
 }
 
 //=============================================================================
@@ -361,18 +487,22 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 			//タイプが一致しているか
 			if (m_AttackSquare[m_nLevel].SquareData[nAttack].RangeType >= nAttackType + (int)CAttackManager::ATTACK_RANGE_HIT_1)
 			{
+				//位置取得
+				D3DXVECTOR3 pos = m_pPlayer->GetPos();
+				//向き取得
+				D3DXVECTOR3 rot = m_pPlayer->GetRot();
 				//行列計算
 				D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 				//攻撃位置
 				D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
-				CreatePos.x = ((cosf(GetRot().y)*AttackPos.x) + (sinf(GetRot().y)*AttackPos.z));
+				CreatePos.x = ((cosf(rot.y)*AttackPos.x) + (sinf(rot.y)*AttackPos.z));
 				CreatePos.y = 1 * AttackPos.y;
-				CreatePos.z = ((-sinf(GetRot().y)*AttackPos.x) + (cosf(GetRot().y)*AttackPos.z));
+				CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
 
 				if (m_apAttackArea[nAttack] != NULL)
 				{
 					m_apAttackArea[nAttack]->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
-					m_apAttackArea[nAttack]->SetPos(CreatePos + m_pos + ATTACK_AREA_EFFECT_POS);
+					m_apAttackArea[nAttack]->SetPos(CreatePos + pos + ATTACK_AREA_EFFECT_POS);
 					m_apAttackArea[nAttack]->SetDrawFlag(true);
 				}
 			}
@@ -387,32 +517,28 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 	}
 	else
 	{
-		CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPlayer()->GetPosDest());
-		if (pHitTile != NULL)
+		if (m_nLevel < 0)
 		{
-			if (m_nLevel < 0)
-			{
-				return;
-			}
-			// タイプが一致しているか
-			for (int nAttack = 0; nAttack < GetAttackSquare().nMaxHitRange; nAttack++)
-			{
-				//行列計算
-				D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-				//攻撃位置
-				D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
-				CreatePos.x = ((cosf(GetPlayer()->GetRotDest().y)*AttackPos.x) + (sinf(GetPlayer()->GetRotDest().y)*AttackPos.z));
-				CreatePos.y = 1 * AttackPos.y;
-				CreatePos.z = ((-sinf(GetPlayer()->GetRotDest().y)*AttackPos.x) + (cosf(GetPlayer()->GetRotDest().y)*AttackPos.z));
+			return;
+		}
+		// タイプが一致しているか
+		for (int nAttack = 0; nAttack < GetAttackSquare().nMaxHitRange; nAttack++)
+		{
+			//行列計算
+			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			//攻撃位置
+			D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
+			CreatePos.x = ((cosf(GetPlayer()->GetRotDest().y)*AttackPos.x) + (sinf(GetPlayer()->GetRotDest().y)*AttackPos.z));
+			CreatePos.y = 1 * AttackPos.y;
+			CreatePos.z = ((-sinf(GetPlayer()->GetRotDest().y)*AttackPos.x) + (cosf(GetPlayer()->GetRotDest().y)*AttackPos.z));
 
-				if (m_apAttackArea[nAttack] != NULL)
-				{
-					m_apAttackArea[nAttack]->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
-					m_apAttackArea[nAttack]->SetPos(CreatePos + GetPlayer()->GetPos() + ATTACK_AREA_EFFECT_POS);
-					m_apAttackArea[nAttack]->SetDrawFlag(true);
-				}
-
+			if (m_apAttackArea[nAttack] != NULL)
+			{
+				m_apAttackArea[nAttack]->SetColor(GET_COLORMANAGER->GetIconColor(GetPlayer()->GetColorNumber()));
+				m_apAttackArea[nAttack]->SetPos(CreatePos + GetPlayer()->GetPos() + ATTACK_AREA_EFFECT_POS);
+				m_apAttackArea[nAttack]->SetDrawFlag(true);
 			}
+
 		}
 	}
 }
@@ -445,7 +571,7 @@ void CAttackBased::ReleaseAttakcArea(void)
 	{
 		if (m_apAttackArea[nCntArea] != NULL)
 		{
-			m_apAttackArea[nCntArea]->ReConnection();
+			m_apAttackArea[nCntArea]->OutList();
 			m_apAttackArea[nCntArea]->Uninit();
 			delete m_apAttackArea[nCntArea];
 			m_apAttackArea[nCntArea] = NULL;
