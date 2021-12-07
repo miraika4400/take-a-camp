@@ -212,7 +212,6 @@ void CItem::CollisionItem(void)
 		{
 			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 			{
-
 				m_bDeath = true;
 				switch (m_ItemEffect)
 				{
@@ -225,14 +224,12 @@ void CItem::CollisionItem(void)
 				default:
 					break;
 				}
-
 				//‰e‚ÌI—¹ˆ—
 				if (m_pShadow != NULL)
 				{
 					m_pShadow->Uninit();
 					m_pShadow = NULL;
 				}
-
 				return;
 			}
 		}

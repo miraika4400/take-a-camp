@@ -62,12 +62,12 @@ private:
 	D3DXVECTOR3 m_rot;		//角度
 	D3DXVECTOR3 m_move;		//移動
 
-	ITEM_EFFECT m_ItemEffect;			//アイテムステータス
+	ITEM_EFFECT m_ItemEffect;	//アイテムステータス
 	CCollision *m_pCollision;	//コリジョンのポインタ
 	CPlayer *m_pPlayer;			//プレイヤーのポインタ
 	CShadow *m_pShadow;			//影のポインタ
-	int m_nPlayerNum;		//プレイヤーナンバー
-	int m_nItemCnt;			//取得後のタイマー
+	int m_nPlayerNum;			//プレイヤーナンバー
+	int m_nItemCnt;				//取得後のタイマー
 
 	bool m_bUp;				//上限判定
 	bool m_bGet;			//取得フラグ
