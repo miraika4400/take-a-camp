@@ -57,7 +57,6 @@ public:
 	typedef enum
 	{
 		PLAYER_STATE_NORMAL = 0,	//’Êíó‘Ô
-		PLAYER_STATE_REVERSE,		//‘€ì‹t“]
 		PLAYER_STATE_STOP,			//’âŽ~ó‘Ô
 		PLAYER_STATE_DEATH			//Ž€–Só‘Ô
 	}PLAYER_STATE;

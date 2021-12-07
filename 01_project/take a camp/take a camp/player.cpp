@@ -255,22 +255,6 @@ void CPlayer::Update(void)
 	//ƒXƒe[ƒg‚²‚Æ‚Ìˆ—
 	switch (m_PlayerState)
 	{
-	case PLAYER_STATE_REVERSE:
-	{
-		m_ReverseCount++;
-		if (m_ReverseCount % 180 == 0)
-		{
-			m_ReverseCount = 0;
-			SetState(PLAYER_STATE_NORMAL);
-		}
-
-		if (m_ReverseCount % 15 == 0)
-		{
-			D3DXVECTOR3 pos = GetPos();
-			pos.y += 10.0f;
-			CParticle::Create(pos, D3DXVECTOR3((float)(rand() % 16 - 8)/100.0f, 0.25f, (float)(rand() % 16 - 8) / 100.0f), D3DXVECTOR3(7.0f, 7.0f, 7.0f), 500, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_GURUGURU)->SetAddRotValue(1.2f);
-		}
-	}
 	case PLAYER_STATE_NORMAL:	//’Êíó‘Ô
 
 		//UŒ‚‰Â”Ûƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚é‚©
@@ -464,7 +448,7 @@ void CPlayer::ControlMove(void)
 			D3DXVECTOR2 ActMove;
 
 			//‘€ì‹t“]ó‘Ô‚¶‚á‚È‚¢Žž
-			if (m_PlayerState != PLAYER_STATE_REVERSE)
+			if (m_ItemState != ITEM_STATE_REVERSE)
 			{
 				ActMove = actMove;
 				if (m_pActRange->ActMove(((int)ActMove.x), ((int)ActMove.y)))
@@ -719,20 +703,18 @@ void CPlayer::ManageItemState(void)
 		}
 		break;
 	case ITEM_STATE_REVERSE:
-		CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
-
-		while (pPlayer != NULL)
+		m_ReverseCount++;
+		if (m_ReverseCount % 180 == 0)
 		{
-			if (pPlayer->m_PlayerState != PLAYER_STATE_DEATH)
-			{
-				if (pPlayer->GetPlayerNumber() != m_nPlayerNumber)
-				{
-					pPlayer->SetState(PLAYER_STATE_REVERSE);
-					m_ItemState = ITEM_STATE_NONE;
-					//return;
-				}
-			}
-			pPlayer = (CPlayer*)pPlayer->GetNext();
+			m_ReverseCount = 0;
+			m_ItemState = ITEM_STATE_NONE;
+		}
+
+		if (m_ReverseCount % 15 == 0)
+		{
+			D3DXVECTOR3 pos = GetPos();
+			pos.y += 10.0f;
+			CParticle::Create(pos, D3DXVECTOR3((float)(rand() % 16 - 8) / 100.0f, 0.25f, (float)(rand() % 16 - 8) / 100.0f), D3DXVECTOR3(7.0f, 7.0f, 7.0f), 500, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_GURUGURU)->SetAddRotValue(1.2f);
 		}
 		break;
 	}

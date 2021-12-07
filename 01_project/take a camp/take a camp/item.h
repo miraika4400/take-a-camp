@@ -32,8 +32,8 @@ public:
 	//アイテム効果
 	typedef enum
 	{
-		ITEM_EFFECT_DASH = 0,//加速
-		ITEM_EFFECT_REVERSE,		//操作逆転
+		ITEM_EFFECT_DASH = 0,	//加速
+		ITEM_EFFECT_REVERSE,	//操作逆転
 		ITEM_EFFECT_MAX
 	}ITEM_EFFECT;
 
@@ -50,7 +50,8 @@ public:
 	void MoveUpdate(void);	//移動更新
 	void RotUpdate(void);	//角度更新
 
-	void CollisionItem(void);	//当たり判定
+	void CollisionItem(void);		// 当たり判定
+	virtual void ItemEffect(CPlayer*pPlayer);	// アイテム効果
 
 	void SetItemEffect(ITEM_EFFECT ItemState) { m_ItemEffect = ItemState; }
 	ITEM_EFFECT GetItemState(void) { return m_ItemEffect; }
