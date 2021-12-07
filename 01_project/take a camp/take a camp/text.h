@@ -60,6 +60,8 @@ private:
 	DWORD m_format;			//整列方法変換用変数
 	char m_fontName[128];	//フォントの名前
 	char m_str[512];		//表示する文字列
+	int nCountBite;
+	int nShowTime;
 };
 
 #endif

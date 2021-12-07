@@ -61,6 +61,7 @@ public:
 		TEXTURE_TILE_CHARGE,		// タイルのチャージ
 		TEXTURE_ICON_BG,			// アイコンの背景
 		TEXTURE_SWORD_ICON,		 	// 剣アイコン
+		TEXTURE_SPEECHBUBBLE,		// 吹き出し
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類

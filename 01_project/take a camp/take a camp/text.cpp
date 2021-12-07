@@ -30,6 +30,8 @@ CText::CText()
 	m_format = NULL;
 	ZeroMemory(&m_fontName, sizeof(m_fontName));
 	ZeroMemory(&m_str, sizeof(m_str));
+	nCountBite = 0;
+	nShowTime = 0;
 }
 
 //=============================
@@ -104,8 +106,6 @@ void CText::Update(void)
 	
 }
 
-static int nCount = 0;
-static int nTime = 0;
 //=============================
 // •`‰æˆ—
 //=============================
@@ -113,22 +113,22 @@ void CText::Draw(void)
 {
 	char disp[512];
 
-	strncpy(disp, m_str/*[nCount]*/, nCount);
-	disp[nCount] = '\0';
+	strncpy(disp, m_str, nCountBite);
+	disp[nCountBite] = '\0';
 
 	RECT rect;
-	SetRect(&rect, 10, 10, 500, 500);
-	//m_pFont->DrawText(NULL, disp, -1, &rect, DT_CALCRECT | DT_LEFT, m_col);
-	//OffsetRect(&rect, (int)m_pos.x, (int)m_pos.y);
-	m_pFont->DrawText(NULL, disp, -1, &rect, DT_LEFT| DT_WORDBREAK, m_col);
+	SetRect(&rect, -200, -80, 220, 500);
 
-	if (nCount < 500)
+	OffsetRect(&rect, (int)m_pos.x, (int)m_pos.y);
+	m_pFont->DrawText(NULL, disp, -1, &rect, DT_LEFT | DT_WORDBREAK, m_col);
+
+	if (nCountBite < 500)
 	{
-		if (nTime % 1 == 0)
+		if (nShowTime % 1 == 0)
 		{
-			nCount++;
+			nCountBite += 2;
 		}
-		nTime++;
+		nShowTime++;
 	}
 
 }

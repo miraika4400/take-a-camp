@@ -69,14 +69,14 @@ HRESULT CTutorial::Init(void)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-	// テクスチャの生成
-	m_pTexture[0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_TUTORIAL);
+	//// テクスチャの生成
+	//m_pTexture[0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SPEECHBUBBLE);
 
-	m_pPolygon = CPolygon::Create(D3DXVECTOR3(1100.0f, SCREEN_HEIGHT / 2, 0.0f),
-		D3DXVECTOR3(100.0f, 600.0f, 0.0f),
+	m_pPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 600.0f, 0.0f),
+		D3DXVECTOR3(512.0f, 256.0f, 0.0f),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
-	//m_pPolygon->BindTexture(m_pTexture[0]);
+	m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SPEECHBUBBLE));
 
 	// 背景の設定
 	CBg::Create();
@@ -88,7 +88,7 @@ HRESULT CTutorial::Init(void)
 	// ライトクラスの生成
 	CManager::SetLight();
 
-	CText::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2, 0.0f), 50.0f, 20.0f, "好きな食べ物はメロンと梅干しとサーモンと生ハムで、嫌いな食べ物は野菜全般とみずみずしい食べ物です。", CText::ALIGN_LEFT, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+	CText::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 600.0f, 0.0f), 25.0f, 10.0f, "好きな食べ物はメロンと梅干しとサーモンと生ハムで、嫌いな食べ物は野菜全般とみずみずしい食べ物です。", CText::ALIGN_LEFT, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
 	return S_OK;
 }
 
