@@ -8,7 +8,7 @@
 //=============================================================================
 // ヘッダファイルのインクルード
 //=============================================================================
-#include "attack_knight.h"
+#include "attack_wizard.h"
 #include "tile.h"
 #include "player.h"
 #include "attack.h"
@@ -16,7 +16,7 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CAttackKnight::CAttackKnight()
+CAttackWizard::CAttackWizard()
 {
 	m_nAttackCount = 0;
 	m_nType = 0;
@@ -25,32 +25,32 @@ CAttackKnight::CAttackKnight()
 //=============================================================================
 // デストラクタ
 //=============================================================================
-CAttackKnight::~CAttackKnight()
+CAttackWizard::~CAttackWizard()
 {
 }
 
 //=============================================================================
 // 生成処理
 //=============================================================================
-CAttackKnight * CAttackKnight::Create(CPlayer* pPlayer)
+CAttackWizard * CAttackWizard::Create(CPlayer* pPlayer)
 {
 	//メモリ確保
-	CAttackKnight* pAttackKnight = NULL;
-	pAttackKnight = new CAttackKnight;
+	CAttackWizard* pAttackWizard = NULL;
+	pAttackWizard = new CAttackWizard;
 
-	if (pAttackKnight != NULL)
+	if (pAttackWizard != NULL)
 	{
-		pAttackKnight->SetType(CResourceCharacter::CHARACTER_KNIGHT);
-		pAttackKnight->SetPlayer(pPlayer);	// プレイヤークラス取得
-		pAttackKnight->Init();				// 初期化処理
+		pAttackWizard->SetType(CResourceCharacter::CHARACTER_WIZARD);
+		pAttackWizard->SetPlayer(pPlayer);	// プレイヤークラス取得
+		pAttackWizard->Init();				// 初期化処理
 	}
-	return pAttackKnight;
+	return pAttackWizard;
 }
 
 //=============================================================================
 // 攻撃生成関数
 //=============================================================================
-void CAttackKnight::AttackCreate(void)
+void CAttackWizard::AttackCreate(void)
 {
 	//攻撃フラグが立っているか
 	if (GetState() == ATTACK_STATE_ATTACK

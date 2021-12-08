@@ -318,9 +318,6 @@
     <ClCompile Include="resource_model_hierarchy.cpp">
       <Filter>ソース ファイル\03_Resource</Filter>
     </ClCompile>
-    <ClCompile Include="total_score.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="peint_collision.cpp">
       <Filter>ソース ファイル\08_Map\Tile</Filter>
     </ClCompile>
@@ -386,6 +383,15 @@
     </ClCompile>
     <ClCompile Include="reverse_item.cpp">
       <Filter>ソース ファイル\07_GameModel\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_lancer.cpp">
+      <Filter>ソース ファイル\07_GameModel\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="total_score.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_wizard.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -575,9 +581,6 @@
     <ClInclude Include="resource_model_hierarchy.h">
       <Filter>ヘッダー ファイル\03_Resource</Filter>
     </ClInclude>
-    <ClInclude Include="total_score.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="bg.h">
       <Filter>ヘッダー ファイル\07_GameModel</Filter>
     </ClInclude>
@@ -643,6 +646,15 @@
     </ClInclude>
     <ClInclude Include="reverse_item.h">
       <Filter>ヘッダー ファイル\07_GameModel\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_lancer.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="total_score.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_wizard.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Attack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
