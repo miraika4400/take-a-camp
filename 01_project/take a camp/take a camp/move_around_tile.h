@@ -36,6 +36,8 @@ public:
 
 	static void	Create(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
 	void		MoveRot(bool bReversal);
+	void		TileCheck(void);
+
 private:
 	// ƒƒ“ƒo•Ï”
 };
