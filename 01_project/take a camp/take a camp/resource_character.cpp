@@ -157,6 +157,20 @@ void CResourceCharacter::Load(void)
 				fscanf(pFile, " %*c %d", &nMoveFrame);
 				m_aCharacterData[nCntCharacter].nMoveFrameDash = nMoveFrame;
 			}
+			// èâìÆó 
+			else if (JudgeStr("MOVE_FRAME_INITIAL"))
+			{
+				int nMoveFrame = 0;
+				fscanf(pFile, " %*c %d", &nMoveFrame);
+				m_aCharacterData[nCntCharacter].nMoveFrameInitial = nMoveFrame;
+			}
+			//â¡ë¨Ç‹Ç≈ÇÃâÒêî
+			else if (JudgeStr("MOVE_COUNT"))
+			{
+				int nMoveFrame = 0;
+				fscanf(pFile, " %*c %d", &nMoveFrame);
+				m_aCharacterData[nCntCharacter].nMoveCount = nMoveFrame;
+			}
 			// çUåÇÉpÉX
 			else if (JudgeStr("ATTACK_PATH"))
 			{

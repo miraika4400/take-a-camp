@@ -51,7 +51,7 @@
 #define ROT_FACING_01			(180)							// 回転の基準
 #define ROT_FACING_02			(360)							// 回転向き
 #define RIM_POWER				(2.5f)							// リムライトの強さ
-#define DASH_FRAME				(300)							// ダッシュ時有効フレーム数
+#define DASH_FRAME				(60*5)							// ダッシュ時有効フレーム数
 
 //*****************************
 // 静的メンバ変数宣言
@@ -75,7 +75,9 @@ CPlayer::CPlayer()
 	m_nPlayerNumber = 0;
 	m_nInvincibleCount = 0;
 	m_nControllNum = 0;
+	m_nMoveCount = 0;
 	m_bMove = false;
+	m_bOldMove = false;
 	m_bInvincible = false;
 	m_PlayerState = PLAYER_STATE_NORMAL;
 	m_pCollision = NULL;
@@ -83,7 +85,7 @@ CPlayer::CPlayer()
 	m_pActRange = NULL;
 	memset(&m_Move, 0, sizeof(D3DXVECTOR3));
 	memset(&m_RespawnPos, 0, sizeof(D3DXVECTOR3));
-	m_MoveCount = 0;
+	m_nMoveFrameCount = 0;
 	m_pAttack = NULL;
 	m_ItemState = ITEM_STATE_NONE;	// アイテム用ステート
 	m_nDashCnt = 1;					// 速度アップカウント
@@ -91,6 +93,7 @@ CPlayer::CPlayer()
 	m_bAttack = false;
 	m_bFinalAttack = false;
 	m_pKillCount = NULL;
+	m_nMoveFrame = 0;
 	m_nMoveFrameData = 0;
 	m_nMoveFrameDataDash = 0;
 }
@@ -203,8 +206,10 @@ HRESULT CPlayer::Init(void)
 	// アイテムステート
 	m_ItemState = ITEM_STATE_NONE;
 
-	m_nMoveFrame = m_nMoveFrameData;
-	m_nDashCnt = 1;		//速度アップカウント
+	//移動速度の取得
+	m_nMoveFrame = m_nMoveFrameInitialData;
+	//速度アップカウント
+	m_nDashCnt = 0;		
 	return S_OK;
 }
 
@@ -215,8 +220,11 @@ void CPlayer::InitCharacterData(void)
 {
 	CResourceCharacter::CharacterData charaData = CResourceCharacter::GetResourceCharacter()->GetCharacterData(GetCharacterType());
 	// キャラデータの反映
-	m_nMoveFrameData = charaData.nMoveFrame;         // 移動時フレーム数
-	m_nMoveFrameDataDash = charaData.nMoveFrameDash; // 移動時フレーム数*ダッシュ時
+	m_nMoveFrameData = charaData.nMoveFrame;				// 移動時フレーム数
+	m_nMoveFrameDataDash = charaData.nMoveFrameDash;		// 移動時フレーム数*ダッシュ時
+	m_nMoveFrameInitialData = charaData.nMoveFrameInitial;	// 初動時の移動フレーム数
+	m_nMoveCountData = charaData.nMoveCount;				// 加速までの回数
+
 	// 既存の攻撃の破棄
 	if (m_pAttack != NULL)
 	{
@@ -305,6 +313,8 @@ void CPlayer::Update(void)
 		Respawn();
 		break;
 	}
+	//移動状況
+	m_bOldMove = m_bMove;
 
 	//死亡している以外の時移動計算処理
 	if (m_PlayerState != PLAYER_STATE_DEATH) Move();
@@ -406,22 +416,31 @@ void CPlayer::Move(void)
 		D3DXVECTOR3 pos = GetPos();
 
 		//移動計算
-		pos += (m_Move - pos) / (float)(m_nMoveFrame - m_MoveCount);
+		pos += (m_Move - pos) / (float)(m_nMoveFrame - m_nMoveFrameCount);
 
 		//位置設定
 		SetPos(pos);
 
 		//カウントアップ
-		m_MoveCount++;
+		m_nMoveFrameCount++;
 
 		//カウントが一定に達する
-		if (m_MoveCount >= m_nMoveFrame)
+		if (m_nMoveFrameCount >= m_nMoveFrame)
 		{
+
+			//初動加速処理
+			if (m_nMoveCount<m_nMoveCountData)
+			{
+				m_nMoveFrame += (m_nMoveFrameData - m_nMoveFrame) / (float)(5 - m_nMoveCount);
+
+				m_nMoveCount++;
+			}
 			//カウント初期化
-			m_MoveCount = 0;
+			m_nMoveFrameCount = 0;
 			//移動できるように
 			m_bMove = true;
 
+			//フラグの状態を伝える
 			m_pActRange->SetMove(m_bMove);
 		}
 	}
@@ -441,15 +460,24 @@ void CPlayer::ControlMove(void)
 		// スティックの座標
 		D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
 
+
 		// 移動値
 		auto MoveValue = [&](D3DXVECTOR3 move, D3DXVECTOR2 actMove, float fRotDistY)
 		{
 			//プレイヤーの移動方向取得変数
 			D3DXVECTOR2 ActMove;
+			
+			//プレイヤーの加速度を初期化
+			if (m_bOldMove)
+			{
+				m_nMoveFrame = m_nMoveFrameInitialData;
+				m_nMoveCount = 0;
+			}
 
 			//操作逆転状態じゃない時
 			if (m_ItemState != ITEM_STATE_REVERSE)
 			{
+
 				ActMove = actMove;
 				if (m_pActRange->ActMove(((int)ActMove.x), ((int)ActMove.y)))
 				{
@@ -686,7 +714,6 @@ void CPlayer::ManageItemState(void)
 	switch (m_ItemState)
 	{
 	case ITEM_STATE_NONE:
-		m_nMoveFrame = m_nMoveFrameData;
 		break;
 	case ITEM_STATE_DASH:
 

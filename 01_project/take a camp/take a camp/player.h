@@ -128,32 +128,36 @@ private:
 	static int m_anControllKey[MAX_PLAYER][KEY_MAX];
 
 	CKillCount * m_pKillCount;	// プレイヤーのキルカウントポインタ
-	ITEM_STATE m_ItemState;		// アイテムステータス
-	int m_nMoveFrame;			// 移動速度
-	int m_nDashCnt;				// 速度アップカウント
 	CAttackBased* m_pAttack;	// 攻撃用クラス
 	int m_nPlayerNumber;		// プレイヤー番号
+	D3DXCOLOR	 m_color;		// 色
 	int m_nColor;				// 色ナンバー
 	int m_nControllNum;         // コントロール番号
 	bool m_bController;         // コントローラー操作かキーボード操作か
 	bool m_bMove;				// 移動可否フラグ
+	bool m_bOldMove;			// 前回の移動可否フラグの状態
 	bool m_bAttack;				// 攻撃可否フラグ
 	bool m_bFinalAttack;		// 必殺可否フラグ
 	bool m_bInvincible;			// 無敵フラグ
 	int m_nInvincibleCount;		// 無敵時間のカウント
 	PLAYER_STATE m_PlayerState;	// プレイヤーステータス
 	int	m_nRespawnCount;		// リスポーンまでのカウント
-	D3DXVECTOR3	 m_Move;		// 移動量
-	int			 m_MoveCount;	// 移動時のカウント
-	int          m_nMoveFrameData;		// 移動時フレーム数
-	int          m_nMoveFrameDataDash;	// 移動時のフレーム数*ダッシュ時
-	int			m_ReverseCount;	// 操作反転カウント
-	D3DXCOLOR	 m_color;		// 色
+	D3DXVECTOR3	m_Move;					// 移動量
+	int			m_nMoveCount;			// 移動回数
+	int			m_nMoveFrame;			// 移動速度
+	int			m_nMoveCountData;		// 加速までの移動回数保存
+	int			m_nMoveFrameInitialData;// 移動時初動フレーム数保存
+	int			m_nMoveFrameData;		// 移動時フレーム数保存
+	int			m_nMoveFrameDataDash;	// 移動時フレーム数*ダッシュ時保存
+	int			m_nMoveFrameCount;		// 移動時カウント
+	ITEM_STATE m_ItemState;		// アイテムステータス
+	int	m_ReverseCount;			// アイテム効果 操作反転カウント
+	int m_nDashCnt;				// アイテム効果 速度アップカウント
 	CCollision * m_pCollision;	// 当たり判定
 	CActRange *	 m_pActRange;	// 行動判定
 	D3DXVECTOR3  m_rotDest;		// 回転(目標の値)
 	D3DXVECTOR3  m_RespawnPos;	// リスポーン位置
-	CSkillgauge * m_pSkillgauge;                        // 必殺技ゲージ
+	CSkillgauge * m_pSkillgauge;// 必殺技ゲージ
 };
 
 #endif
