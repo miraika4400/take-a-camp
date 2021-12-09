@@ -55,6 +55,8 @@ public:
 		CResourceModelHierarchy::MODEL_HIERARCHY_TYPE modelType; // モデルタイプ番号
 		int nMoveFrame;                        // 移動フレーム数
 		int nMoveFrameDash;                    // 移動フレーム数*ダッシュ時
+		int nMoveFrameInitial;				   // 初動フレーム数
+		int nMoveCount;						   // 移動速度までの回数
 		std::string attackTextPath;            // 攻撃テキストのパス
 		std::string finalAttackPath;           // 必殺技テキストのパス
 		int nFinalAttackTime;                  // 必殺技発動可能時間

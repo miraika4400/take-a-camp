@@ -92,7 +92,6 @@ private:
 	//============
 	static int m_nIDAll;                   // 生成したポリゴン数
 	int     m_nNumID;                      // 生成したポリゴンの配列
-	OBJTYPE m_type;                        // オブジェクトタイプ
 	int     m_nPriority;                   // プライオリティ
 	bool    m_bReleasFlag;                 // 削除フラグ
 
