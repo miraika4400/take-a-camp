@@ -8,6 +8,9 @@
 // ヘッダファイルのインクルード
 //=============================================================================
 #include "attack.h"
+#include "attack_knight.h"
+#include "attack_wizard.h"
+#include "attack_lancer.h"
 #include "tile.h"
 #include "resource_attack.h"
 #include "player.h"
@@ -30,7 +33,6 @@
 CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 {
 	//初期化処理
-	m_nAttackType = CResourceCharacter::CHARACTER_KNIGHT;
 	memset(&m_AttackSquare, 0, sizeof(m_AttackSquare));
 	m_pPlayer		= NULL;
 	m_nLevel		= 0;
@@ -61,14 +63,29 @@ CAttackBased * CAttackBased::Create(CPlayer * pPlayer, CResourceCharacter::CHARA
 {
 	//メモリ確保
 	CAttackBased* pAttack = NULL;
-	pAttack = new CAttackBased;
 
-	if (pAttack != NULL)
+	switch (Type)
 	{
-		pAttack->SetPlayer(pPlayer);		//プレイヤークラス取得
-		pAttack->SetAttackType(Type);	//タイプセット
-		pAttack->Init();					//初期化処理
+	case CResourceCharacter::CHARACTER_KNIGHT:
+		pAttack = CAttackKnight::Create(pPlayer);
+		break;
+	case CResourceCharacter::CHARACTER_LANCER:
+		pAttack = CAttackLancer::Create(pPlayer);
+		break;
+	case CResourceCharacter::CHARACTER_WIZARD:
+		pAttack = CAttackWizard::Create(pPlayer);
+		break;
+
+	default:
+		break;
 	}
+
+	//pAttack = new CAttackBased;
+	//if (pAttack != NULL)
+	//{
+	//	pAttack->SetPlayer(pPlayer);		//プレイヤークラス取得
+	//	pAttack->Init();					//初期化処理
+	//}
 	return pAttack;
 }
 
@@ -89,7 +106,7 @@ HRESULT CAttackBased::Init(void)
 		}
 		
 		// チャージ時間の取得
-		m_anChargeValue[nLevel] = CResourceCharacter::GetResourceCharacter()->GetCharacterData(GetAttackType()).anChargeTime[nLevel];
+		m_anChargeValue[nLevel] = CResourceCharacter::GetResourceCharacter()->GetCharacterData(m_nAttackType).anChargeTime[nLevel];
 	}
 
 	for(int nCntArea = 0 ; nCntArea < nMaxAttackNum; nCntArea++)
@@ -201,21 +218,6 @@ void CAttackBased::Draw(void)
 {
 }
 
-//=============================================================================
-// 攻撃タイプセッター関数
-//=============================================================================
-void CAttackBased::SetAttackType(CResourceCharacter::CHARACTER_TYPE AttackType)
-{
-	m_nAttackType = AttackType;
-}
-
-//=============================================================================
-// 攻撃タイプゲッター関数
-//=============================================================================
-CResourceCharacter::CHARACTER_TYPE CAttackBased::GetAttackType(void)
-{
-	return m_nAttackType;
-}
 
 //=============================================================================
 // 攻撃関数
@@ -414,21 +416,6 @@ void CAttackBased::CancelSwitch(void)
 }
 
 //=============================================================================
-// 攻撃マスデータゲッター関数
-//=============================================================================
-void CAttackBased::SetAttackSquare(CAttackManager::ATTACK_SQUARE_DATA AttackSquare)
-{
-	m_AttackSquare[m_nLevel] = AttackSquare;
-}
-
-//=============================================================================
-// 攻撃マスデータゲッター関数
-//=============================================================================
-CAttackManager::ATTACK_SQUARE_DATA CAttackBased::GetAttackSquare()
-{
-	return m_AttackSquare[m_nLevel];
-}
-//=============================================================================
 // 攻撃生成処理
 //=============================================================================
 void CAttackBased::AttackCreate(void)
@@ -444,7 +431,7 @@ void CAttackBased::AttackCreate(void)
 		VisualizationAttackArea(m_nType);
 
 		//カウントが一定になったら
-		if (m_nAttackCount >= GetAttackSquare().nAttackFrame[m_nType])
+		if (m_nAttackCount >= m_AttackSquare[m_nLevel].nAttackFrame[m_nType])
 		{
 			//攻撃処理
 			Attack(m_nType);
@@ -472,6 +459,15 @@ void CAttackBased::AttackCreate(void)
 }
 
 //=============================================================================
+// 攻撃マスデータゲッター関数
+//=============================================================================
+CAttackManager::ATTACK_SQUARE_DATA CAttackBased::GetAttackSquare()
+{
+	return m_AttackSquare[m_nLevel];
+}
+
+
+//=============================================================================
 // 攻撃範囲の枠の色を変える処理
 // Akuthor: 増澤 未来
 //=============================================================================
@@ -482,7 +478,7 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 		|| m_AttackState == ATTACK_STATE_FINALATTACK)
 	{
 		//タイプが一致しているか
-		for (int nAttack = 0; nAttack < GetAttackSquare().nMaxHitRange; nAttack++)
+		for (int nAttack = 0; nAttack < m_AttackSquare[m_nLevel].nMaxHitRange; nAttack++)
 		{
 			//タイプが一致しているか
 			if (m_AttackSquare[m_nLevel].SquareData[nAttack].RangeType >= nAttackType + (int)CAttackManager::ATTACK_RANGE_HIT_1)
@@ -494,7 +490,7 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 				//行列計算
 				D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 				//攻撃位置
-				D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
+				D3DXVECTOR3 AttackPos = m_AttackSquare[m_nLevel].SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
 				CreatePos.x = ((cosf(rot.y)*AttackPos.x) + (sinf(rot.y)*AttackPos.z));
 				CreatePos.y = 1 * AttackPos.y;
 				CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
@@ -522,12 +518,12 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 			return;
 		}
 		// タイプが一致しているか
-		for (int nAttack = 0; nAttack < GetAttackSquare().nMaxHitRange; nAttack++)
+		for (int nAttack = 0; nAttack < m_AttackSquare[m_nLevel].nMaxHitRange; nAttack++)
 		{
 			//行列計算
 			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 			//攻撃位置
-			D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
+			D3DXVECTOR3 AttackPos = m_AttackSquare[m_nLevel].SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
 			CreatePos.x = ((cosf(GetPlayer()->GetRotDest().y)*AttackPos.x) + (sinf(GetPlayer()->GetRotDest().y)*AttackPos.z));
 			CreatePos.y = 1 * AttackPos.y;
 			CreatePos.z = ((-sinf(GetPlayer()->GetRotDest().y)*AttackPos.x) + (cosf(GetPlayer()->GetRotDest().y)*AttackPos.z));

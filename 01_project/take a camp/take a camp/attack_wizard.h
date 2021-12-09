@@ -1,11 +1,11 @@
 //=============================================================================
 //
-// 攻撃範囲 タイプ騎士 [attack_knight.h]
+// 攻撃範囲 タイプ魔法使い [attack_wizard.h]
 // Author : 吉田悠人
 //
 //=============================================================================
-#ifndef _ATTACK_KNIGHT_H_
-#define _ATTACK_KNIGHT_H_
+#ifndef _ATTACK_WIZARD_H_
+#define _ATTACK_WIZARD_H_
 
 //=============================================================================
 // ヘッダファイルのインクルード
@@ -16,14 +16,13 @@
 //=============================================================================
 // クラス定義
 //=============================================================================
-class CAttackKnight : public CAttackBased
+class CAttackWizard : public CAttackBased
 {
 public:
 	//関数定義
-	CAttackKnight();
-	~CAttackKnight();
-
-	static CAttackKnight *Create(CPlayer* pPlayer);
+	CAttackWizard();
+	~CAttackWizard();
+	static CAttackWizard *Create(CPlayer* pPlayer);
 
 private:
 	void	AttackCreate(void);	//攻撃生成処理
