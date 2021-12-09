@@ -17,6 +17,12 @@
 //静的メンバー変数
 //=============================================================================
 
+//=============================================================================
+// マクロ定義
+//=============================================================================
+
+
+
 
 //=============================================================================
 //コンストラクタ
@@ -28,7 +34,7 @@ CSkill_circle::CSkill_circle(int nPliority)
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_nLife = 500;
+	m_nLife = 50;
 	m_fRotAngle = 0.0f;
 	m_fFadeout = 0.0f;
 	m_bFadeoutFlag = true;
@@ -125,10 +131,10 @@ void CSkill_circle::Uninit(void)
 void CSkill_circle::Update(void)
 {
 	bool bUse = true;
-	m_nLife;
+
 	D3DXVECTOR3 pos = GetPos();
 	D3DXVECTOR3 size = GetSize();
-	float f = 0;
+	
 	
 
 
@@ -136,11 +142,13 @@ void CSkill_circle::Update(void)
 	switch (m_type)
 	{
 	case EFFECTTYPE_SKIIL:
-		
+		m_nLife--;
 		m_fRotAngle += 0.5f;
 		m_rot.y += 0.05f;
+		m_size.x += 0.1f;
+		m_size.z += 0.1f;
 		SetPos(pos);
-		SetSize(size);
+		SetSize(m_size);
 		SetRot(m_rot);
 		SetAddRotValue(m_fRotAngle);
 		if (m_fRotAngle >= 5.0f)
@@ -149,11 +157,13 @@ void CSkill_circle::Update(void)
 		}
 		break;
 	case EFFECTTYPE_SKIILMINI:
-
+		m_nLife--;
 		m_fRotAngle += 0.075f;
 		m_rot.y -= 0.05f;
+		m_size.x += 0.1f;
+		m_size.z += 0.1f;
 		SetPos(pos);
-		SetSize(size);
+		SetSize(m_size);
 		SetRot(m_rot);
 		SetAddRotValue(m_fRotAngle);
 		if (m_fRotAngle >= 5.0f)

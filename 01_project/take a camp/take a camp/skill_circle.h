@@ -5,7 +5,6 @@
 //
 //=============================================================================
 
-
 //二重インクルード防止
 #ifndef _SKILL_CIRCLE_
 #define _SKILL_CIRCLE_
@@ -24,6 +23,7 @@
 #define NORMAL_SKIIL_SIZE D3DXVECTOR3(10.5f,9.5f,10.5f)
 #define NORMAL_SKIIL_POS D3DXVECTOR3(0.0f,0.0f,0.0f)
 #define NORMAL_SKIIL_COL D3DXCOLOR(0.0f,0.0f,0.0f)
+
 
 //=============================================================================
 // クラス定義

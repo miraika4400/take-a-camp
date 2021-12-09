@@ -36,6 +36,7 @@
 #include "base_Cylinder.h"
 #include "skill_circle.h"
 #include "skill_effect.h"
+#include "resource_attack.h"
 
 //*****************************
 // マクロ定義
@@ -554,6 +555,9 @@ void CPlayer::Attack(void)
 	// キーボードとジョイパッドの取得
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 	CInputJoypad* pJoypad = CManager::GetJoypad();
+	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
+	D3DXVECTOR3 rot = GetRot();
+
 
 	// 攻撃ボタンを押したらチャージ
 	if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
@@ -561,8 +565,12 @@ void CPlayer::Attack(void)
 	{
 		//攻撃チャージを開始
 		m_pAttack->ChargeFlag();
+		if (pHitTile != NULL)
+		{
+			m_nChargeTilelevel = pHitTile->GetStepNum();
+		}
 	}
-				m_nChargeTilelevel = pHitTile->GetStepNum();
+				
 	//チャージ状態か
 	if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_CHARGE)
 	{
@@ -572,17 +580,30 @@ void CPlayer::Attack(void)
 		{
 			//攻撃フラグを立てる
 			m_bAttack = true;
-			CSkill_effect::Create(GetPos() + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel), 
-																				  GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel - 1), 
-																				  GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel + 1),CSkill_effect::SKILLTYPE_KNIGHT);
 
+
+			
 		}
 	}
 
 
 	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
 	if (m_bAttack&&m_bMove)
-	{
+	{		
+			//行列計算
+			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			D3DXVECTOR3 AttackPos = m_pAttack->GetAttackSquare().SquareData[0].AttackPos * TILE_ONE_SIDE;
+			CreatePos.x = ((cosf(rot.y)*AttackPos.x) + (sinf(rot.y)*AttackPos.z));
+			CreatePos.y = 1 * AttackPos.y;
+			CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
+
+			if (m_bAttack&&m_bMove)
+			{
+				CSkill_effect::Create(GetPos() + CreatePos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel),
+				GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel - 1),
+				GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel + 1), CSkill_effect::SKILLTYPE_KNIGHT);
+			}
+
 		//フラグを回収
 		m_bAttack = false;
 		//攻撃スイッチ処理

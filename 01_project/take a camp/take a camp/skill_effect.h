@@ -29,13 +29,13 @@
 //=============================================================================
 // クラス定義
 //=============================================================================
-class CSkill_effect : public CSkill_circle
+class CSkill_effect 
 {
 public:
 	//============
 	//メンバ関数
 	//============
-	CSkill_effect(int nPliority = OBJTYPE_PARTICLE);
+	CSkill_effect();
 	~CSkill_effect();
 
 
@@ -57,10 +57,9 @@ public:
 	}SKILLTYPE;
 
 	// static
-	static CSkill_effect *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col1 ,const D3DXCOLOR col2 ,const D3DXCOLOR col3, const SKILLTYPE type); // クラス生成
+	static void Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col1 ,const D3DXCOLOR col2 ,const D3DXCOLOR col3, const SKILLTYPE type); // クラス生成
 
 	HRESULT Init(void); // 初期化
-	void Uninit(void);  // 終了
 
 private:
 	//============

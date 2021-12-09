@@ -55,14 +55,15 @@ Cbase_Cylinder * Cbase_Cylinder::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3
 	// ƒƒ‚ƒŠ‚ÌŠm•Û
 	Cbase_Cylinder *pbase_Cylinder;
 	pbase_Cylinder = new Cbase_Cylinder;
-	// ‰Šú‰»
-	pbase_Cylinder->Init();
+	
+
 	// ˆø”‚Ì‘ã“ü
 	pbase_Cylinder->m_pos = D3DXVECTOR3(pos.x,pos.y + size.y,pos.z);
 	pbase_Cylinder->m_size = size;
 	pbase_Cylinder->m_col = col;
+	// ‰Šú‰»
+	pbase_Cylinder->Init();
 	
-
 	return pbase_Cylinder;
 }
 
