@@ -52,7 +52,7 @@
 #define ROT_FACING_02			(360)							// 回転向き
 #define RIM_POWER				(2.5f)							// リムライトの強さ
 #define DASH_FRAME				(60*5)							// ダッシュ時有効フレーム数
-#define ATTCK_ROT_INPUT			(10)							// 攻撃方向受付するフレーム数
+#define ATTCK_ROT_INPUT			(15)							// 攻撃方向受付するフレーム数
 
 //*****************************
 // 静的メンバ変数宣言
