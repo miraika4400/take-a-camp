@@ -48,8 +48,6 @@ HRESULT CMoveTile::Init(void)
 	CTile::Init();
 	//色の設定
 	SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
-	//移動方向の判定
-	HitTile();
 	m_MoveState = MOVE_STATE_NORMAL;
 
 	return S_OK;
@@ -64,7 +62,6 @@ void CMoveTile::Update(void)
 	switch (m_MoveState)
 	{
 	case MOVE_STATE_NORMAL:
-		
 		break;
 	case MOVE_STATE_MOVE:
 		//移動処理
@@ -101,6 +98,7 @@ void CMoveTile::HitPlayerAction(CPlayer * pPlayer)
 	case MOVE_STATE_NORMAL:
 		//タイルのステートを変化
 		m_MoveState = MOVE_STATE_MOVE;
+		TileCheck();
 		//タイルに乗れなくなるフラグを立てる
 		SetRide(true);
 		break;
@@ -183,12 +181,12 @@ void CMoveTile::HitTile(void)
 {
 	//現在位置
 	D3DXVECTOR3 Hitpos = D3DXVECTOR3((m_Move.x), GetPos().y, (m_Move.z));
-	//リストのトップ取得
+	//タイルポインタ取得
 	CTile * pTile = CTile::GetHitTile(Hitpos);
 	
 	//NULLチェック
 	if (pTile != NULL
-		&&pTile != this)
+		&&pTile != (CTile*)this)
 	{
 		//移動方向反転
 		if (!m_bReversal)m_bReversal = true;

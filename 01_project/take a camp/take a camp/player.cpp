@@ -429,7 +429,8 @@ void CPlayer::Move(void)
 		{
 
 			//初動加速処理
-			if (m_nMoveCount<m_nMoveCountData)
+			if (m_nMoveCount<m_nMoveCountData
+				&&m_ItemState != ITEM_STATE_DASH)
 			{
 				m_nMoveFrame += (m_nMoveFrameData - m_nMoveFrame) / (float)(5 - m_nMoveCount);
 
@@ -468,7 +469,7 @@ void CPlayer::ControlMove(void)
 			D3DXVECTOR2 ActMove;
 			
 			//プレイヤーの加速度を初期化
-			if (m_bOldMove)
+			if (m_bOldMove&&m_ItemState != ITEM_STATE_DASH)
 			{
 				m_nMoveFrame = m_nMoveFrameInitialData;
 				m_nMoveCount = 0;
@@ -724,6 +725,7 @@ void CPlayer::ManageItemState(void)
 
 		if (m_nDashCnt % DASH_FRAME == 0)
 		{
+			m_nMoveCount = 0;
 			m_nDashCnt = 0;
 			m_nMoveFrame = m_nMoveFrameData;
 			m_ItemState = ITEM_STATE_NONE;

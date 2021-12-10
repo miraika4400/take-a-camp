@@ -55,14 +55,16 @@ public:
 	D3DXVECTOR3 GetMove(void) { return m_Move; }
 	//移動方向
 	bool GetReversal(void) { return m_bReversal; }
-
+	void SetReversal(bool Reversal) { m_bReversal = Reversal; }
 	virtual void MoveRot(bool bReversal) = 0;
+	virtual void TileCheck(void) = 0;
+	void HitTile(void);						// 他のタイルとの当たり判定
+
 private:
 	void HitPlayerAction(CPlayer*pPlayer);	// プレイヤーが乗っているか
 	void HitPlayerActionRelease(void);		// プレイヤーが降りたか
 
 	void Move(void);						// 移動処理
-	void HitTile(void);						// 他のタイルとの当たり判定
 
 	// メンバ変数
 	bool			m_bStep;		// 載っているフラグ
