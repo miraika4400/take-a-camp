@@ -118,6 +118,7 @@ public:
 private:
 	void InitCharacterData(void); // キャラデータの初期化
 	void Move(void);			// 移動処理
+	void AttackRot(void);		// 攻撃時の向き処理
 	void ControlMove(void);		// コントロール処理
 	void ManageRot(void);		// 向きの管理
 	void Respawn(void);			// リスポーン処理

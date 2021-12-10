@@ -52,6 +52,7 @@
 #define ROT_FACING_02			(360)							// 回転向き
 #define RIM_POWER				(2.5f)							// リムライトの強さ
 #define DASH_FRAME				(60*5)							// ダッシュ時有効フレーム数
+#define ATTCK_ROT_INPUT			(10)							// 攻撃方向受付するフレーム数
 
 //*****************************
 // 静的メンバ変数宣言
@@ -447,6 +448,45 @@ void CPlayer::Move(void)
 }
 
 //******************************
+// 攻撃時の向き処理
+//******************************
+void CPlayer::AttackRot(void)
+{
+	// キーボードとジョイパッドの取得
+	CInputKeyboard * pKey = CManager::GetKeyboard();
+	CInputJoypad* pJoypad = CManager::GetJoypad();
+
+	// スティックの座標
+	D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
+
+	if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
+		|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
+	{
+		m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
+	}
+	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
+		|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
+	{
+		m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
+	}
+	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
+		|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+	{
+		m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
+	}
+	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
+		|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+	{
+		m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
+	}
+
+}
+
+//******************************
 // 操作移動処理
 //******************************
 void CPlayer::ControlMove(void)
@@ -589,8 +629,9 @@ void CPlayer::Attack(void)
 	{
 		//カウントアップ
 		m_nAttackRotCount++;
+		AttackRot();
 
-		if (m_nAttackRotCount>=10)
+		if (m_nAttackRotCount>= ATTCK_ROT_INPUT)
 		{
 			m_nAttackRotCount = 0;
 			//フラグを回収
@@ -638,12 +679,20 @@ void CPlayer::AttackFinal(void)
 	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
 	if (m_bAttack&&m_bMove)
 	{
-		//フラグを回収
-		m_bAttack = false;
-		//攻撃スイッチ処理
-		m_pAttack->AttackFinalSwitch();
-		//アニメーション処理
-		GetMotion(CResourceCharacter::MOTION_ATTACK)->SetActiveMotion(true);
+		//カウントアップ
+		m_nAttackRotCount++;
+		AttackRot();
+		
+		if (m_nAttackRotCount>= ATTCK_ROT_INPUT)
+		{
+			m_nAttackRotCount = 0;
+			//フラグを回収
+			m_bAttack = false;
+			//攻撃スイッチ処理
+			m_pAttack->AttackFinalSwitch();
+			//アニメーション処理
+			GetMotion(CResourceCharacter::MOTION_ATTACK)->SetActiveMotion(true);
+		}
 	}
 }
 
