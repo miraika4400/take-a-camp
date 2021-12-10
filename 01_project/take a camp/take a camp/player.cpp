@@ -76,18 +76,17 @@ CPlayer::CPlayer()
 	m_nPlayerNumber = 0;
 	m_nInvincibleCount = 0;
 	m_nControllNum = 0;
-	m_nMoveCount = 0;
 	m_nAttackRotCount = 0;
 	m_bMove = false;
 	m_bOldMove = false;
+	m_bAttackRot = false;
 	m_bInvincible = false;
 	m_PlayerState = PLAYER_STATE_NORMAL;
 	m_pCollision = NULL;
 	m_nColor = 0;
 	m_pActRange = NULL;
-	memset(&m_Move, 0, sizeof(D3DXVECTOR3));
+	memset(&MoveData, 0, sizeof(MoveData));
 	memset(&m_RespawnPos, 0, sizeof(D3DXVECTOR3));
-	m_nMoveFrameCount = 0;
 	m_pAttack = NULL;
 	m_ItemState = ITEM_STATE_NONE;	// アイテム用ステート
 	m_nDashCnt = 1;					// 速度アップカウント
@@ -95,9 +94,6 @@ CPlayer::CPlayer()
 	m_bAttack = false;
 	m_bFinalAttack = false;
 	m_pKillCount = NULL;
-	m_nMoveFrame = 0;
-	m_nMoveFrameData = 0;
-	m_nMoveFrameDataDash = 0;
 }
 
 //******************************
@@ -209,7 +205,7 @@ HRESULT CPlayer::Init(void)
 	m_ItemState = ITEM_STATE_NONE;
 	
 	//移動速度の取得
-	m_nMoveFrame = m_nMoveFrameInitialData;
+	MoveData.m_nMoveFrame = MoveData.m_nMoveFrameInitialData;
 	//速度アップカウント
 	m_nDashCnt = 0;		
 	return S_OK;
@@ -222,10 +218,10 @@ void CPlayer::InitCharacterData(void)
 {
 	CResourceCharacter::CharacterData charaData = CResourceCharacter::GetResourceCharacter()->GetCharacterData(GetCharacterType());
 	// キャラデータの反映
-	m_nMoveFrameData = charaData.nMoveFrame;				// 移動時フレーム数
-	m_nMoveFrameDataDash = charaData.nMoveFrameDash;		// 移動時フレーム数*ダッシュ時
-	m_nMoveFrameInitialData = charaData.nMoveFrameInitial;	// 初動時の移動フレーム数
-	m_nMoveCountData = charaData.nMoveCount;				// 加速までの回数
+	MoveData.m_nMoveFrameData = charaData.nMoveFrame;				// 移動時フレーム数
+	MoveData.m_nMoveFrameDataDash = charaData.nMoveFrameDash;		// 移動時フレーム数*ダッシュ時
+	MoveData.m_nMoveFrameInitialData = charaData.nMoveFrameInitial;	// 初動時の移動フレーム数
+	MoveData.m_nMoveCountData = charaData.nMoveCount;				// 加速までの回数
 
 	// 既存の攻撃の破棄
 	if (m_pAttack != NULL)
@@ -416,28 +412,28 @@ void CPlayer::Move(void)
 		D3DXVECTOR3 pos = GetPos();
 
 		//移動計算
-		pos += (m_Move - pos) / (float)(m_nMoveFrame - m_nMoveFrameCount);
+		pos += (MoveData.m_Move - pos) / (float)(MoveData.m_nMoveFrame - MoveData.m_nMoveFrameCount);
 
 		//位置設定
 		SetPos(pos);
 
 		//カウントアップ
-		m_nMoveFrameCount++;
+		MoveData.m_nMoveFrameCount++;
 
 		//カウントが一定に達する
-		if (m_nMoveFrameCount >= m_nMoveFrame)
+		if (MoveData.m_nMoveFrameCount >= MoveData.m_nMoveFrame)
 		{
 
 			//初動加速処理
-			if (m_nMoveCount<m_nMoveCountData
+			if (MoveData.m_nMoveCount<MoveData.m_nMoveCountData
 				&&m_ItemState != ITEM_STATE_DASH)
 			{
-				m_nMoveFrame += (m_nMoveFrameData - m_nMoveFrame) / (float)(m_nMoveCountData - m_nMoveCount);
+				MoveData.m_nMoveFrame += (MoveData.m_nMoveFrameData - MoveData.m_nMoveFrame) / (float)(MoveData.m_nMoveCountData - MoveData.m_nMoveCount);
 
-				m_nMoveCount++;
+				MoveData.m_nMoveCount++;
 			}
 			//カウント初期化
-			m_nMoveFrameCount = 0;
+			MoveData.m_nMoveFrameCount = 0;
 			//移動できるように
 			m_bMove = true;
 
@@ -464,24 +460,28 @@ void CPlayer::AttackRot(void)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
+		m_bAttackRot = true;
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
 		|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
+		m_bAttackRot = true;
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
 		|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
+		m_bAttackRot = true;
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
 		|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
+		m_bAttackRot = true;
 	}
 
 }
@@ -510,8 +510,8 @@ void CPlayer::ControlMove(void)
 			//プレイヤーの加速度を初期化
 			if (m_bOldMove&&m_ItemState != ITEM_STATE_DASH)
 			{
-				m_nMoveFrame = m_nMoveFrameInitialData;
-				m_nMoveCount = 0;
+				MoveData.m_nMoveFrame = MoveData.m_nMoveFrameInitialData;
+				MoveData.m_nMoveCount = 0;
 			}
 
 			//操作逆転状態じゃない時
@@ -521,7 +521,7 @@ void CPlayer::ControlMove(void)
 				ActMove = actMove;
 				if (m_pActRange->ActMove(((int)ActMove.x), ((int)ActMove.y)))
 				{
-					m_Move = move + GetPos();
+					MoveData.m_Move = move + GetPos();
 					m_bMove = false;
 					m_rotDest.y = fRotDistY;
 				}
@@ -532,7 +532,7 @@ void CPlayer::ControlMove(void)
 				ActMove = -actMove;
 				if (m_pActRange->ActMove(((int)ActMove.x), ((int)ActMove.y)))
 				{
-					m_Move = -move + GetPos();
+					MoveData.m_Move = -move + GetPos();
 					m_bMove = false;
 					m_rotDest.y = fRotDistY - D3DXToRadian(180);
 				}
@@ -631,8 +631,13 @@ void CPlayer::Attack(void)
 		m_nAttackRotCount++;
 		AttackRot();
 
-		if (m_nAttackRotCount>= ATTCK_ROT_INPUT)
+		//一定のカウントかフラグが立っているか
+		if (m_nAttackRotCount>= ATTCK_ROT_INPUT
+			|| m_bAttackRot)
 		{
+			//フラグを回収
+			m_bAttackRot = false;
+			//カウント初期化
 			m_nAttackRotCount = 0;
 			//フラグを回収
 			m_bAttack = false;
@@ -683,8 +688,12 @@ void CPlayer::AttackFinal(void)
 		m_nAttackRotCount++;
 		AttackRot();
 		
-		if (m_nAttackRotCount>= ATTCK_ROT_INPUT)
+		if (m_nAttackRotCount>= ATTCK_ROT_INPUT
+			|| m_bAttackRot)
 		{
+			//フラグを回収
+			m_bAttackRot = false;
+			//カウント初期化
 			m_nAttackRotCount = 0;
 			//フラグを回収
 			m_bAttack = false;
@@ -777,24 +786,28 @@ void CPlayer::ManageItemState(void)
 		//ダッシュタイムをカウント
 		m_nDashCnt++;
 
-		m_nMoveFrame = (int)(m_nMoveFrameDataDash);
+		//速度を設定
+		MoveData.m_nMoveFrame = (int)(MoveData.m_nMoveFrameDataDash);
 
+		//効果を切る
 		if (m_nDashCnt % DASH_FRAME == 0)
 		{
-			m_nMoveCount = 0;
+			MoveData.m_nMoveCount = 0;
 			m_nDashCnt = 0;
-			m_nMoveFrame = m_nMoveFrameData;
+			MoveData.m_nMoveFrame = MoveData.m_nMoveFrameData;
 			m_ItemState = ITEM_STATE_NONE;
 		}
 		break;
 	case ITEM_STATE_REVERSE:
 		m_ReverseCount++;
+		//効果を切る
 		if (m_ReverseCount % 180 == 0)
 		{
 			m_ReverseCount = 0;
 			m_ItemState = ITEM_STATE_NONE;
 		}
 
+		//ランダムでエフェクトを生成
 		if (m_ReverseCount % 15 == 0)
 		{
 			D3DXVECTOR3 pos = GetPos();
