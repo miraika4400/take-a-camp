@@ -76,6 +76,7 @@ CPlayer::CPlayer()
 	m_nInvincibleCount = 0;
 	m_nControllNum = 0;
 	m_nMoveCount = 0;
+	m_nAttackRotCount = 0;
 	m_bMove = false;
 	m_bOldMove = false;
 	m_bInvincible = false;
@@ -205,7 +206,7 @@ HRESULT CPlayer::Init(void)
 
 	// アイテムステート
 	m_ItemState = ITEM_STATE_NONE;
-
+	
 	//移動速度の取得
 	m_nMoveFrame = m_nMoveFrameInitialData;
 	//速度アップカウント
@@ -269,8 +270,6 @@ void CPlayer::Update(void)
 		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
 			&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK)
 		{
-			// 向きの管理
-			ManageRot();
 			// 移動処理
 			ControlMove();
 			//ジョイパットの取得
@@ -328,7 +327,7 @@ void CPlayer::Update(void)
 	// アイテムステートの管理
 	ManageItemState();
 
-	// 
+	//プレイヤーモデルの更新
 	CPlayerModel::Update();
 
 #ifdef _DEBUG
@@ -432,7 +431,7 @@ void CPlayer::Move(void)
 			if (m_nMoveCount<m_nMoveCountData
 				&&m_ItemState != ITEM_STATE_DASH)
 			{
-				m_nMoveFrame += (m_nMoveFrameData - m_nMoveFrame) / (float)(5 - m_nMoveCount);
+				m_nMoveFrame += (m_nMoveFrameData - m_nMoveFrame) / (float)(m_nMoveCountData - m_nMoveCount);
 
 				m_nMoveCount++;
 			}
@@ -588,12 +587,20 @@ void CPlayer::Attack(void)
 	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
 	if (m_bAttack&&m_bMove)
 	{
-		//フラグを回収
-		m_bAttack = false;
-		//攻撃スイッチ処理
-		m_pAttack->AttackSwitch();
-		//アニメーション処理
-		GetMotion(CResourceCharacter::MOTION_ATTACK)->SetActiveMotion(true);
+		//カウントアップ
+		m_nAttackRotCount++;
+
+		if (m_nAttackRotCount>=10)
+		{
+			m_nAttackRotCount = 0;
+			//フラグを回収
+			m_bAttack = false;
+			//攻撃スイッチ処理
+			m_pAttack->AttackSwitch();
+			//アニメーション処理
+			GetMotion(CResourceCharacter::MOTION_ATTACK)->SetActiveMotion(true);
+
+		}
 	}
 }
 

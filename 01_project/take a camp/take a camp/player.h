@@ -128,20 +128,21 @@ private:
 	static int m_anControllKey[MAX_PLAYER][KEY_MAX];
 
 	CKillCount * m_pKillCount;	// プレイヤーのキルカウントポインタ
-	CAttackBased* m_pAttack;	// 攻撃用クラス
 	int m_nPlayerNumber;		// プレイヤー番号
 	D3DXCOLOR	 m_color;		// 色
 	int m_nColor;				// 色ナンバー
 	int m_nControllNum;         // コントロール番号
 	bool m_bController;         // コントローラー操作かキーボード操作か
-	bool m_bMove;				// 移動可否フラグ
-	bool m_bOldMove;			// 前回の移動可否フラグの状態
+	CAttackBased* m_pAttack;	// 攻撃用クラス
 	bool m_bAttack;				// 攻撃可否フラグ
 	bool m_bFinalAttack;		// 必殺可否フラグ
+	int	 m_nAttackRotCount;		// 攻撃方向入力カウント
 	bool m_bInvincible;			// 無敵フラグ
 	int m_nInvincibleCount;		// 無敵時間のカウント
 	PLAYER_STATE m_PlayerState;	// プレイヤーステータス
 	int	m_nRespawnCount;		// リスポーンまでのカウント
+	bool m_bMove;				// 移動可否フラグ
+	bool m_bOldMove;			// 前回の移動可否フラグの状態
 	D3DXVECTOR3	m_Move;			// 移動量
 	int	m_nMoveCount;			// 移動回数
 	int	m_nMoveFrame;			// 移動速度
