@@ -35,7 +35,7 @@
 //==================================
 // コンストラクタ
 //==================================
-CResultGraph::CResultGraph() :CScene(OBJTYPE_UI)
+CResultGraph::CResultGraph() :CScene(OBJTYPE_UI_2)
 {
 	// 変数のクリア
 	m_pBg = NULL;                // 背景ポリゴン

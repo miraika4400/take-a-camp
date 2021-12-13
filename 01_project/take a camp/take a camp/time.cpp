@@ -42,7 +42,7 @@ CTime * CTime::Create(void)
 	pTime->Init();
 
 	// オブジェクトタイプの設定
-	pTime->SetPriority(OBJTYPE_UI);
+	pTime->SetPriority(OBJTYPE_UI_2);
 
 	return pTime;
 }
