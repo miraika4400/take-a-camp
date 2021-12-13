@@ -35,7 +35,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/kill.png",			// リザルトのキルUI
 	"./data/Textures/tile.png",			// リザルトのタイルUI
 	"./data/Textures/effect/kirakira.png",	// パーティクル*四角
-	"./data/Textures/Tears.png",			// パーティクル*涙
+	"./data/Textures/effect/00_wave.png",	// パーティクル*波紋
 	"./data/Textures/particle004.png",		// パーティクル*円
 	"./data/Textures/guruguru.png",			// パーティクル*円
 	"./data/Textures/number.png",			// ナンバー

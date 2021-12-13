@@ -147,8 +147,8 @@ public:
 	//プレイヤー
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 	// 必殺技ゲージポインタ
-	CSkillgauge *GetSkillgauge(void) { return m_pSkillgauge; }
-
+	CSkillgauge *GetSkillgauge(void) { return m_pSkillgauge; }	// タイルの塗り段階所得
+	int GetChargeTilelevel(void) { return m_nChargeTilelevel; }
 private:
 	void InitCharacterData(void); // キャラデータの初期化
 	void Move(void);			// 移動処理
@@ -187,6 +187,11 @@ private:
 	D3DXVECTOR3  m_rotDest;		// 回転(目標の値)
 	D3DXVECTOR3  m_RespawnPos;	// リスポーン位置
 	CSkillgauge * m_pSkillgauge;// 必殺技ゲージ
+	int m_nChargeTilelevel;			// チャージ開始タイルの塗り段階
+
+	// モーション用変数
+	CMotion *m_apMotion[CResourceCharacter::MOTION_MAX];  // アニメーションポインタ
+
 };
 
 #endif
