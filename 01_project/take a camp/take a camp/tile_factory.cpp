@@ -35,6 +35,9 @@ const std::vector<CTileFactory::LabelData> CTileFactory::m_cLabelData =
 	{ "TILE_NEEDLE" , CNeedleTile::Create },
 	{ "TILE_AROUND_MOVE", CAroundTile::Create },
 	{ "TILE_SIDEWAYS_MOVE",CSidewaysTile::Create },
+	{ "BLOCK_TYPE_WARP_1",NULL },
+	{ "BLOCK_TYPE_WARP_2",NULL },
+
 };
 
 //******************************

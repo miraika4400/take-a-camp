@@ -8,16 +8,13 @@
 // ヘッダファイルのインクルード
 //=============================================================================
 #include "map.h"
-#include "tile.h"
-#include "color_tile.h"
 #include "player.h"
-#include "spawn_tile.h"
-#include "color_manager.h"
 #include "needle_tile.h"
 #include "item.h"
 #include <time.h>
 #include "chara_select.h"
 #include "tile_factory.h"
+#include "warp_tile.h"
 
 //=============================================================================
 // マクロ定義
@@ -156,6 +153,14 @@ void CMap::MapCreate(void)
 						tileCol = GET_COLORMANAGER->GetColorDataByPlayerNumber(3).iconColor;
 					}
 					break;
+					case CMapManager::BLOCK_TYPE_WARP_1://ワープタイルタイプ1
+						CWarpTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, CWarpTile::WARP_TILE_TYPE_1);
+						break;
+					case CMapManager::BLOCK_TYPE_WARP_2://ワープタイルタイプ2
+						CWarpTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, CWarpTile::WARP_TILE_TYPE_2);
+						break;
+
+
 				}
 
 				if (pTileFactory != NULL
