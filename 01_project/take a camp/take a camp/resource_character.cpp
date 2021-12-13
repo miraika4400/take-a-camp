@@ -157,19 +157,26 @@ void CResourceCharacter::Load(void)
 				fscanf(pFile, " %*c %d", &nMoveFrame);
 				m_aCharacterData[nCntCharacter].nMoveFrameDash = nMoveFrame;
 			}
+			// ‰“®—Ê
+			else if (JudgeStr("MOVE_FRAME_INITIAL"))
+			{
+				int nMoveFrame = 0;
+				fscanf(pFile, " %*c %d", &nMoveFrame);
+				m_aCharacterData[nCntCharacter].nMoveFrameInitial = nMoveFrame;
+			}
+			//‰Á‘¬‚Ü‚Å‚Ì‰ñ”
+			else if (JudgeStr("MOVE_COUNT"))
+			{
+				int nMoveFrame = 0;
+				fscanf(pFile, " %*c %d", &nMoveFrame);
+				m_aCharacterData[nCntCharacter].nMoveCount = nMoveFrame;
+			}
 			// UŒ‚ƒpƒX
 			else if (JudgeStr("ATTACK_PATH"))
 			{
 				// •¶š—ñ‚Ìæ“¾
 				fscanf(pFile, " %*c %s", chInTextData);
 				m_aCharacterData[nCntCharacter].attackTextPath = chInTextData;
-			}
-			// •KE‹ZƒpƒX
-			else if (JudgeStr("FINAL_ATTACK_PATH"))
-			{
-				// •¶š—ñ‚Ìæ“¾
-				fscanf(pFile, " %*c %s", chInTextData);
-				m_aCharacterData[nCntCharacter].finalAttackPath = chInTextData;
 			}
 			// •KE‹Z”­“®ŠÔ
 			else if (JudgeStr("FINAL_ATTACK_TIME"))
