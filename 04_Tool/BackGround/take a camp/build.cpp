@@ -39,7 +39,7 @@ CBuild::~CBuild()
 //******************************
 // クラス生成
 //******************************
-CBuild * CBuild::Create(D3DXVECTOR3 pos, BUILD_TYPE type, BUILD_BOOL bBuild)
+CBuild * CBuild::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, BUILD_TYPE type, BUILD_BOOL bBuild)
 {
 	//メモリの確保
 	CBuild *pBuild;
@@ -54,7 +54,7 @@ CBuild * CBuild::Create(D3DXVECTOR3 pos, BUILD_TYPE type, BUILD_BOOL bBuild)
 	pBuild->SetBuildBool(bBuild);
 	//位置セット
 	pBuild->SetPos(pos);
-
+	pBuild->SetRot(rot);
 	return pBuild;
 }
 
@@ -101,9 +101,6 @@ HRESULT CBuild::Init(void)
 		break;
 	case BUILD_TYPE_MAGCUP:
 		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_MAGCUP));
-		break;
-	case BUILD_TYPE_MOKUZIN:
-		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_MOKUZIN));
 		break;
 	default:
 		break;
@@ -190,6 +187,10 @@ void CBuild::MoveUpdate(void)
 		Save();
 		m_BuildBool = BUILD_FALSE;
 	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_DELETE))
+	{
+		Uninit();
+	}
 	//位置の再設定
 	SetPos(BuildPos);
 }
@@ -217,12 +218,14 @@ void CBuild::Save(void)
 {
 	FILE* pFile = NULL;
 	D3DXVECTOR3 buildPos = GetPos();
+	D3DXVECTOR3 buildRot = GetRot();
 
 	pFile = fopen("data/BuildingInfo.txt", "a");
 	if (pFile != NULL)
 	{
 		fprintf(pFile, "%d\n", m_BuildType);
 		fprintf(pFile, "%d %d %d\n", (int)buildPos.x, (int)buildPos.y, (int)buildPos.z);
+		fprintf(pFile, "%d %d %d\n", (int)buildRot.x, (int)buildRot.y, (int)buildRot.z);
 		fclose(pFile);
 	}
 
@@ -232,6 +235,7 @@ void CBuild::Load(void)
 {
 	FILE* pFile = NULL;
 	D3DXVECTOR3 buildPos = {};
+	D3DXVECTOR3 buildRot = {};
 	BUILD_TYPE type = BUILD_TYPE_TREE;
 	BUILD_BOOL bBuild = BUILD_FALSE;
 
@@ -241,9 +245,9 @@ void CBuild::Load(void)
 	{
 		while (fscanf(pFile, "%d", &type) != EOF)
 		{
-
 			fscanf(pFile, "%f %f %f", &buildPos.x, &buildPos.y, &buildPos.z);
-			CBuild::Create(buildPos, type, bBuild);
+			fscanf(pFile, "%f %f %f", &buildRot.x, &buildRot.y, &buildRot.z);
+			CBuild::Create(buildPos, buildRot, type, bBuild);
 		}
 
 	}

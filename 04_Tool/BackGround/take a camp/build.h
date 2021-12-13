@@ -40,7 +40,6 @@ public:
 		BUILD_TYPE_ENOGU,
 		BUILD_TYPE_ENPITU,
 		BUILD_TYPE_MAGCUP,
-		BUILD_TYPE_MOKUZIN,
 		BUILD_TYPE_MAX
 	}BUILD_TYPE;
 	
@@ -53,7 +52,7 @@ public:
 	CBuild();	// コンストラクタ
 	~CBuild();	// デストラクタ
 
-	static CBuild * Create(D3DXVECTOR3 pos, BUILD_TYPE type, BUILD_BOOL bBuild);	// 生成処理
+	static CBuild * Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, BUILD_TYPE type, BUILD_BOOL bBuild);	// 生成処理
 
 	HRESULT Init(void);		// 初期化処理
 	void Uninit(void);		// 終了処理
