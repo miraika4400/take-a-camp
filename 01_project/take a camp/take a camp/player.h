@@ -115,6 +115,8 @@ public:
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 	// 必殺技ゲージポインタ
 	CSkillgauge *GetSkillgauge(void) { return m_pSkillgauge; }
+	// タイルの塗り段階所得
+	int GetChargeTilelevel(void) { return m_nChargeTilelevel; }
 private:
 	void InitCharacterData(void); // キャラデータの初期化
 	void Move(void);			// 移動処理
