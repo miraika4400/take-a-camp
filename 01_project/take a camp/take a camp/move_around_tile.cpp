@@ -71,3 +71,23 @@ void CAroundTile::MoveRot(bool bReversal)
 	//移動量セット
 	SetMove(move);
 }
+
+//******************************
+// 周囲のブロック確認処理
+//******************************
+void CAroundTile::TileCheck(void)
+{
+	//現在位置
+	D3DXVECTOR3 pos = GetPos();
+
+	if (CTile::GetHitTile(D3DXVECTOR3(pos.x , pos.y, pos.z + TILE_ONE_SIDE)) != nullptr)
+	{
+		//移動方向反転
+		SetReversal(false);
+	}
+	else
+	{
+		//移動方向反転
+		SetReversal(true);
+	}
+}

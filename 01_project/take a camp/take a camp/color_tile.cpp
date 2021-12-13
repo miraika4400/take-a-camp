@@ -203,16 +203,17 @@ void CColorTile::Update(void)
 	// 色の管理
 	ManageColor();
 
-	if (m_nStep == 3)
-	{
-		m_nCntFrem++;
+	//レベルさんエフェクト（おふ）
+	//if (m_nStep == 3)
+	//{
+	//	m_nCntFrem++;
 
-		if(m_nCntFrem % 10 <= 0)
-		{
-			D3DXVECTOR3 pos = m_pFrame->GetPos();
-			CParticle::Create(D3DXVECTOR3(pos.x + (float)(rand() % 16 -8), pos.y, pos.z + (float)(rand() % 16 - 8)), D3DXVECTOR3(0.0f, 0.25f, 0.0f), D3DXVECTOR3(3.0f, 3.0f, 3.0f), 500, GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_SQUARE);
-		}
-	}
+	//	if(m_nCntFrem % 10 <= 0)
+	//	{
+	//		D3DXVECTOR3 pos = m_pFrame->GetPos();
+	//		CParticle::Create(D3DXVECTOR3(pos.x + (float)(rand() % 16 -8), pos.y, pos.z + (float)(rand() % 16 - 8)), D3DXVECTOR3(0.0f, 0.25f, 0.0f), D3DXVECTOR3(3.0f, 3.0f, 3.0f), 500, GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_SQUARE);
+	//	}
+	//}
 
 #ifdef _DEBUG
 	// デバッグキー

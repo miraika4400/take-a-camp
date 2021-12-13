@@ -178,13 +178,6 @@ void CResourceCharacter::Load(void)
 				fscanf(pFile, " %*c %s", chInTextData);
 				m_aCharacterData[nCntCharacter].attackTextPath = chInTextData;
 			}
-			// •KŽE‹ZƒpƒX
-			else if (JudgeStr("FINAL_ATTACK_PATH"))
-			{
-				// •¶Žš—ñ‚ÌŽæ“¾
-				fscanf(pFile, " %*c %s", chInTextData);
-				m_aCharacterData[nCntCharacter].finalAttackPath = chInTextData;
-			}
 			// •KŽE‹Z”­“®ŽžŠÔ
 			else if (JudgeStr("FINAL_ATTACK_TIME"))
 			{
