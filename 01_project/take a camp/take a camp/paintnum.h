@@ -40,9 +40,9 @@ public:
 private:
 	struct PaintInfo
 	{
-		D3DXVECTOR3 pos;  // 座標
-		D3DXVECTOR3 size; // 大きさ
-		D3DXCOLOR col;    // 色
+		D3DXVECTOR3 pos;	// 座標
+		D3DXVECTOR3 size;	// 大きさ
+		D3DXCOLOR col;		// 色
 	};
 
 	//============
@@ -56,13 +56,12 @@ private:
 	// メンバ変数
 	//============
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	// 頂点バッファへのポインタ
-	CPolygon * m_pPolygon[MAX_PLAYER];  // ライフ描画用のポリゴン
-	D3DXVECTOR3 m_pos;                  // 座標
-	D3DXVECTOR3 m_size;                 // 大きさ
-	PaintInfo m_PaintInfo[MAX_PLAYER];  // プレイヤーごとの塗り情報
-	int m_nPlayerNum;                   // プレイヤーの人数
-	int m_nRank[MAX_PLAYER];            // プレイヤーの順位
-	float m_fChangeSize[MAX_PLAYER];    // 徐々に変えていく大きさ
+	CPolygon * m_pPolygon[MAX_PLAYER];	// ライフ描画用のポリゴン
+	D3DXVECTOR3 m_pos;					// 座標
+	D3DXVECTOR3 m_size;					// 大きさ
+	PaintInfo m_PaintInfo[MAX_PLAYER];	// プレイヤーごとの塗り情報
+	int m_nRank[MAX_PLAYER];			// プレイヤーの順位
+	float m_fChangeSize[MAX_PLAYER];	// 徐々に変えていく大きさ
 };
 
 #endif

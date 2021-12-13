@@ -66,6 +66,12 @@ CBillboard::CBillboard()
 //=============================================================================
 CBillboard::~CBillboard()
 {
+	// 頂点バッファを開放
+	if (m_pVtxBuff != NULL)
+	{
+		m_pVtxBuff->Release();
+		m_pVtxBuff = NULL;
+	}
 }
 
 //=============================================================================
@@ -91,13 +97,6 @@ HRESULT CBillboard::Init(void)
 //=============================================================================
 void CBillboard::Uninit(void)
 {
-	// 頂点バッファを開放
-	if (m_pVtxBuff != NULL)
-	{
-		m_pVtxBuff->Release();
-		m_pVtxBuff = NULL;
-	}
-
 	// シーンの開放
 	Release();
 }
@@ -117,24 +116,24 @@ void CBillboard::Update(void)
 	//==========================================================================================================
 	//画像を、画像の中心を軸に回転させる
 	//左上の頂点
-	vertex1.x = -(m_fsize.x / 2)*cosf(m_fRotAngle)
-		- ((m_fsize.y / 2))*sinf(m_fRotAngle);
-	vertex1.y = -(m_fsize.x / 2)*sinf(m_fRotAngle)
-		+ ((m_fsize.y / 2))*cosf(m_fRotAngle);
+	vertex1.x = -(m_fsize.x / 2.0f)*cosf(m_fRotAngle)
+		- ((m_fsize.y / 2.0f))*sinf(m_fRotAngle);
+	vertex1.y = -(m_fsize.x / 2.0f)*sinf(m_fRotAngle)
+		+ ((m_fsize.y / 2.0f))*cosf(m_fRotAngle);
 	vertex1.z = 0.0f;
 
 	//右上の頂点
-	vertex2.x = (m_fsize.x / 2)*cosf(m_fRotAngle)
-		- ((m_fsize.y / 2))*sinf(m_fRotAngle);
-	vertex2.y = (m_fsize.x / 2)*sinf(m_fRotAngle)
-		+ ((m_fsize.y / 2))*cosf(m_fRotAngle);
+	vertex2.x = (m_fsize.x / 2.0f)*cosf(m_fRotAngle)
+		- ((m_fsize.y / 2.0f))*sinf(m_fRotAngle);
+	vertex2.y = (m_fsize.x / 2.0f)*sinf(m_fRotAngle)
+		+ ((m_fsize.y / 2.0f))*cosf(m_fRotAngle);
 	vertex2.z = 0.0f;
 
 	//左下の頂点
-	vertex3.x = -(m_fsize.x / 2)*cosf(m_fRotAngle)
-		- (-(m_fsize.y / 2))*sinf(m_fRotAngle);
-	vertex3.y = -(m_fsize.x / 2)*sinf(m_fRotAngle)
-		+ (-(m_fsize.y / 2))*cosf(m_fRotAngle);
+	vertex3.x = -(m_fsize.x / 2.0f)*cosf(m_fRotAngle)
+		- (-(m_fsize.y / 2.0f))*sinf(m_fRotAngle);
+	vertex3.y = -(m_fsize.x / 2.0f)*sinf(m_fRotAngle)
+		+ (-(m_fsize.y / 2.0f))*cosf(m_fRotAngle);
 	vertex3.z = 0.0f;
 
 	//右下の頂点

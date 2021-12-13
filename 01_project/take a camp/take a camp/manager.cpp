@@ -35,7 +35,8 @@
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CManager::MODE   CManager::m_mode = MODE_TITLE;       // ゲームモード
+CManager::MODE   CManager::m_mode = MODE_TITLE;      // ゲームモード
+CManager::MODE   CManager::m_Decmode = MODE_TITLE;   // 判定用モード
 CRenderer       *CManager::m_pRenderer = NULL;       // レンダラーポインタ
 CInputKeyboard  *CManager::m_pInputKeyboard = NULL;  // キーボード
 CInputJoypad    *CManager::m_pJoypad = NULL;         // ジョイパッド
@@ -430,6 +431,14 @@ void CManager::SetMode(MODE mode)
 	default:
 		break;
 	}
+}
+
+//=============================
+// 判定用モードセット
+//=============================
+void CManager::SetDecMode(MODE mode)
+{
+	m_Decmode = mode;
 }
 
 //=============================

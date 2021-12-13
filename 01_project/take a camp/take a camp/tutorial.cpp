@@ -1,9 +1,9 @@
-////////////////////////////////////////////////////
+//====================================================
 //
 //    tutorialの処理[tutorial.cpp]
-//    Author:増澤 未来
+//    Author:伊藤　陽梧
 //
-////////////////////////////////////////////////////
+//====================================================
 
 //=============================
 // インクルード
@@ -23,6 +23,11 @@
 #include "light.h"
 #include "bg.h"
 #include "text.h"
+#include "color_tile.h"
+#include "chara_select.h"
+#include "player.h"
+#include "debug_log.h"
+#include "kill_count.h"
 
 //**********************************
 // 静的メンバ変数宣言
@@ -32,14 +37,21 @@ LPDIRECT3DTEXTURE9 CTutorial::m_pTexture[TUTORIAL_NUM] = {};
 //**********************************
 // マクロ定義
 //**********************************
+#define TARGET_PAINT (10)		// 塗る枚数
+#define TARGET_OVERPAINT (10)	// 重ね塗りする枚数
+#define TARGET_KILL (2)			// スキルで倒す人数
 
 //=============================
 // コンストラクタ
 //=============================
 CTutorial::CTutorial()
 {
-	m_pPolygon = NULL;
+	m_pMap = nullptr;
+	m_pPolygon = nullptr;
 	m_nNumTutorial = 0;
+	ZeroMemory(&m_bTask, sizeof(m_bTask));
+	ZeroMemory(&m_bEntry, sizeof(m_bEntry));
+	m_Tutorialphase = PHASE_PAINT;
 }
 
 //=============================
@@ -52,7 +64,7 @@ CTutorial::~CTutorial()
 //=============================
 // クリエイト
 //=============================
-CTutorial * CTutorial::Create(void)
+CTutorial * CTutorial::Create()
 {
 	// メモリの確保
 	CTutorial *pTitle = new CTutorial;
@@ -65,37 +77,39 @@ CTutorial * CTutorial::Create(void)
 //=============================
 // 初期化処理
 //=============================
-HRESULT CTutorial::Init(void)
+HRESULT CTutorial::Init()
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	//// テクスチャの生成
 	//m_pTexture[0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SPEECHBUBBLE);
 
-	m_pPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 600.0f, 0.0f),
-		D3DXVECTOR3(512.0f, 256.0f, 0.0f),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	//m_pPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 600.0f, 0.0f),
+	//	D3DXVECTOR3(512.0f, 256.0f, 0.0f),
+	//	D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
-	m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SPEECHBUBBLE));
+	//m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SPEECHBUBBLE));
 
 	// 背景の設定
 	CBg::Create();
 
 	// カメラ生成
 	CManager::SetCamera(CCamera::Create());
-	CMap::Create(CMapManager::MAP_TYPE_1);
+
+	// マップ生成
+	m_pMap = CMap::Create(CMapManager::MAP_TYPE_1);
 
 	// ライトクラスの生成
 	CManager::SetLight();
 
-	CText::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 600.0f, 0.0f), 25.0f, 10.0f, "好きな食べ物はメロンと梅干しとサーモンと生ハムで、嫌いな食べ物は野菜全般とみずみずしい食べ物です。", CText::ALIGN_LEFT, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+	//CText::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 600.0f, 0.0f), 25.0f, 10.0f, "好きな食べ物はメロンと梅干しとサーモンと生ハムで、嫌いな食べ物は野菜全般とみずみずしい食べ物です。", CText::ALIGN_LEFT, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
 	return S_OK;
 }
 
 //=============================
 // 終了処理
 //=============================
-void CTutorial::Uninit(void)
+void CTutorial::Uninit()
 {
 	if (m_pPolygon != NULL)
 	{
@@ -134,13 +148,13 @@ void CTutorial::Uninit(void)
 //=============================
 // 更新処理
 //=============================
-void CTutorial::Update(void)
+void CTutorial::Update()
 {
 	//// ポリゴンの更新処理
 	//m_pPolygon->Update();
 
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) ||
-		CManager::GetMouse()->GetMouseTrigger(0) /*||
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN)
+		/*CManager::GetMouse()->GetMouseTrigger(0)*/ /*||
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0)*/)
 	{
 		m_nNumTutorial++;
@@ -153,17 +167,6 @@ void CTutorial::Update(void)
 		//	m_pPolygon->BindTexture(m_pTexture[m_nNumTutorial]);
 		//}
 	}
-	//if (CManager::GetKeyboard()->GetKeyTrigger(DIK_BACKSPACE) /*||
-	//	CManager::GetJoypad()->GetJoystickTrigger(2, 0)*/)
-	//{
-	//	m_nNumTutorial--;
-	//	if (m_nNumTutorial < 0)
-	//	{
-	//		m_nNumTutorial = 0;
-	//	}
-
-	//	m_pPolygon->BindTexture(m_pTexture[m_nNumTutorial]);
-	//}
 
 	// カメラクラス更新処理
 	CCamera * pCamera = CManager::GetCamera();
@@ -171,20 +174,124 @@ void CTutorial::Update(void)
 	{
 		pCamera->Update();
 	}
+
+	int nTaskClear = 0;
+
+	// フェーズごとに処理を変える
+	switch (m_Tutorialphase)
+	{
+	//case PHAZE_MOVE:
+	//	for (int nCount = 0; nCount < CCharaSelect::GetEntryPlayerNum(); nCount++)
+	//	{
+	//		if (CColorTile::GetTileNum(nCount, 1) >= 10)
+	//		{
+	//			m_bTask[nCount] = true;
+	//			if (m_bTask[nCount])
+	//			{
+	//				nTaskClear++;
+	//			}
+	//		}
+	//		if (CCharaSelect::GetEntryPlayerNum() == nTaskClear)
+	//		{
+	//			m_Tutorialphase = PHAZE_PAINT;
+	//		}
+	//	}
+	//	break;
+
+	case PHASE_PAINT:
+		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+		{
+			CheckTaskClear(CColorTile::GetTileNum(nCount, 1), TARGET_PAINT, nCount, nTaskClear);
+		}
+		break;
+
+	case PHASE_OVERPAINT:
+		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+		{
+			CheckTaskClear(CColorTile::GetTileNum(nCount, 3), TARGET_OVERPAINT, nCount, nTaskClear);
+		}
+		break;
+
+	case PHASE_ATTACK:
+		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+		{
+			CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount, nTaskClear);
+		}
+		break;
+
+	case PHASE_FINALATTACK:
+		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+		{
+			CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount, nTaskClear);
+		}
+		break;
+
+	default:
+		break;
+	}
+
+	// タイルの色のカウント
+	CKillCount::AddTotalKill();
+	CColorTile::CountColorTile();
+
+	CDebugLog::Init();
+	CDebugLog::Print("1P:Kill:%d\n", CKillCount::GetTotalKill(0));
+	CDebugLog::Print("2P:Kill:%d\n", CKillCount::GetTotalKill(1));
+	CDebugLog::Print("3P:Kill:%d\n", CKillCount::GetTotalKill(2));
+	CDebugLog::Print("4P:Kill:%d\n", CKillCount::GetTotalKill(3));
+
+	CDebugLog::Print("赤:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(0), CColorTile::GetTileNum(0, 1), CColorTile::GetTileNum(0, 2), CColorTile::GetTileNum(0, 3));
+	CDebugLog::Print("青:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(1), CColorTile::GetTileNum(1, 1), CColorTile::GetTileNum(1, 2), CColorTile::GetTileNum(1, 3));
+	CDebugLog::Print("緑:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(2), CColorTile::GetTileNum(2, 1), CColorTile::GetTileNum(2, 2), CColorTile::GetTileNum(2, 3));
+	CDebugLog::Print("橙:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(3), CColorTile::GetTileNum(3, 1), CColorTile::GetTileNum(3, 2), CColorTile::GetTileNum(3, 3));
+
+	CDebugLog::Print("チュートリアル:%d\n", m_Tutorialphase);
 }
 
 //=============================
 // 描画処理
 //=============================
-void CTutorial::Draw(void)
+void CTutorial::Draw()
 {
-	// ポリゴンの描画処理
-	m_pPolygon->Draw();
+	if (m_pPolygon != NULL)
+	{
+		// ポリゴンの描画処理
+		m_pPolygon->Draw();
+	}
 
 	// カメラクラス更新処理
 	CCamera * pCamera = CManager::GetCamera();
 	if (pCamera != NULL)
 	{
 		pCamera->SetCamera();
+	}
+}
+
+//=============================
+// タスクを完了したのかチェックする処理
+//=============================
+void CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, const int nPlayernum, int &nTaskClear)
+{
+	// タスクごとの処理で受け取った数とその目標数を比べる
+	if (nCurTaskNum >= nTargetNum)
+	{
+		m_bTask[nPlayernum] = true;
+		if (m_bTask[nPlayernum])
+		{
+			nTaskClear++;
+		}
+	}
+
+	// プレイヤー数とタスクを完了した数が一致してたら
+	if (CCharaSelect::GetEntryPlayerNum() == nTaskClear)
+	{
+		// 次のフェーズへの移行
+		int nTutorialphase = (int)m_Tutorialphase;
+		nTutorialphase++;
+		m_Tutorialphase = (TUTORIALPHASE)nTutorialphase;
+
+		// タスクの初期化
+		ZeroMemory(&m_bTask, sizeof(m_bTask));
+		nTaskClear = 0;
 	}
 }

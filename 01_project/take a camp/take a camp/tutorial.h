@@ -18,6 +18,7 @@
 //*****************************
 // 前方宣言
 //*****************************
+class CMap;
 class CPolygon;
 
 //*****************************
@@ -33,6 +34,17 @@ class CPolygon;
 class CTutorial : public CScene
 {
 public:
+	enum TUTORIALPHASE
+	{
+		PHASE_START = 0,
+		PHASE_MOVE,
+		PHASE_PAINT,
+		PHASE_OVERPAINT,
+		PHASE_ATTACK,
+		PHASE_FINALATTACK,
+		PHASE_FINISH,
+	};
+
 	//============
 	// メンバ関数
 	//===========
@@ -45,22 +57,23 @@ public:
 	void Update(void);  // 更新
 	void Draw(void);    // 描画
 
+	TUTORIALPHASE GetTutorialPhase(void) { return m_Tutorialphase; }	// チュートリアルの状態の取得
 private:
-	enum TUTORIALPHASE
-	{
-		PHAZE_MOVE = 0, 
-		PHAZE_PAINT,
-		PHAZE_ATTACK,
-		PHAZE_FINISH,
-	};
+	//============
+	// メンバ関数
+	//===========
+	void CheckTaskClear(const int nCurTaskNum, const int nTargetNum, const int nPlayernum, int &nTaskClear);
 
 	//============
 	// メンバ変数
 	//===========
 	static LPDIRECT3DTEXTURE9 m_pTexture[TUTORIAL_NUM]; // テクスチャへのポインタ
-	CPolygon *m_pPolygon;                               // ポリゴン
-	int m_nNumTutorial;                                 // チュートリアル数
-	TUTORIALPHASE m_Tutorialphase;
+	CMap* m_pMap;										// マップのポインタ
+	CPolygon *m_pPolygon;								// ポリゴンのポインタ
+	int m_nNumTutorial;									// チュートリアル数
+	TUTORIALPHASE m_Tutorialphase;						// チュートリアルの状態
+	bool m_bTask[MAX_PLAYER];
+	bool m_bEntry[MAX_PLAYER];
 };
 
 #endif
