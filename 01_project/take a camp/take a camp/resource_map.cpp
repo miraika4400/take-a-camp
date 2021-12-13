@@ -21,11 +21,10 @@
 //=============================================================================
 char* CMapManager::m_pFileName[MAP_TYPE_MAX] =
 {
-	
-	"data/Text/stage/stage05.csv" ,
-	"",
-	"",
-	""
+	"data/Text/stage/stage05.csv" , // マップ1
+	"data/Text/stage/stage05.csv" , // マップ2
+	"data/Text/stage/stage05.csv" , // マップ3
+	"data/Text/stage/stage05.csv" , // チュートリアルマップ
 };
 CMapManager *CMapManager::m_pMapBasis = NULL;
 //=============================================================================

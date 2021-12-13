@@ -61,6 +61,7 @@ public:
 		TEXTURE_TILE_CHARGE,		// タイルのチャージ
 		TEXTURE_ICON_BG,			// アイコンの背景
 		TEXTURE_SWORD_ICON,		 	// 剣アイコン
+		TEXTURE_STAGE_NAME_UI,		// ステージ名
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類

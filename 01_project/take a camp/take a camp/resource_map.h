@@ -53,10 +53,11 @@ public:
 
 	typedef enum	//マップの種類
 	{
-		MAP_TYPE_1 = 0,	//マップ1
-		MAP_TYPE_2,
-		MAP_TYPE_3,
-		MAP_TYPE_4,
+		MAP_TYPE_NONE = -1,
+		MAP_TYPE_1,	       // マップ1
+		MAP_TYPE_2,        // マップ2
+		MAP_TYPE_3,        // マップ3
+		MAP_TYPE_TUTORIAL, // チュートリアルマップ*一番下にあると助かります by_Masuzawa
 		MAP_TYPE_MAX
 	}MAP_TYPE;
 

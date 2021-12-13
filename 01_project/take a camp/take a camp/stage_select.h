@@ -10,22 +10,26 @@
 #define _STAGE_SELECT_H_
 
 //*****************************
-//インクルード
+// インクルード
 //*****************************
 #include "scene.h"
-//=============================
-// 前方宣言
-//=============================
+#include "resource_map.h"
 
 //*****************************
-//マクロ定義
+// 前方宣言
 //*****************************
+class CStageNameUi;
+
+//*****************************
+// マクロ定義
+//*****************************
+#define SELECT_STAGE_NUM (CMapManager::MAP_TYPE_MAX - 1)
 
 //*****************************
 //クラス定義
 //*****************************
 
-//ゲームクラス
+//ステージセレクトクラス
 class CStageSelect : public CScene
 {
 public:
@@ -43,6 +47,13 @@ public:
 	void Draw(void);    // 描画
 
 private:
+	void SetObject(void);  // オブジェクトの設置
+	void SelectStageType(void);// ステージタイプの選択処理
+
+	// メンバ変数
+	static CMapManager::MAP_TYPE m_selectStageType; // 選択しているステージのタイプ
+	CStageNameUi* m_pStageName;                      // ステージ名クラス
+	int m_nWaitCnt;
 };
 
 #endif
