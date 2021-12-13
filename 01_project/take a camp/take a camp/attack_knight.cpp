@@ -15,7 +15,7 @@
 #include "skill_effect.h"
 #include "skill_circle.h"
 #include "color_manager.h"
-#include "player.h"
+
 
 //=============================================================================
 // コンストラクタ
@@ -24,6 +24,7 @@ CAttackKnight::CAttackKnight()
 {
 	m_nAttackCount = 0;
 	m_nType = 0;
+
 }
 
 //=============================================================================
@@ -55,7 +56,8 @@ CAttackKnight * CAttackKnight::Create(CPlayer* pPlayer)
 // 攻撃生成関数
 //=============================================================================
 void CAttackKnight::AttackCreate(void)
-{
+{	
+	//プレイヤーのポインタ
 	CPlayer *pPlaryer = GetPlayer();
 	
 	//攻撃フラグが立っているか
@@ -73,19 +75,27 @@ void CAttackKnight::AttackCreate(void)
 		{
 			//攻撃処理
 			Attack(m_nType);
+	
+			//スキルエフェクトの生成
+			if (m_nType == MIN_HIT_TYPE)
+			{
+				for (int nCnt = 0; nCnt < GetAttackSquare().nMaxHitRange; nCnt++)
+				{
+					
+					//行列計算
+					D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+					D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nCnt].AttackPos * TILE_ONE_SIDE;
+					CreatePos.x = ((cosf(pPlaryer->GetRot().y)*AttackPos.x) + (sinf(pPlaryer->GetRot().y)*AttackPos.z));
+					CreatePos.y = 1 * AttackPos.y;
+					CreatePos.z = ((-sinf(pPlaryer->GetRot().y)*AttackPos.x) + (cosf(pPlaryer->GetRot().y)*AttackPos.z));
 
-			//行列計算
-			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-			D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[0].AttackPos * TILE_ONE_SIDE;
-			CreatePos.x = ((cosf(pPlaryer->GetRot().y)*AttackPos.x) + (sinf(pPlaryer->GetRot().y)*AttackPos.z));
-			CreatePos.y = 1 * AttackPos.y;
-			CreatePos.z = ((-sinf(pPlaryer->GetRot().y)*AttackPos.x) + (cosf(pPlaryer->GetRot().y)*AttackPos.z));
-
-			
-		/*	
-			CSkill_effect::Create(pPlaryer->GetPos() + CreatePos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
+					//エフェクト生成
+					CSkill_effect::Create(pPlaryer->GetPos() + CreatePos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
 					GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() - 1),
-					GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), CSkill_effect::SKILLTYPE_KNIGHT);*/
+					GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), CSkill_effect::SKILLTYPE_KNIGHT);
+				}
+				
+			}
 
 			//タイプが一定になったら
 			if (m_nType == MAX_HIT_TYPE)
@@ -105,6 +115,8 @@ void CAttackKnight::AttackCreate(void)
 			//カウント初期化
 			m_nAttackCount = 0;
 
+		
 		}
+		
 	}
 }

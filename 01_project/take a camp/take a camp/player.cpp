@@ -646,12 +646,7 @@ void CPlayer::Attack(void)
 			CreatePos.y = 1 * AttackPos.y;
 			CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
 
-			if (m_bAttack&&m_bMove)
-			{
-				CSkill_effect::Create(GetPos() + CreatePos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel),
-				GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel - 1),
-				GET_COLORMANAGER->GetStepColor(m_nColor, m_nChargeTilelevel + 1), CSkill_effect::SKILLTYPE_KNIGHT);
-			}
+			
 
 		//カウントアップ
 		m_AttackData.m_nAttackRotCount++;
