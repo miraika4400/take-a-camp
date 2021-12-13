@@ -62,6 +62,21 @@ public:
 		MODEL_ITEM_REVERSE,       // 反転アイテム
 		MODEL_WALL_FRONT,		  // 壁*正面
 		MODEL_WALL_SIDE,          // 壁*サイド
+		//--------------------
+		//以下背景用モデル
+		//--------------------
+		MODEL_TREE,
+		MODEL_MATO,
+		MODEL_BUKITATE,
+		MODEL_CHEST,
+		MODLE_TARU,
+		MODEL_GAITOU,
+		MODEL_HATA,
+		MODEL_SAKU,
+		MODEL_ENOGU,
+		MODEL_ENPITU,
+		MODEL_MAGCUP,
+		MODEL_MOKUZIN,
 		MODEL_MAX        // モデル数
 	}MODEL_TYPE;
 

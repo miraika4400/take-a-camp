@@ -11,7 +11,6 @@
 #include "build.h"
 #include "manager.h"
 #include "keyboard.h"
-#include "shadow.h"
 
 //*****************************
 // マクロ定義
@@ -26,8 +25,6 @@ CBuild::CBuild() : CModel(OBJTYPE_ITEM)
 {
 	m_rot = D3DXVECTOR3(0.5f, 0.5f, 0.5f);//角度
 	m_move = D3DXVECTOR3(0.5f, 0.5f, 0.5f);//移動
-
-	m_pShadow = NULL;		//影のポインタ
 
 	m_bUp = false;			//上限判定
 }
@@ -58,9 +55,6 @@ CBuild * CBuild::Create(D3DXVECTOR3 pos, BUILD_TYPE type, BUILD_BOOL bBuild)
 	//位置セット
 	pBuild->SetPos(pos);
 
-	//影生成
-	pBuild->m_pShadow = CShadow::Create(D3DXVECTOR3(pos.x, 0.2f, pos.z), D3DXVECTOR3(8.0f, 0.0f, 8.0f));
-
 	return pBuild;
 }
 
@@ -75,11 +69,41 @@ HRESULT CBuild::Init(void)
 	// モデル割り当て
 	switch (m_BuildType)
 	{
-	case BUILD_TYPE_0:
-		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_ITEM_DASH));
+	case BUILD_TYPE_TREE:
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_TREE));
 		break;
-	case BUILD_TYPE_1:
-		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_ITEM_REVERSE));
+	case BUILD_TYPE_MATO:
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_MATO));
+		break;
+	case BUILD_TYPE_BUKIKAKE:
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_BUKITATE));
+		break;
+	case BUILD_TYPE_CHEST:
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_CHEST));
+		break;
+	case BUILD_TYPE_TARU:
+		BindModel(CResourceModel::GetModel(CResourceModel::MODLE_TARU));
+		break;
+	case BUILD_TYPE_GAITOU:
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_GAITOU));
+		break;
+	case BUILD_TYPE_HATA:
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_HATA));
+		break;
+	case BUILD_TYPE_SAKU:
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_SAKU));
+		break;
+	case BUILD_TYPE_ENOGU:
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_ENOGU));
+		break;
+	case BUILD_TYPE_ENPITU:
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_ENPITU));
+		break;
+	case BUILD_TYPE_MAGCUP:
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_MAGCUP));
+		break;
+	case BUILD_TYPE_MOKUZIN:
+		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_MOKUZIN));
 		break;
 	default:
 		break;
@@ -208,7 +232,7 @@ void CBuild::Load(void)
 {
 	FILE* pFile = NULL;
 	D3DXVECTOR3 buildPos = {};
-	BUILD_TYPE type = BUILD_TYPE_0;
+	BUILD_TYPE type = BUILD_TYPE_TREE;
 	BUILD_BOOL bBuild = BUILD_FALSE;
 
 	pFile = fopen("data/BuildingInfo.txt", "r");

@@ -15,7 +15,6 @@
 //=============================================================================
 // 前方宣言
 //=============================================================================
-class CShadow;
 
 //=============================================================================
 // マクロ定義
@@ -30,8 +29,18 @@ public:
 	//建物タイプ
 	typedef enum
 	{
-		BUILD_TYPE_0 = 0,//
-		BUILD_TYPE_1,		//
+		BUILD_TYPE_TREE = 0,//
+		BUILD_TYPE_MATO,		//
+		BUILD_TYPE_BUKIKAKE,
+		BUILD_TYPE_CHEST,
+		BUILD_TYPE_TARU,
+		BUILD_TYPE_GAITOU,
+		BUILD_TYPE_HATA,
+		BUILD_TYPE_SAKU,
+		BUILD_TYPE_ENOGU,
+		BUILD_TYPE_ENPITU,
+		BUILD_TYPE_MAGCUP,
+		BUILD_TYPE_MOKUZIN,
 		BUILD_TYPE_MAX
 	}BUILD_TYPE;
 	
@@ -71,7 +80,6 @@ private:
 
 	BUILD_TYPE m_BuildType;			//
 	BUILD_BOOL m_BuildBool;			
-	CShadow *m_pShadow;			//影のポインタ
 
 	bool m_bUp;				//上限判定
 	bool m_bGet;			//取得フラグ

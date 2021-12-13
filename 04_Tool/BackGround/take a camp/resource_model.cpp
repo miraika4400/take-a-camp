@@ -35,6 +35,19 @@ const std::string CResourceModel::m_aModelPath[CResourceModel::MODEL_MAX]
 	"data/Models/00_hatena.x",	// îΩì]
 	"data/Models/stage/00_frontwall.x",	// ï«*ê≥ñ 
 	"data/Models/stage/01_sidewall.x",	// ï«*ÉTÉCÉh
+
+	"data/Models/bgobject/03_x/00_tree.x",
+	"data/Models/bgobject/03_x/01_matoari.x",
+	"data/Models/bgobject/03_x/03_bukikake.x",
+	"data/Models/bgobject/03_x/04_chest.x",
+	"data/Models/bgobject/03_x/05_taru.x",
+	"data/Models/bgobject/03_x/06_gaitou.x",
+	"data/Models/bgobject/03_x/07_hata.x",
+	"data/Models/bgobject/03_x/08_saku.x",
+	"data/Models/bgobject/03_x/09_enogu.x",
+	"data/Models/bgobject/03_x/10_enpitu.x",
+	"data/Models/bgobject/03_x/11_magcup.x",
+	"data/Models/bgobject/03_x/12_mokuzin.x",
 };
 
 //===================================
