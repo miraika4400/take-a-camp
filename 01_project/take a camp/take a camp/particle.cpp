@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////
 //
 //    particleクラスの処理[particle.cpp]
-//    Author:増澤 未来
+//    Author:齋藤大行
 //
 ////////////////////////////////////////////////////
 
@@ -104,7 +104,7 @@ HRESULT CParticle::Init(void)
 	}
 
 	m_apTexture[PARTICLE_SQUARE] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SQUARE);
-	m_apTexture[PARTICLE_TEARS] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_TEARS);
+	m_apTexture[PARTICLE_TEARS] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SKILL);
 	m_apTexture[PARTICLE_CIRCLE] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_CIRCLE);
 	m_apTexture[PARTICLE_GURUGURU] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_GURUGURU);
 	// テクスチャ割り当て
