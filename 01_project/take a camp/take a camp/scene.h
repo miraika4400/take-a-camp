@@ -49,7 +49,8 @@ public:
 		OBJTYPE_EFFECT,        // エフェクト
 		OBJTYPE_PARTICLE,      // パーティクル
 		OBJTYPE_MOTION,        // モーション
-		OBJTYPE_UI,            // UI
+		OBJTYPE_UI_1,            // UI
+		OBJTYPE_UI_2,            // UI
 		OBJTYPE_ACT_RANGE,	   // 行動範囲
 		OBJTYPE_COLLISION,     // コリジョン
 		OBJTYPE_SYSTEM,        // システム
@@ -92,7 +93,6 @@ private:
 	//============
 	static int m_nIDAll;                   // 生成したポリゴン数
 	int     m_nNumID;                      // 生成したポリゴンの配列
-	OBJTYPE m_type;                        // オブジェクトタイプ
 	int     m_nPriority;                   // プライオリティ
 	bool    m_bReleasFlag;                 // 削除フラグ
 

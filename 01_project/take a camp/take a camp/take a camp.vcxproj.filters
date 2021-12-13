@@ -124,6 +124,12 @@
     <Filter Include="ソース ファイル\07_GameModel\Attack\Bullet">
       <UniqueIdentifier>{89e7c282-5e3f-477c-8771-f8d4bb89c9a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\07_GameModel\Item">
+      <UniqueIdentifier>{96c311f1-7ed0-4dc2-add1-dbb6b498ed1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\07_GameModel\Item">
+      <UniqueIdentifier>{337f0e6e-4961-41ef-a225-d843ca384f01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene.cpp">
@@ -270,9 +276,6 @@
     <ClCompile Include="resource_attack.cpp">
       <Filter>ソース ファイル\03_Resource</Filter>
     </ClCompile>
-    <ClCompile Include="item.cpp">
-      <Filter>ソース ファイル\07_GameModel</Filter>
-    </ClCompile>
     <ClCompile Include="needle_tile.cpp">
       <Filter>ソース ファイル\08_Map\Tile</Filter>
     </ClCompile>
@@ -314,9 +317,6 @@
     </ClCompile>
     <ClCompile Include="resource_model_hierarchy.cpp">
       <Filter>ソース ファイル\03_Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="total_score.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="peint_collision.cpp">
       <Filter>ソース ファイル\08_Map\Tile</Filter>
@@ -377,6 +377,42 @@
     </ClCompile>
     <ClCompile Include="stage_select.cpp">
       <Filter>ソース ファイル\06_GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="item.cpp">
+      <Filter>ソース ファイル\07_GameModel\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="dash_item.cpp">
+      <Filter>ソース ファイル\07_GameModel\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="reverse_item.cpp">
+      <Filter>ソース ファイル\07_GameModel\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_lancer.cpp">
+      <Filter>ソース ファイル\07_GameModel\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="total_score.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_wizard.cpp">
+      <Filter>ソース ファイル\07_GameModel\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="warp_tile.cpp">
+      <Filter>ソース ファイル\08_Map\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="stage_name_ui.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="stage_select_polygon.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="base_Cylinder.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_circle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_effect.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -518,9 +554,6 @@
     <ClInclude Include="resource_attack.h">
       <Filter>ヘッダー ファイル\03_Resource</Filter>
     </ClInclude>
-    <ClInclude Include="item.h">
-      <Filter>ヘッダー ファイル\07_GameModel</Filter>
-    </ClInclude>
     <ClInclude Include="needle_tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
@@ -568,9 +601,6 @@
     </ClInclude>
     <ClInclude Include="resource_model_hierarchy.h">
       <Filter>ヘッダー ファイル\03_Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="total_score.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="bg.h">
       <Filter>ヘッダー ファイル\07_GameModel</Filter>
@@ -632,12 +662,51 @@
     <ClInclude Include="text.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
+    <ClInclude Include="item.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="dash_item.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="reverse_item.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_lancer.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="total_score.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_wizard.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="warp_tile.h">
+      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="stage_name_ui.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="stage_select_polygon.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="base_Cylinder.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_circle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_effect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="data\HLSL\TileShader.fx">
       <Filter>hlslファイル</Filter>
     </FxCompile>
     <FxCompile Include="data\HLSL\PlayerShader.fx">
+      <Filter>hlslファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="data\HLSL\BlurShader.fx">
       <Filter>hlslファイル</Filter>
     </FxCompile>
   </ItemGroup>

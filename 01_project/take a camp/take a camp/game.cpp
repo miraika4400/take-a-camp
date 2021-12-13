@@ -79,7 +79,7 @@ HRESULT CGame::Init(void)
 	// マネージャーの番号のリセット
 	GET_COLORMANAGER->UseNumReset();
 
-	CManager::SetCamera(CTpsCamera::Create());
+	CManager::SetCamera(CCamera::Create());
 
 	// 背景の生成
 	CBg::Create();
@@ -108,7 +108,6 @@ void CGame::Uninit(void)
 	if (pCamera != NULL)
 	{
 		CManager::SetCamera(NULL);
-		pCamera = NULL;
 	}
 	
 	// ライトクラスの解放処理

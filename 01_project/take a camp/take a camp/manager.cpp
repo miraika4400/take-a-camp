@@ -31,6 +31,7 @@
 #include "total_result.h"
 #include "tile_factory.h"
 #include "resource_character.h"
+#include "stage_select.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -53,7 +54,7 @@ CCamera         *CManager::m_pCamera = NULL;         // カメラクラス
 CLight			*CManager::m_pLight = NULL;			 // ライトクラス
 bool             CManager::m_bPause = false;         // ポーズフラグ
 CCharaSelect    *CManager::m_pCharaSelectMode = NULL;// キャラ選択
-
+CStageSelect    *CManager::m_pStageSelectMode = NULL;// ステージ選択
 //=============================
 // コンストラクタ
 //=============================
@@ -365,6 +366,10 @@ void CManager::SetMode(MODE mode)
 		m_pCharaSelectMode = NULL;
 
 		break;
+	case MODE_STAGE_SELECT:
+		m_pStageSelectMode = NULL;
+
+		break;
 	case MODE_GAME:
 		// NULLクリア
 		m_pGame = NULL;
@@ -409,6 +414,10 @@ void CManager::SetMode(MODE mode)
 		break;
 	case MODE_CHARA_SELECT:
 		m_pCharaSelectMode = CCharaSelect::Create();
+
+		break;
+	case MODE_STAGE_SELECT:
+		m_pStageSelectMode = CStageSelect::Create();
 
 		break;
 	case MODE_GAME:

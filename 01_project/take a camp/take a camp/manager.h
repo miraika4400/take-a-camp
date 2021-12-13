@@ -33,7 +33,7 @@ class CCamera;
 class CColorManager;
 class CLight;
 class CCharaSelect;
-
+class CStageSelect;
 
 //=============================
 // クラス定義
@@ -52,6 +52,7 @@ public:
 		MODE_TITLE = 0,		// タイトル
 		MODE_TUTORIAL,		// チュートリアル
 		MODE_CHARA_SELECT,	// キャラ選択
+		MODE_STAGE_SELECT,	// ステージ選択
 		MODE_GAME,			// ゲーム
 		MODE_RESULT,		// リザルト
 		MODE_TOTAL_RESULT,	// 全体リザルト
@@ -114,6 +115,8 @@ private:
 	static CLight *			m_pLight;			// ライト
 	static bool				m_bPause;			// ポーズフラグ
 	static CCharaSelect* m_pCharaSelectMode;	// キャラ選択モード
+	static CStageSelect* m_pStageSelectMode;	// ステージ選択モード
+
 
 };
 	

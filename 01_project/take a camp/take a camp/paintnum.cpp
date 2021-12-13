@@ -55,7 +55,7 @@ CPaintnum * CPaintnum::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 
 	pPaintnum->m_pos = pos;
 	pPaintnum->m_size = size;
-	pPaintnum->SetPriority(OBJTYPE_UI);
+	pPaintnum->SetPriority(OBJTYPE_UI_2);
 
 	// ‰Šú‰»ˆ—
 	pPaintnum->Init();

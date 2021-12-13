@@ -58,31 +58,35 @@ public:
 	void	AttackFinalFlag(void);		// 必殺待機フラグ処理
 	void    AttackFinalSwitch(void);	// 必殺スイッチ関数
 	void	CancelSwitch(void);			// 攻撃キャンセルスイッチ関数
+	virtual void AttackCreate(void);						// 攻撃生成処理
+	void	VisualizationAttackArea(int nAttackType = 0);	// 攻撃範囲の可視化
+	void	ResetAttackArea(void);							// 攻撃範囲ポリゴンのリセット
+	void	ReleaseAttakcArea(void);                        // 攻撃範囲のリリース
 
-	void	SetAttackType(CResourceCharacter::CHARACTER_TYPE AttackType);		//攻撃タイプセッター
-	CResourceCharacter::CHARACTER_TYPE GetAttackType(void);						//攻撃タイプゲッター
-	void	SetAttackSquare(CAttackManager::ATTACK_SQUARE_DATA AttackSquare);	//攻撃マスデータセッター
-	CAttackManager::ATTACK_SQUARE_DATA GetAttackSquare(void);					//攻撃マスデータゲッター
-
-	void		SetLevel(int nLevel) { m_nLevel = nLevel; }				// レベルセッター
-	void		SetPlayer(CPlayer* pPlayer) { m_pPlayer = pPlayer; }	// プレイヤーセッター
-	CPlayer*	GetPlayer(void) { return m_pPlayer; }					// プレイヤーゲッター
-	void		SetState(ATTACK_STATE State) { m_AttackState = State; }	// ステートセッター
-	ATTACK_STATE GetState(void) { return m_AttackState; }				// ステートゲッター
-	void		SetAttackFlag(bool bAttack) { m_bAttack = bAttack; }	// 必殺技フラグ設定
-	bool		GetAttackFlag(void) { return m_bAttack; }				// 必殺技フラグ取得
-
-	virtual void AttackCreate(void);						// 攻撃生成処理 
-
-	void		VisualizationAttackArea(int nAttackType = 0);	// 攻撃範囲の可視化
-	void        ResetAttackArea(void);							// 攻撃範囲ポリゴンのリセット
-	void        ReleaseAttakcArea(void);                        // 攻撃範囲のリリース
+	//============================
+	//セッター・ゲッター
+	//============================
+	//攻撃マスデータ
+	CAttackManager::ATTACK_SQUARE_DATA GetAttackSquare(void);			
+	// レベル
+	void		SetLevel(int nLevel) { m_nLevel = nLevel; }			
+	// プレイヤー
+	void		SetPlayer(CPlayer* pPlayer) { m_pPlayer = pPlayer; }	
+	CPlayer*	GetPlayer(void) { return m_pPlayer; }					
+	// ステート
+	void		SetState(ATTACK_STATE State) { m_AttackState = State; }	
+	ATTACK_STATE GetState(void) { return m_AttackState; }				
+	// 必殺技フラグ
+	void		SetAttackFlag(bool bAttack) { m_bAttack = bAttack; }	
+	bool		GetAttackFlag(void) { return m_bAttack; }				
+	// 攻撃タイプ
+	void		SetType(CResourceCharacter::CHARACTER_TYPE type) { m_nAttackType = type; }
 private:
 	void		Charge(void);								    // 攻撃のチャージ処理
 
 	CPlayer *		m_pPlayer;												// プレイヤークラス
 	CAttackArea *	m_apAttackArea[MAX_ATTACK_AREA_NUM];					// 攻撃範囲ポインタ
-	CResourceCharacter::CHARACTER_TYPE			m_nAttackType;				// 攻撃タイプ
+	CResourceCharacter::CHARACTER_TYPE	m_nAttackType;						// 攻撃タイプ
 	CAttackManager::ATTACK_SQUARE_DATA	m_AttackSquare[MAX_ATTACK_LEVEL];	// 攻撃マスデータ
 	CPeintCollision* m_pPeintCollision[MAX_FINAL_PEINT];					// 色
 	ATTACK_STATE	m_AttackState;						// 攻撃ステート

@@ -23,7 +23,7 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CCharacterPolygon::CCharacterPolygon() :CScene2d(OBJTYPE_UI)
+CCharacterPolygon::CCharacterPolygon() :CScene2d(OBJTYPE_UI_2)
 {
 	m_pDynamicTex = NULL;
 	m_pCharacterModel = NULL;
@@ -52,7 +52,7 @@ CCharacterPolygon * CCharacterPolygon::Create(D3DXVECTOR3 pos)
 
 	// 各値の代入
 	pCharacterPolygon->SetPos(pos);
-	pCharacterPolygon->SetPriority(OBJTYPE_UI);
+	pCharacterPolygon->SetPriority(OBJTYPE_UI_2);
 
 	return pCharacterPolygon;
 }

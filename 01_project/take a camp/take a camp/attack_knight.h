@@ -22,6 +22,7 @@ public:
 	//ŠÖ”’è‹`
 	CAttackKnight();
 	~CAttackKnight();
+
 	static CAttackKnight *Create(CPlayer* pPlayer);
 
 private:

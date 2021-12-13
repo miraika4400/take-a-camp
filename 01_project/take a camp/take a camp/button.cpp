@@ -20,7 +20,7 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CButton::CButton() :CScene2d(OBJTYPE_UI)
+CButton::CButton() :CScene2d(OBJTYPE_UI_2)
 {
 	m_color = BUTTON_COLOR;	// カラー
 }
@@ -47,7 +47,7 @@ CButton * CButton::Create(D3DXVECTOR3 pos)
 
 	// 各値の代入
 	pButton->SetPos(pos);
-	pButton->SetPriority(OBJTYPE_UI);
+	pButton->SetPriority(OBJTYPE_UI_2);
 
 	return pButton;
 }

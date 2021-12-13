@@ -35,7 +35,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/kill.png",			// リザルトのキルUI
 	"./data/Textures/tile.png",			// リザルトのタイルUI
 	"./data/Textures/effect/kirakira.png",	// パーティクル*四角
-	"./data/Textures/Tears.png",			// パーティクル*涙
+	"./data/Textures/effect/00_wave.png",	// パーティクル*波紋
 	"./data/Textures/particle004.png",		// パーティクル*円
 	"./data/Textures/guruguru.png",			// パーティクル*円
 	"./data/Textures/number.png",			// ナンバー
@@ -59,6 +59,9 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/icon_bg.png",	          // アイコンの背景
 	"./data/Textures/sword_icon.png",	      // 剣アイコン
 	"./data/Textures/speechbubble.png",       // 吹き出し
+	"./data/Textures/stage_name.png",	      // ステージ名
+	"./data/Textures/stage_polygon_bg.png",	      // ステージ選択背景
+	
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]

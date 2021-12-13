@@ -125,7 +125,7 @@ void CCharaSelect::Update(void)
 			break;
 
 		case CManager::MODE_GAME:
-			CManager::GetFade()->SetFade(CManager::MODE_GAME);
+			CManager::GetFade()->SetFade(CManager::MODE_STAGE_SELECT);
 			break;
 
 		default:
