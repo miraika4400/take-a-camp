@@ -141,7 +141,7 @@ void CGame::Update(void)
 	}
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_0))
 	{
-		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_0);
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_0, CBuild::BUILD_TRUE);
 	}
 #ifdef _DEBUG
 	// デバッグ用画面遷移コマンド

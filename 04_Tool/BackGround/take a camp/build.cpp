@@ -24,7 +24,7 @@
 //******************************
 CBuild::CBuild() : CModel(OBJTYPE_ITEM)
 {
-	m_rot = D3DXVECTOR3(0.0f, 0.05f, 0.0f);//角度
+	m_rot = D3DXVECTOR3(0.5f, 0.5f, 0.5f);//角度
 	m_move = D3DXVECTOR3(0.5f, 0.5f, 0.5f);//移動
 
 	m_pShadow = NULL;		//影のポインタ
@@ -42,7 +42,7 @@ CBuild::~CBuild()
 //******************************
 // クラス生成
 //******************************
-CBuild * CBuild::Create(D3DXVECTOR3 pos, BUILD_TYPE type)
+CBuild * CBuild::Create(D3DXVECTOR3 pos, BUILD_TYPE type, BUILD_BOOL bBuild)
 {
 	//メモリの確保
 	CBuild *pBuild;
@@ -54,6 +54,7 @@ CBuild * CBuild::Create(D3DXVECTOR3 pos, BUILD_TYPE type)
 	//初期化処理
 	pBuild->Init();
 
+	pBuild->SetBuildBool(bBuild);
 	//位置セット
 	pBuild->SetPos(pos);
 
@@ -104,12 +105,13 @@ void CBuild::Uninit(void)
 //******************************
 void CBuild::Update(void)
 {
-	//位置の取得
-	D3DXVECTOR3 ItemPos = GetPos();
-	//上下の移動
-	MoveUpdate();
-	//回転
-	RotUpdate();
+	if (m_BuildBool == BUILD_TRUE)
+	{
+		//上下の移動
+		MoveUpdate();
+		//回転
+		RotUpdate();
+	}
 }
 
 //******************************
@@ -162,6 +164,7 @@ void CBuild::MoveUpdate(void)
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
 	{
 		Save();
+		m_BuildBool = BUILD_FALSE;
 	}
 	//位置の再設定
 	SetPos(BuildPos);
@@ -173,10 +176,17 @@ void CBuild::MoveUpdate(void)
 void CBuild::RotUpdate(void)
 {
 	//角度の取得
-	D3DXVECTOR3 ItemRot = GetRot();
-
+	D3DXVECTOR3 BuildRot = GetRot();
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_Q))
+	{
+		BuildRot.y += m_rot.y;
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_E))
+	{
+		BuildRot.y -= m_rot.y;
+	}
 	//角度の設定
-	SetRot(ItemRot);
+	SetRot(BuildRot);
 }
 
 void CBuild::Save(void)
@@ -185,9 +195,13 @@ void CBuild::Save(void)
 	D3DXVECTOR3 buildPos = GetPos();
 
 	pFile = fopen("data/BuildingInfo.txt", "a");
-	fprintf(pFile, "%d\n", m_BuildType);
-	fprintf(pFile, "%d %d %d\n", (int)buildPos.x, (int)buildPos.y, (int)buildPos.z);
-	fclose(pFile);
+	if (pFile != NULL)
+	{
+		fprintf(pFile, "%d\n", m_BuildType);
+		fprintf(pFile, "%d %d %d\n", (int)buildPos.x, (int)buildPos.y, (int)buildPos.z);
+		fclose(pFile);
+	}
+
 }
 
 void CBuild::Load(void)
@@ -195,8 +209,20 @@ void CBuild::Load(void)
 	FILE* pFile = NULL;
 	D3DXVECTOR3 buildPos = {};
 	BUILD_TYPE type = BUILD_TYPE_0;
+	BUILD_BOOL bBuild = BUILD_FALSE;
+
 	pFile = fopen("data/BuildingInfo.txt", "r");
-	fscanf(pFile, "%d", &type);
-	fscanf(pFile, "%f %f %f", &buildPos.x, &buildPos.y, &buildPos.z);
-	CBuild::Create(buildPos, type);
+
+	if (pFile != NULL)
+	{
+		while (fscanf(pFile, "%d", &type) != EOF)
+		{
+
+			fscanf(pFile, "%f %f %f", &buildPos.x, &buildPos.y, &buildPos.z);
+			CBuild::Create(buildPos, type, bBuild);
+		}
+
+	}
+	fclose(pFile);
 }
+

@@ -27,18 +27,24 @@ class CShadow;
 class CBuild : public CModel
 {
 public:
-	//アイテム効果
+	//建物タイプ
 	typedef enum
 	{
-		BUILD_TYPE_0 = 0,//加速
-		BUILD_TYPE_1,		//操作逆転
+		BUILD_TYPE_0 = 0,//
+		BUILD_TYPE_1,		//
 		BUILD_TYPE_MAX
 	}BUILD_TYPE;
+	
+	typedef enum
+	{
+		BUILD_TRUE=0,
+		BUILD_FALSE
+	}BUILD_BOOL;
 
 	CBuild();	// コンストラクタ
 	~CBuild();	// デストラクタ
 
-	static CBuild * Create(D3DXVECTOR3 pos, BUILD_TYPE type);	// 生成処理
+	static CBuild * Create(D3DXVECTOR3 pos, BUILD_TYPE type, BUILD_BOOL bBuild);	// 生成処理
 
 	HRESULT Init(void);		// 初期化処理
 	void Uninit(void);		// 終了処理
@@ -52,7 +58,9 @@ public:
 	static void Load(void);
 
 	void SetBuildType(BUILD_TYPE BuildType) { m_BuildType = BuildType; }
-	BUILD_TYPE GetItemState(void) { return m_BuildType; }
+	BUILD_TYPE GetBuildTypel(void) { return m_BuildType; }
+	void SetBuildBool(BUILD_BOOL bBuild) { m_BuildBool = bBuild; }
+	BUILD_BOOL GetBuildBool(void) { return m_BuildBool; }
 private:
 	//=============================================================================
 	// メンバ変数宣言
@@ -61,7 +69,8 @@ private:
 	D3DXVECTOR3 m_rot;		//角度
 	D3DXVECTOR3 m_move;		//移動
 
-	BUILD_TYPE m_BuildType;			//アイテムステータス
+	BUILD_TYPE m_BuildType;			//
+	BUILD_BOOL m_BuildBool;			
 	CShadow *m_pShadow;			//影のポインタ
 
 	bool m_bUp;				//上限判定

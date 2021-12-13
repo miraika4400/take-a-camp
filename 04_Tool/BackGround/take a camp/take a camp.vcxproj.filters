@@ -363,9 +363,6 @@
     <ClCompile Include="build.cpp">
       <Filter>ソース ファイル\07_GameModel</Filter>
     </ClCompile>
-    <ClCompile Include="resourse_build.cpp">
-      <Filter>ソース ファイル\03_Resource</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -604,9 +601,6 @@
     </ClInclude>
     <ClInclude Include="build.h">
       <Filter>ヘッダー ファイル\07_GameModel</Filter>
-    </ClInclude>
-    <ClInclude Include="resourse_build.h">
-      <Filter>ヘッダー ファイル\03_Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
