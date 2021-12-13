@@ -21,6 +21,7 @@
 #include "bg.h"
 #include "map.h"
 #include "resource_map.h"
+#include "stage_select_polygon.h"
 
 //=============================
 // マクロ定義
@@ -38,6 +39,7 @@ CMapManager::MAP_TYPE CStageSelect::m_selectStageType = CMapManager::MAP_TYPE_1;
 CStageSelect::CStageSelect()
 {
 	m_pStageName = NULL;
+	m_pStagePolygon = NULL;
 	m_selectStageType = CMapManager::MAP_TYPE_1;
 	m_nWaitCnt = 0;
 }
@@ -130,6 +132,7 @@ void CStageSelect::Update(void)
 
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F1) || CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
 	{
+		CGame::SetMapType(m_selectStageType);
 		CManager::GetFade()->SetFade(CManager::MODE_GAME);
 	}
 
@@ -156,11 +159,14 @@ void CStageSelect::SetObject(void)
 {
 	// 退避
 	OutList();
+
 	m_pStageName->OutList();
 
 	// 退避したもの以外全オブジェクトの削除
 	ReleaseAll();
 
+	// ステージセレクトの生成
+	m_pStagePolygon = CStageSelectPolygon::Create();
 	// プライオリティの再設定
 	SetPriority(OBJTYPE_NONE);
 	m_pStageName->SetPriority(OBJTYPE_UI);

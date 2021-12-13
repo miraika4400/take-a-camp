@@ -399,6 +399,9 @@
     <ClCompile Include="stage_name_ui.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
+    <ClCompile Include="stage_select_polygon.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -666,6 +669,9 @@
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
     <ClInclude Include="stage_name_ui.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="stage_select_polygon.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
   </ItemGroup>

@@ -242,9 +242,9 @@ void CPlayerModel::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model
 		// ワールド座標
 		pEffect->SetMatrix("World", &pModelData->mtxWorld);
 		// ライトディレクション
-		D3DXVECTOR3 lightDir = CManager::GetLight()->GetDir();
+		D3DXVECTOR3 lightDir = LIGHT_DIR_BASE;
 		pEffect->SetFloatArray("LightDirection", (float*)&D3DXVECTOR3(lightDir.x, -lightDir.y, -lightDir.z), 3);
-		// 視点位置
+		// 視点位
 		D3DXVECTOR3 eye = CManager::GetCamera()->GetPosV();
 		pEffect->SetFloatArray("Eye", (float*)&D3DXVECTOR3(eye.x, eye.y, eye.z), 3);
 		// スペキュラの情報を送る

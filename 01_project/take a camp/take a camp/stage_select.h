@@ -19,7 +19,7 @@
 // 前方宣言
 //*****************************
 class CStageNameUi;
-
+class CStageSelectPolygon;
 //*****************************
 // マクロ定義
 //*****************************
@@ -53,6 +53,7 @@ private:
 	// メンバ変数
 	static CMapManager::MAP_TYPE m_selectStageType; // 選択しているステージのタイプ
 	CStageNameUi* m_pStageName;                      // ステージ名クラス
+	CStageSelectPolygon* m_pStagePolygon;
 	int m_nWaitCnt;
 };
 
