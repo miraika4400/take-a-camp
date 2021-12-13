@@ -55,6 +55,15 @@ public:
 		int	m_nMoveFrameDataDash;	// 移動時フレーム数*ダッシュ時保存
 		int	m_nMoveFrameCount;		// 移動時カウント
 	}MOVE_DATA;
+	
+	//	攻撃データ
+	typedef struct
+	{
+		bool m_bAttack;				// 攻撃可否フラグ
+		bool m_bFinalAttack;		// 必殺可否フラグ
+		int	 m_nAttackRotCount;		// 攻撃方向入力カウント
+		bool m_bAttackRot;			// 攻撃方向入力フラグ
+	}ATTACK_DATA;
 
 	//*****************************
 	// 列挙
@@ -131,8 +140,8 @@ public:
 	// 移動フラグ
 	bool GetMoveFlag(void) { return m_bMove; }
 	// 攻撃関係フラグ
-	void SetAttack(bool bAttack) { m_bAttack = bAttack; }				
-	void SetFinalAttack(bool bFinalAttack) { m_bFinalAttack = bFinalAttack; }	
+	void SetAttack(bool bAttack) { m_AttackData.m_bAttack = bAttack; }
+	void SetFinalAttack(bool bFinalAttack) { m_AttackData.m_bFinalAttack = bFinalAttack; }
 	// 攻撃ポインタ
 	CAttackBased * GetAttack(void) { return m_pAttack; }		
 	//プレイヤー
@@ -155,20 +164,17 @@ private:
 	//*****************************
 	static int m_anControllKey[MAX_PLAYER][KEY_MAX];
 
+	PLAYER_STATE m_PlayerState;	// プレイヤーステータス
 	CKillCount * m_pKillCount;	// プレイヤーのキルカウントポインタ
 	int m_nPlayerNumber;		// プレイヤー番号
-	D3DXCOLOR	 m_color;		// 色
+	D3DXCOLOR m_color;			// 色
 	int m_nColor;				// 色ナンバー
 	int m_nControllNum;         // コントロール番号
 	bool m_bController;         // コントローラー操作かキーボード操作か
 	CAttackBased* m_pAttack;	// 攻撃用クラス
-	bool m_bAttack;				// 攻撃可否フラグ
-	bool m_bFinalAttack;		// 必殺可否フラグ
-	int	 m_nAttackRotCount;		// 攻撃方向入力カウント
-	bool m_bAttackRot;			// 攻撃方向入力フラグ
+	ATTACK_DATA m_AttackData;	// 攻撃用データ
 	bool m_bInvincible;			// 無敵フラグ
 	int m_nInvincibleCount;		// 無敵時間のカウント
-	PLAYER_STATE m_PlayerState;	// プレイヤーステータス
 	int	m_nRespawnCount;		// リスポーンまでのカウント
 	bool m_bMove;				// 移動可否フラグ
 	bool m_bOldMove;			// 前回の移動可否フラグの状態

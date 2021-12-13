@@ -393,6 +393,9 @@
     <ClCompile Include="attack_wizard.cpp">
       <Filter>ソース ファイル\07_GameModel\Attack</Filter>
     </ClCompile>
+    <ClCompile Include="warp_tile.cpp">
+      <Filter>ソース ファイル\08_Map\Tile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -655,6 +658,9 @@
     </ClInclude>
     <ClInclude Include="attack_wizard.h">
       <Filter>ヘッダー ファイル\07_GameModel\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="warp_tile.h">
+      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

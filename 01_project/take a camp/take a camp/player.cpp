@@ -76,23 +76,20 @@ CPlayer::CPlayer()
 	m_nPlayerNumber = 0;
 	m_nInvincibleCount = 0;
 	m_nControllNum = 0;
-	m_nAttackRotCount = 0;
 	m_bMove = false;
 	m_bOldMove = false;
-	m_bAttackRot = false;
 	m_bInvincible = false;
 	m_PlayerState = PLAYER_STATE_NORMAL;
 	m_pCollision = NULL;
 	m_nColor = 0;
 	m_pActRange = NULL;
+	memset(&m_AttackData, 0, sizeof(m_AttackData));
 	memset(&MoveData, 0, sizeof(MoveData));
 	memset(&m_RespawnPos, 0, sizeof(D3DXVECTOR3));
 	m_pAttack = NULL;
 	m_ItemState = ITEM_STATE_NONE;	// アイテム用ステート
 	m_nDashCnt = 1;					// 速度アップカウント
 	m_bController = false;
-	m_bAttack = false;
-	m_bFinalAttack = false;
 	m_pKillCount = NULL;
 }
 
@@ -460,28 +457,28 @@ void CPlayer::AttackRot(void)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
-		m_bAttackRot = true;
+		m_AttackData.m_bAttackRot = true;
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
 		|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
-		m_bAttackRot = true;
+		m_AttackData.m_bAttackRot = true;
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
 		|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
-		m_bAttackRot = true;
+		m_AttackData.m_bAttackRot = true;
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
 		|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
-		m_bAttackRot = true;
+		m_AttackData.m_bAttackRot = true;
 	}
 
 }
@@ -491,7 +488,7 @@ void CPlayer::AttackRot(void)
 //******************************
 void CPlayer::ControlMove(void)
 {
-	if (m_bMove&&!m_bAttack)
+	if (m_bMove&&!m_AttackData.m_bAttack)
 	{
 		// キーボードとジョイパッドの取得
 		CInputKeyboard * pKey = CManager::GetKeyboard();
@@ -619,28 +616,29 @@ void CPlayer::Attack(void)
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
 		{
 			//攻撃フラグを立てる
-			m_bAttack = true;
+			m_AttackData.m_bAttack = true;
 		}
 	}
 
 
 	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
-	if (m_bAttack&&m_bMove)
+	if (m_AttackData.m_bAttack&&m_bMove)
 	{
 		//カウントアップ
-		m_nAttackRotCount++;
+		m_AttackData.m_nAttackRotCount++;
+		//攻撃方向指定
 		AttackRot();
 
 		//一定のカウントかフラグが立っているか
-		if (m_nAttackRotCount>= ATTCK_ROT_INPUT
-			|| m_bAttackRot)
+		if (m_AttackData.m_nAttackRotCount>= ATTCK_ROT_INPUT
+			|| m_AttackData.m_bAttackRot)
 		{
 			//フラグを回収
-			m_bAttackRot = false;
+			m_AttackData.m_bAttackRot = false;
 			//カウント初期化
-			m_nAttackRotCount = 0;
+			m_AttackData.m_nAttackRotCount = 0;
 			//フラグを回収
-			m_bAttack = false;
+			m_AttackData.m_bAttack = false;
 			//攻撃スイッチ処理
 			m_pAttack->AttackSwitch();
 			//アニメーション処理
@@ -660,7 +658,7 @@ void CPlayer::AttackFinal(void)
 	CInputJoypad* pJoypad = CManager::GetJoypad();
 
 	// アタックタイプが通常状態なら
-	if (m_bFinalAttack)
+	if (m_AttackData.m_bFinalAttack)
 	{
 		// 攻撃ボタンを押したら
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
@@ -677,26 +675,26 @@ void CPlayer::AttackFinal(void)
 		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
 		{
-			m_bAttack = true;
+			m_AttackData.m_bAttack = true;
 		}
 	}
 
 	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
-	if (m_bAttack&&m_bMove)
+	if (m_AttackData.m_bAttack&&m_bMove)
 	{
 		//カウントアップ
-		m_nAttackRotCount++;
+		m_AttackData.m_nAttackRotCount++;
 		AttackRot();
 		
-		if (m_nAttackRotCount>= ATTCK_ROT_INPUT
-			|| m_bAttackRot)
+		if (m_AttackData.m_nAttackRotCount>= ATTCK_ROT_INPUT
+			|| m_AttackData.m_bAttackRot)
 		{
 			//フラグを回収
-			m_bAttackRot = false;
+			m_AttackData.m_bAttackRot = false;
 			//カウント初期化
-			m_nAttackRotCount = 0;
+			m_AttackData.m_nAttackRotCount = 0;
 			//フラグを回収
-			m_bAttack = false;
+			m_AttackData.m_bAttack = false;
 			//攻撃スイッチ処理
 			m_pAttack->AttackFinalSwitch();
 			//アニメーション処理
