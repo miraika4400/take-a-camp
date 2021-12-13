@@ -82,7 +82,7 @@ HRESULT CStageNameUi::Init(void)
 	}
 	m_apNamePolygon[0]->SetSize(UI_SIZE_MAX);
 
-	SetPriority(OBJTYPE_UI);
+	SetPriority(OBJTYPE_UI_2);
 	return S_OK;
 }
 

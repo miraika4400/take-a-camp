@@ -60,7 +60,7 @@ CScore * CScore::Create(D3DXVECTOR3 pos, D3DXCOLOR col, int nScore)
 		//スコアセット
 		pScorePaint->SetPaintScore(nScore);
 		// オブジェクトタイプの設定
-		pScorePaint->SetPriority(OBJTYPE_UI);
+		pScorePaint->SetPriority(OBJTYPE_UI_2);
 	}
 	return pScorePaint;
 }

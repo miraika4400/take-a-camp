@@ -402,6 +402,15 @@
     <ClCompile Include="stage_select_polygon.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
+    <ClCompile Include="base_Cylinder.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_circle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_effect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -674,12 +683,24 @@
     <ClInclude Include="stage_select_polygon.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
+    <ClInclude Include="base_Cylinder.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_circle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_effect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="data\HLSL\TileShader.fx">
       <Filter>hlslファイル</Filter>
     </FxCompile>
     <FxCompile Include="data\HLSL\PlayerShader.fx">
+      <Filter>hlslファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="data\HLSL\BlurShader.fx">
       <Filter>hlslファイル</Filter>
     </FxCompile>
   </ItemGroup>

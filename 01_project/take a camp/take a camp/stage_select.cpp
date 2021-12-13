@@ -169,7 +169,7 @@ void CStageSelect::SetObject(void)
 	m_pStagePolygon = CStageSelectPolygon::Create();
 	// プライオリティの再設定
 	SetPriority(OBJTYPE_NONE);
-	m_pStageName->SetPriority(OBJTYPE_UI);
+	m_pStageName->SetPriority(OBJTYPE_UI_2);
 
 	// 背景の生成
 	CBg::Create();

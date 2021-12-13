@@ -26,7 +26,7 @@
 //==================================
 // コンストラクタ
 //==================================
-CGauge::CGauge() :CScene(OBJTYPE_UI)
+CGauge::CGauge() :CScene(OBJTYPE_UI_2)
 {
 	// 変数のクリア
 	m_pPolygon = NULL;
@@ -63,7 +63,7 @@ CGauge * CGauge::Create(float * pData, D3DXVECTOR3 leftPos, float fBarWidht, flo
 	// 初期化
 	pGage->Init();
 	// オブジェクトタイプの設定
-	pGage->SetPriority(OBJTYPE_UI);
+	pGage->SetPriority(OBJTYPE_UI_2);
 
 	return pGage;
 }
