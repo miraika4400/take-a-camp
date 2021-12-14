@@ -39,7 +39,7 @@
 //=============================
 CRuleManager* CGame::m_pRuleManager = NULL;                       // ルールマネージャークラス
 CMap* CGame::m_pMap = NULL;			                              // ステージクラスポインタ
-CMapManager::MAP_TYPE CGame::m_MapType = CMapManager::MAP_TYPE_1; // マップタイプ
+CMapManager::MAP_TYPE CGame::m_MapType = CMapManager::MAP_TYPE_2; // マップタイプ
 
 //=============================
 // コンストラクタ
@@ -89,7 +89,7 @@ HRESULT CGame::Init(void)
 	
 	// プレイヤーごとの色の割合の表示
 	CPaintnum::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 25.0f, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, 50.0f, 0.0f));
-
+	CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), CResourceModel::MODEL_DESK, D3DXVECTOR3(0.4f, 0.4f, 0.4f))->SetPriority(OBJTYPE_MAP);
 	// ライトクラスの生成
 	CManager::SetLight();
 	// 制限時間クラス
