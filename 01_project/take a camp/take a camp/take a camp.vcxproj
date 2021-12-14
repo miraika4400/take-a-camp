@@ -154,9 +154,12 @@
   <ItemGroup>
     <ClCompile Include="act_range.cpp" />
     <ClCompile Include="attack.cpp" />
+    <ClCompile Include="attack_archer.cpp" />
     <ClCompile Include="attack_knight.cpp" />
     <ClCompile Include="attack_area.cpp" />
     <ClCompile Include="attack_lancer.cpp" />
+    <ClCompile Include="attack_magician.cpp" />
+    <ClCompile Include="attack_thief.cpp" />
     <ClCompile Include="attack_wizard.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="camera_charaselect.cpp" />
@@ -246,9 +249,12 @@
   <ItemGroup>
     <ClInclude Include="act_range.h" />
     <ClInclude Include="attack.h" />
+    <ClInclude Include="attack_archer.h" />
     <ClInclude Include="attack_knight.h" />
     <ClInclude Include="attack_area.h" />
     <ClInclude Include="attack_lancer.h" />
+    <ClInclude Include="attack_magician.h" />
+    <ClInclude Include="attack_thief.h" />
     <ClInclude Include="attack_wizard.h" />
     <ClInclude Include="camera_charaselect.h" />
     <ClInclude Include="character_polygon.h" />

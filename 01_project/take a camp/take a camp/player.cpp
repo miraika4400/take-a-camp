@@ -54,7 +54,6 @@
 #define ROT_SPEED				(0.3f)							// 回転速度
 #define ROT_FACING_01			(180)							// 回転の基準
 #define ROT_FACING_02			(360)							// 回転向き
-#define RIM_POWER				(2.5f)							// リムライトの強さ
 #define DASH_FRAME				(60*5)							// ダッシュ時有効フレーム数
 #define ATTCK_ROT_INPUT			(15)							// 攻撃方向受付するフレーム数
 

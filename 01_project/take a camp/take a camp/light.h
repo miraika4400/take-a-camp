@@ -16,6 +16,7 @@
 // マクロ定義
 //*****************************
 #define LIGHT_DIR_BASE  D3DXVECTOR3(0.3f, -1.0f,-0.6f)// ライトの方向
+#define LIGHT_DIR_CHARA_FRONT  D3DXVECTOR3(0.3f, -1.0f,-1.0f)// ライトの方向
 
 //*****************************
 // 前方宣言

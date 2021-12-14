@@ -25,6 +25,9 @@ const std::vector<CResourceCharacter::LabelData> CResourceCharacter::m_aLabelLis
 	{ "KNIGHT", CResourceModelHierarchy::MODEL_HIERARCHY_KNIGHT },
 	{ "LANCER", CResourceModelHierarchy::MODEL_HIERARCHY_LANCER },
 	{ "WIZARD", CResourceModelHierarchy::MODEL_HIERARCHY_WIZARD },
+	{ "THIEF", CResourceModelHierarchy::MODEL_HIERARCHY_KNIGHT },
+	{ "MAGICIAN", CResourceModelHierarchy::MODEL_HIERARCHY_LANCER },
+	{ "ARCHER", CResourceModelHierarchy::MODEL_HIERARCHY_WIZARD },
 }; 
 // キャラクターデータのテキストのパス
 const std::string CResourceCharacter::m_aCharacterDataTxtPath[CResourceCharacter::CHARACTER_MAX] =
@@ -32,6 +35,9 @@ const std::string CResourceCharacter::m_aCharacterDataTxtPath[CResourceCharacter
 	"data/Text/character/CharacterData_Knight.txt",
 	"data/Text/character/CharacterData_Lancer.txt",
 	"data/Text/character/CharacterData_Wizard.txt",
+	"data/Text/character/CharacterData_Thief.txt",
+	"data/Text/character/CharacterData_Magician.txt",
+	"data/Text/character/CharacterData_Archer.txt",
 };
 
 //===================================

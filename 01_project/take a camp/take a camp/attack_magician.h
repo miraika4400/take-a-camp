@@ -1,11 +1,11 @@
 //=============================================================================
 //
-// 攻撃範囲 タイプ槍兵 [attack_lancer.h]
-// Author : 吉田悠人
+// 攻撃範囲 タイプ奇術師[attack_magician.h]
+// Author : 増澤 未来
 //
 //=============================================================================
-#ifndef _ATTACK_LANCER_H_
-#define _ATTACK_LANCER_H_
+#ifndef _ATTACK_MAGICIAN_H_
+#define _ATTACK_MAGICIAN_H_
 
 //=============================================================================
 // ヘッダファイルのインクルード
@@ -16,19 +16,17 @@
 //=============================================================================
 // クラス定義
 //=============================================================================
-class CAttackLancer : public CAttackBased
+class CAttackMagician : public CAttackBased
 {
 public:
 	//関数定義
-	CAttackLancer();
-	~CAttackLancer();
-	static CAttackLancer *Create(CPlayer* pPlayer);
+	CAttackMagician();
+	~CAttackMagician();
+
+	static CAttackMagician *Create(CPlayer* pPlayer);
 
 private:
-	void CreateEffect(D3DXVECTOR3 pos);
-	//void	AttackCreate(void);	//攻撃生成処理
+	void CreateEffect(D3DXVECTOR3 pos); // エフェクト生成
 
-	//int		m_nAttackCount;		//攻撃までのカウント
-	//int		m_nType;			//攻撃の間隔用のタイプ
 };
 #endif
