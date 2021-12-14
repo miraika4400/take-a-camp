@@ -61,6 +61,19 @@ public:
 		MODEL_ITEM_DASH,		  // ダッシュアイテム
 		MODEL_ITEM_REVERSE,       // 反転アイテム
 		MODEL_DESK,               // 机
+
+		MODEL_TREE,
+		MODEL_MATO,
+		MODEL_BUKITATE,
+		MODEL_CHEST,
+		MODLE_TARU,
+		MODEL_GAITOU,
+		MODEL_HATA,
+		MODEL_SAKU,
+		MODEL_ENOGU,
+		MODEL_ENPITU,
+		MODEL_MAGCUP,
+
 		MODEL_MAX        // モデル数
 	}MODEL_TYPE;
 

@@ -158,6 +158,7 @@
     <ClCompile Include="attack_area.cpp" />
     <ClCompile Include="attack_lancer.cpp" />
     <ClCompile Include="attack_wizard.cpp" />
+    <ClCompile Include="building.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="camera_charaselect.cpp" />
     <ClCompile Include="character_polygon.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="attack_area.h" />
     <ClInclude Include="attack_lancer.h" />
     <ClInclude Include="attack_wizard.h" />
+    <ClInclude Include="building.h" />
     <ClInclude Include="camera_charaselect.h" />
     <ClInclude Include="character_polygon.h" />
     <ClInclude Include="chara_select.h" />
