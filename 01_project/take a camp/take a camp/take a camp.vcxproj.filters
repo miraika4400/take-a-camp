@@ -411,6 +411,9 @@
     <ClCompile Include="skill_effect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="building.cpp">
+      <Filter>ソース ファイル\07_GameModel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -691,6 +694,9 @@
     </ClInclude>
     <ClInclude Include="skill_effect.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="building.h">
+      <Filter>ヘッダー ファイル\07_GameModel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
