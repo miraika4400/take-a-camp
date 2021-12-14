@@ -11,6 +11,7 @@
 #include "text.h"
 #include "manager.h"
 #include "renderer.h"
+#include <map>
 
 //=============================
 // ƒ}ƒNƒ’è‹`

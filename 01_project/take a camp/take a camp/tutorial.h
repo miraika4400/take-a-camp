@@ -62,7 +62,7 @@ private:
 	//============
 	// ƒƒ“ƒoŠÖ”
 	//===========
-	void CheckTaskClear(const int nCurTaskNum, const int nTargetNum, const int nPlayernum, int &nTaskClear);
+	void CheckTaskClear(const int nCurTaskNum, const int nTargetNum, const int nPlayernum);
 
 	//============
 	// ƒƒ“ƒo•Ï”

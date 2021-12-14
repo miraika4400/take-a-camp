@@ -213,6 +213,7 @@
     <ClCompile Include="resource_model.cpp" />
     <ClCompile Include="resource_model_hierarchy.cpp" />
     <ClCompile Include="resource_shader.cpp" />
+    <ClCompile Include="resource_text.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="result_graph.cpp" />
     <ClCompile Include="reverse_item.cpp" />
@@ -306,6 +307,7 @@
     <ClInclude Include="resource_model.h" />
     <ClInclude Include="resource_model_hierarchy.h" />
     <ClInclude Include="resource_shader.h" />
+    <ClInclude Include="resource_text.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="result_graph.h" />
     <ClInclude Include="reverse_item.h" />

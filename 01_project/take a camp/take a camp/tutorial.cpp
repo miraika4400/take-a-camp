@@ -28,6 +28,7 @@
 #include "player.h"
 #include "debug_log.h"
 #include "kill_count.h"
+#include "resource_text.h"
 
 //**********************************
 // 静的メンバ変数宣言
@@ -102,7 +103,9 @@ HRESULT CTutorial::Init()
 	// ライトクラスの生成
 	CManager::SetLight();
 
+	CResourceText::Create();
 	//CText::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 600.0f, 0.0f), 25.0f, 10.0f, "好きな食べ物はメロンと梅干しとサーモンと生ハムで、嫌いな食べ物は野菜全般とみずみずしい食べ物です。", CText::ALIGN_LEFT, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+	
 	return S_OK;
 }
 
@@ -175,8 +178,6 @@ void CTutorial::Update()
 		pCamera->Update();
 	}
 
-	int nTaskClear = 0;
-
 	// フェーズごとに処理を変える
 	switch (m_Tutorialphase)
 	{
@@ -201,28 +202,28 @@ void CTutorial::Update()
 	case PHASE_PAINT:
 		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 		{
-			CheckTaskClear(CColorTile::GetTileNum(nCount, 1), TARGET_PAINT, nCount, nTaskClear);
+			CheckTaskClear(CColorTile::GetTileNum(nCount, 1), TARGET_PAINT, nCount);
 		}
 		break;
 
 	case PHASE_OVERPAINT:
 		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 		{
-			CheckTaskClear(CColorTile::GetTileNum(nCount, 3), TARGET_OVERPAINT, nCount, nTaskClear);
+			CheckTaskClear(CColorTile::GetTileNum(nCount, 3), TARGET_OVERPAINT, nCount);
 		}
 		break;
 
 	case PHASE_ATTACK:
 		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 		{
-			CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount, nTaskClear);
+			CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount);
 		}
 		break;
 
 	case PHASE_FINALATTACK:
 		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 		{
-			CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount, nTaskClear);
+			CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount);
 		}
 		break;
 
@@ -270,17 +271,16 @@ void CTutorial::Draw()
 //=============================
 // タスクを完了したのかチェックする処理
 //=============================
-void CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, const int nPlayernum, int &nTaskClear)
+void CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, const int nPlayernum)
 {
 	// タスクごとの処理で受け取った数とその目標数を比べる
 	if (nCurTaskNum >= nTargetNum)
 	{
 		m_bTask[nPlayernum] = true;
-		if (m_bTask[nPlayernum])
-		{
-			nTaskClear++;
-		}
 	}
+
+	// trueの数を数える
+	int nTaskClear = std::count(std::begin(m_bTask), std::end(m_bTask), true);
 
 	// プレイヤー数とタスクを完了した数が一致してたら
 	if (CCharaSelect::GetEntryPlayerNum() == nTaskClear)
@@ -292,6 +292,5 @@ void CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, cons
 
 		// タスクの初期化
 		ZeroMemory(&m_bTask, sizeof(m_bTask));
-		nTaskClear = 0;
 	}
 }

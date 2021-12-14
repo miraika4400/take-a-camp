@@ -25,6 +25,7 @@ class CAttackBased;
 class CMotion;
 class CKillCount;
 class CSkillgauge;
+class CTutorial;
 
 //*****************************
 // マクロ定義
@@ -158,6 +159,7 @@ private:
 	void Respawn(void);			// リスポーン処理
 	void Invincible(void);		// 無敵処理
 	void ManageItemState(void); // アイテムステートの管理
+	bool TutorialControll(int nTutorialphase);	// チュートリアルの操作処理
 
 	//*****************************
 	// メンバ変数

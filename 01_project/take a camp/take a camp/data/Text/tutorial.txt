@@ -1,0 +1,10 @@
+SCRIPT		# この行は絶対消さないこと！
+
+TEXT_DATASET
+
+SS = あーたらかーたら
+ENTER
+
+END_TEXT_DATASET
+
+END_SCRIPT		# この行は絶対消さないこと！
