@@ -161,6 +161,7 @@
     <ClCompile Include="attack_magician.cpp" />
     <ClCompile Include="attack_thief.cpp" />
     <ClCompile Include="attack_wizard.cpp" />
+    <ClCompile Include="building.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="camera_charaselect.cpp" />
     <ClCompile Include="character_polygon.cpp" />
@@ -256,6 +257,7 @@
     <ClInclude Include="attack_magician.h" />
     <ClInclude Include="attack_thief.h" />
     <ClInclude Include="attack_wizard.h" />
+    <ClInclude Include="building.h" />
     <ClInclude Include="camera_charaselect.h" />
     <ClInclude Include="character_polygon.h" />
     <ClInclude Include="chara_select.h" />

@@ -420,6 +420,9 @@
     <ClCompile Include="attack_archer.cpp">
       <Filter>ソース ファイル\07_GameModel\Attack</Filter>
     </ClCompile>
+    <ClCompile Include="building.cpp">
+      <Filter>ソース ファイル\07_GameModel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -708,6 +711,9 @@
       <Filter>ヘッダー ファイル\07_GameModel\Attack</Filter>
     </ClInclude>
     <ClInclude Include="attack_archer.h">
+      <Filter>ヘッダー ファイル\07_GameModel</Filter>
+    </ClInclude>
+    <ClInclude Include="building.h">
       <Filter>ヘッダー ファイル\07_GameModel</Filter>
     </ClInclude>
   </ItemGroup>
