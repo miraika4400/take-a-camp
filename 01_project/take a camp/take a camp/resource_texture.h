@@ -49,7 +49,7 @@ public:
 		TEXTURE_NEEDLE,				// とげ穴
 		TEXTURE_SHADOW,				// 影
 		TEXTURE_PLAYERNUMBER,		// プレイヤー番号
-		TEXTURE_NONE,				// NONE
+		TEXTURE_NONE_UI,				// NONE
 		TEXTURE_CONTROLLER,			// コントローラーアイコン
 		TEXTURE_KEYBOARD,			// キーボードアイコン
 		TEXTURE_CHARASELECT_BACK,	// キャラ選択背景
