@@ -29,7 +29,7 @@
 //==================================
 // コンストラクタ
 //==================================
-CNumberArray::CNumberArray():CScene(OBJTYPE_UI)
+CNumberArray::CNumberArray():CScene(OBJTYPE_UI_2)
 {
 	memset(&m_apNumber, NULL, sizeof(m_apNumber));
 	m_nNumber = 0;

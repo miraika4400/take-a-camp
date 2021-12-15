@@ -26,6 +26,7 @@ const std::string CResourceModelHierarchy::m_aModelPath[CResourceModelHierarchy:
 	"data/Text/hierarchy/Knight.txt",
 	"data/Text/hierarchy/Lancer.txt",
 	"data/Text/hierarchy/wizard.txt",
+	"data/Text/hierarchy/archer.txt",
 };
 
 //===================================

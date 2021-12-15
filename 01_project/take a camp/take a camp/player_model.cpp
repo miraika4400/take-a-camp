@@ -244,7 +244,7 @@ void CPlayerModel::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model
 		// ライトディレクション
 		D3DXVECTOR3 lightDir = CManager::GetLight()->GetDir();
 		pEffect->SetFloatArray("LightDirection", (float*)&D3DXVECTOR3(lightDir.x, -lightDir.y, -lightDir.z), 3);
-		// 視点位置
+		// 視点位
 		D3DXVECTOR3 eye = CManager::GetCamera()->GetPosV();
 		pEffect->SetFloatArray("Eye", (float*)&D3DXVECTOR3(eye.x, eye.y, eye.z), 3);
 		// スペキュラの情報を送る
@@ -252,6 +252,8 @@ void CPlayerModel::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model
 		// リムカラーの情報を送る
 		pEffect->SetFloatArray("RimColor", (float*)&m_RimColor, 4);
 		pEffect->SetFloat("RimPower", RIM_POWER);
+		// テクスチャカラーの情報を送る
+		pEffect->SetFloatArray("TexColor", (float*)&m_RimColor, 4);
 		// キューブテクスチャ
 		pEffect->SetTexture("CubeTex", CResourceTexture::GetCubeTexture(CResourceTexture::TECTURE_CUBE_SLY));
 		// トゥーンシャドウテクスチャをシェーダーに送る

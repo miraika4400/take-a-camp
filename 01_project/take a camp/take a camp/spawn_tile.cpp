@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////
 //
-//    tileクラスの処理[tile.cpp]
+//    spawn_tileクラスの処理[spawn_tile.cpp]
 //    Author:増澤 未来
 //
 ////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ void CSpawnTile::Create(D3DXVECTOR3 pos , D3DXCOLOR col )
 	pTile->m_pCrossPolygon = CScene3d::Create(D3DXVECTOR3(pos.x, pos.y + (TILE_SIZE_Y / 2) + 1.0f, pos.z), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
 	pTile->m_pCrossPolygon->SetColor(col);
 	pTile->m_pCrossPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CROSS_MARK));
-	pTile->m_pCrossPolygon->SetPriority(OBJTYPE_UI);
+	pTile->m_pCrossPolygon->SetPriority(OBJTYPE_MAP);
 
 }
 

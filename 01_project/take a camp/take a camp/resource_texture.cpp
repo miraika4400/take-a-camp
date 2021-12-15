@@ -28,10 +28,12 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/tutorial_1.png",   // チュートリアル
     "./data/Textures/tutorial_2.png",   // チュートリアル
     "./data/Textures/tutorial_3.png",   // チュートリアル
-	"./data/Textures/knight_flame.png",	// リザルト(ナイトの背景)
-	"./data/Textures/lancer_flame.png",	// リザルト(ランサーの背景)
-	"./data/Textures/03_mahouflame.png",// リザルト(ウィザードの背景)
-	"./data/Textures/archer_flame.png",	// リザルト(アーチャーの背景)
+	"./data/Textures/frame/knight_flame.png",	   // リザルト(ナイトの背景)
+	"./data/Textures/frame/lancer_flame.png",	   // リザルト(ランサーの背景)
+	"./data/Textures/frame/wizard_flame.png.png",  // リザルト(ウィザードの背景)
+	"./data/Textures/frame/thief_flame.png",	   // リザルト(シーフの背景)
+	"./data/Textures/frame/magician_flame.png.png",// リザルト(奇術師の背景)
+	"./data/Textures/frame/archer_flame.png",	   // リザルト(アーチャーの背景)
 	"./data/Textures/kill.png",			// リザルトのキルUI
 	"./data/Textures/tile.png",			// リザルトのタイルUI
 	"./data/Textures/effect/kirakira.png",	// パーティクル*四角
@@ -58,7 +60,9 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/tile_effect_charge.png", // タイルのチャージ
 	"./data/Textures/icon_bg.png",	          // アイコンの背景
 	"./data/Textures/sword_icon.png",	      // 剣アイコン
-
+	"./data/Textures/stage_name.png",	      // ステージ名
+	"./data/Textures/stage_polygon_bg.png",	      // ステージ選択背景
+	
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]

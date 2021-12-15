@@ -39,7 +39,7 @@
 //=============================
 CRuleManager* CGame::m_pRuleManager = NULL;                       // ルールマネージャークラス
 CMap* CGame::m_pMap = NULL;			                              // ステージクラスポインタ
-CMapManager::MAP_TYPE CGame::m_MapType = CMapManager::MAP_TYPE_1; // マップタイプ
+CMapManager::MAP_TYPE CGame::m_MapType = CMapManager::MAP_TYPE_2; // マップタイプ
 
 //=============================
 // コンストラクタ
@@ -89,7 +89,7 @@ HRESULT CGame::Init(void)
 	
 	// プレイヤーごとの色の割合の表示
 	CPaintnum::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 25.0f, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, 50.0f, 0.0f));
-
+	CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), CResourceModel::MODEL_DESK, D3DXVECTOR3(0.4f, 0.4f, 0.4f))->SetPriority(OBJTYPE_MAP);
 	// ライトクラスの生成
 	CManager::SetLight();
 	// 制限時間クラス
@@ -138,10 +138,52 @@ void CGame::Update(void)
 	if (pCamera != NULL)
 	{
 		pCamera->Update();
-	}
+	}	
+	
+
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_0))
 	{
-		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_0, CBuild::BUILD_TRUE);
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_TREE, CBuild::BUILD_TRUE);
+	}	
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_LSHIFT)&&CManager::GetKeyboard()->GetKeyTrigger(DIK_1))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_MAGCUP, CBuild::BUILD_TRUE);
+	}
+	else if (CManager::GetKeyboard()->GetKeyTrigger(DIK_1))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_MATO, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_2))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_BUKIKAKE, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_3))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_CHEST, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_4))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_TARU, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_5))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_GAITOU, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_6))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_HATA, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_7))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_SAKU, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_8))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_ENOGU, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_9))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_ENPITU, CBuild::BUILD_TRUE);
 	}
 #ifdef _DEBUG
 	// デバッグ用画面遷移コマンド

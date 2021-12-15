@@ -34,6 +34,8 @@ public:
 		TEXTURE_RESULT_KNIGHT,		// リザルト(ナイトの背景)
 		TEXTURE_RESULT_LANCER,		// リザルト(ランサーの背景)
 		TEXTURE_RESULT_WIZARD,		// リザルト(ウィザードの背景)
+		TEXTURE_RESULT_THIEF,		// リザルト(シーフの背景)
+		TEXTURE_RESULT_MAGICIAN,	// リザルト(奇術師の背景)
 		TEXTURE_RESULT_ARCHER,		// リザルト(アーチャーの背景)
 		TEXTURE_RESULT_KILL,		// リザルトのキルUI
 		TEXTURE_RESULT_TILE,		// リザルトのタイルUI
@@ -61,6 +63,8 @@ public:
 		TEXTURE_TILE_CHARGE,		// タイルのチャージ
 		TEXTURE_ICON_BG,			// アイコンの背景
 		TEXTURE_SWORD_ICON,		 	// 剣アイコン
+		TEXTURE_STAGE_NAME_UI,		// ステージ名
+		TEXTURE_STAGE_SELECT_BG,
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類

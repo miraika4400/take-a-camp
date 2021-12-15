@@ -1,11 +1,11 @@
 //=============================================================================
 //
-// アイテムの処理 [Item.h]
+// 背景オブジェクトの処理 [building.h]
 // Author : 西潟栞那汰
 //
 //=============================================================================
-#ifndef _ITEM_H_
-#define _ITEM_H_
+#ifndef _BUILD_H_
+#define _BUILD_H_
 
 //=============================================================================
 // インクルードファイル
@@ -15,7 +15,6 @@
 //=============================================================================
 // 前方宣言
 //=============================================================================
-class CShadow;
 
 //=============================================================================
 // マクロ定義
@@ -30,8 +29,17 @@ public:
 	//建物タイプ
 	typedef enum
 	{
-		BUILD_TYPE_0 = 0,//
-		BUILD_TYPE_1,		//
+		BUILD_TYPE_TREE = 0,//
+		BUILD_TYPE_MATO,		//
+		BUILD_TYPE_BUKIKAKE,
+		BUILD_TYPE_CHEST,
+		BUILD_TYPE_TARU,
+		BUILD_TYPE_GAITOU,
+		BUILD_TYPE_HATA,
+		BUILD_TYPE_SAKU,
+		BUILD_TYPE_ENOGU,
+		BUILD_TYPE_ENPITU,
+		BUILD_TYPE_MAGCUP,
 		BUILD_TYPE_MAX
 	}BUILD_TYPE;
 	
@@ -44,7 +52,7 @@ public:
 	CBuild();	// コンストラクタ
 	~CBuild();	// デストラクタ
 
-	static CBuild * Create(D3DXVECTOR3 pos, BUILD_TYPE type, BUILD_BOOL bBuild);	// 生成処理
+	static CBuild * Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, BUILD_TYPE type, BUILD_BOOL bBuild);	// 生成処理
 
 	HRESULT Init(void);		// 初期化処理
 	void Uninit(void);		// 終了処理
@@ -71,7 +79,6 @@ private:
 
 	BUILD_TYPE m_BuildType;			//
 	BUILD_BOOL m_BuildBool;			
-	CShadow *m_pShadow;			//影のポインタ
 
 	bool m_bUp;				//上限判定
 	bool m_bGet;			//取得フラグ
