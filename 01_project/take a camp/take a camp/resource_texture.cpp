@@ -63,6 +63,8 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/stage_name.png",	      // ステージ名
 	"./data/Textures/stage_polygon_bg.png",	      // ステージ選択背景
 	
+	"./data/Textures/00_ready.png",	          // ready
+	"./data/Textures/01_go.png",			  // go
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]
