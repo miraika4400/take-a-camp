@@ -67,6 +67,11 @@ public:
 		TEXTURE_STAGE_SELECT_BG,
 		TEXTURE_READEY,				// ready
 		TEXTURE_GO,					// go
+		TEXTURE_LANCE_ICON,		 	// 槍アイコン
+		TEXTURE_ARROW_ICON,		 	// 矢アイコン
+		TEXTURE_MAGICSTICK_ICON,	// 魔法杖アイコン
+		TEXTURE_KNIFE_ICON,		 	// ナイフアイコン
+		TEXTURE_STICK_ICON,		 	// 杖アイコン
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類
