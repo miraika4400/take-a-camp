@@ -136,6 +136,9 @@ public:
 	// アイテム状態
 	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }	
 	ITEM_STATE GetItemState(void) { return m_ItemState; }		
+	// 更新フラグ
+	bool GetUpdateFlag(void) { return m_bUpdate; }
+	void SetUpdateFlag(bool bFlag) { m_bUpdate = bFlag; }
 	// キルカウントポインタ
 	CKillCount * GetKillCount(void) { return m_pKillCount; }
 	// 移動フラグ
@@ -176,6 +179,7 @@ private:
 	CAttackBased* m_pAttack;	// 攻撃用クラス
 	ATTACK_DATA m_AttackData;	// 攻撃用データ
 	bool m_bInvincible;			// 無敵フラグ
+	bool m_bUpdate;             // 更新フラグ
 	int m_nInvincibleCount;		// 無敵時間のカウント
 	int	m_nRespawnCount;		// リスポーンまでのカウント
 	bool m_bMove;				// 移動可否フラグ

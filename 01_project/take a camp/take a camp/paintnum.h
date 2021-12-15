@@ -36,8 +36,14 @@ public:
 	void Update(void);	// 更新
 	void Draw(void);	// 描画
 
+	//============
+	// ゲッター
+	//============
 	int GetRank(int nPlayer) { return m_nRank[nPlayer]; } // プレイヤーの順位獲得処理
 private:
+	//============
+	// 色ごとの情報
+	//============
 	struct PaintInfo
 	{
 		D3DXVECTOR3 pos;	// 座標

@@ -123,6 +123,7 @@ void CPaintnum::Uninit()
 //==================================
 void CPaintnum::Update()
 {
+	// タイルの総数
 	int nAllTileNum = 0;
 
 	// タイルの総数を出す
@@ -133,6 +134,7 @@ void CPaintnum::Update()
 
 	for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 	{
+		// キャラクターがちゃんとエントリーしているか
 		if (CCharaSelect::GetEntryData(nCount).bEntry)
 		{
 			// プレイヤーごとのタイルの数の割合

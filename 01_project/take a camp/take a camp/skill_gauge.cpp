@@ -27,7 +27,7 @@
 #define SKILLGAUGE_SIZE (D3DXVECTOR3(20.0f, 20.0f, 0.0f))  // ÉXÉLÉãÉQÅ[ÉWÇÃëÂÇ´Ç≥
 #define DEFAULT_COLOR (D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f))  // êFÇÃèâä˙íl
 #define SKILLGAUGE_FLAME (60.0f)                           // ÉtÉåÅ[ÉÄêî
-#define REPAINT_RATE (0.5f)                                // ìhë÷Ç¶ÇµÇΩç€ÇÃî{ó¶
+#define REPAINT_RATE (5.0f)                                // ìhë÷Ç¶ÇµÇΩç€ÇÃî{ó¶
 //#define REPAINT_RATE (0.5f)                              // ìhë÷Ç¶ÇµÇΩç€ÇÃî{ó¶
 #define MINORADJUSSTMENT_POS (D3DXVECTOR3(0.5f,1.0f,0.0f)) // î˜í≤êÆópÇÃç¿ïW
 #define DEFAULT_ANGLE (D3DXToRadian(-40.0f))               // É|ÉäÉSÉìÇâÒì]Ç≥ÇπÇÈäpìx
@@ -117,27 +117,26 @@ HRESULT CSkillgauge::Init()
 			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
 			break;
 		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_LANCER:
-			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_LANCE_ICON));
 			break;
 		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_WIZARD:
-			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_MAGICSTICK_ICON));
 			break;
+
 		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_THIEF:
-			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_KNIFE_ICON));
 			break;
 
 		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_MAGICIAN:
-			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_STICK_ICON));
 			break;
 
 		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_ARCHER:
-			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ARROW_ICON));
 			break;
-
 		default:
 			break;
 		}
-
 		break;
 
 	default:

@@ -1,11 +1,11 @@
 //=============================================================================
 //
-// UŒ‚í—Ş [attack.cpp]
-// Author : ‹g“c—Il
+// æ”»æ’ƒç¨®é¡ [attack.cpp]
+// Author : å‰ç”°æ‚ äºº
 //
 //=============================================================================
 //=============================================================================
-// ƒwƒbƒ_ƒtƒ@ƒCƒ‹‚ÌƒCƒ“ƒNƒ‹[ƒh
+// ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
 //=============================================================================
 #include "attack.h"
 #include "attack_knight.h"
@@ -24,18 +24,18 @@
 #include "peint_collision.h"
 
 //=============================================================================
-// ƒ}ƒNƒ’è‹`
+// ãƒã‚¯ãƒ­å®šç¾©
 //=============================================================================
 #define ATTACK_AREA_EFFECT_POS (D3DXVECTOR3(0.0f,10.0f,0.0f))
-#define CHARGE_COUNT (60*1)		// ƒ`ƒƒ[ƒW‚É‚©‚©‚éŠÔ
-#define LEVEL_MAX    (4)		// Å‘åƒŒƒxƒ‹
-#define CANCEL_COUNT (60*0.1f)	// UŒ‚ƒLƒƒƒ“ƒZƒ‹‚ÌƒJƒEƒ“ƒg
+#define CHARGE_COUNT (60*1)		// ãƒãƒ£ãƒ¼ã‚¸ã«ã‹ã‹ã‚‹æ™‚é–“
+#define LEVEL_MAX    (4)		// æœ€å¤§ãƒ¬ãƒ™ãƒ«
+#define CANCEL_COUNT (60*0.1f)	// æ”»æ’ƒã‚­ãƒ£ãƒ³ã‚»ãƒ«ã®ã‚«ã‚¦ãƒ³ãƒˆ
 //=============================================================================
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 //=============================================================================
 CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 {
-	//‰Šú‰»ˆ—
+	//åˆæœŸåŒ–å‡¦ç†
 	memset(&m_AttackSquare, 0, sizeof(m_AttackSquare));
 	m_pPlayer		= NULL;
 	m_nLevel		= 0;
@@ -44,7 +44,7 @@ CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 	m_AttackState = ATTACK_STATE_NORMAL;
 	ZeroMemory(&m_apAttackArea, sizeof(m_apAttackArea));
 	ZeroMemory(&m_anChargeValue, sizeof(m_anChargeValue));
-	m_bAttack = false;	// •KEƒtƒ‰ƒO
+	m_bAttack = false;	// å¿…æ®ºãƒ•ãƒ©ã‚°
 	m_bChargeTile = false;
 	m_bCancel = false;
 	m_nAttackCount = 0;
@@ -53,18 +53,18 @@ CAttackBased::CAttackBased() :CScene(OBJTYPE_SYSTEM)
 }
 
 //=============================================================================
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 //=============================================================================
 CAttackBased::~CAttackBased()
 {
 }
 
 //=============================================================================
-// ¶¬ˆ—
+// ç”Ÿæˆå‡¦ç†
 //=============================================================================
 CAttackBased * CAttackBased::Create(CPlayer * pPlayer, CResourceCharacter::CHARACTER_TYPE Type)
 {
-	//ƒƒ‚ƒŠŠm•Û
+	//ãƒ¡ãƒ¢ãƒªç¢ºä¿
 	CAttackBased* pAttack = NULL;
 
 	switch (Type)
@@ -94,20 +94,20 @@ CAttackBased * CAttackBased::Create(CPlayer * pPlayer, CResourceCharacter::CHARA
 	//pAttack = new CAttackBased;
 	//if (pAttack != NULL)
 	//{
-	//	pAttack->SetPlayer(pPlayer);		//ƒvƒŒƒCƒ„[ƒNƒ‰ƒXæ“¾
-	//	pAttack->Init();					//‰Šú‰»ˆ—
+	//	pAttack->SetPlayer(pPlayer);		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚¯ãƒ©ã‚¹å–å¾—
+	//	pAttack->Init();					//åˆæœŸåŒ–å‡¦ç†
 	//}
 	return pAttack;
 }
 
 //=============================================================================
-// ‰Šú‰»ŠÖ”
+// åˆæœŸåŒ–é–¢æ•°
 //=============================================================================
 HRESULT CAttackBased::Init(void)
 {
 	int nMaxAttackNum = 0;
 	
-	//UŒ‚ƒ^ƒCƒvƒZƒbƒg
+	//æ”»æ’ƒã‚¿ã‚¤ãƒ—ã‚»ãƒƒãƒˆ
 	for (int nLevel = 0; nLevel < MAX_ATTACK_LEVEL; nLevel++)
 	{
 		m_AttackSquare[nLevel] = CAttackManager::GetAttack(m_nAttackType, nLevel);
@@ -116,7 +116,7 @@ HRESULT CAttackBased::Init(void)
 			nMaxAttackNum = m_AttackSquare[nLevel].nMaxHitRange;
 		}
 		
-		// ƒ`ƒƒ[ƒWŠÔ‚Ìæ“¾
+		// ãƒãƒ£ãƒ¼ã‚¸æ™‚é–“ã®å–å¾—
 		m_anChargeValue[nLevel] = CResourceCharacter::GetResourceCharacter()->GetCharacterData(m_nAttackType).anChargeTime[nLevel];
 	}
 
@@ -129,66 +129,66 @@ HRESULT CAttackBased::Init(void)
 }
 
 //=============================================================================
-// I—¹ŠÖ”
+// çµ‚äº†é–¢æ•°
 //=============================================================================
 void CAttackBased::Uninit(void)
 {
-	//ƒIƒuƒWƒFƒNƒg‚Ì”jŠü
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç ´æ£„
 	Release();
 }
 
 //=============================================================================
-// XVŠÖ”
+// æ›´æ–°é–¢æ•°
 //=============================================================================
 void CAttackBased::Update(void)
 {
-	//ƒXƒe[ƒg‚²‚Æ‚Ìˆ—
+	//ã‚¹ãƒ†ãƒ¼ãƒˆã”ã¨ã®å‡¦ç†
 	switch (m_AttackState)
 	{
-	case ATTACK_STATE_NORMAL:	//’Êíó‘Ô
+	case ATTACK_STATE_NORMAL:	//é€šå¸¸çŠ¶æ…‹
 	{
-		//”’l‚Ì‰Šú‰»
+		//æ•°å€¤ã®åˆæœŸåŒ–
 		if (m_nLevel != 0)
 		{
 			m_nLevel = 0;
 			m_nChargeCount = 0;
 		}
-		//UŒ‚”ÍˆÍ‚ÌƒŠƒZƒbƒg
+		//æ”»æ’ƒç¯„å›²ã®ãƒªã‚»ãƒƒãƒˆ
 		ResetAttackArea();
-		//ƒ`ƒƒ[ƒWƒ^ƒCƒ‹ƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚éÛ
+		//ãƒãƒ£ãƒ¼ã‚¸ã‚¿ã‚¤ãƒ«ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ã‚‹éš›
 		if (m_bChargeTile == true)
 		{
-			// ƒ`ƒƒ[ƒW‚ğ‚µ‚Ä‚¢‚éƒvƒŒƒCƒ„[‚Ìæ“¾
+			// ãƒãƒ£ãƒ¼ã‚¸ã‚’ã—ã¦ã„ã‚‹ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å–å¾—
 			CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
 
 			while (pColorTile != NULL)
 			{
-				//ƒ`ƒƒ[ƒW‚ğ‚µ‚Ä‚¢‚éƒ^ƒCƒ‹æ“¾
+				//ãƒãƒ£ãƒ¼ã‚¸ã‚’ã—ã¦ã„ã‚‹ã‚¿ã‚¤ãƒ«å–å¾—
 				if (pColorTile->GetColorTileState() == CColorTile::COLOR_TILE_CHARGE
 					&&pColorTile->GetLasthitPlayerNum() == m_pPlayer->GetPlayerNumber())
 				{
-					//ƒ^ƒCƒ‹ƒXƒe[ƒg
+					//ã‚¿ã‚¤ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆ
 					pColorTile->SetColorTileState(CColorTile::COLOR_TILE_NORMAL);
 					return;
 				}
-				// ƒŠƒXƒg‚ği‚ß‚é
+				// ãƒªã‚¹ãƒˆã‚’é€²ã‚ã‚‹
 				pColorTile = (CColorTile*)pColorTile->GetNext();
 			}
 		}
 
-		//ƒLƒƒƒ“ƒZƒ‹ƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚é‚©
+		//ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ã‚‹ã‹
 		if (m_bCancel == true)
 		{
-			//ƒJƒEƒ“ƒgƒAƒbƒv
+			//ã‚«ã‚¦ãƒ³ãƒˆã‚¢ãƒƒãƒ—
 			m_nCancelCount++;
 
 			if (m_nCancelCount >= CANCEL_COUNT)
 			{
-				//ƒLƒƒƒ“ƒZƒ‹ƒtƒ‰ƒO‚ğ‰ñû
+				//ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒ•ãƒ©ã‚°ã‚’å›å
 				m_bCancel = false;
-				//ƒLƒƒƒ“ƒZƒ‹ƒJƒEƒ“ƒg‰Šú‰»
+				//ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã‚«ã‚¦ãƒ³ãƒˆåˆæœŸåŒ–
 				m_nCancelCount = 0;
-				//ƒ`ƒƒ[ƒWƒJƒEƒ“ƒg‰Šú‰»
+				//ãƒãƒ£ãƒ¼ã‚¸ã‚«ã‚¦ãƒ³ãƒˆåˆæœŸåŒ–
 				m_nChargeCount = 0;
 			}
 
@@ -197,33 +197,33 @@ void CAttackBased::Update(void)
 	break;
 
 	
-	case ATTACK_STATE_CHARGE:		// ƒ`ƒƒ[ƒWó‘Ô	
-		VisualizationAttackArea();	// UŒ‚”ÍˆÍ•\¦
-		Charge();					// ƒ`ƒƒ[ƒWˆ—
+	case ATTACK_STATE_CHARGE:		// ãƒãƒ£ãƒ¼ã‚¸çŠ¶æ…‹	
+		VisualizationAttackArea();	// æ”»æ’ƒç¯„å›²è¡¨ç¤º
+		Charge();					// ãƒãƒ£ãƒ¼ã‚¸å‡¦ç†
 		break;
 
-	case ATTACK_STATE_ATTACK:		// UŒ‚ó‘Ô			
-		AttackCreate();				// UŒ‚¶¬ˆ—
+	case ATTACK_STATE_ATTACK:		// æ”»æ’ƒçŠ¶æ…‹			
+		AttackCreate();				// æ”»æ’ƒç”Ÿæˆå‡¦ç†
 		break;
 
-	case ATTACK_STATE_FINALATTACKWAITING:	// •KE‹Z‘Ò‹@ó‘Ô	
-		VisualizationAttackArea();		// UŒ‚”ÍˆÍ•\¦
-		m_nLevel = LEVEL_MAX - 1;		// ƒŒƒxƒ‹‚ğÅ‘å’l‚É‚·‚é
+	case ATTACK_STATE_FINALATTACKWAITING:	// å¿…æ®ºæŠ€å¾…æ©ŸçŠ¶æ…‹	
+		VisualizationAttackArea();		// æ”»æ’ƒç¯„å›²è¡¨ç¤º
+		m_nLevel = LEVEL_MAX - 1;		// ãƒ¬ãƒ™ãƒ«ã‚’æœ€å¤§å€¤ã«ã™ã‚‹
 		break;
 
-	case ATTACK_STATE_FINALATTACK:		// •KE‹Zg—pó‘Ô			
-		AttackCreate();					// UŒ‚¶¬ˆ—
+	case ATTACK_STATE_FINALATTACK:		// å¿…æ®ºæŠ€ä½¿ç”¨çŠ¶æ…‹			
+		AttackCreate();					// æ”»æ’ƒç”Ÿæˆå‡¦ç†
 		break;
 
 
-	default:							//‚»‚êˆÈŠO‚Ìó‘Ô
+	default:							//ãã‚Œä»¥å¤–ã®çŠ¶æ…‹
 		m_AttackState = ATTACK_STATE_NORMAL;
 		break;
 	}
 }
 
 //=============================================================================
-// •`‰æŠÖ”
+// æç”»é–¢æ•°
 //=============================================================================
 void CAttackBased::Draw(void)
 {
@@ -231,34 +231,34 @@ void CAttackBased::Draw(void)
 
 
 //=============================================================================
-// UŒ‚ŠÖ”
+// æ”»æ’ƒé–¢æ•°
 //=============================================================================
 void CAttackBased::Attack(int AttackType)
 {
 	for (int nAttack = 0; nAttack < m_AttackSquare[m_nLevel].nMaxHitRange; nAttack++)
 	{
-		//ƒ^ƒCƒv‚ªˆê’v‚µ‚Ä‚¢‚é‚©
+		//ã‚¿ã‚¤ãƒ—ãŒä¸€è‡´ã—ã¦ã„ã‚‹ã‹
 		if (m_AttackSquare[m_nLevel].SquareData[nAttack].RangeType == AttackType + (int)CAttackManager::ATTACK_RANGE_HIT_1)
 		{
-			//s—ñŒvZ
+			//è¡Œåˆ—è¨ˆç®—
 			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-			//ˆÊ’uæ“¾
+			//ä½ç½®å–å¾—
 			D3DXVECTOR3 pos = m_pPlayer->GetPos();
-			//Œü‚«æ“¾
-			D3DXVECTOR3 rot = m_pPlayer->GetRot();
+			//å‘ãå–å¾—
+			D3DXVECTOR3 rot = m_pPlayer->GetRotDest();
 
-			//UŒ‚ˆÊ’u
+			//æ”»æ’ƒä½ç½®
 			D3DXVECTOR3 AttackPos = m_AttackSquare[m_nLevel].SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
 			CreatePos.x = ((cosf(rot.y)*AttackPos.x) + (sinf(rot.y)*AttackPos.z));
 			CreatePos.y = 1 * AttackPos.y;
 			CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
-			//“–‚½‚è”»’è¶¬
+			//å½“ãŸã‚Šåˆ¤å®šç”Ÿæˆ
 			CBullet::Create(CreatePos + pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_pPlayer->GetPlayerNumber());
 
-			// •KE‹Z‚Ì‘Å‚Ä‚éƒŒƒxƒ‹‚È‚ç
+			// å¿…æ®ºæŠ€ã®æ‰“ã¦ã‚‹ãƒ¬ãƒ™ãƒ«ãªã‚‰
 			if (m_nLevel == LEVEL_MAX - 1)
 			{
-				// F“h‚éˆ—
+				// è‰²å¡—ã‚‹å‡¦ç†
 				m_pPeintCollision[nAttack] = CPeintCollision::Create(CreatePos + pos, m_pPlayer->GetPlayerNumber());
 			}
 		}
@@ -266,29 +266,29 @@ void CAttackBased::Attack(int AttackType)
 }
 
 //=============================================================================
-// ƒ`ƒƒ[ƒWƒtƒ‰ƒOˆ—ŠÖ”
+// ãƒãƒ£ãƒ¼ã‚¸ãƒ•ãƒ©ã‚°å‡¦ç†é–¢æ•°
 //=============================================================================
 void CAttackBased::ChargeFlag(void)
 {
-	//Œ»İ‚Ìó‘Ô‚ª’Êí‚Ìê‡
+	//ç¾åœ¨ã®çŠ¶æ…‹ãŒé€šå¸¸ã®å ´åˆ
 	if (m_AttackState == ATTACK_STATE_NORMAL)
 	{
 		if (!m_bCancel)
 		{
-			// “–‚½‚Á‚Ä‚¢‚éƒ^ƒCƒ‹‚Ìæ“¾
+			// å½“ãŸã£ã¦ã„ã‚‹ã‚¿ã‚¤ãƒ«ã®å–å¾—
 			CColorTile*pHitTile = CColorTile::GetHitColorTile(m_pPlayer->GetPos());
 
-			//G‚ê‚Ä‚¢‚éƒ^ƒCƒ‹‚Ì¯•Ê(NULLƒ`ƒFƒbƒN, ƒJƒ‰[‚ÌŠm”F)
+			//è§¦ã‚Œã¦ã„ã‚‹ã‚¿ã‚¤ãƒ«ã®è­˜åˆ¥(NULLãƒã‚§ãƒƒã‚¯, ã‚«ãƒ©ãƒ¼ã®ç¢ºèª)
 			if (pHitTile != NULL&&pHitTile->GetPeintNum() == m_pPlayer->GetColorNumber())
 			{
-				//ƒ^ƒCƒ‹‚ªƒ`ƒƒ[ƒWo—ˆ‚é‚©æ“¾
+				//ã‚¿ã‚¤ãƒ«ãŒãƒãƒ£ãƒ¼ã‚¸å‡ºæ¥ã‚‹ã‹å–å¾—
 				if (pHitTile->ChargeFlag(m_pPlayer->GetPlayerNumber()))
 				{
-					//ƒ`ƒƒ[ƒWƒ^ƒCƒ‹ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+					//ãƒãƒ£ãƒ¼ã‚¸ã‚¿ã‚¤ãƒ«ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 					m_bChargeTile = true;
-					//ƒ`ƒƒ[ƒWó‘Ô‚ÉˆÚs
+					//ãƒãƒ£ãƒ¼ã‚¸çŠ¶æ…‹ã«ç§»è¡Œ
 					m_AttackState = ATTACK_STATE_CHARGE;
-					//ƒŒƒxƒ‹‚ÌÅ‘å’l‚Ìæ“¾
+					//ãƒ¬ãƒ™ãƒ«ã®æœ€å¤§å€¤ã®å–å¾—
 					m_nMaxLevel = pHitTile->GetStepNum() - 1;
 				}
 			}
@@ -301,29 +301,29 @@ void CAttackBased::ChargeFlag(void)
 }
 
 //=============================================================================
-// ƒGƒtƒFƒNƒg¶¬
+// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆç”Ÿæˆ
 //=============================================================================
-void CAttackBased::CreateEffect(D3DXVECTOR3 pos)
+void CAttackBased::CreateEffect(D3DXVECTOR3)
 {
 }
 
 //=============================================================================
-// ƒ`ƒƒ[ƒWˆ—ŠÖ”
-// Akuthor: ‹g“c —IlA‘àV–¢—ˆ
+// ãƒãƒ£ãƒ¼ã‚¸å‡¦ç†é–¢æ•°
+// Akuthor: å‰ç”° æ‚ äººã€å¢—æ¾¤æœªæ¥
 //=============================================================================
 void CAttackBased::Charge(void)
 {
-	//ƒJƒEƒ“ƒgƒAƒbƒv
+	//ã‚«ã‚¦ãƒ³ãƒˆã‚¢ãƒƒãƒ—
 	m_nChargeCount++;
 
 	for (int nCntLevel = 0; nCntLevel < MAX_ATTACK_LEVEL; nCntLevel++)
 	{
-		// Å‘åƒŒƒxƒ‹‚Ì”»’è
+		// æœ€å¤§ãƒ¬ãƒ™ãƒ«ã®åˆ¤å®š
 		if (nCntLevel > m_nMaxLevel)
 		{
 			break;
 		}
-		// ƒ`ƒƒ[ƒWŠÔ‚É‰‚¶‚½ƒŒƒxƒ‹‚É‚·‚é
+		// ãƒãƒ£ãƒ¼ã‚¸æ™‚é–“ã«å¿œã˜ãŸãƒ¬ãƒ™ãƒ«ã«ã™ã‚‹
 		if (m_nChargeCount > m_anChargeValue[nCntLevel])
 		{
 			m_nLevel = nCntLevel;
@@ -332,48 +332,48 @@ void CAttackBased::Charge(void)
 }
 
 //=============================================================================
-// UŒ‚ƒXƒCƒbƒ`ŠÖ”
+// æ”»æ’ƒã‚¹ã‚¤ãƒƒãƒé–¢æ•°
 //=============================================================================
 void CAttackBased::AttackSwitch(void)
 {
-	//UŒ‚‚ğ‚µ‚Ä‚¢‚È‚©‚Á‚½‚ç
+	//æ”»æ’ƒã‚’ã—ã¦ã„ãªã‹ã£ãŸã‚‰
 	if (m_AttackState == ATTACK_STATE_CHARGE)
 	{
-		//UŒ‚ó‘Ô‚ÉˆÚs
+		//æ”»æ’ƒçŠ¶æ…‹ã«ç§»è¡Œ
 		m_AttackState = ATTACK_STATE_ATTACK;
-		//ƒJƒEƒ“ƒg‰Šú‰»
+		//ã‚«ã‚¦ãƒ³ãƒˆåˆæœŸåŒ–
 		m_nChargeCount = 0;
 	
-		// ƒ`ƒƒ[ƒW‚ğ‚µ‚Ä‚¢‚éƒvƒŒƒCƒ„[‚Ìæ“¾
+		// ãƒãƒ£ãƒ¼ã‚¸ã‚’ã—ã¦ã„ã‚‹ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å–å¾—
 		CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
 
 		while (pColorTile != NULL)
 		{
-			//ƒ`ƒƒ[ƒW‚ğ‚µ‚Ä‚¢‚éƒ^ƒCƒ‹æ“¾
+			//ãƒãƒ£ãƒ¼ã‚¸ã‚’ã—ã¦ã„ã‚‹ã‚¿ã‚¤ãƒ«å–å¾—
 			if (pColorTile->GetColorTileState() == CColorTile::COLOR_TILE_CHARGE
 				&&pColorTile->GetLasthitPlayerNum()== m_pPlayer->GetPlayerNumber())
 			{
-				//“h‚è’iŠK‚ÌÁ”ï
+				//å¡—ã‚Šæ®µéšã®æ¶ˆè²»
 				pColorTile->ColorDown(m_nLevel+1);
-				//ƒ^ƒCƒ‹ƒXƒe[ƒg
+				//ã‚¿ã‚¤ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆ
 				pColorTile->SetColorTileState(CColorTile::COLOR_TILE_NORMAL);
 				return;
 			}
-			// ƒŠƒXƒg‚ği‚ß‚é
+			// ãƒªã‚¹ãƒˆã‚’é€²ã‚ã‚‹
 			pColorTile = (CColorTile*)pColorTile->GetNext();
 		}
 	}
 }
 
 //=============================================================================
-// •KE‘Ò‹@ƒtƒ‰ƒOŠÖ”
+// å¿…æ®ºå¾…æ©Ÿãƒ•ãƒ©ã‚°é–¢æ•°
 //=============================================================================
 void CAttackBased::AttackFinalFlag(void)
 {
-	//ƒLƒƒƒ“ƒZƒ‹ƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚È‚¢‚©
+	//ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ãªã„ã‹
 	if (!m_bCancel)
 	{
-		// UŒ‚ó‘Ô‚¶‚á‚È‚¢‚È‚ç
+		// æ”»æ’ƒçŠ¶æ…‹ã˜ã‚ƒãªã„ãªã‚‰
 		if (m_AttackState == CAttackBased::ATTACK_STATE_NORMAL
 			|| m_AttackState == CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
 		{
@@ -387,110 +387,110 @@ void CAttackBased::AttackFinalFlag(void)
 }
 
 //=============================================================================
-// •KE‹ZƒXƒCƒbƒ`ŠÖ”
+// å¿…æ®ºæŠ€ã‚¹ã‚¤ãƒƒãƒé–¢æ•°
 //=============================================================================
 void CAttackBased::AttackFinalSwitch(void)
 {
-	// •KE‹Z‘Ò‹@’†‚È‚ç
+	// å¿…æ®ºæŠ€å¾…æ©Ÿä¸­ãªã‚‰
 	if (m_AttackState == ATTACK_STATE_FINALATTACKWAITING)
 	{
-		//•KE‹Zg—pó‘Ô‚ÉˆÚs
+		//å¿…æ®ºæŠ€ä½¿ç”¨çŠ¶æ…‹ã«ç§»è¡Œ
 		m_AttackState = ATTACK_STATE_FINALATTACK;
 	}
 }
 
 //=============================================================================
-// UŒ‚ƒLƒƒƒ“ƒZƒ‹ƒXƒCƒbƒ`ŠÖ”
+// æ”»æ’ƒã‚­ãƒ£ãƒ³ã‚»ãƒ«ã‚¹ã‚¤ãƒƒãƒé–¢æ•°
 //=============================================================================
 void CAttackBased::CancelSwitch(void)
 {
 
-	//UŒ‚‚ğƒ`ƒƒ[ƒW‚µ‚Ä‚¢‚½‚ç
+	//æ”»æ’ƒã‚’ãƒãƒ£ãƒ¼ã‚¸ã—ã¦ã„ãŸã‚‰
 	if (m_AttackState == ATTACK_STATE_CHARGE)
 	{
-		// ƒ`ƒƒ[ƒW‚ğ‚µ‚Ä‚¢‚éƒvƒŒƒCƒ„[‚Ìæ“¾
+		// ãƒãƒ£ãƒ¼ã‚¸ã‚’ã—ã¦ã„ã‚‹ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å–å¾—
 		CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
 		while (pColorTile != NULL)
 		{
-			//ƒ`ƒƒ[ƒW‚ğ‚µ‚Ä‚¢‚éƒ^ƒCƒ‹æ“¾
+			//ãƒãƒ£ãƒ¼ã‚¸ã‚’ã—ã¦ã„ã‚‹ã‚¿ã‚¤ãƒ«å–å¾—
 			if (pColorTile->GetColorTileState() == CColorTile::COLOR_TILE_CHARGE
 				&&pColorTile->GetLasthitPlayerNum() == m_pPlayer->GetPlayerNumber())
 			{
-				//ƒ^ƒCƒ‹ƒXƒe[ƒg
+				//ã‚¿ã‚¤ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆ
 				pColorTile->SetColorTileState(CColorTile::COLOR_TILE_NORMAL);
 				break;
 			}
-			// ƒŠƒXƒg‚ği‚ß‚é
+			// ãƒªã‚¹ãƒˆã‚’é€²ã‚ã‚‹
 			pColorTile = (CColorTile*)pColorTile->GetNext();
 		}
 	}
 
-	//UŒ‚”ÍˆÍ‚ÌƒŠƒZƒbƒg
+	//æ”»æ’ƒç¯„å›²ã®ãƒªã‚»ãƒƒãƒˆ
 	ResetAttackArea();
-	//UŒ‚ƒLƒƒƒ“ƒZƒ‹ó‘Ô
+	//æ”»æ’ƒã‚­ãƒ£ãƒ³ã‚»ãƒ«çŠ¶æ…‹
 	m_bCancel = true;
-	//’Êíó‘Ô‚ÉˆÚs
+	//é€šå¸¸çŠ¶æ…‹ã«ç§»è¡Œ
 	m_AttackState = ATTACK_STATE_NORMAL;
 }
 
 //=============================================================================
-// UŒ‚¶¬ˆ—
+// æ”»æ’ƒç”Ÿæˆå‡¦ç†
 //=============================================================================
 void CAttackBased::AttackCreate(void)
 {
-	//ƒvƒŒƒCƒ„[‚Ìƒ|ƒCƒ“ƒ^
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒã‚¤ãƒ³ã‚¿
 	CPlayer *pPlaryer = GetPlayer();
 
-	//UŒ‚ƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚é‚©
+	//æ”»æ’ƒãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ã‚‹ã‹
 	if (GetState() == ATTACK_STATE_ATTACK
 		|| GetState() == ATTACK_STATE_FINALATTACK)
 	{
-		//ƒJƒEƒ“ƒgƒAƒbƒv
+		//ã‚«ã‚¦ãƒ³ãƒˆã‚¢ãƒƒãƒ—
 		m_nAttackCount++;
 
-		// UŒ‚”ÍˆÍ‚Ì‰Â‹‰»
+		// æ”»æ’ƒç¯„å›²ã®å¯è¦–åŒ–
 		VisualizationAttackArea(m_nType);
 
-		//ƒJƒEƒ“ƒg‚ªˆê’è‚É‚È‚Á‚½‚ç
+		//ã‚«ã‚¦ãƒ³ãƒˆãŒä¸€å®šã«ãªã£ãŸã‚‰
 		if (m_nAttackCount >= GetAttackSquare().nAttackFrame[m_nType])
 		{
-			//UŒ‚ˆ—
+			//æ”»æ’ƒå‡¦ç†
 			Attack(m_nType);
-
-			//ƒXƒLƒ‹ƒGƒtƒFƒNƒg‚Ì¶¬
-			if (m_nType == MIN_HIT_TYPE)
-			{
-				for (int nCnt = 0; nCnt < GetAttackSquare().nMaxHitRange; nCnt++)
+      
+				for (int nCnt = 0; nCnt < m_AttackSquare[m_nLevel].nMaxHitRange; nCnt++)
 				{
-
-					//s—ñŒvZ
+				if (GetAttackSquare().SquareData[nCnt].RangeType == m_nType + 2)
+				{
+					//è¡Œåˆ—è¨ˆç®—
 					D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 					D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nCnt].AttackPos * TILE_ONE_SIDE;
-					CreatePos.x = ((cosf(pPlaryer->GetRot().y)*AttackPos.x) + (sinf(pPlaryer->GetRot().y)*AttackPos.z));
+					CreatePos.x = ((cosf(pPlaryer->GetRotDest().y)*AttackPos.x) + (sinf(pPlaryer->GetRotDest().y)*AttackPos.z));
 					CreatePos.y = 1 * AttackPos.y;
-					CreatePos.z = ((-sinf(pPlaryer->GetRot().y)*AttackPos.x) + (cosf(pPlaryer->GetRot().y)*AttackPos.z));
+					CreatePos.z = ((-sinf(pPlaryer->GetRotDest().y)*AttackPos.x) + (cosf(pPlaryer->GetRotDest().y)*AttackPos.z));
 
 					CreateEffect(CreatePos);
 				}
-
 			}
 
-			//ƒ^ƒCƒv‚ªˆê’è‚É‚È‚Á‚½‚ç
+					
+				
+
+			//ã‚¿ã‚¤ãƒ—ãŒä¸€å®šã«ãªã£ãŸã‚‰
 			if (m_nType == MAX_HIT_TYPE)
 			{
-				//ƒtƒ‰ƒO‚Ì‰Šú‰»
+				//ãƒ•ãƒ©ã‚°ã®åˆæœŸåŒ–
 				SetState(ATTACK_STATE_NORMAL);
-				//ƒ^ƒCƒv‰Šú‰»
+				//ã‚¿ã‚¤ãƒ—åˆæœŸåŒ–
 				m_nType = 0;
-				//ƒŒƒxƒ‹‚Ì‰Šú‰»
+				//ãƒ¬ãƒ™ãƒ«ã®åˆæœŸåŒ–
 				CAttackBased::SetLevel(0);
 			}
 			else
 			{
-				//Ÿ‚ÌUŒ‚ƒ^ƒCƒv‚Ö
+				//æ¬¡ã®æ”»æ’ƒã‚¿ã‚¤ãƒ—ã¸
 				m_nType++;
 			}
-			//ƒJƒEƒ“ƒg‰Šú‰»
+			//ã‚«ã‚¦ãƒ³ãƒˆåˆæœŸåŒ–
 			m_nAttackCount = 0;
 
 
@@ -501,7 +501,7 @@ void CAttackBased::AttackCreate(void)
 }
 
 //=============================================================================
-// UŒ‚ƒ}ƒXƒf[ƒ^ƒQƒbƒ^[ŠÖ”
+// æ”»æ’ƒãƒã‚¹ãƒ‡ãƒ¼ã‚¿ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°
 //=============================================================================
 CAttackManager::ATTACK_SQUARE_DATA CAttackBased::GetAttackSquare()
 {
@@ -510,28 +510,28 @@ CAttackManager::ATTACK_SQUARE_DATA CAttackBased::GetAttackSquare()
 
 
 //=============================================================================
-// UŒ‚”ÍˆÍ‚Ì˜g‚ÌF‚ğ•Ï‚¦‚éˆ—
-// Akuthor: ‘àV –¢—ˆ
+// æ”»æ’ƒç¯„å›²ã®æ ã®è‰²ã‚’å¤‰ãˆã‚‹å‡¦ç†
+// Akuthor: å¢—æ¾¤ æœªæ¥
 //=============================================================================
 void CAttackBased::VisualizationAttackArea(int nAttackType)
 {
-	//UŒ‚ƒtƒ‰ƒO‚Æ•KE‹Zƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚é‚©
+	//æ”»æ’ƒãƒ•ãƒ©ã‚°ã¨å¿…æ®ºæŠ€ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ã‚‹ã‹
 	if (m_AttackState == ATTACK_STATE_ATTACK
 		|| m_AttackState == ATTACK_STATE_FINALATTACK)
 	{
-		//ƒ^ƒCƒv‚ªˆê’v‚µ‚Ä‚¢‚é‚©
+		//ã‚¿ã‚¤ãƒ—ãŒä¸€è‡´ã—ã¦ã„ã‚‹ã‹
 		for (int nAttack = 0; nAttack < m_AttackSquare[m_nLevel].nMaxHitRange; nAttack++)
 		{
-			//ƒ^ƒCƒv‚ªˆê’v‚µ‚Ä‚¢‚é‚©
+			//ã‚¿ã‚¤ãƒ—ãŒä¸€è‡´ã—ã¦ã„ã‚‹ã‹
 			if (m_AttackSquare[m_nLevel].SquareData[nAttack].RangeType >= nAttackType + (int)CAttackManager::ATTACK_RANGE_HIT_1)
 			{
-				//ˆÊ’uæ“¾
+				//ä½ç½®å–å¾—
 				D3DXVECTOR3 pos = m_pPlayer->GetPos();
-				//Œü‚«æ“¾
+				//å‘ãå–å¾—
 				D3DXVECTOR3 rot = m_pPlayer->GetRot();
-				//s—ñŒvZ
+				//è¡Œåˆ—è¨ˆç®—
 				D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-				//UŒ‚ˆÊ’u
+				//æ”»æ’ƒä½ç½®
 				D3DXVECTOR3 AttackPos = m_AttackSquare[m_nLevel].SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
 				CreatePos.x = ((cosf(rot.y)*AttackPos.x) + (sinf(rot.y)*AttackPos.z));
 				CreatePos.y = 1 * AttackPos.y;
@@ -559,12 +559,12 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 		{
 			return;
 		}
-		// ƒ^ƒCƒv‚ªˆê’v‚µ‚Ä‚¢‚é‚©
+		// ã‚¿ã‚¤ãƒ—ãŒä¸€è‡´ã—ã¦ã„ã‚‹ã‹
 		for (int nAttack = 0; nAttack < m_AttackSquare[m_nLevel].nMaxHitRange; nAttack++)
 		{
-			//s—ñŒvZ
+			//è¡Œåˆ—è¨ˆç®—
 			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-			//UŒ‚ˆÊ’u
+			//æ”»æ’ƒä½ç½®
 			D3DXVECTOR3 AttackPos = m_AttackSquare[m_nLevel].SquareData[nAttack].AttackPos * TILE_ONE_SIDE;
 			CreatePos.x = ((cosf(GetPlayer()->GetRotDest().y)*AttackPos.x) + (sinf(GetPlayer()->GetRotDest().y)*AttackPos.z));
 			CreatePos.y = 1 * AttackPos.y;
@@ -582,8 +582,8 @@ void CAttackBased::VisualizationAttackArea(int nAttackType)
 }
 
 //=============================================================================
-// UŒ‚”ÍˆÍƒ|ƒŠƒSƒ“‚ÌƒŠƒZƒbƒg
-// Akuthor: ‘àV –¢—ˆ
+// æ”»æ’ƒç¯„å›²ãƒãƒªã‚´ãƒ³ã®ãƒªã‚»ãƒƒãƒˆ
+// Akuthor: å¢—æ¾¤ æœªæ¥
 //=============================================================================
 void CAttackBased::ResetAttackArea(void)
 {
@@ -599,12 +599,12 @@ void CAttackBased::ResetAttackArea(void)
 }
 
 //=============================================================================
-// UŒ‚”ÍˆÍ‚ÌƒŠƒŠ[ƒX
-// Akuthor: ‘àV –¢—ˆ
+// æ”»æ’ƒç¯„å›²ã®ãƒªãƒªãƒ¼ã‚¹
+// Akuthor: å¢—æ¾¤ æœªæ¥
 //=============================================================================
 void CAttackBased::ReleaseAttakcArea(void)
 {
-	//UŒ‚ƒGƒŠƒA‚Ì‰ğ•ú
+	//æ”»æ’ƒã‚¨ãƒªã‚¢ã®è§£æ”¾
 	for (int nCntArea = 0; nCntArea < MAX_ATTACK_AREA_NUM; nCntArea++)
 	{
 		if (m_apAttackArea[nCntArea] != NULL)
