@@ -18,7 +18,7 @@ Scene {
 	}
 }
 Material 1 {
-	"lambert3SG" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\gsp013\Desktop\増沢チームリソース\00_model\00_player\07_miniyumi\01_obj\head.png")
+	"lambert3SG" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("head.png")
 }
 Object "obj1" {
 	visible 15
