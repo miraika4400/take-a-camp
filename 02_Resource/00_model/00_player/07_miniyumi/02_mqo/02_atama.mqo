@@ -2,14 +2,13 @@ Metasequoia Document
 Format Text Ver 1.0
 
 Scene {
-	pos 0.0049 -2.6464 21.8279
+	pos 0.0049 -2.6464 55.8794
 	lookat 0.0000 0.0000 0.0000
-	head 0.1300
-	pich 0.2700
+	head -0.3800
+	pich 0.0200
 	bank 0.0000
-	ortho 1
-	zoom2 83.8861
-	zoom_pers 343.5974
+	ortho 0
+	zoom2 134.2177
 	amb 0.250 0.250 0.250
 	dirlights 1 {
 		light {
@@ -20,7 +19,7 @@ Scene {
 }
 Material 3 {
 	"_migite" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
-	"lambert3SG" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\gsp013\Desktop\増沢チームリソース\00_model\00_player\04_miniyari\01_obj\head.png")
+	"lambert3SG" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("head.png")
 	"touzoku_lambert6SG" col(0.710 0.420 0.210 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
 }
 Object "obj1" {
