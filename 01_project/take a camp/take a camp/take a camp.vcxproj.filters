@@ -423,6 +423,9 @@
     <ClCompile Include="building.cpp">
       <Filter>ソース ファイル\07_GameModel</Filter>
     </ClCompile>
+    <ClCompile Include="game_start.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -715,6 +718,9 @@
     </ClInclude>
     <ClInclude Include="building.h">
       <Filter>ヘッダー ファイル\07_GameModel</Filter>
+    </ClInclude>
+    <ClInclude Include="game_start.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

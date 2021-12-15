@@ -19,6 +19,7 @@
 //=============================================================================
 #define CHARACTER_POS (D3DXVECTOR3(0.0f,-8.8f,0.0f))
 #define CHARACTER_ROT (D3DXVECTOR3(0.0f,D3DXToRadian(180.0f),0.0f))
+#define CHARACTER_ADD_ROT (D3DXVECTOR3(0.0f, 0.01f, 0.0f))
 
 //=============================================================================
 // コンストラクタ
@@ -72,6 +73,7 @@ HRESULT CCharacterPolygon::Init(void)
 	m_pCharacterModel = CPlayerModel::Create(CHARACTER_POS, CHARACTER_ROT, CResourceCharacter::CHARACTER_KNIGHT);
 	// リスト構造から外す
 	m_pCharacterModel->OutList();
+
 	return S_OK;
 }
 
@@ -108,7 +110,7 @@ void CCharacterPolygon::Update(void)
 	if (m_pCharacterModel != NULL)
 	{
 		m_pCharacterModel->Update();
-		m_pCharacterModel->SetRot(m_pCharacterModel->GetRot() + D3DXVECTOR3(0.0f, 0.01f, 0.0f));
+		m_pCharacterModel->SetRot(m_pCharacterModel->GetRot() + CHARACTER_ADD_ROT);
 	}
 }
 

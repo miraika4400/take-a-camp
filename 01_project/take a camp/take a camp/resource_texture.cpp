@@ -30,7 +30,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/tutorial_3.png",   // チュートリアル
 	"./data/Textures/frame/knight_flame.png",	   // リザルト(ナイトの背景)
 	"./data/Textures/frame/lancer_flame.png",	   // リザルト(ランサーの背景)
-	"./data/Textures/frame/wizard_flame.png.png",  // リザルト(ウィザードの背景)
+	"./data/Textures/frame/wizard_flame.png",  // リザルト(ウィザードの背景)
 	"./data/Textures/frame/thief_flame.png",	   // リザルト(シーフの背景)
 	"./data/Textures/frame/magician_flame.png.png",// リザルト(奇術師の背景)
 	"./data/Textures/frame/archer_flame.png",	   // リザルト(アーチャーの背景)
@@ -63,6 +63,8 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/stage_name.png",	      // ステージ名
 	"./data/Textures/stage_polygon_bg.png",	      // ステージ選択背景
 	
+	"./data/Textures/00_ready.png",	          // ready
+	"./data/Textures/01_go.png",			  // go
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]
