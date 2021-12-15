@@ -100,9 +100,6 @@ HRESULT CTutorial::Init()
 	// マップ生成
 	m_pMap = CMap::Create(CMapManager::MAP_TYPE_1);
 
-	// ライトクラスの生成
-	CManager::SetLight();
-
 	CResourceText::Create();
 	//CText::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 600.0f, 0.0f), 25.0f, 10.0f, "好きな食べ物はメロンと梅干しとサーモンと生ハムで、嫌いな食べ物は野菜全般とみずみずしい食べ物です。", CText::ALIGN_LEFT, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
 	
@@ -130,18 +127,6 @@ void CTutorial::Uninit()
 	{
 		CManager::SetCamera(NULL);
 		pCamera = NULL;
-	}
-
-	// ライトクラスの解放処理
-	CLight * pLight = CManager::GetLight();
-	if (pLight != NULL)
-	{
-		// ライトの終了処理
-		pLight->Uninit();
-
-		// メモリの解放
-		delete pLight;
-		pLight = NULL;
 	}
 
 	// 開放処理

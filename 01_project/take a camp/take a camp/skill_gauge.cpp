@@ -122,15 +122,15 @@ HRESULT CSkillgauge::Init()
 		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_WIZARD:
 			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
 			break;
-		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_ROBBER:
-			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
-			break;
-
-		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_ARCHER:
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_THIEF:
 			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
 			break;
 
 		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_MAGICIAN:
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+			break;
+
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_ARCHER:
 			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
 			break;
 
