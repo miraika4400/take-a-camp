@@ -66,6 +66,7 @@ public:
 		int			nMaxHitRange;										// 最大ヒットマス
 		SQUARE_DATA SquareData[MAX_ATTACK_SIZE_Y*MAX_ATTACK_SIZE_X];	// 攻撃のマスデータ[読み込み限界の縦横]
 		int			nAttackFrame[MAX_HIT_TYPE];							// 攻撃速度
+		int			nTypeHitRange;										// タイプごとのヒットマス数
 	}ATTACK_SQUARE_DATA;
 
 	//関数定義
