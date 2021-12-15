@@ -303,7 +303,7 @@ void CAttackBased::ChargeFlag(void)
 //=============================================================================
 // エフェクト生成
 //=============================================================================
-void CAttackBased::CreateEffect(D3DXVECTOR3 pos)
+void CAttackBased::CreateEffect(D3DXVECTOR3)
 {
 }
 
@@ -457,12 +457,12 @@ void CAttackBased::AttackCreate(void)
 			//攻撃処理
 			Attack(m_nType);
 
-			//スキルエフェクトの生成
-			if (m_nType == MIN_HIT_TYPE)
+			for (int nCnt = 0; nCnt < GetAttackSquare().nMaxHitRange; nCnt++)
 			{
-				for (int nCnt = 0; nCnt < GetAttackSquare().nMaxHitRange; nCnt++)
-				{
+				int n = GetAttackSquare().SquareData[nCnt].RangeType;
 
+				if (GetAttackSquare().SquareData[nCnt].RangeType == m_nType + 2)
+				{
 					//行列計算
 					D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 					D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nCnt].AttackPos * TILE_ONE_SIDE;
@@ -472,8 +472,10 @@ void CAttackBased::AttackCreate(void)
 
 					CreateEffect(CreatePos);
 				}
-
 			}
+
+					
+				
 
 			//タイプが一定になったら
 			if (m_nType == MAX_HIT_TYPE)
