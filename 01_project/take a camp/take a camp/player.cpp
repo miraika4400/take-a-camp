@@ -90,6 +90,7 @@ CPlayer::CPlayer()
 	m_bController = false;
 	m_bAttack = false;
 	m_bFinalAttack = false;
+	m_bUpdate = false;
 	m_pKillCount = NULL;
 	m_nMoveFrameData = 0;
 	m_nMoveFrameDataDash = 0;
@@ -175,6 +176,8 @@ HRESULT CPlayer::Init(void)
 	m_bMove = true;
 	// 無敵フラグの初期化
 	m_bInvincible = false;
+	// 更新フラグの初期化
+	m_bUpdate = false;
 	//プレイヤーステータス初期化
 	m_PlayerState = PLAYER_STATE_NORMAL;
 	//色設定
@@ -252,6 +255,12 @@ void CPlayer::Uninit(void)
 //******************************
 void CPlayer::Update(void)
 {
+	if (!m_bUpdate)
+	{
+		CPlayerModel::Update();
+		return;
+	}
+
 	//ステートごとの処理
 	switch (m_PlayerState)
 	{

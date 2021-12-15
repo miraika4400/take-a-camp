@@ -11,28 +11,33 @@
 #include "game_start.h"
 #include "polygon.h"
 #include "resource_texture.h"
-#include "game.h"
+#include "player.h"
+#include "time.h"
 
 //=============================================================================
 // マクロ定義
 //=============================================================================
-
+#define SIZE_X		(325.0f)
+#define SIZE_Y_UP	(100.0f)
+#define SIZE_Y_DOWN (300.0f)
+#define COUNT		(60)
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CGame_Start::CGame_Start()
+CGameStart::CGameStart()
 {
-	m_pPolygon = NULL;
-	m_pos = VEC3_ZERO;
-	m_col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
-	m_nCount = 0;
-	m_bStart = false;
+	m_pPolygon = NULL;							// ポリゴン情報
+	m_pos = VEC3_ZERO;							// 位置情報
+	m_col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);	// 色情報
+	m_nCount = 0;								// カウンター
+	m_type = START_TYPE_READEY;					// タイプ
+	m_bStart = false;							// スタート使用してるかしてないか
 }
 
 //=============================================================================
 // デストラクタ
 //=============================================================================
-CGame_Start::~CGame_Start()
+CGameStart::~CGameStart()
 {
 
 }
@@ -40,12 +45,12 @@ CGame_Start::~CGame_Start()
 //=============================================================================
 // 生成処理
 //=============================================================================
-CGame_Start * CGame_Start::Create(D3DXVECTOR3 pos , D3DXVECTOR3 size,TYPE_START type)
+CGameStart * CGameStart::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 {
-	CGame_Start *pStart = NULL;
+	CGameStart *pStart = NULL;
 
 	// メモリの確保
-	pStart = new CGame_Start;
+	pStart = new CGameStart;
 
 	// NULLチェック
 	if (pStart != NULL)
@@ -54,8 +59,6 @@ CGame_Start * CGame_Start::Create(D3DXVECTOR3 pos , D3DXVECTOR3 size,TYPE_START 
 		pStart->m_pos = pos;
 		// サイズ設定
 		pStart->m_size = size;
-		// タイプ設定
-		pStart->m_type = type;
 		// 初期化処理呼び出し
 		pStart->Init();
 
@@ -69,7 +72,7 @@ CGame_Start * CGame_Start::Create(D3DXVECTOR3 pos , D3DXVECTOR3 size,TYPE_START 
 //=============================================================================
 // 初期化処理
 //=============================================================================
-HRESULT CGame_Start::Init(void)
+HRESULT CGameStart::Init(void)
 {
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -80,15 +83,10 @@ HRESULT CGame_Start::Init(void)
 		m_col);
 
 	// readyなら
-	if (m_type == TYPE_START_READEY)
+	if (m_type == START_TYPE_READEY)
 	{
-		m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_TITLE));
-	}
-
-	// GOなら
-	if (m_type == TYPE_START_GO)
-	{
-		m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTYRE_BUTTON_TUTORIAL));
+		// テクスチャーの設定
+		m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_READEY));
 	}
 
 	return S_OK;
@@ -97,7 +95,7 @@ HRESULT CGame_Start::Init(void)
 //=============================================================================
 // 終了処理
 //=============================================================================
-void CGame_Start::Uninit(void)
+void CGameStart::Uninit(void)
 {
 	if (m_pPolygon != NULL)
 	{
@@ -116,7 +114,7 @@ void CGame_Start::Uninit(void)
 //=============================================================================
 // 更新処理
 //=============================================================================
-void CGame_Start::Update(void)
+void CGameStart::Update(void)
 {
 	// ポリゴンの更新処理
 	m_pPolygon->Update();
@@ -124,40 +122,94 @@ void CGame_Start::Update(void)
 	// 毎フレームごとにカウントを増やしていく
 	m_nCount++;
 
-	if (m_type == TYPE_START_READEY)
+	switch (m_type)
 	{
-		// 表示を消す
-		if (m_nCount == 10)
-		{
-			m_bStart = true;
+	case START_TYPE_READEY:
+		// readyなら
+		GoChange();
+		break;
+	case START_TYPE_GO:
+		// GOなら
+		PlayChange();
+		break;
 
-			m_col.a = 0.0f;
-		}
-	}
-
-	if (m_bStart == true)
-	{
-		Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 200.0f, 0.0f), D3DXVECTOR3(750.0f, 200.0f, 0.0f), CGame_Start::TYPE_START_GO);
-	}
-
-	if (m_type == TYPE_START_GO)
-	{
-		// 表示を消す
-		if (m_nCount == 10)
-		{
-			// 終了処理
-			Uninit();
-			return;
-		}
+	case START_TYPE_PLAY:
+		// プレイ状態にはいったら
+		Uninit();
+		return;
+		break;
+	default:
+		break;
 	}
 }
 
 //=============================================================================
 // 描画処理
 //=============================================================================
-void CGame_Start::Draw(void)
+void CGameStart::Draw(void)
 {
 	// ポリゴンの描画処理
 	m_pPolygon->Draw();
 }
 
+//=============================================================================
+// 画像や大きさ変更処理
+//=============================================================================
+void CGameStart::GoChange(void)
+{
+	// カウントが一定値になったら
+	if (m_nCount == COUNT)
+	{
+		// goへ
+		m_type = START_TYPE_GO;
+		// テクスチャー変更
+		m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_GO));
+
+		// 頂点座標の設定
+		D3DXVECTOR3 vtxPos[NUM_VERTEX];
+
+		vtxPos[0] = D3DXVECTOR3(SCREEN_WIDTH / 2.0f - SIZE_X, SIZE_Y_UP, 0.0f);
+		vtxPos[1] = D3DXVECTOR3(SCREEN_WIDTH / 2.0f + SIZE_X, SIZE_Y_UP, 0.0f);
+		vtxPos[2] = D3DXVECTOR3(SCREEN_WIDTH / 2.0f - SIZE_X, SIZE_Y_DOWN, 0.0f);
+		vtxPos[3] = D3DXVECTOR3(SCREEN_WIDTH / 2.0f + SIZE_X, SIZE_Y_DOWN, 0.0f);
+
+		// 頂点座標の設定
+		m_pPolygon->SetVertexPos(vtxPos);
+
+		// タイムを使用状態にする
+		CTime::Create();
+
+		// カウントの初期化
+		m_nCount = 0;
+	}
+}
+
+//=============================================================================
+// プレイモードに状態変更
+//=============================================================================
+void CGameStart::PlayChange(void)
+{
+	// カウントが一定値になったら
+	if (m_nCount == COUNT)
+	{
+		// プレイヤーの状態を通常状態に
+		StartPlayer();
+		// プレイタイプへ
+		m_type = START_TYPE_PLAY;
+	}
+}
+
+//=============================================================================
+// プレイヤーをS動けるようにする
+//=============================================================================
+void CGameStart::StartPlayer(void)
+{
+	CPlayer*pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+
+	while (pPlayer != NULL)
+	{
+		pPlayer->SetUpdateFlag(true);
+
+		pPlayer = (CPlayer*)pPlayer->GetNext();
+	}
+}

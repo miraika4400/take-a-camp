@@ -48,6 +48,7 @@ CMapManager::MAP_TYPE CGame::m_MapType = CMapManager::MAP_TYPE_1; // ƒ}ƒbƒvƒ^ƒCƒ
 CGame::CGame()
 {
 	// •Ï”‚ÌƒNƒŠƒA
+	m_pGameStart = NULL;
 }
 
 //=============================
@@ -93,11 +94,12 @@ HRESULT CGame::Init(void)
 
 	// ƒ‰ƒCƒgƒNƒ‰ƒX‚Ì¶¬
 	CManager::SetLight();
+
 	// §ŒÀŠÔƒNƒ‰ƒX
-	CTime::Create();
+	//CTime::Create();
 
 	// ready go‚Ì¶¬
-	//CGame_Start::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 200.0f, 0.0f), D3DXVECTOR3(750.0f, 200.0f, 0.0f),CGame_Start::TYPE_START_READEY);
+	m_pGameStart=CGameStart::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, START_UI_POS_Y, 0.0f), D3DXVECTOR3(START_UI_SIZE_X, START_UI_SIZE_Y, 0.0f));
 
 	return S_OK;
 }

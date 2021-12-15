@@ -103,6 +103,9 @@ public:
 	// アイテム状態
 	void SetItemState(ITEM_STATE ItemState) { m_ItemState = ItemState; }	
 	ITEM_STATE GetItemState(void) { return m_ItemState; }		
+	// 更新フラグ
+	bool GetUpdateFlag(void) { return m_bUpdate; }
+	void SetUpdateFlag(bool bFlag) { m_bUpdate = bFlag; }
 	// キルカウントポインタ
 	CKillCount * GetKillCount(void) { return m_pKillCount; }
 	// 移動フラグ
@@ -141,6 +144,7 @@ private:
 	bool m_bAttack;				// 攻撃可否フラグ
 	bool m_bFinalAttack;		// 必殺可否フラグ
 	bool m_bInvincible;			// 無敵フラグ
+	bool m_bUpdate;             // 更新フラグ
 	int m_nInvincibleCount;		// 無敵時間のカウント
 	PLAYER_STATE m_PlayerState;	// プレイヤーステータス
 	int	m_nRespawnCount;		// リスポーンまでのカウント
