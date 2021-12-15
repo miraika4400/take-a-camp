@@ -12,15 +12,17 @@
 #include "fade.h"
 #include "time.h"
 #include "number.h"
+#include "game_start.h"
 
 //==================================
 // コンストラクタ
 //==================================
-CTime::CTime()
+CTime::CTime() :CScene(OBJTYPE_UI_2)
 {
 	//制限時間のクリア
 	m_nTime = TIME_UP;
 	m_nA = 0;
+	m_bTime = true;
 }
 
 //==================================
@@ -87,11 +89,15 @@ void CTime::Uninit(void)
 //==================================
 void CTime::Update(void)
 {
-	m_nA++;
-	if (m_nA % 60 <= 0)
+	if (m_bTime == true)
 	{
-		m_nTime--;
+		m_nA++;
+		if (m_nA % 60 <= 0)
+		{
+			m_nTime--;
+		}
 	}
+
 	//数字表示
 	for (int nCntDigit = 0; nCntDigit < MAX_TIME_DIGIT; nCntDigit++)
 	{
@@ -102,7 +108,7 @@ void CTime::Update(void)
 	if (m_nTime <= 0)
 	{
 		// デバッグ用画面遷移コマンド
-			CManager::GetFade()->SetFade(CManager::MODE_RESULT);
+		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}
 }
 
