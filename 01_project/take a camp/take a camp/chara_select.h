@@ -28,7 +28,7 @@
 //クラス定義
 //*****************************
 
-//ゲームクラス
+//キャラ選択クラス
 class CCharaSelect : public CScene
 {
 public:
@@ -61,6 +61,7 @@ public:
 	void Update(void);  // 更新
 	void Draw(void);    // 描画
 	static Entry_Data GetEntryData(int nIndex) { return m_aEntryData[nIndex]; }
+	static void SetEntryData(int nIndex, Entry_Data data) { m_aEntryData[nIndex] = data; }
 	static int GetEntryPlayerNum(void) { return m_nEntryPlayerNum; }
 	static void ResetEntryPlayer(void);
 private:

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////
 //
-//    tileクラスの処理[tile.cpp]
+//    color_tileクラスの処理[color_tile.cpp]
 //    Author:増澤 未来
 //
 ////////////////////////////////////////////////////
@@ -172,6 +172,7 @@ HRESULT CColorTile::Init(void)
 	SetPriority(OBJTYPE_COLOR_TILE); // オブジェクトタイプ
 
 	m_pPaintTime = CPaintTime::Create();
+	
 	m_pCharge = CTileEffectCharge::Create();
 
 	m_nBlinking = 0;
@@ -202,16 +203,17 @@ void CColorTile::Update(void)
 	// 色の管理
 	ManageColor();
 
-	if (m_nStep == 3)
-	{
-		m_nCntFrem++;
+	//レベルさんエフェクト（おふ）
+	//if (m_nStep == 3)
+	//{
+	//	m_nCntFrem++;
 
-		if(m_nCntFrem % 10 <= 0)
-		{
-			D3DXVECTOR3 pos = m_pFrame->GetPos();
-			CParticle::Create(D3DXVECTOR3(pos.x + (float)(rand() % 16 -8), pos.y, pos.z + (float)(rand() % 16 - 8)), D3DXVECTOR3(0.0f, 0.25f, 0.0f), D3DXVECTOR3(3.0f, 3.0f, 3.0f), 500, GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_SQUARE);
-		}
-	}
+	//	if(m_nCntFrem % 10 <= 0)
+	//	{
+	//		D3DXVECTOR3 pos = m_pFrame->GetPos();
+	//		CParticle::Create(D3DXVECTOR3(pos.x + (float)(rand() % 16 -8), pos.y, pos.z + (float)(rand() % 16 - 8)), D3DXVECTOR3(0.0f, 0.25f, 0.0f), D3DXVECTOR3(3.0f, 3.0f, 3.0f), 500, GET_COLORMANAGER->GetStepColor(m_nPrevNum, m_nStep - 1), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_SQUARE);
+	//	}
+	//}
 
 #ifdef _DEBUG
 	// デバッグキー
@@ -395,7 +397,7 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 		{
 			// カウントの初期化
 			m_nCntStep = PEINT_COUNT;
-			m_pPaintTime->SetPaintTime(PEINT_COUNT);
+		//	m_pPaintTime->SetPaintTime(PEINT_COUNT);
 
 			// 最後に当たったプレイヤーの保存
 			m_nLastHitPlayerNum = nPlayerNum;

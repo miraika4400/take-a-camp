@@ -31,6 +31,7 @@
 #include "total_result.h"
 #include "tile_factory.h"
 #include "resource_character.h"
+#include "stage_select.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -52,7 +53,7 @@ CCamera         *CManager::m_pCamera = NULL;         // カメラクラス
 CLight			*CManager::m_pLight = NULL;			 // ライトクラス
 bool             CManager::m_bPause = false;         // ポーズフラグ
 CCharaSelect    *CManager::m_pCharaSelectMode = NULL;// キャラ選択
-
+CStageSelect    *CManager::m_pStageSelectMode = NULL;// ステージ選択
 //=============================
 // コンストラクタ
 //=============================
@@ -73,7 +74,7 @@ CManager::~CManager()
 //=============================
 HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 {
-	
+
 	// メモリの確保・初期化
 
 	// キーボード
@@ -112,6 +113,14 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	m_pSound = new CSound;
 	// サウンドクラスの初期化
 	if (FAILED(m_pSound->Init(hWnd)))
+	{
+		return E_FAIL;
+	}
+
+	// ライトクラスの生成
+	m_pLight = new CLight;
+	// ライトクラスの初期化
+	if (FAILED(m_pLight->Init()))
 	{
 		return E_FAIL;
 	}
@@ -241,6 +250,13 @@ void CManager::Uninit(void)
 		delete m_pPause;
 		m_pPause = NULL;
 	}
+
+	if (m_pLight != NULL)
+	{
+		m_pLight->Uninit();
+		delete m_pLight;
+		m_pLight = NULL;
+	}
 }
 
 
@@ -364,6 +380,10 @@ void CManager::SetMode(MODE mode)
 		m_pCharaSelectMode = NULL;
 
 		break;
+	case MODE_STAGE_SELECT:
+		m_pStageSelectMode = NULL;
+
+		break;
 	case MODE_GAME:
 		// NULLクリア
 		m_pGame = NULL;
@@ -410,6 +430,10 @@ void CManager::SetMode(MODE mode)
 		m_pCharaSelectMode = CCharaSelect::Create();
 
 		break;
+	case MODE_STAGE_SELECT:
+		m_pStageSelectMode = CStageSelect::Create();
+
+		break;
 	case MODE_GAME:
 		// ゲーム生成
 		m_pGame = CGame::Create();
@@ -446,22 +470,4 @@ void CManager::SetCamera(CCamera * pCamera)
 
 	// セット
 	m_pCamera = pCamera;
-}
-
-//=============================
-// ライトのセット処理
-//=============================
-HRESULT CManager::SetLight(void)
-{
-	// ライトクラスの生成
-	m_pLight = new CLight;
-	// ライトクラスの初期化
-	if (m_pLight != NULL)
-	{
-		if (FAILED(m_pLight->Init()))
-		{
-			return -1;
-		}
-	}
-	return S_OK;
 }

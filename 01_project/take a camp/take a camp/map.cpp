@@ -36,7 +36,7 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CMap::CMap()
+CMap::CMap() :CScene(OBJTYPE_SYSTEM)
 {
 	m_nItemSpawnCount = 0;
 	memset(&m_MapData, 0, sizeof(m_MapData));
@@ -122,7 +122,8 @@ void CMap::MapCreate(void)
 				CTileFactory* pTileFactory = CTileFactory::GetTileFactory();
 
 				D3DXCOLOR tileCol = TILE_DEFAULT_COLOR;
-				//マス目のタイプ取得
+
+				// プレイヤーの生成
 				switch (m_MapData.BlockData[nBlockY].nBlockType[nBlockX])
 				{
 				case CMapManager::BLOCK_TYPE_1P_START:	//1Pスタート位置
@@ -158,6 +159,7 @@ void CMap::MapCreate(void)
 					break;
 				}
 
+				// タイルの生成
 				if (pTileFactory != NULL
 					&&pTileFactory->GetCreateFunction(m_MapData.BlockData[nBlockY].nBlockType[nBlockX]) != NULL)
 				{

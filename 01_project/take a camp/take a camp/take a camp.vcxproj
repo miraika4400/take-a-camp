@@ -154,14 +154,21 @@
   <ItemGroup>
     <ClCompile Include="act_range.cpp" />
     <ClCompile Include="attack.cpp" />
+    <ClCompile Include="attack_archer.cpp" />
     <ClCompile Include="attack_knight.cpp" />
     <ClCompile Include="attack_area.cpp" />
+    <ClCompile Include="attack_lancer.cpp" />
+    <ClCompile Include="attack_magician.cpp" />
+    <ClCompile Include="attack_thief.cpp" />
+    <ClCompile Include="attack_wizard.cpp" />
+    <ClCompile Include="building.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="camera_charaselect.cpp" />
     <ClCompile Include="character_polygon.cpp" />
     <ClCompile Include="chara_select.cpp" />
     <ClCompile Include="chara_select_ui.cpp" />
     <ClCompile Include="button_title.cpp" />
+    <ClCompile Include="dash_item.cpp" />
     <ClCompile Include="dynamic_texture.cpp" />
     <ClCompile Include="game_start.cpp" />
     <ClCompile Include="item.cpp" />
@@ -213,17 +220,23 @@
     <ClCompile Include="resource_shader.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="result_graph.cpp" />
+    <ClCompile Include="reverse_item.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="scene2d.cpp" />
     <ClCompile Include="scene3d.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="shadow.cpp" />
+    <ClCompile Include="base_Cylinder.cpp" />
+    <ClCompile Include="skill_circle.cpp" />
+    <ClCompile Include="skill_effect.cpp" />
     <ClCompile Include="skill_gauge.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="resource_texture.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="spawn_tile.cpp" />
+    <ClCompile Include="stage_name_ui.cpp" />
     <ClCompile Include="stage_select.cpp" />
+    <ClCompile Include="stage_select_polygon.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="tile_effect.cpp" />
     <ClCompile Include="tile_effect_charge.cpp" />
@@ -233,12 +246,19 @@
     <ClCompile Include="total_result.cpp" />
     <ClCompile Include="total_score.cpp" />
     <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="warp_tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="act_range.h" />
     <ClInclude Include="attack.h" />
+    <ClInclude Include="attack_archer.h" />
     <ClInclude Include="attack_knight.h" />
     <ClInclude Include="attack_area.h" />
+    <ClInclude Include="attack_lancer.h" />
+    <ClInclude Include="attack_magician.h" />
+    <ClInclude Include="attack_thief.h" />
+    <ClInclude Include="attack_wizard.h" />
+    <ClInclude Include="building.h" />
     <ClInclude Include="camera_charaselect.h" />
     <ClInclude Include="character_polygon.h" />
     <ClInclude Include="chara_select.h" />
@@ -246,6 +266,7 @@
     <ClInclude Include="button.h" />
     <ClInclude Include="button_title.h" />
     <ClInclude Include="color_tile.h" />
+    <ClInclude Include="dash_item.h" />
     <ClInclude Include="dynamic_texture.h" />
     <ClInclude Include="game_start.h" />
     <ClInclude Include="item.h" />
@@ -296,17 +317,23 @@
     <ClInclude Include="resource_shader.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="result_graph.h" />
+    <ClInclude Include="reverse_item.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="scene2d.h" />
     <ClInclude Include="scene3d.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="shadow.h" />
+    <ClInclude Include="base_Cylinder.h" />
+    <ClInclude Include="skill_circle.h" />
+    <ClInclude Include="skill_effect.h" />
     <ClInclude Include="skill_gauge.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="resource_texture.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="spawn_tile.h" />
+    <ClInclude Include="stage_name_ui.h" />
     <ClInclude Include="stage_select.h" />
+    <ClInclude Include="stage_select_polygon.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="tile_effect.h" />
     <ClInclude Include="tile_effect_charge.h" />
@@ -316,8 +343,13 @@
     <ClInclude Include="total_result.h" />
     <ClInclude Include="total_score.h" />
     <ClInclude Include="tutorial.h" />
+    <ClInclude Include="warp_tile.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="data\HLSL\BlurShader.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
     <FxCompile Include="data\HLSL\PlayerShader.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

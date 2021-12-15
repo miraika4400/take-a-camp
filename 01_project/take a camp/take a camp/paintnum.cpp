@@ -32,7 +32,6 @@ CPaintnum::CPaintnum()
 	ZeroMemory(&m_pos, sizeof(m_pos));
 	ZeroMemory(&m_size, sizeof(m_size));
 	ZeroMemory(&m_PaintInfo, sizeof(m_nRank));
-	m_nPlayerNum = 0;
 	ZeroMemory(&m_nRank, sizeof(m_fChangeSize));
 	ZeroMemory(&m_fChangeSize, sizeof(m_fChangeSize));
 }
@@ -56,7 +55,7 @@ CPaintnum * CPaintnum::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 
 	pPaintnum->m_pos = pos;
 	pPaintnum->m_size = size;
-	pPaintnum->SetPriority(OBJTYPE_UI);
+	pPaintnum->SetPriority(OBJTYPE_UI_2);
 
 	// 初期化処理
 	pPaintnum->Init();
@@ -69,30 +68,30 @@ CPaintnum * CPaintnum::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 //==================================
 HRESULT CPaintnum::Init()
 {
-	// 開始人数をもらう
-	m_nPlayerNum = CCharaSelect::GetEntryPlayerNum();
-
-	for (int nCount = 0; nCount < m_nPlayerNum; nCount++)
+	for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 	{
-		// ポリゴンの各情報の設定
-		m_PaintInfo[nCount].size = D3DXVECTOR3(m_size.x / (float)m_nPlayerNum, m_size.y / 2.0f, m_size.z);
-		m_PaintInfo[nCount].pos = D3DXVECTOR3(m_PaintInfo[nCount].size.x + ShiftSize(nCount), m_pos.y, 0.0f);
-		m_PaintInfo[nCount].col = GET_COLORMANAGER->GetIconColor(nCount);
-
-		if (!m_pPolygon[nCount])
+		if (CCharaSelect::GetEntryData(nCount).bEntry)
 		{
-			// ポリゴンの生成
-			m_pPolygon[nCount] = CPolygon::Create(
-				m_PaintInfo[nCount].pos,
-				m_PaintInfo[nCount].size,
-				m_PaintInfo[nCount].col);
+			// ポリゴンの各情報の設定
+			m_PaintInfo[nCount].size = D3DXVECTOR3(m_size.x / (float)CCharaSelect::GetEntryPlayerNum(), m_size.y / 2.0f, m_size.z);
+			m_PaintInfo[nCount].pos = D3DXVECTOR3(m_PaintInfo[nCount].size.x + ShiftSize(nCount), m_pos.y, 0.0f);
+			m_PaintInfo[nCount].col = GET_COLORMANAGER->GetIconColor(nCount);
+
+			if (!m_pPolygon[nCount])
+			{
+				// ポリゴンの生成
+				m_pPolygon[nCount] = CPolygon::Create(
+					m_PaintInfo[nCount].pos,
+					m_PaintInfo[nCount].size,
+					m_PaintInfo[nCount].col);
+			}
+
+			// 徐々に変えるやつを初期化
+			m_fChangeSize[nCount] = m_PaintInfo[nCount].size.x;
+
+			// ポリゴンの座標をセット
+			SetPolygonPos(nCount);
 		}
-
-		// 徐々に変えるやつを初期化
-		m_fChangeSize[nCount] = m_PaintInfo[nCount].size.x;
-
-		// ポリゴンの座標をセット
-		SetPolygonPos(nCount);
 	}
 	return S_OK;
 }
@@ -124,33 +123,38 @@ void CPaintnum::Uninit()
 //==================================
 void CPaintnum::Update()
 {
+	// タイルの総数
 	int nAllTileNum = 0;
 
 	// タイルの総数を出す
-	for (int nCount = 0; nCount < m_nPlayerNum; nCount++)
+	for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 	{
 		nAllTileNum += CColorTile::GetTileNum(nCount);
 	}
 
-	for (int nCount = 0; nCount < m_nPlayerNum; nCount++)
+	for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 	{
-		// プレイヤーごとのタイルの数の割合
-		if (nAllTileNum > 0)
+		// キャラクターがちゃんとエントリーしているか
+		if (CCharaSelect::GetEntryData(nCount).bEntry)
 		{
-			float fRatio = (float)CColorTile::GetTileNum(nCount) / (float)nAllTileNum;
-			m_PaintInfo[nCount].size = D3DXVECTOR3(m_size.x * fRatio, m_size.y / 2.0f, m_size.z);
+			// プレイヤーごとのタイルの数の割合
+			if (nAllTileNum > 0)
+			{
+				float fRatio = (float)CColorTile::GetTileNum(nCount) / (float)nAllTileNum;
+				m_PaintInfo[nCount].size = D3DXVECTOR3(m_size.x * fRatio, m_size.y / 2.0f, m_size.z);
+			}
+
+			// 本来の大きさと徐々に変えていく大きさの差
+			float fDist = m_PaintInfo[nCount].size.x - m_fChangeSize[nCount];
+			// 倍率を掛けて加算する
+			m_fChangeSize[nCount] += fDist * SIZE_CHANGE_RATE;
+
+			// 座標をずらす処理
+			m_PaintInfo[nCount].pos = D3DXVECTOR3(m_fChangeSize[nCount] + ShiftSize(nCount), m_pos.y, 0.0f);
+
+			// ポリゴンの座標をセット
+			SetPolygonPos(nCount);
 		}
-
-		// 本来の大きさと徐々に変えていく大きさの差
-		float fDist = m_PaintInfo[nCount].size.x - m_fChangeSize[nCount];
-		// 倍率を掛けて加算する
-		m_fChangeSize[nCount] += fDist * SIZE_CHANGE_RATE;
-
-		// 座標をずらす処理
-		m_PaintInfo[nCount].pos = D3DXVECTOR3(m_fChangeSize[nCount] + ShiftSize(nCount), m_pos.y, 0.0f);
-
-		// ポリゴンの座標をセット
-		SetPolygonPos(nCount);
 	}
 
 	// プレイヤーごとの順位
@@ -163,7 +167,7 @@ void CPaintnum::Update()
 void CPaintnum::Draw()
 {
 	// 描画
-	for (int nCount = 0; nCount < m_nPlayerNum; nCount++)
+	for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 	{
 		if (m_pPolygon[nCount])
 		{

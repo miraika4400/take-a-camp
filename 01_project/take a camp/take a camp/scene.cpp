@@ -162,7 +162,7 @@ void CScene::DrawAll(void)
 			// 死亡フラグチェック
 			if (!pScene->m_bReleasFlag)
 			{
-				// 終了処理
+				// 描画処理
 				pScene->Draw();
 			}
 			// ネクストの情報を渡す
@@ -180,7 +180,6 @@ void CScene::SetPriority(const int nPriority)
 
 	// プライオリティの設定
 	m_nPriority = nPriority;
-	m_type = (OBJTYPE)nPriority;
 
 	if (m_pTop[m_nPriority] == NULL)
 	{// 最初が空の時

@@ -13,10 +13,11 @@
 #include "time.h"
 #include "number.h"
 #include "game_start.h"
+
 //==================================
 // コンストラクタ
 //==================================
-CTime::CTime() :CScene(OBJTYPE_UI)
+CTime::CTime() :CScene(OBJTYPE_UI_2)
 {
 	//制限時間のクリア
 	m_nTime = TIME_UP;
@@ -43,7 +44,7 @@ CTime * CTime::Create(void)
 	pTime->Init();
 
 	// オブジェクトタイプの設定
-	pTime->SetPriority(OBJTYPE_UI);
+	pTime->SetPriority(OBJTYPE_UI_2);
 
 	return pTime;
 }

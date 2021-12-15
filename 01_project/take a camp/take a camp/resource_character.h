@@ -37,6 +37,9 @@ public:
 		CHARACTER_KNIGHT,		// 騎士
 		CHARACTER_LANCER,		// 槍兵
 		CHARACTER_WIZARD,		// 魔術師
+		CHARACTER_THIEF,		// 盗賊
+		CHARACTER_MAGICIAN,		// 奇術師
+		CHARACTER_ARCHER,		// 弓使い
 		CHARACTER_MAX			// キャラクタ数
 	}CHARACTER_TYPE;
 	//モーション
@@ -53,10 +56,12 @@ public:
 	typedef struct
 	{
 		CResourceModelHierarchy::MODEL_HIERARCHY_TYPE modelType; // モデルタイプ番号
+
 		int nMoveFrame;                        // 移動フレーム数
 		int nMoveFrameDash;                    // 移動フレーム数*ダッシュ時
+		int nMoveFrameInitial;				   // 初動フレーム数
+		int nMoveCount;						   // 移動速度までの回数
 		std::string attackTextPath;            // 攻撃テキストのパス
-		std::string finalAttackPath;           // 必殺技テキストのパス
 		int nFinalAttackTime;                  // 必殺技発動可能時間
 		int anChargeTime[ATTACK_PATTARN_NUM];  // 各攻撃のチャージタイムのリスト
 		std::string aMotionTextPath[MOTION_MAX]; // モーションファイルパスリスト

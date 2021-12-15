@@ -2,8 +2,10 @@ CHARACTER_DATA
 
 	LABEL = KNIGHT
 	MOVE_FRAME = 15
-	MOVE_FRAME_DASH = 12
-	ATTACK_PATH = data/Text/attack/attack_1.csv
+	MOVE_FRAME_DASH = 10
+	MOVE_FRAME_INITIAL = 20
+	MOVE_COUNT = 2 
+	ATTACK_PATH = data/Text/attack/attack_Knight.csv
 	FINAL_ATTACK_PATH = data/Text/final_attack/final_attack_1.csv
 	FINAL_ATTACK_TIME = 50
 	

@@ -33,6 +33,10 @@
 #include "particle.h"
 #include "resource_model_hierarchy.h"
 #include "skill_gauge.h"
+#include "base_Cylinder.h"
+#include "skill_circle.h"
+#include "skill_effect.h"
+#include "resource_attack.h"
 
 //*****************************
 // マクロ定義
@@ -50,8 +54,8 @@
 #define ROT_SPEED				(0.3f)							// 回転速度
 #define ROT_FACING_01			(180)							// 回転の基準
 #define ROT_FACING_02			(360)							// 回転向き
-#define RIM_POWER				(2.5f)							// リムライトの強さ
-#define DASH_FRAME				(300)							// ダッシュ時有効フレーム数
+#define DASH_FRAME				(60*5)							// ダッシュ時有効フレーム数
+#define ATTCK_ROT_INPUT			(15)							// 攻撃方向受付するフレーム数
 
 //*****************************
 // 静的メンバ変数宣言
@@ -76,24 +80,22 @@ CPlayer::CPlayer()
 	m_nInvincibleCount = 0;
 	m_nControllNum = 0;
 	m_bMove = false;
+	m_bOldMove = false;
 	m_bInvincible = false;
 	m_PlayerState = PLAYER_STATE_NORMAL;
 	m_pCollision = NULL;
 	m_nColor = 0;
 	m_pActRange = NULL;
-	memset(&m_Move, 0, sizeof(D3DXVECTOR3));
+	memset(&m_AttackData, 0, sizeof(m_AttackData));
+	memset(&MoveData, 0, sizeof(MoveData));
 	memset(&m_RespawnPos, 0, sizeof(D3DXVECTOR3));
-	m_MoveCount = 0;
 	m_pAttack = NULL;
 	m_ItemState = ITEM_STATE_NONE;	// アイテム用ステート
 	m_nDashCnt = 1;					// 速度アップカウント
 	m_bController = false;
-	m_bAttack = false;
-	m_bFinalAttack = false;
 	m_bUpdate = false;
 	m_pKillCount = NULL;
-	m_nMoveFrameData = 0;
-	m_nMoveFrameDataDash = 0;
+	m_nChargeTilelevel = 0;
 }
 
 //******************************
@@ -205,9 +207,11 @@ HRESULT CPlayer::Init(void)
 
 	// アイテムステート
 	m_ItemState = ITEM_STATE_NONE;
-
-	m_nMoveFrame = m_nMoveFrameData;
-	m_nDashCnt = 1;		//速度アップカウント
+	
+	//移動速度の取得
+	MoveData.m_nMoveFrame = MoveData.m_nMoveFrameInitialData;
+	//速度アップカウント
+	m_nDashCnt = 0;		
 	return S_OK;
 }
 
@@ -218,8 +222,11 @@ void CPlayer::InitCharacterData(void)
 {
 	CResourceCharacter::CharacterData charaData = CResourceCharacter::GetResourceCharacter()->GetCharacterData(GetCharacterType());
 	// キャラデータの反映
-	m_nMoveFrameData = charaData.nMoveFrame;         // 移動時フレーム数
-	m_nMoveFrameDataDash = charaData.nMoveFrameDash; // 移動時フレーム数*ダッシュ時
+	MoveData.m_nMoveFrameData = charaData.nMoveFrame;				// 移動時フレーム数
+	MoveData.m_nMoveFrameDataDash = charaData.nMoveFrameDash;		// 移動時フレーム数*ダッシュ時
+	MoveData.m_nMoveFrameInitialData = charaData.nMoveFrameInitial;	// 初動時の移動フレーム数
+	MoveData.m_nMoveCountData = charaData.nMoveCount;				// 加速までの回数
+
 	// 既存の攻撃の破棄
 	if (m_pAttack != NULL)
 	{
@@ -264,30 +271,12 @@ void CPlayer::Update(void)
 	//ステートごとの処理
 	switch (m_PlayerState)
 	{
-	case PLAYER_STATE_REVERSE:
-	{
-		m_ReverseCount++;
-		if (m_ReverseCount % 180 == 0)
-		{
-			m_ReverseCount = 0;
-			SetState(PLAYER_STATE_NORMAL);
-		}
-
-		if (m_ReverseCount % 15 == 0)
-		{
-			D3DXVECTOR3 pos = GetPos();
-			pos.y += 10.0f;
-			CParticle::Create(pos, D3DXVECTOR3((float)(rand() % 16 - 8)/100.0f, 0.25f, (float)(rand() % 16 - 8) / 100.0f), D3DXVECTOR3(7.0f, 7.0f, 7.0f), 500, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_GURUGURU)->SetAddRotValue(1.2f);
-		}
-	}
 	case PLAYER_STATE_NORMAL:	//通常状態
 
 		//攻撃可否フラグが立っているか
 		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
 			&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK)
 		{
-			// 向きの管理
-			ManageRot();
 			// 移動処理
 			ControlMove();
 			//ジョイパットの取得
@@ -330,6 +319,8 @@ void CPlayer::Update(void)
 		Respawn();
 		break;
 	}
+	//移動状況
+	m_bOldMove = m_bMove;
 
 	//死亡している以外の時移動計算処理
 	if (m_PlayerState != PLAYER_STATE_DEATH) Move();
@@ -343,7 +334,7 @@ void CPlayer::Update(void)
 	// アイテムステートの管理
 	ManageItemState();
 
-	// 
+	//プレイヤーモデルの更新
 	CPlayerModel::Update();
 
 #ifdef _DEBUG
@@ -431,25 +422,78 @@ void CPlayer::Move(void)
 		D3DXVECTOR3 pos = GetPos();
 
 		//移動計算
-		pos += (m_Move - pos) / (float)(m_nMoveFrame - m_MoveCount);
+		pos += (MoveData.m_Move - pos) / (float)(MoveData.m_nMoveFrame - MoveData.m_nMoveFrameCount);
 
 		//位置設定
 		SetPos(pos);
 
 		//カウントアップ
-		m_MoveCount++;
+		MoveData.m_nMoveFrameCount++;
 
 		//カウントが一定に達する
-		if (m_MoveCount >= m_nMoveFrame)
+		if (MoveData.m_nMoveFrameCount >= MoveData.m_nMoveFrame)
 		{
+
+			//初動加速処理
+			if (MoveData.m_nMoveCount<MoveData.m_nMoveCountData
+				&&m_ItemState != ITEM_STATE_DASH)
+			{
+				MoveData.m_nMoveFrame += (MoveData.m_nMoveFrameData - MoveData.m_nMoveFrame) / (float)(MoveData.m_nMoveCountData - MoveData.m_nMoveCount);
+
+				MoveData.m_nMoveCount++;
+			}
 			//カウント初期化
-			m_MoveCount = 0;
+			MoveData.m_nMoveFrameCount = 0;
 			//移動できるように
 			m_bMove = true;
 
+			//フラグの状態を伝える
 			m_pActRange->SetMove(m_bMove);
 		}
 	}
+}
+
+//******************************
+// 攻撃時の向き処理
+//******************************
+void CPlayer::AttackRot(void)
+{
+	// キーボードとジョイパッドの取得
+	CInputKeyboard * pKey = CManager::GetKeyboard();
+	CInputJoypad* pJoypad = CManager::GetJoypad();
+
+	// スティックの座標
+	D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
+
+	if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
+		|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
+	{
+		m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
+		m_AttackData.m_bAttackRot = true;
+	}
+	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
+		|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
+	{
+		m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
+		m_AttackData.m_bAttackRot = true;
+	}
+	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
+		|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+	{
+		m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
+		m_AttackData.m_bAttackRot = true;
+	}
+	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
+		|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+	{
+		m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
+		m_AttackData.m_bAttackRot = true;
+	}
+
 }
 
 //******************************
@@ -457,7 +501,7 @@ void CPlayer::Move(void)
 //******************************
 void CPlayer::ControlMove(void)
 {
-	if (m_bMove&&!m_bAttack)
+	if (m_bMove&&!m_AttackData.m_bAttack)
 	{
 		// キーボードとジョイパッドの取得
 		CInputKeyboard * pKey = CManager::GetKeyboard();
@@ -466,19 +510,28 @@ void CPlayer::ControlMove(void)
 		// スティックの座標
 		D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
 
+
 		// 移動値
 		auto MoveValue = [&](D3DXVECTOR3 move, D3DXVECTOR2 actMove, float fRotDistY)
 		{
 			//プレイヤーの移動方向取得変数
 			D3DXVECTOR2 ActMove;
+			
+			//プレイヤーの加速度を初期化
+			if (m_bOldMove&&m_ItemState != ITEM_STATE_DASH)
+			{
+				MoveData.m_nMoveFrame = MoveData.m_nMoveFrameInitialData;
+				MoveData.m_nMoveCount = 0;
+			}
 
 			//操作逆転状態じゃない時
-			if (m_PlayerState != PLAYER_STATE_REVERSE)
+			if (m_ItemState != ITEM_STATE_REVERSE)
 			{
+
 				ActMove = actMove;
 				if (m_pActRange->ActMove(((int)ActMove.x), ((int)ActMove.y)))
 				{
-					m_Move = move + GetPos();
+					MoveData.m_Move = move + GetPos();
 					m_bMove = false;
 					m_rotDest.y = fRotDistY;
 				}
@@ -489,7 +542,7 @@ void CPlayer::ControlMove(void)
 				ActMove = -actMove;
 				if (m_pActRange->ActMove(((int)ActMove.x), ((int)ActMove.y)))
 				{
-					m_Move = -move + GetPos();
+					MoveData.m_Move = -move + GetPos();
 					m_bMove = false;
 					m_rotDest.y = fRotDistY - D3DXToRadian(180);
 				}
@@ -559,6 +612,9 @@ void CPlayer::Attack(void)
 	// キーボードとジョイパッドの取得
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 	CInputJoypad* pJoypad = CManager::GetJoypad();
+	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
+	D3DXVECTOR3 rot = GetRot();
+
 
 	// 攻撃ボタンを押したらチャージ
 	if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
@@ -566,8 +622,12 @@ void CPlayer::Attack(void)
 	{
 		//攻撃チャージを開始
 		m_pAttack->ChargeFlag();
+		if (pHitTile != NULL)
+		{
+			m_nChargeTilelevel = pHitTile->GetStepNum();
+		}
 	}
-
+				
 	//チャージ状態か
 	if (m_pAttack->GetState() == CAttackBased::ATTACK_STATE_CHARGE)
 	{
@@ -576,20 +636,47 @@ void CPlayer::Attack(void)
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
 		{
 			//攻撃フラグを立てる
-			m_bAttack = true;
+			m_AttackData.m_bAttack = true;
+
+
+			
 		}
 	}
 
 
 	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
-	if (m_bAttack&&m_bMove)
-	{
-		//フラグを回収
-		m_bAttack = false;
-		//攻撃スイッチ処理
-		m_pAttack->AttackSwitch();
-		//アニメーション処理
-		GetMotion(CResourceCharacter::MOTION_ATTACK)->SetActiveMotion(true);
+	if (m_AttackData.m_bAttack&&m_bMove)
+	{		
+			//行列計算
+			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			D3DXVECTOR3 AttackPos = m_pAttack->GetAttackSquare().SquareData[0].AttackPos * TILE_ONE_SIDE;
+			CreatePos.x = ((cosf(rot.y)*AttackPos.x) + (sinf(rot.y)*AttackPos.z));
+			CreatePos.y = 1 * AttackPos.y;
+			CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
+
+			
+
+		//カウントアップ
+		m_AttackData.m_nAttackRotCount++;
+		//攻撃方向指定
+		AttackRot();
+
+		//一定のカウントかフラグが立っているか
+		if (m_AttackData.m_nAttackRotCount>= ATTCK_ROT_INPUT
+			|| m_AttackData.m_bAttackRot)
+		{
+			//フラグを回収
+			m_AttackData.m_bAttackRot = false;
+			//カウント初期化
+			m_AttackData.m_nAttackRotCount = 0;
+			//フラグを回収
+			m_AttackData.m_bAttack = false;
+			//攻撃スイッチ処理
+			m_pAttack->AttackSwitch();
+			//アニメーション処理
+			GetMotion(CResourceCharacter::MOTION_ATTACK)->SetActiveMotion(true);
+
+		}
 	}
 }
 
@@ -603,7 +690,7 @@ void CPlayer::AttackFinal(void)
 	CInputJoypad* pJoypad = CManager::GetJoypad();
 
 	// アタックタイプが通常状態なら
-	if (m_bFinalAttack)
+	if (m_AttackData.m_bFinalAttack)
 	{
 		// 攻撃ボタンを押したら
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
@@ -620,19 +707,31 @@ void CPlayer::AttackFinal(void)
 		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
 			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
 		{
-			m_bAttack = true;
+			m_AttackData.m_bAttack = true;
 		}
 	}
 
 	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
-	if (m_bAttack&&m_bMove)
+	if (m_AttackData.m_bAttack&&m_bMove)
 	{
-		//フラグを回収
-		m_bAttack = false;
-		//攻撃スイッチ処理
-		m_pAttack->AttackFinalSwitch();
-		//アニメーション処理
-		GetMotion(CResourceCharacter::MOTION_ATTACK)->SetActiveMotion(true);
+		//カウントアップ
+		m_AttackData.m_nAttackRotCount++;
+		AttackRot();
+		
+		if (m_AttackData.m_nAttackRotCount>= ATTCK_ROT_INPUT
+			|| m_AttackData.m_bAttackRot)
+		{
+			//フラグを回収
+			m_AttackData.m_bAttackRot = false;
+			//カウント初期化
+			m_AttackData.m_nAttackRotCount = 0;
+			//フラグを回収
+			m_AttackData.m_bAttack = false;
+			//攻撃スイッチ処理
+			m_pAttack->AttackFinalSwitch();
+			//アニメーション処理
+			GetMotion(CResourceCharacter::MOTION_ATTACK)->SetActiveMotion(true);
+		}
 	}
 }
 
@@ -711,37 +810,39 @@ void CPlayer::ManageItemState(void)
 	switch (m_ItemState)
 	{
 	case ITEM_STATE_NONE:
-		m_nMoveFrame = m_nMoveFrameData;
 		break;
 	case ITEM_STATE_DASH:
 
 		//ダッシュタイムをカウント
 		m_nDashCnt++;
 
-		m_nMoveFrame = (int)(m_nMoveFrameDataDash);
+		//速度を設定
+		MoveData.m_nMoveFrame = (int)(MoveData.m_nMoveFrameDataDash);
 
+		//効果を切る
 		if (m_nDashCnt % DASH_FRAME == 0)
 		{
+			MoveData.m_nMoveCount = 0;
 			m_nDashCnt = 0;
-			m_nMoveFrame = m_nMoveFrameData;
+			MoveData.m_nMoveFrame = MoveData.m_nMoveFrameData;
 			m_ItemState = ITEM_STATE_NONE;
 		}
 		break;
 	case ITEM_STATE_REVERSE:
-		CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
-
-		while (pPlayer != NULL)
+		m_ReverseCount++;
+		//効果を切る
+		if (m_ReverseCount % 180 == 0)
 		{
-			if (pPlayer->m_PlayerState != PLAYER_STATE_DEATH)
-			{
-				if (pPlayer->GetPlayerNumber() != m_nPlayerNumber)
-				{
-					pPlayer->SetState(PLAYER_STATE_REVERSE);
-					m_ItemState = ITEM_STATE_NONE;
-					//return;
-				}
-			}
-			pPlayer = (CPlayer*)pPlayer->GetNext();
+			m_ReverseCount = 0;
+			m_ItemState = ITEM_STATE_NONE;
+		}
+
+		//ランダムでエフェクトを生成
+		if (m_ReverseCount % 15 == 0)
+		{
+			D3DXVECTOR3 pos = GetPos();
+			pos.y += 10.0f;
+			CParticle::Create(pos, D3DXVECTOR3((float)(rand() % 16 - 8) / 100.0f, 0.25f, (float)(rand() % 16 - 8) / 100.0f), D3DXVECTOR3(7.0f, 7.0f, 7.0f), 500, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_GURUGURU)->SetAddRotValue(1.2f);
 		}
 		break;
 	}

@@ -63,7 +63,7 @@ CGameStart * CGameStart::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 		pStart->Init();
 
 		// オブジェクトタイプ
-		pStart->SetPriority(OBJTYPE_UI);
+		pStart->SetPriority(OBJTYPE_UI_2);
 	}
 
 	return pStart;

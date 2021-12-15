@@ -58,7 +58,7 @@ CTotalScore * CTotalScore::Create(void)
 		// 初期化処理
 		pTotalScore->Init();
 		// オブジェクトタイプの設定
-		pTotalScore->SetPriority(OBJTYPE_UI);
+		pTotalScore->SetPriority(OBJTYPE_UI_2);
 	}
 	return pTotalScore;
 }
@@ -83,6 +83,9 @@ HRESULT CTotalScore::Init(void)
 		CResourceTexture::TEXTURE_RESULT_KNIGHT,
 		CResourceTexture::TEXTURE_RESULT_LANCER,
 		CResourceTexture::TEXTURE_RESULT_WIZARD,
+		CResourceTexture::TEXTURE_RESULT_KNIGHT,
+		CResourceTexture::TEXTURE_RESULT_LANCER,
+		CResourceTexture::TEXTURE_RESULT_ARCHER,
 	};
 
 	// 最大桁数分ループ
@@ -111,7 +114,7 @@ HRESULT CTotalScore::Init(void)
 			m_pTileUI->SetPos(D3DXVECTOR3(fPosX - 80.0f, PAINT_POS_Y, 0.0f));
 			m_pTileUI->SetSize(D3DXVECTOR3(80.0f, 80.0f, 0.0f));
 			m_pTileUI->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_RESULT_TILE));
-			m_pTileUI->SetPriority(OBJTYPE_UI);
+			m_pTileUI->SetPriority(OBJTYPE_UI_2);
 
 			//塗りスコア
 			CScore::Create(D3DXVECTOR3(fPosX+50.0f, PAINT_POS_Y, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), CColorTile::GetTileNum(nPlayer));
@@ -121,7 +124,7 @@ HRESULT CTotalScore::Init(void)
 			m_pKillUi->SetPos(D3DXVECTOR3(fPosX - 80.0f, KILL_POS_Y, 0.0f));
 			m_pKillUi->SetSize(D3DXVECTOR3(80.0f, 80.0f, 0.0f));
 			m_pKillUi->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_RESULT_KILL));
-			m_pKillUi->SetPriority(OBJTYPE_UI);
+			m_pKillUi->SetPriority(OBJTYPE_UI_2);
 
 			//キルスコア
 			CScore::Create(D3DXVECTOR3(fPosX+50.0f, KILL_POS_Y, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), CKillCount::GetTotalKill(nPlayer));

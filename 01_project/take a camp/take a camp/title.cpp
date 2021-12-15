@@ -92,9 +92,6 @@ HRESULT CTitle::Init(void)
 	// ステージ生成
 	m_pMap = CMap::Create(m_MapType);
 
-	// ライトクラスの生成
-	CManager::SetLight();
-
 	// ボタンの生成
 	m_pButton = CButton_Title::Create(D3DXVECTOR3(SCREEN_WIDTH/2, 500.0f, 0.0f), CButton_Title::BUTTON_START);
 	m_pButton = CButton_Title::Create(D3DXVECTOR3(SCREEN_WIDTH/2, 630.0f, 0.0f), CButton_Title::BUTTON_TUTORIAL);
@@ -123,18 +120,6 @@ void CTitle::Uninit(void)
 		// メモリの解放
 		delete m_pPolygon;
 		m_pPolygon = NULL;
-	}
-
-	// ライトクラスの解放処理
-	CLight * pLight = CManager::GetLight();
-	if (pLight != NULL)
-	{
-		// ライトの終了処理
-		pLight->Uninit();
-
-		// メモリの解放
-		delete pLight;
-		pLight = NULL;
 	}
 
 	// 開放処理

@@ -81,7 +81,7 @@ CSkillgauge * CSkillgauge::Create(const D3DXVECTOR3 size, const D3DXCOLOR col, c
 	pSkillgauge->m_col = col;
 	pSkillgauge->m_nPlayerNum = nPlayerNum;
 	pSkillgauge->m_SkillGaugeType = SkillGaugeType;
-	pSkillgauge->SetPriority(OBJTYPE_UI);
+	pSkillgauge->SetPriority(OBJTYPE_UI_2);
 
 	// ‰Šú‰»ˆ—
 	pSkillgauge->Init();

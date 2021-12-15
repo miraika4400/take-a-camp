@@ -34,11 +34,13 @@ public:
 		TEXTURE_RESULT_KNIGHT,		// リザルト(ナイトの背景)
 		TEXTURE_RESULT_LANCER,		// リザルト(ランサーの背景)
 		TEXTURE_RESULT_WIZARD,		// リザルト(ウィザードの背景)
+		TEXTURE_RESULT_THIEF,		// リザルト(シーフの背景)
+		TEXTURE_RESULT_MAGICIAN,	// リザルト(奇術師の背景)
 		TEXTURE_RESULT_ARCHER,		// リザルト(アーチャーの背景)
 		TEXTURE_RESULT_KILL,		// リザルトのキルUI
 		TEXTURE_RESULT_TILE,		// リザルトのタイルUI
-		TEXTURE_PARTICLE_SQUARE,    // パーティクル*箱
-		TEXTURE_PARTICLE_TEARS,		// パーティクル*涙
+		TEXTURE_PARTICLE_SQUARE,    // パーティクル*ダイヤ
+		TEXTURE_PARTICLE_SKILL,		// パーティクル*涙
 		TEXTURE_PARTICLE_CIRCLE,	// パーティクル*円
 		TEXTURE_PARTICLE_GURUGURU,	// ぐるぐる
 		TEXTURE_NUMBER,				// ナンバー
@@ -61,6 +63,8 @@ public:
 		TEXTURE_TILE_CHARGE,		// タイルのチャージ
 		TEXTURE_ICON_BG,			// アイコンの背景
 		TEXTURE_SWORD_ICON,		 	// 剣アイコン
+		TEXTURE_STAGE_NAME_UI,		// ステージ名
+		TEXTURE_STAGE_SELECT_BG,
 		TEXTURE_READEY,				// ready
 		TEXTURE_GO,					// go
 		TEXTURE_MAX					// テクスチャ数

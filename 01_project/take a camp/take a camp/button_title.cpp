@@ -53,7 +53,7 @@ CButton_Title * CButton_Title::Create(D3DXVECTOR3 pos, BUTTON_TYPE type)
 
 	// 各値の代入
 	pButton_Title->SetPos(pos);
-	pButton_Title->SetPriority(OBJTYPE_UI);
+	pButton_Title->SetPriority(OBJTYPE_UI_2);
 	pButton_Title->m_type = type;
 
 	// タイプがスタートだった場合

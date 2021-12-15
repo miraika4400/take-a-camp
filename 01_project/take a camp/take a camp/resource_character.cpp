@@ -25,6 +25,9 @@ const std::vector<CResourceCharacter::LabelData> CResourceCharacter::m_aLabelLis
 	{ "KNIGHT", CResourceModelHierarchy::MODEL_HIERARCHY_KNIGHT },
 	{ "LANCER", CResourceModelHierarchy::MODEL_HIERARCHY_LANCER },
 	{ "WIZARD", CResourceModelHierarchy::MODEL_HIERARCHY_WIZARD },
+	{ "THIEF", CResourceModelHierarchy::MODEL_HIERARCHY_KNIGHT },
+	{ "MAGICIAN", CResourceModelHierarchy::MODEL_HIERARCHY_LANCER },
+	{ "ARCHER", CResourceModelHierarchy::MODEL_HIERARCHY_ARCHER },
 }; 
 // キャラクターデータのテキストのパス
 const std::string CResourceCharacter::m_aCharacterDataTxtPath[CResourceCharacter::CHARACTER_MAX] =
@@ -32,6 +35,9 @@ const std::string CResourceCharacter::m_aCharacterDataTxtPath[CResourceCharacter
 	"data/Text/character/CharacterData_Knight.txt",
 	"data/Text/character/CharacterData_Lancer.txt",
 	"data/Text/character/CharacterData_Wizard.txt",
+	"data/Text/character/CharacterData_Thief.txt",
+	"data/Text/character/CharacterData_Magician.txt",
+	"data/Text/character/CharacterData_Archer.txt",
 };
 
 //===================================
@@ -157,19 +163,26 @@ void CResourceCharacter::Load(void)
 				fscanf(pFile, " %*c %d", &nMoveFrame);
 				m_aCharacterData[nCntCharacter].nMoveFrameDash = nMoveFrame;
 			}
+			// 初動量
+			else if (JudgeStr("MOVE_FRAME_INITIAL"))
+			{
+				int nMoveFrame = 0;
+				fscanf(pFile, " %*c %d", &nMoveFrame);
+				m_aCharacterData[nCntCharacter].nMoveFrameInitial = nMoveFrame;
+			}
+			//加速までの回数
+			else if (JudgeStr("MOVE_COUNT"))
+			{
+				int nMoveFrame = 0;
+				fscanf(pFile, " %*c %d", &nMoveFrame);
+				m_aCharacterData[nCntCharacter].nMoveCount = nMoveFrame;
+			}
 			// 攻撃パス
 			else if (JudgeStr("ATTACK_PATH"))
 			{
 				// 文字列の取得
 				fscanf(pFile, " %*c %s", chInTextData);
 				m_aCharacterData[nCntCharacter].attackTextPath = chInTextData;
-			}
-			// 必殺技パス
-			else if (JudgeStr("FINAL_ATTACK_PATH"))
-			{
-				// 文字列の取得
-				fscanf(pFile, " %*c %s", chInTextData);
-				m_aCharacterData[nCntCharacter].finalAttackPath = chInTextData;
 			}
 			// 必殺技発動時間
 			else if (JudgeStr("FINAL_ATTACK_TIME"))
