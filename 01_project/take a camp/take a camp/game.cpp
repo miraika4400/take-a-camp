@@ -90,11 +90,11 @@ HRESULT CGame::Init(void)
 	// プレイヤーごとの色の割合の表示
 	CPaintnum::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 25.0f, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, 50.0f, 0.0f));
 
-	// ライトクラスの生成
-	CManager::SetLight();
 	// 制限時間クラス
 	CTime::Create();
 
+	// ライトの向きの設定
+	CManager::GetLight()->SetDir(LIGHT_DIR_BASE);
 	return S_OK;
 }
 
@@ -109,18 +109,6 @@ void CGame::Uninit(void)
 	{
 		CManager::SetCamera(NULL);
 	}
-	
-	// ライトクラスの解放処理
-	CLight * pLight = CManager::GetLight();
-	if (pLight != NULL)
-	{
-		// ライトの終了処理
-		pLight->Uninit();
-
-		// メモリの解放
-		delete pLight;
-		pLight = NULL;
-	}
 
 	// 開放処理
 	Release();
@@ -131,7 +119,6 @@ void CGame::Uninit(void)
 //=============================
 void CGame::Update(void)
 {
-
 	// カメラクラス更新処理
 	CCamera * pCamera = CManager::GetCamera();
 	if (pCamera != NULL)

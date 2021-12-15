@@ -19,9 +19,9 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define NEEDLE_POS_Y	(0)					// 
-#define NEEDLE_POS_Y_UP (TILE_SIZE_Y / 2)	// 
-#define NEEDLE_POS_RATE	(0.2f)				// 
+#define NEEDLE_POS_Y	(0)					// とげDOWN時のY座標
+#define NEEDLE_POS_Y_UP (TILE_SIZE_Y / 2)	// とげUP時のY座標
+#define NEEDLE_POS_RATE	(0.2f)				// とげを上げるときの係数
 #define DEATH_FRAME		(10.0f)				// 触れてから死ぬまでのフレーム数
 #define UP_FRAME		(80)				// とげが上がっている間のカウント
 #define DOWN_FRAME		(180)				// とげが下がっている間のカウント
@@ -121,7 +121,7 @@ void CNeedleTile::ManageNeedle(void)
 	float fDistPosY;
 
 	if (m_bUp)
-	{
+	{// とげを上げる
 		fDistPosY = GetPos().y + NEEDLE_POS_Y_UP;
 
 		m_nUpCnt++;
@@ -132,7 +132,7 @@ void CNeedleTile::ManageNeedle(void)
 		}
 	}
 	else
-	{
+	{// とげを下げる
 		fDistPosY = GetPos().y + NEEDLE_POS_Y;
 
 		// カウントの初期化
@@ -145,6 +145,8 @@ void CNeedleTile::ManageNeedle(void)
 			m_nUpCnt = 0;
 		}
 	}
+
+	// Y座標の設定
 	needlePos.y += (fDistPosY - needlePos.y)*NEEDLE_POS_RATE;
 	m_pNeedleModel->SetPos(needlePos);
 }

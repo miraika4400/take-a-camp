@@ -34,6 +34,8 @@ public:
 		TEXTURE_RESULT_KNIGHT,		// リザルト(ナイトの背景)
 		TEXTURE_RESULT_LANCER,		// リザルト(ランサーの背景)
 		TEXTURE_RESULT_WIZARD,		// リザルト(ウィザードの背景)
+		TEXTURE_RESULT_THIEF,		// リザルト(シーフの背景)
+		TEXTURE_RESULT_MAGICIAN,	// リザルト(奇術師の背景)
 		TEXTURE_RESULT_ARCHER,		// リザルト(アーチャーの背景)
 		TEXTURE_RESULT_KILL,		// リザルトのキルUI
 		TEXTURE_RESULT_TILE,		// リザルトのタイルUI

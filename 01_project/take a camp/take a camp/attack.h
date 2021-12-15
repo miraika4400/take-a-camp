@@ -58,7 +58,7 @@ public:
 	void	AttackFinalFlag(void);		// 必殺待機フラグ処理
 	void    AttackFinalSwitch(void);	// 必殺スイッチ関数
 	void	CancelSwitch(void);			// 攻撃キャンセルスイッチ関数
-	virtual void AttackCreate(void);						// 攻撃生成処理
+	virtual void AttackCreate(void);						// 攻撃生成処理 
 	void	VisualizationAttackArea(int nAttackType = 0);	// 攻撃範囲の可視化
 	void	ResetAttackArea(void);							// 攻撃範囲ポリゴンのリセット
 	void	ReleaseAttakcArea(void);                        // 攻撃範囲のリリース
@@ -82,6 +82,7 @@ public:
 	// 攻撃タイプ
 	void		SetType(CResourceCharacter::CHARACTER_TYPE type) { m_nAttackType = type; }
 private:
+	virtual void CreateEffect(D3DXVECTOR3 pos); // エフェクト生成
 	void		Charge(void);								    // 攻撃のチャージ処理
 
 	CPlayer *		m_pPlayer;												// プレイヤークラス

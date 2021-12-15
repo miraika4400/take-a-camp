@@ -6,6 +6,7 @@ float3   Eye;
 float4   SpecularColor;
 float3   RimColor;
 float    RimPower;
+float4   TexColor;
 
 struct VS_IN
 {
@@ -120,7 +121,7 @@ float4 PS(VS_OUT In) :COLOR
 //////////////////////////////////
 float4 PS_TEX(VS_OUT In) :COLOR
 {
-	float4 col = tex2D(Sampler, In.TexCoord) * tex2D(ToonSampler, In.ToonTexCoord) * In.Color + In.Specular;
+	float4 col = (TexColor * tex2D(Sampler, In.TexCoord)) * tex2D(ToonSampler, In.ToonTexCoord) * In.Color + In.Specular;
 
 	// ƒŠƒ€
 	float rim = 1.0f - abs(dot(In.viewDir, In.normalDir));

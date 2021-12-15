@@ -13,6 +13,8 @@
 #include "dynamic_texture.h"
 #include "resource_texture.h"
 #include "resource_shader.h"
+#include "manager.h"
+#include "light.h"
 
 //=============================
 // マクロ定義
@@ -88,10 +90,15 @@ HRESULT CStageSelectPolygon::Init(void)
 	m_apPolygon[1]->SetSize(SIZE_1);
 	m_apPolygon[2]->SetSize(SIZE_2);
 
+	// 背景テクスチャ
 	m_apPolygon[1]->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_STAGE_SELECT_BG));
 	SetPriority(OBJTYPE_UI_1);
 
 	m_pDynamicTex = CDynamicTexture::Create(D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+
+	// ライトの向きの設定
+	CManager::GetLight()->SetDir(LIGHT_DIR_BASE);
 
 	return S_OK;
 }
@@ -136,7 +143,6 @@ void CStageSelectPolygon::Update(void)
 void CStageSelectPolygon::Draw(void)
 {
 	if (m_pDynamicTex == NULL) return;
-
 	
 	// テクスチャにオブジェクトを書き込む
 	m_pDynamicTex->Begin();
@@ -161,7 +167,9 @@ void CStageSelectPolygon::Draw(void)
 		{
 			if (nCntUi != 1)m_apPolygon[nCntUi]->BindTexture(m_pDynamicTex->GetTexture());
 
+			// ブラー
 			if (nCntUi == 0) DrawBlur();
+			// 通常描画
 			else             m_apPolygon[nCntUi]->Draw();
 		}
 	}

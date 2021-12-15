@@ -18,6 +18,7 @@
 #include "player.h"
 #include "camera_charaselect.h"
 #include "bg.h"
+#include "light.h"
 
 //=============================
 // マクロ定義
@@ -80,6 +81,10 @@ HRESULT CCharaSelect::Init(void)
 	CManager::SetCamera(CCharaSelectCamera::Create());
 	// 背景の生成
 	CBg::Create();
+
+	// ライトの向きの設定
+	CManager::GetLight()->SetDir(LIGHT_DIR_CHARA_FRONT);
+
 	return S_OK;
 }
 
@@ -162,7 +167,7 @@ void CCharaSelect::ResetEntryPlayer(void)
 		m_aEntryData[nCntData].bEntry = false;
 		m_aEntryData[nCntData].nColorNum = nCntData; // 仮
 		m_aEntryData[nCntData].nControllNum = -1;
-		m_aEntryData[nCntData].charaType = CResourceCharacter::CHARACTER_KNIGHT;
+		m_aEntryData[nCntData].charaType = CResourceCharacter::CHARACTER_NONE;
 	}
 
 	m_nEntryPlayerNum = 0;
@@ -286,12 +291,13 @@ void CCharaSelect::CharacterSelect(int nCntData)
 	{
 		
 		// 進む
-		nType++;		
-		if (nType >= CResourceCharacter::CHARACTER_MAX)
+		nType--;
+		if (nType < 0)
 		{
-			nType = 0;
+			nType = CResourceCharacter::CHARACTER_MAX - 1;
 		}
 		m_aEntryData[nCntData].charaType = (CResourceCharacter::CHARACTER_TYPE)nType;
+
 		m_anWaitCnt[nCntData] = WAIT_TIME;
 		return;
 	}
@@ -300,13 +306,12 @@ void CCharaSelect::CharacterSelect(int nCntData)
 			|| pJoy->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoy->BUTTON_PRESS, m_aEntryData[nCntData].nControllNum)))
 	{
 		// 戻る
-		nType--;
-		if (nType < 0)
+		nType++;
+		if (nType >= CResourceCharacter::CHARACTER_MAX)
 		{
-			nType = CResourceCharacter::CHARACTER_MAX - 1;
+			nType = 0;
 		}
 		m_aEntryData[nCntData].charaType = (CResourceCharacter::CHARACTER_TYPE)nType;
-
 		m_anWaitCnt[nCntData] = WAIT_TIME;
 		return;
 	}

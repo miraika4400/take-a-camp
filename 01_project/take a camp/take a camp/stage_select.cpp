@@ -71,9 +71,7 @@ HRESULT CStageSelect::Init(void)
 {
 	// カメラクラスの生成
 	CManager::SetCamera(CCamera::Create());
-	// ライトクラスの生成
-	CManager::SetLight();
-	
+
 	// ステージ名ポリゴンの生成
 	m_pStageName = CStageNameUi::Create(m_selectStageType);
 
@@ -92,18 +90,6 @@ void CStageSelect::Uninit(void)
 	if (pCamera != NULL)
 	{
 		CManager::SetCamera(NULL);
-	}
-
-	// ライトクラスの解放処理
-	CLight * pLight = CManager::GetLight();
-	if (pLight != NULL)
-	{
-		// ライトの終了処理
-		pLight->Uninit();
-
-		// メモリの解放
-		delete pLight;
-		pLight = NULL;
 	}
 
 	// 開放処理

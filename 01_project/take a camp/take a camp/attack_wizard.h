@@ -25,9 +25,10 @@ public:
 	static CAttackWizard *Create(CPlayer* pPlayer);
 
 private:
-	void	AttackCreate(void);	//攻撃生成処理
+	void CreateEffect(D3DXVECTOR3 pos);
+	//void	AttackCreate(void);	//攻撃生成処理
 
-	int		m_nAttackCount;		//攻撃までのカウント
-	int		m_nType;			//攻撃の間隔用のタイプ
+	//int		m_nAttackCount;		//攻撃までのカウント
+	//int		m_nType;			//攻撃の間隔用のタイプ
 };
 #endif

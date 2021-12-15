@@ -75,7 +75,7 @@ CManager::~CManager()
 //=============================
 HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 {
-	
+
 	// メモリの確保・初期化
 
 	// キーボード
@@ -114,6 +114,14 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	m_pSound = new CSound;
 	// サウンドクラスの初期化
 	if (FAILED(m_pSound->Init(hWnd)))
+	{
+		return E_FAIL;
+	}
+
+	// ライトクラスの生成
+	m_pLight = new CLight;
+	// ライトクラスの初期化
+	if (FAILED(m_pLight->Init()))
 	{
 		return E_FAIL;
 	}
@@ -242,6 +250,13 @@ void CManager::Uninit(void)
 		m_pPause->Uninit();
 		delete m_pPause;
 		m_pPause = NULL;
+	}
+
+	if (m_pLight != NULL)
+	{
+		m_pLight->Uninit();
+		delete m_pLight;
+		m_pLight = NULL;
 	}
 }
 
@@ -464,22 +479,4 @@ void CManager::SetCamera(CCamera * pCamera)
 
 	// セット
 	m_pCamera = pCamera;
-}
-
-//=============================
-// ライトのセット処理
-//=============================
-HRESULT CManager::SetLight(void)
-{
-	// ライトクラスの生成
-	m_pLight = new CLight;
-	// ライトクラスの初期化
-	if (m_pLight != NULL)
-	{
-		if (FAILED(m_pLight->Init()))
-		{
-			return -1;
-		}
-	}
-	return S_OK;
 }

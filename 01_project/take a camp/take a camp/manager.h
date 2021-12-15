@@ -92,7 +92,6 @@ public:
 	static CCamera *GetCamera(void) { return m_pCamera; }                   // カメラポインタ
 	static void SetCamera(CCamera * pCamera);                               // カメラクラスのセット処理
 	static CLight *GetLight(void) { return m_pLight; }						// ライトポインタ
-	static HRESULT SetLight(void);
 private:
 	//============
 	// メンバ変数
