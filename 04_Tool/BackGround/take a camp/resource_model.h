@@ -76,6 +76,7 @@ public:
 		MODEL_ENOGU,
 		MODEL_ENPITU,
 		MODEL_MAGCUP,
+		MODEL_DESK,
 		MODEL_MAX        // ÉÇÉfÉãêî
 	}MODEL_TYPE;
 

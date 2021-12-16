@@ -84,15 +84,13 @@ HRESULT CTitle::Init(void)
 
 	// 背景の設定
 	CBg::Create();
+	CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), CResourceModel::MODEL_DESK, D3DXVECTOR3(0.4f, 0.4f, 0.4f));
 
 	// エントリー人数の初期化
 	CCharaSelect::ResetEntryPlayer();
 	
 	// ステージ生成
 	m_pMap = CMap::Create(m_MapType);
-
-	// ライトクラスの生成
-	CManager::SetLight();
 
 	// ボタンの生成
 	m_pButton = CButton_Title::Create(D3DXVECTOR3(SCREEN_WIDTH/2, 500.0f, 0.0f), CButton_Title::BUTTON_START);
@@ -122,18 +120,6 @@ void CTitle::Uninit(void)
 		// メモリの解放
 		delete m_pPolygon;
 		m_pPolygon = NULL;
-	}
-
-	// ライトクラスの解放処理
-	CLight * pLight = CManager::GetLight();
-	if (pLight != NULL)
-	{
-		// ライトの終了処理
-		pLight->Uninit();
-
-		// メモリの解放
-		delete pLight;
-		pLight = NULL;
 	}
 
 	// 開放処理

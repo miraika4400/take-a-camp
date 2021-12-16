@@ -54,7 +54,6 @@
 #define ROT_SPEED				(0.3f)							// 回転速度
 #define ROT_FACING_01			(180)							// 回転の基準
 #define ROT_FACING_02			(360)							// 回転向き
-#define RIM_POWER				(2.5f)							// リムライトの強さ
 #define DASH_FRAME				(60*5)							// ダッシュ時有効フレーム数
 #define ATTCK_ROT_INPUT			(15)							// 攻撃方向受付するフレーム数
 
@@ -94,6 +93,7 @@ CPlayer::CPlayer()
 	m_ItemState = ITEM_STATE_NONE;	// アイテム用ステート
 	m_nDashCnt = 1;					// 速度アップカウント
 	m_bController = false;
+	m_bUpdate = false;
 	m_pKillCount = NULL;
 	m_nChargeTilelevel = 0;
 }
@@ -178,6 +178,8 @@ HRESULT CPlayer::Init(void)
 	m_bMove = true;
 	// 無敵フラグの初期化
 	m_bInvincible = false;
+	// 更新フラグの初期化
+	m_bUpdate = false;
 	//プレイヤーステータス初期化
 	m_PlayerState = PLAYER_STATE_NORMAL;
 	//色設定
@@ -260,6 +262,12 @@ void CPlayer::Uninit(void)
 //******************************
 void CPlayer::Update(void)
 {
+	if (!m_bUpdate)
+	{
+		CPlayerModel::Update();
+		return;
+	}
+
 	//ステートごとの処理
 	switch (m_PlayerState)
 	{

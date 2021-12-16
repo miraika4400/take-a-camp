@@ -11,6 +11,7 @@
 #include "build.h"
 #include "manager.h"
 #include "keyboard.h"
+#include "game.h"
 
 //*****************************
 // É}ÉNÉçíËã`
@@ -220,7 +221,9 @@ void CBuild::Save(void)
 	D3DXVECTOR3 buildPos = GetPos();
 	D3DXVECTOR3 buildRot = GetRot();
 
-	pFile = fopen("data/BuildingInfo.txt", "a");
+	if (CGame::GetMapType() == CMapManager::MAP_TYPE_1)pFile = fopen("data/BuildingInfo_1.txt", "a");
+	else if (CGame::GetMapType() == CMapManager::MAP_TYPE_2)pFile = fopen("data/BuildingInfo_2.txt", "a");
+	else if (CGame::GetMapType() == CMapManager::MAP_TYPE_3)pFile = fopen("data/BuildingInfo_3.txt", "a");
 	if (pFile != NULL)
 	{
 		fprintf(pFile, "%d\n", m_BuildType);
@@ -239,7 +242,9 @@ void CBuild::Load(void)
 	BUILD_TYPE type = BUILD_TYPE_TREE;
 	BUILD_BOOL bBuild = BUILD_FALSE;
 
-	pFile = fopen("data/BuildingInfo.txt", "r");
+	if (CGame::GetMapType() == CMapManager::MAP_TYPE_1)pFile = fopen("data/BuildingInfo_1.txt", "r");
+	else if (CGame::GetMapType() == CMapManager::MAP_TYPE_2)pFile = fopen("data/BuildingInfo_2.txt", "r");
+	else if (CGame::GetMapType() == CMapManager::MAP_TYPE_3)pFile = fopen("data/BuildingInfo_3.txt", "r");
 
 	if (pFile != NULL)
 	{

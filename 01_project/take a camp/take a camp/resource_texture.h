@@ -34,6 +34,8 @@ public:
 		TEXTURE_RESULT_KNIGHT,		// リザルト(ナイトの背景)
 		TEXTURE_RESULT_LANCER,		// リザルト(ランサーの背景)
 		TEXTURE_RESULT_WIZARD,		// リザルト(ウィザードの背景)
+		TEXTURE_RESULT_THIEF,		// リザルト(シーフの背景)
+		TEXTURE_RESULT_MAGICIAN,	// リザルト(奇術師の背景)
 		TEXTURE_RESULT_ARCHER,		// リザルト(アーチャーの背景)
 		TEXTURE_RESULT_KILL,		// リザルトのキルUI
 		TEXTURE_RESULT_TILE,		// リザルトのタイルUI
@@ -47,7 +49,7 @@ public:
 		TEXTURE_NEEDLE,				// とげ穴
 		TEXTURE_SHADOW,				// 影
 		TEXTURE_PLAYERNUMBER,		// プレイヤー番号
-		TEXTURE_NONE,				// NONE
+		TEXTURE_NONE_UI,				// NONE
 		TEXTURE_CONTROLLER,			// コントローラーアイコン
 		TEXTURE_KEYBOARD,			// キーボードアイコン
 		TEXTURE_CHARASELECT_BACK,	// キャラ選択背景
@@ -63,6 +65,14 @@ public:
 		TEXTURE_SWORD_ICON,		 	// 剣アイコン
 		TEXTURE_STAGE_NAME_UI,		// ステージ名
 		TEXTURE_STAGE_SELECT_BG,
+		TEXTURE_READEY,				// ready
+		TEXTURE_GO,					// go
+		TEXTURE_FINISH,				// finish
+		TEXTURE_LANCE_ICON,		 	// 槍アイコン
+		TEXTURE_ARROW_ICON,		 	// 矢アイコン
+		TEXTURE_MAGICSTICK_ICON,	// 魔法杖アイコン
+		TEXTURE_KNIFE_ICON,		 	// ナイフアイコン
+		TEXTURE_STICK_ICON,		 	// 杖アイコン
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類
