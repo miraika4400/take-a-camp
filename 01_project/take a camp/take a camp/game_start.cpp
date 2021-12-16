@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// ゲーム開始の処理 [game_start.h]
+// ゲーム開始の処理 [game_start.cpp]
 // Author : 佐藤颯紀
 //
 //=============================================================================
@@ -28,6 +28,7 @@ CGameStart::CGameStart()
 {
 	m_pPolygon = NULL;							// ポリゴン情報
 	m_pos = VEC3_ZERO;							// 位置情報
+	m_size = VEC3_ZERO;
 	m_col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);	// 色情報
 	m_nCount = 0;								// カウンター
 	m_type = START_TYPE_READEY;					// タイプ
@@ -74,6 +75,7 @@ CGameStart * CGameStart::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 //=============================================================================
 HRESULT CGameStart::Init(void)
 {
+	// 色設定
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 	// ポリゴンの生成

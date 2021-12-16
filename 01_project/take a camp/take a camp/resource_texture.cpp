@@ -62,9 +62,14 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/sword_icon.png",	      // 剣アイコン
 	"./data/Textures/stage_name.png",	      // ステージ名
 	"./data/Textures/stage_polygon_bg.png",	      // ステージ選択背景
-	
 	"./data/Textures/00_ready.png",	          // ready
 	"./data/Textures/01_go.png",			  // go
+	"./data/Textures/00_finish.png",		  // finish
+	"./data/Textures/lance_icon.png",         // 槍アイコン
+	"./data/Textures/arrow_icon.png",         // 矢アイコン
+	"./data/Textures/magicstick_icon.png",    // 魔法杖アイコン
+	"./data/Textures/knife_icon.png",         // ナイフアイコン
+	"./data/Textures/stick_icon.png",         // 杖アイコン
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]

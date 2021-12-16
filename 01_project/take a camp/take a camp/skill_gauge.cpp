@@ -116,16 +116,24 @@ HRESULT CSkillgauge::Init()
 		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_KNIGHT:
 			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
 			break;
-		//case CResourceCharacter::CHARACTER_TYPE::CHARACTER_LANCER:
-		//	BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
-		//	break;
-		//case CResourceCharacter::CHARACTER_TYPE::CHARACTER_WIZARD:
-		//	BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_LANCER:
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_LANCE_ICON));
+			break;
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_WIZARD:
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_MAGICSTICK_ICON));
+			break;
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_THIEF:
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_KNIFE_ICON));
+			break;
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_MAGICIAN:
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_STICK_ICON));
+			break;
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_ARCHER:
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ARROW_ICON));
 			break;
 		default:
 			break;
 		}
-
 		break;
 
 	default:
