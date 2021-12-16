@@ -303,7 +303,7 @@ void CAttackBased::ChargeFlag(void)
 //=============================================================================
 // エフェクト生成
 //=============================================================================
-void CAttackBased::CreateEffect(D3DXVECTOR3)
+void CAttackBased::CreateEffect(D3DXVECTOR3 pos)
 {
 }
 

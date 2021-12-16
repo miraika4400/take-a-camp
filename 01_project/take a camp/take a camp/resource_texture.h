@@ -67,6 +67,7 @@ public:
 		TEXTURE_STAGE_SELECT_BG,
 		TEXTURE_READEY,				// ready
 		TEXTURE_GO,					// go
+		TEXTURE_FINISH,				// finish
 		TEXTURE_LANCE_ICON,		 	// 槍アイコン
 		TEXTURE_ARROW_ICON,		 	// 矢アイコン
 		TEXTURE_MAGICSTICK_ICON,	// 魔法杖アイコン
