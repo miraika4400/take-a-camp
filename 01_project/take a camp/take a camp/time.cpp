@@ -105,11 +105,14 @@ void CTime::Update(void)
 
 		m_apNumber[nCntDigit]->SetNumber((int)((m_nTime % (int)(powf(10.0f, (MAX_TIME_DIGIT - nCntDigit)))) / (float)(powf(10, (MAX_TIME_DIGIT - nCntDigit - 1)))));
 	}
+	// 0になったら
 	if (m_nTime <= 0)
 	{
-		// デバッグ用画面遷移コマンド
-		//CManager::GetFade()->SetFade(CManager::MODE_RESULT);
+		// カウントを止める
+		m_nA = 0;
+		m_nTime = 0;
 
+		// FINISHの生成
 		CGameFinish::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, FINISH_POS_Y, 0.0f), D3DXVECTOR3(FINISH_SIZE_X, FINISH_SIZE_Y, 0.0f));
 	}
 }
