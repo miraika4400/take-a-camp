@@ -221,12 +221,17 @@
     <ClCompile Include="scene3d.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="shadow.cpp" />
+    <ClCompile Include="base_Cylinder.cpp" />
+    <ClCompile Include="skill_circle.cpp" />
+    <ClCompile Include="skill_effect.cpp" />
     <ClCompile Include="skill_gauge.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="resource_texture.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="spawn_tile.cpp" />
+    <ClCompile Include="stage_name_ui.cpp" />
     <ClCompile Include="stage_select.cpp" />
+    <ClCompile Include="stage_select_polygon.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="tile_effect.cpp" />
     <ClCompile Include="tile_effect_charge.cpp" />
@@ -308,12 +313,17 @@
     <ClInclude Include="scene3d.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="shadow.h" />
+    <ClInclude Include="base_Cylinder.h" />
+    <ClInclude Include="skill_circle.h" />
+    <ClInclude Include="skill_effect.h" />
     <ClInclude Include="skill_gauge.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="resource_texture.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="spawn_tile.h" />
+    <ClInclude Include="stage_name_ui.h" />
     <ClInclude Include="stage_select.h" />
+    <ClInclude Include="stage_select_polygon.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="tile_effect.h" />
     <ClInclude Include="tile_effect_charge.h" />
@@ -326,6 +336,10 @@
     <ClInclude Include="warp_tile.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="data\HLSL\BlurShader.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
     <FxCompile Include="data\HLSL\PlayerShader.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

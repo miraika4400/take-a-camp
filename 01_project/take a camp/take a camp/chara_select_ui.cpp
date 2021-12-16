@@ -90,7 +90,7 @@ HRESULT CCharaSelectUi::Init(void)
 		m_aPolygon[nCntPlayer].pBack->SetSize(BACK_SIZE);
 		m_aPolygon[nCntPlayer].pBack->SetPos(boardPos);
 		m_aPolygon[nCntPlayer].pBack->SetColor(BACK_DEFAULT_COLOR);
-		m_aPolygon[nCntPlayer].pBack->SetPriority(OBJTYPE_UI);
+		m_aPolygon[nCntPlayer].pBack->SetPriority(OBJTYPE_UI_2);
 		m_aPolygon[nCntPlayer].pBack->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CHARASELECT_BACK));
 		
 		// アイコンの生成
@@ -98,13 +98,13 @@ HRESULT CCharaSelectUi::Init(void)
 		m_aPolygon[nCntPlayer].pControllIcon->SetSize(CONTOROll_ICON_SIZE);
 		m_aPolygon[nCntPlayer].pControllIcon->SetPos(boardPos);
 		m_aPolygon[nCntPlayer].pControllIcon->SetColor(ICON_COLOR_OFF);
-		m_aPolygon[nCntPlayer].pControllIcon->SetPriority(OBJTYPE_UI);
+		m_aPolygon[nCntPlayer].pControllIcon->SetPriority(OBJTYPE_UI_2);
 
 		// プレイヤー番号の生成
 		m_aPolygon[nCntPlayer].pPlayerNumber = CScene2d::Create();
 		m_aPolygon[nCntPlayer].pPlayerNumber->SetSize(PLAYERNUMBER_SIZE);
 		m_aPolygon[nCntPlayer].pPlayerNumber->SetPos(D3DXVECTOR3(boardPos.x, PLAYER_NUMBER_POS_Y, boardPos.z));
-		m_aPolygon[nCntPlayer].pPlayerNumber->SetPriority(OBJTYPE_UI);
+		m_aPolygon[nCntPlayer].pPlayerNumber->SetPriority(OBJTYPE_UI_2);
 		m_aPolygon[nCntPlayer].pPlayerNumber->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_NONE));
 		m_aPolygon[nCntPlayer].pPlayerNumber->SetTextureUV(uv);
 		

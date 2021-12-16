@@ -138,10 +138,52 @@ void CGame::Update(void)
 	if (pCamera != NULL)
 	{
 		pCamera->Update();
-	}
+	}	
+	
+
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_0))
 	{
-		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_0);
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_TREE, CBuild::BUILD_TRUE);
+	}	
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_LSHIFT)&&CManager::GetKeyboard()->GetKeyTrigger(DIK_1))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_MAGCUP, CBuild::BUILD_TRUE);
+	}
+	else if (CManager::GetKeyboard()->GetKeyTrigger(DIK_1))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_MATO, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_2))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_BUKIKAKE, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_3))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_CHEST, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_4))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_TARU, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_5))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_GAITOU, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_6))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_HATA, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_7))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_SAKU, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_8))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_ENOGU, CBuild::BUILD_TRUE);
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_9))
+	{
+		CBuild::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CBuild::BUILD_TYPE_ENPITU, CBuild::BUILD_TRUE);
 	}
 #ifdef _DEBUG
 	// デバッグ用画面遷移コマンド

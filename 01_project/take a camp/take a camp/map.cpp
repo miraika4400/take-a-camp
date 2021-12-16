@@ -33,7 +33,7 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CMap::CMap()
+CMap::CMap() :CScene(OBJTYPE_SYSTEM)
 {
 	m_nItemSpawnCount = 0;
 	memset(&m_MapData, 0, sizeof(m_MapData));
@@ -159,8 +159,6 @@ void CMap::MapCreate(void)
 					case CMapManager::BLOCK_TYPE_WARP_2://ワープタイルタイプ2
 						CWarpTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, CWarpTile::WARP_TILE_TYPE_2);
 						break;
-
-
 				}
 
 				if (pTileFactory != NULL
