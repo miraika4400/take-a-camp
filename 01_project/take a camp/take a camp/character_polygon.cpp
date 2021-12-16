@@ -172,3 +172,11 @@ void CCharacterPolygon::SetRimColor(D3DXCOLOR col)
 {
 	m_pCharacterModel->SetRimColor(col);
 }
+
+//=============================================================================
+// Texカラーのセット
+//=============================================================================
+void CCharacterPolygon::SetTexColor(D3DXCOLOR col)
+{
+	m_pCharacterModel->SetTexColor(col);
+}

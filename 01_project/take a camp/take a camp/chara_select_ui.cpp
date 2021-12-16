@@ -169,6 +169,7 @@ void CCharaSelectUi::Update(void)
 		{// ƒGƒ“ƒgƒŠ[Žž
 			m_aPolygon[nCntPlayer].pBack->SetColor(GET_COLORMANAGER->GetIconColor(entryData.nColorNum));
 			m_aPolygon[nCntPlayer].pCharaPolygon->SetRimColor(GET_COLORMANAGER->GetStepColor(entryData.nColorNum,1));
+			m_aPolygon[nCntPlayer].pCharaPolygon->SetTexColor(GET_COLORMANAGER->GetIconColor(entryData.nColorNum));
 			m_aPolygon[nCntPlayer].pControllIcon->SetColor(ICON_COLOR_ON);
 
 			if (entryData.bReady) m_aPolygon[nCntPlayer].pReadyIcon->SetColor(ICON_COLOR_ON);

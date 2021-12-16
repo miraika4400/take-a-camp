@@ -43,6 +43,7 @@ public:
 	void SetCharaType(CResourceCharacter::CHARACTER_TYPE type);
 	CResourceCharacter::CHARACTER_TYPE GetCharaType(void) { return m_charaType; }
 	void SetRimColor(D3DXCOLOR col);
+	void SetTexColor(D3DXCOLOR col);
 private:
     //===============================================
     // ƒƒ“ƒo•Ï”éŒ¾
