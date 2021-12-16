@@ -165,7 +165,7 @@ void CDynamicTexture::Begin(void)
 		D3DCOLOR_RGBA(255, 255, 255, 0), 1.0f, 0);
 
 	//ビューポートをセット*************************************
-	D3DVIEWPORT9 viewport2 = { 0, 0, m_size.x, m_size.y, 0.0f, 1.0f };
+	D3DVIEWPORT9 viewport2 = { 0, 0, (DWORD)m_size.x, (DWORD)m_size.y, 0.0f, 1.0f };
 	pDevice->SetViewport(&viewport2);
 }
 
