@@ -17,6 +17,7 @@
 #include "joypad.h"
 #include "fade.h"
 #include "result_graph.h"
+#include "effect_result_explosion.h"
 
 //**********************************
 // ƒ}ƒNƒ’è‹`
@@ -89,6 +90,13 @@ void CResult::Uninit(void)
 //=============================
 void CResult::Update(void)
 {
+
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_1))
+	{
+		CResultExplosion::Create(D3DXVECTOR3(0.0f, SCREEN_HEIGHT, 0.0f));
+		CResultExplosion::Create(D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f));
+	}
+
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) ||
 		CManager::GetMouse()->GetMouseTrigger(0) /*||
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0) ||

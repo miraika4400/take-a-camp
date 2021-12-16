@@ -256,7 +256,7 @@ void CPlayerModel::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model
 		// テクスチャカラーの情報を送る
 		pEffect->SetFloatArray("TexColor", (float*)&m_TexColor, 4);
 		// キューブテクスチャ
-		pEffect->SetTexture("CubeTex", CResourceTexture::GetCubeTexture(CResourceTexture::TECTURE_CUBE_SLY));
+		pEffect->SetTexture("CubeTex", CResourceTexture::GetCubeTexture(CResourceTexture::TEXTURE_CUBE_SLY));
 		// トゥーンシャドウテクスチャをシェーダーに送る
 		pEffect->SetTexture("ToonTex", CResourceTexture::GetTexture(CResourceTexture::TEXTURE_TOON_SHADOW));
 	}

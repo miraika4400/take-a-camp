@@ -40,7 +40,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/effect/kirakira.png",	// パーティクル*四角
 	"./data/Textures/effect/00_wave.png",	// パーティクル*波紋
 	"./data/Textures/effect/shoot.png",		// パーティクル*円
-	"./data/Textures/guruguru.png",			// パーティクル*円
+	"./data/Textures/effect/meteor.png",			// パーティクル*円
 	"./data/Textures/number.png",			// ナンバー
 	"./data/Textures/frame.png",              // 枠
 	"./data/Textures/cross_mark.png",         // バツマーク
@@ -71,6 +71,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/magicstick_icon.png",    // 魔法杖アイコン
 	"./data/Textures/knife_icon.png",         // ナイフアイコン
 	"./data/Textures/stick_icon.png",         // 杖アイコン
+	"./data/Textures/effect_explosion.png",   // リザルトエクスプロージョン
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]

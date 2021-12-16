@@ -27,7 +27,7 @@
 #define BACK_GAUGE_SIZE (16)
 #define BACK_GAUGE_COLOR (D3DXCOLOR(1.0f,1.0f,1.0f,1.0f))
 #define GAUGE_POS_Y (710.0f)
-
+#define MIN_POINT 1.0f
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
@@ -77,6 +77,7 @@ HRESULT CResultGraph::Init(void)
 
 	for (int nCntColor = 0; nCntColor < GET_COLORMANAGER->GetColorNum(); nCntColor++)
 	{
+		// プレイヤー番号の取得
 		int nPlayerNum = GET_COLORMANAGER->GetUsePlayerNum(nCntColor);
 		if (nPlayerNum != -1)
 		{
@@ -85,10 +86,11 @@ HRESULT CResultGraph::Init(void)
 				// [プレイヤー番号]が使っているカラー番号の保管
 				m_aGauge[nPlayerNum][nCntGauge].m_nColorNum = nCntColor;
 			}
+			int nTileNum = CColorTile::GetTileNum(nPlayerNum) + MIN_POINT;
 			// 最大数の保管
-			if (fMaxNum < CColorTile::GetTileNum(nPlayerNum))
+			if (fMaxNum < nTileNum)
 			{
-				fMaxNum = (float)CColorTile::GetTileNum(nPlayerNum);
+				fMaxNum = (float)CColorTile::GetTileNum(nPlayerNum) + MIN_POINT;
 			}
 		}
 	}
@@ -154,7 +156,7 @@ void CResultGraph::Update(void)
 	{
 		for (int nCntGauge = 0; nCntGauge < GAUGE_NUM; nCntGauge++)
 		{
-			m_aGauge[nCntPlayer][nCntGauge].fGraphData += ((CColorTile::GetTileNum(m_aGauge[nCntPlayer][nCntGauge].m_nColorNum)) - m_aGauge[nCntPlayer][nCntGauge].fGraphData)*GAUGE_RATE;
+			m_aGauge[nCntPlayer][nCntGauge].fGraphData += ((CColorTile::GetTileNum(m_aGauge[nCntPlayer][nCntGauge].m_nColorNum) + MIN_POINT) - m_aGauge[nCntPlayer][nCntGauge].fGraphData)*GAUGE_RATE;
 		}
 	}
 }
