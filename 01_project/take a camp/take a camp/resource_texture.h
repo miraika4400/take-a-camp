@@ -67,6 +67,7 @@ public:
 		TEXTURE_STAGE_SELECT_BG,
 		TEXTURE_READEY,				// ready
 		TEXTURE_GO,					// go
+		TEXTURE_FINISH,				// finish
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類

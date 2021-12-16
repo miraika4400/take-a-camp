@@ -12,7 +12,7 @@
 #include "fade.h"
 #include "time.h"
 #include "number.h"
-#include "game_start.h"
+#include "game_finish.h"
 
 //==================================
 // コンストラクタ
@@ -108,7 +108,9 @@ void CTime::Update(void)
 	if (m_nTime <= 0)
 	{
 		// デバッグ用画面遷移コマンド
-		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
+		//CManager::GetFade()->SetFade(CManager::MODE_RESULT);
+
+		CGameFinish::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, FINISH_POS_Y, 0.0f), D3DXVECTOR3(FINISH_SIZE_X, FINISH_SIZE_Y, 0.0f));
 	}
 }
 

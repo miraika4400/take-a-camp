@@ -65,6 +65,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	
 	"./data/Textures/00_ready.png",	          // ready
 	"./data/Textures/01_go.png",			  // go
+	"./data/Textures/00_finish.png",		  // finish
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]
