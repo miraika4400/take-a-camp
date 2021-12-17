@@ -24,7 +24,7 @@ class CNumber;
 //マクロ定義
 //*****************************
 #define MAX_TIME_DIGIT 3  // タイムの最大桁数
-#define TIME_UP 180       // 時間制限
+#define TIME_UP 5       // 時間制限
 
 //*****************************
 //クラス定義
@@ -51,6 +51,11 @@ public:
 	bool GetTime(void)			{ return m_bTime; }
 
 private:
+	//============
+	// メンバ関数
+	//============
+	void FinishPlayer(void);
+
 	//============
 	// メンバ変数
 	//============

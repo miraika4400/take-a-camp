@@ -13,6 +13,7 @@
 #include "time.h"
 #include "number.h"
 #include "game_finish.h"
+#include "player.h"
 
 //==================================
 // コンストラクタ
@@ -112,6 +113,9 @@ void CTime::Update(void)
 		m_nA = 0;
 		m_nTime = 0;
 
+		// プレイヤーの動きを止める
+		FinishPlayer();
+
 		// FINISHの生成
 		CGameFinish::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, FINISH_POS_Y, 0.0f), D3DXVECTOR3(FINISH_SIZE_X, FINISH_SIZE_Y, 0.0f));
 	}
@@ -125,5 +129,20 @@ void CTime::Draw(void)
 	for (int nCntDigit = 0; nCntDigit < MAX_TIME_DIGIT; nCntDigit++)
 	{
 		m_apNumber[nCntDigit]->Draw();
+	}
+}
+
+//=============================================================================
+// プレイヤーを止める
+//=============================================================================
+void CTime::FinishPlayer(void)
+{
+	CPlayer*pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+
+	while (pPlayer != NULL)
+	{
+		pPlayer->SetUpdateFlag(false);
+
+		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
 }

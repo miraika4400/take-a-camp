@@ -1,11 +1,11 @@
 //=============================================================================
 //
-// ゲーム終了UIの処理 [game_finish.h]
+// インゲームのテキスト処理 [ingame_text.h]
 // Author : 佐藤颯紀
 //
 //=============================================================================
-#ifndef _GAME_FINISH_H_
-#define _GAME_FINISH_H_
+#ifndef _INGAME_TEXT_H_
+#define _INGAME_TEXT_H_
 
 //=============================================================================
 // インクルードファイル
@@ -20,19 +20,17 @@ class CPolygon;
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define FINISH_POS_Y  (350.0f)	// finish文字のY位置
-#define FINISH_SIZE_X (550.0f)	// Xサイズ
-#define FINISH_SIZE_Y (150.0f)	// Yサイズ
+
 //=============================================================================
 // クラス宣言
 //=============================================================================
-class CGameFinish :public CScene
+class CInGameText :public CScene
 {
 public:
-	CGameFinish();	// コンストラクタ
-	~CGameFinish();	// デストラクタ
+	CInGameText();
+	~CInGameText();
 
-	static CGameFinish*Create(D3DXVECTOR3 pos, D3DXVECTOR3 size);	// 生成処理
+	static CInGameText*Create(D3DXVECTOR3 pos, D3DXVECTOR3 size);	// 生成処理
 
 	HRESULT Init(void);					// 初期化処理
 	void Uninit(void);					// 終了処理
@@ -50,4 +48,4 @@ private:
 	int			m_nCount;		// カウント
 
 };
-#endif // _GAME_FINISH_H_
+#endif // !_INGAME_TEXT_H_

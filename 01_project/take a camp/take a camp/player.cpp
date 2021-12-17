@@ -264,6 +264,7 @@ void CPlayer::Update(void)
 {
 	if (!m_bUpdate)
 	{
+		Move(); 
 		CPlayerModel::Update();
 		return;
 	}

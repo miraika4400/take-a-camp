@@ -172,6 +172,7 @@
     <ClCompile Include="dynamic_texture.cpp" />
     <ClCompile Include="game_finish.cpp" />
     <ClCompile Include="game_start.cpp" />
+    <ClCompile Include="ingame_text.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="kill_count.cpp" />
     <ClCompile Include="max_color_effect.cpp" />
@@ -271,6 +272,7 @@
     <ClInclude Include="dynamic_texture.h" />
     <ClInclude Include="game_finish.h" />
     <ClInclude Include="game_start.h" />
+    <ClInclude Include="ingame_text.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="kill_count.h" />
     <ClInclude Include="max_color_effect.h" />
