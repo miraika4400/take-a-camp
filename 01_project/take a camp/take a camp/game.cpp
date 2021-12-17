@@ -29,6 +29,7 @@
 #include "kill_count.h"
 #include "paintnum.h"
 #include "player_model.h"
+#include "building.h"
 
 //=============================
 // マクロ定義
@@ -94,7 +95,7 @@ HRESULT CGame::Init(void)
 	CManager::SetLight();
 	// 制限時間クラス
 	CTime::Create();
-
+	CBuilding::Load();
 	return S_OK;
 }
 
