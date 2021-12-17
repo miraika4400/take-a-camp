@@ -29,7 +29,7 @@ CText::CText()
 	m_fWidth = 0.0f;
 	ZeroMemory(&m_col, sizeof(m_col));
 	m_format = NULL;
-	ZeroMemory(&m_fontName, sizeof(m_fontName));
+	ZeroMemory(&m_WindowRange, sizeof(m_WindowRange));
 	m_nCountBite = 0;
 	m_nShowTime = 0;
 	m_bAllShow = false;
@@ -45,7 +45,7 @@ CText::~CText()
 //=============================
 // クリエイト
 //=============================
-CText * CText::Create(const D3DXVECTOR3 pos, const float fHeight, const float fWidth, const FORMAT format, const D3DCOLOR col)
+CText * CText::Create(const D3DXVECTOR2 pos, const float fHeight, const float fWidth, const FORMAT format, const D3DCOLOR col)
 {
 	// メモリの確保
 	CText *pText = new CText;
@@ -167,4 +167,38 @@ void CText::ClearText(void)
 	m_nShowTime = 0;
 	m_str.erase(m_str.begin(), m_str.end());
 	m_str.shrink_to_fit();
+}
+
+//=============================
+// テキスト削除する処理
+//=============================
+void CText::SetWindowRange(D3DXVECTOR2 WindowRange[])
+{
+	memcpy(m_WindowRange, WindowRange, sizeof(WindowRange));
+	//m_WindowRange = WindowRange;
+}
+
+//=============================
+// テキスト削除する処理
+//=============================
+void CText::SetFontSize(D3DXVECTOR2 FontSize)
+{
+	m_fHeight = FontSize.x;
+	m_fWidth = FontSize.y;
+}
+
+//=============================
+// テキスト削除する処理
+//=============================
+void CText::SetColor(D3DXCOLOR color)
+{
+	m_col = color;
+}
+
+//=============================
+// テキスト削除する処理
+//=============================
+void CText::SetPos(D3DXVECTOR2 pos)
+{
+	m_pos = pos;
 }

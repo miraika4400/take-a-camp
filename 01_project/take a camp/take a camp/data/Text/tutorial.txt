@@ -1,6 +1,18 @@
 SCRIPT		# この行は絶対消さないこと！
 
 TEXT_DATASET
+WINDOWRANGE = -200 -80 220 500
+FONTSIZE = 50 20
+COLOR = 0.0 0.0 0.0 1.0
+POS = 640 600
+
+SAY = あーたらかーたら
+NR
+SAY = あーたらかーたら
+NR
+SAY = あーたらかーたら
+ENTER
+
 SAY = あーたらかーたら
 NR
 SAY = あーたらかーたら

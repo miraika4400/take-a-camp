@@ -120,7 +120,7 @@ void CResourceText::Load(void)
 					while (str.find("END_TEXT_DATASET") != 0)
 					{
 						getline(ifs, str);
-				
+
 						m_TextMap[nTextNum] = str;
 						nTextNum++;
 					}

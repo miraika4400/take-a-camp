@@ -41,7 +41,7 @@ public:
 	//===========
 	CText();
 	~CText();
-	static CText *Create(const D3DXVECTOR3 pos, const float fHeight, const float fWidth, const FORMAT format, const D3DCOLOR col); // クラス生成
+	static CText *Create(const D3DXVECTOR2 pos, const float fHeight, const float fWidth, const FORMAT format, const D3DCOLOR col); // クラス生成
 
 	HRESULT Init(void); // 初期化
 	void Uninit(void);  // 終了
@@ -52,26 +52,27 @@ public:
 	void ClearText(void);
 
 	bool GetAllShowText(void) { return m_bAllShow; }
+
+	void SetWindowRange(D3DXVECTOR2 WindowRange[]);
+	void SetFontSize(D3DXVECTOR2 FontSize);
+	void SetColor(D3DXCOLOR color);
+	void SetPos(D3DXVECTOR2 pos);
+
 private:
-	//============
-	// メンバ関数
-	//===========
-
-
 	//============
 	// メンバ変数
 	//===========
-	LPD3DXFONT m_pFont;		// フォント保存用変数
-	D3DXVECTOR3 m_pos;		// 座標
-	float m_fHeight;		// 文字のサイズ
-	float m_fWidth;			// 文字列の幅の上限
-	D3DCOLOR m_col;			// 色
-	DWORD m_format;			// 整列方法変換用変数
-	char m_fontName[128];	// フォントの名前
-	std::string m_str;		// 表示する文字列
-	int m_nCountBite;		// 1バイトずつのカウント
-	int m_nShowTime;		// 文字を見せる時間
-	bool m_bAllShow;		// すべて表示されたかどうか
+	LPD3DXFONT m_pFont;				// フォント保存用変数
+	D3DXVECTOR2 m_pos;				// 座標
+	float m_fHeight;				// 文字のサイズ
+	float m_fWidth;					// 文字列の幅の上限
+	D3DCOLOR m_col;					// 色
+	DWORD m_format;					// 整列方法変換用変数
+	D3DXVECTOR2 m_WindowRange[2];	// 文字の表示範囲
+	std::string m_str;				// 表示する文字列
+	int m_nCountBite;				// 1バイトずつのカウント
+	int m_nShowTime;				// 文字を見せる時間
+	bool m_bAllShow;				// すべて表示されたかどうか
 };
 
 #endif

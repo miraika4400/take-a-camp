@@ -77,6 +77,7 @@ private:
 	bool m_bEntry[MAX_PLAYER];
 	int m_nTextNum;
 	bool m_bNextText;
+	bool m_bTextEnd;
 };
 
 #endif

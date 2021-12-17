@@ -55,6 +55,7 @@ CTutorial::CTutorial()
 	m_Tutorialphase = PHASE_PAINT;
 	m_nTextNum = 0;
 	m_bNextText = false;
+	m_bTextEnd = false;
 }
 
 //=============================
@@ -286,21 +287,60 @@ void CTutorial::UpdateText(void)
 {
 	if (!m_pText)
 	{
-		m_pText = CText::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 600.0f, 0.0f), 25.0f, 10.0f, CText::ALIGN_LEFT, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+		m_pText = CText::Create(D3DXVECTOR2(SCREEN_WIDTH / 2.0f, 600.0f), 50.0f, 20.0f, CText::ALIGN_LEFT, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
 	}
 
 	// リソーステキストのポインタ取得
 	CResourceText * pResourceText = CResourceText::GetResourceText();
 
-	while (!pResourceText->GetMapString(m_nTextNum).empty())
+	while (!pResourceText->GetMapString(m_nTextNum).empty()
+		|| !pResourceText->GetMapString(m_nTextNum + 1).empty())
 	{
 		if (pResourceText->GetMapString(m_nTextNum).find("TEXT_DATASET") == 0)
 		{
+			m_bTextEnd = false;
+		}
+
+		if (!m_bTextEnd)
+		{
 			while (pResourceText->GetMapString(m_nTextNum).find("END_TEXT_DATASET") != 0)
 			{
-				if (pResourceText->GetMapString(m_nTextNum).find("SAY") == 0)
+				std::string str = CResourceText::GetResourceText()->GetMapString(m_nTextNum);
+
+				if (pResourceText->GetMapString(m_nTextNum).find("WINDOWRANGE") == 0)
 				{
-					std::string str = CResourceText::GetResourceText()->GetMapString(m_nTextNum);
+					str = str.substr(14);
+
+					D3DXVECTOR2 Windowrange[2];
+					sscanf(str.c_str(), "%f %f %f %f", &Windowrange[0].x, &Windowrange[0].y, &Windowrange[1].x, &Windowrange[1].y);
+					m_pText->SetWindowRange(Windowrange);
+				}
+				else if (pResourceText->GetMapString(m_nTextNum).find("FONTSIZE") == 0)
+				{
+					str = str.substr(11);
+
+					D3DXVECTOR2 FontSize;
+					sscanf(pResourceText->GetMapString(m_nTextNum).c_str(), "%f %f", &FontSize.x, &FontSize.y);
+					m_pText->SetFontSize(FontSize);
+				}
+				else if (pResourceText->GetMapString(m_nTextNum).find("COLOR") == 0)
+				{
+					str = str.substr(8);
+
+					D3DXCOLOR color;
+					sscanf(pResourceText->GetMapString(m_nTextNum).c_str(), "%f %f %f %f", &color.r, &color.g, &color.b, &color.a);
+					m_pText->SetColor(color);
+				}
+				else if (pResourceText->GetMapString(m_nTextNum).find("POS") == 0)
+				{
+					str = str.substr(6);
+
+					D3DXVECTOR2 Pos;
+					sscanf(pResourceText->GetMapString(m_nTextNum).c_str(), "%f %f", &Pos.x, &Pos.y);
+					m_pText->SetPos(Pos);
+				}
+				else if (pResourceText->GetMapString(m_nTextNum).find("SAY") == 0)
+				{
 					str = str.substr(6);
 					m_pText->AddText(str);
 				}
@@ -310,11 +350,13 @@ void CTutorial::UpdateText(void)
 				}
 				else if (pResourceText->GetMapString(m_nTextNum).find("ENTER") == 0)
 				{
+					m_nTextNum++;
 					m_bNextText = true;
 					return;
 				}
 				m_nTextNum++;
 			}
+			m_bTextEnd = true;
 		}
 		m_nTextNum++;
 	}
