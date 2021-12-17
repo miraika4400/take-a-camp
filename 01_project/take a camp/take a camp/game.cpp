@@ -30,6 +30,7 @@
 #include "paintnum.h"
 #include "player_model.h"
 #include "building.h"
+#include "game_start.h"
 
 //=============================
 // ƒ}ƒNƒ’è‹`
@@ -48,6 +49,7 @@ CMapManager::MAP_TYPE CGame::m_MapType = CMapManager::MAP_TYPE_1; // ƒ}ƒbƒvƒ^ƒCƒ
 CGame::CGame()
 {
 	// •Ï”‚ÌƒNƒŠƒA
+	m_pGameStart = NULL;
 }
 
 //=============================
@@ -91,11 +93,15 @@ HRESULT CGame::Init(void)
 	// ƒvƒŒƒCƒ„[‚²‚Æ‚ÌF‚ÌŠ„‡‚Ì•\¦
 	CPaintnum::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 25.0f, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, 50.0f, 0.0f));
 
-	// ƒ‰ƒCƒgƒNƒ‰ƒX‚Ì¶¬
-	CManager::SetLight();
+
 	// §ŒÀŠÔƒNƒ‰ƒX
-	CTime::Create();
+	//CTime::Create();
 	CBuilding::Load();
+	// ƒ‰ƒCƒg‚ÌŒü‚«‚Ìİ’è
+	CManager::GetLight()->SetDir(LIGHT_DIR_BASE);
+	// ready go‚Ì¶¬
+	m_pGameStart=CGameStart::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, START_UI_POS_Y, 0.0f), D3DXVECTOR3(START_UI_SIZE_X, START_UI_SIZE_Y, 0.0f));
+
 	return S_OK;
 }
 
@@ -110,18 +116,6 @@ void CGame::Uninit(void)
 	{
 		CManager::SetCamera(NULL);
 	}
-	
-	// ƒ‰ƒCƒgƒNƒ‰ƒX‚Ì‰ğ•úˆ—
-	CLight * pLight = CManager::GetLight();
-	if (pLight != NULL)
-	{
-		// ƒ‰ƒCƒg‚ÌI—¹ˆ—
-		pLight->Uninit();
-
-		// ƒƒ‚ƒŠ‚Ì‰ğ•ú
-		delete pLight;
-		pLight = NULL;
-	}
 
 	// ŠJ•úˆ—
 	Release();
@@ -132,7 +126,6 @@ void CGame::Uninit(void)
 //=============================
 void CGame::Update(void)
 {
-
 	// ƒJƒƒ‰ƒNƒ‰ƒXXVˆ—
 	CCamera * pCamera = CManager::GetCamera();
 	if (pCamera != NULL)

@@ -24,7 +24,7 @@ class CNumber;
 //マクロ定義
 //*****************************
 #define MAX_TIME_DIGIT 3  // タイムの最大桁数
-#define TIME_UP 120       // 時間制限
+#define TIME_UP 180       // 時間制限
 
 //*****************************
 //クラス定義
@@ -47,6 +47,9 @@ public:
 	void Update(void); // 更新
 	void Draw(void);   // 描画
 
+	void SetTime(bool bTime)	{ m_bTime = bTime; }
+	bool GetTime(void)			{ return m_bTime; }
+
 private:
 	//============
 	// メンバ変数
@@ -54,6 +57,7 @@ private:
 	CNumber* m_apNumber[MAX_TIME_DIGIT]; // ナンバーポリゴン
 	int m_nTime;										//タイム変数
 	int m_nA;
+	bool m_bTime;
 };
 
 #endif

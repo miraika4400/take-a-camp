@@ -83,6 +83,9 @@ HRESULT CTotalScore::Init(void)
 		CResourceTexture::TEXTURE_RESULT_KNIGHT,
 		CResourceTexture::TEXTURE_RESULT_LANCER,
 		CResourceTexture::TEXTURE_RESULT_WIZARD,
+		CResourceTexture::TEXTURE_RESULT_KNIGHT,
+		CResourceTexture::TEXTURE_RESULT_LANCER,
+		CResourceTexture::TEXTURE_RESULT_ARCHER,
 	};
 
 	// ç≈ëÂåÖêîï™ÉãÅ[Év

@@ -12,15 +12,17 @@
 #include "fade.h"
 #include "time.h"
 #include "number.h"
+#include "game_finish.h"
 
 //==================================
 // コンストラクタ
 //==================================
-CTime::CTime()
+CTime::CTime() :CScene(OBJTYPE_UI_2)
 {
 	//制限時間のクリア
 	m_nTime = TIME_UP;
 	m_nA = 0;
+	m_bTime = true;
 }
 
 //==================================
@@ -87,11 +89,15 @@ void CTime::Uninit(void)
 //==================================
 void CTime::Update(void)
 {
-	m_nA++;
-	if (m_nA % 60 <= 0)
+	if (m_bTime == true)
 	{
-		m_nTime--;
+		m_nA++;
+		if (m_nA % 60 <= 0)
+		{
+			m_nTime--;
+		}
 	}
+
 	//数字表示
 	for (int nCntDigit = 0; nCntDigit < MAX_TIME_DIGIT; nCntDigit++)
 	{
@@ -99,10 +105,15 @@ void CTime::Update(void)
 
 		m_apNumber[nCntDigit]->SetNumber((int)((m_nTime % (int)(powf(10.0f, (MAX_TIME_DIGIT - nCntDigit)))) / (float)(powf(10, (MAX_TIME_DIGIT - nCntDigit - 1)))));
 	}
+	// 0になったら
 	if (m_nTime <= 0)
 	{
-		// デバッグ用画面遷移コマンド
-			CManager::GetFade()->SetFade(CManager::MODE_RESULT);
+		// カウントを止める
+		m_nA = 0;
+		m_nTime = 0;
+
+		// FINISHの生成
+		CGameFinish::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, FINISH_POS_Y, 0.0f), D3DXVECTOR3(FINISH_SIZE_X, FINISH_SIZE_Y, 0.0f));
 	}
 }
 

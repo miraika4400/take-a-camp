@@ -37,6 +37,9 @@ public:
 		CHARACTER_KNIGHT,		// 騎士
 		CHARACTER_LANCER,		// 槍兵
 		CHARACTER_WIZARD,		// 魔術師
+		CHARACTER_THIEF,		// 盗賊
+		CHARACTER_MAGICIAN,		// 奇術師
+		CHARACTER_ARCHER,		// 弓使い
 		CHARACTER_MAX			// キャラクタ数
 	}CHARACTER_TYPE;
 	//モーション

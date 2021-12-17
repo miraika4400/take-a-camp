@@ -122,7 +122,8 @@ void CMap::MapCreate(void)
 				CTileFactory* pTileFactory = CTileFactory::GetTileFactory();
 
 				D3DXCOLOR tileCol = TILE_DEFAULT_COLOR;
-				//マス目のタイプ取得
+
+				// プレイヤーの生成
 				switch (m_MapData.BlockData[nBlockY].nBlockType[nBlockX])
 				{
 				case CMapManager::BLOCK_TYPE_1P_START:	//1Pスタート位置
@@ -158,6 +159,7 @@ void CMap::MapCreate(void)
 					break;
 				}
 
+				// タイルの生成
 				if (pTileFactory != NULL
 					&&pTileFactory->GetCreateFunction(m_MapData.BlockData[nBlockY].nBlockType[nBlockX]) != NULL)
 				{
