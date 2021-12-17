@@ -49,10 +49,12 @@ CTutorial::CTutorial()
 {
 	m_pMap = nullptr;
 	m_pPolygon = nullptr;
-	m_nNumTutorial = 0;
+	m_pText = nullptr;
 	ZeroMemory(&m_bTask, sizeof(m_bTask));
 	ZeroMemory(&m_bEntry, sizeof(m_bEntry));
 	m_Tutorialphase = PHASE_PAINT;
+	m_nTextNum = 0;
+	m_bNextText = false;
 }
 
 //=============================
@@ -100,9 +102,6 @@ HRESULT CTutorial::Init()
 	// マップ生成
 	m_pMap = CMap::Create(CMapManager::MAP_TYPE_1);
 
-	CResourceText::Create();
-	//CText::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 600.0f, 0.0f), 25.0f, 10.0f, "好きな食べ物はメロンと梅干しとサーモンと生ハムで、嫌いな食べ物は野菜全般とみずみずしい食べ物です。", CText::ALIGN_LEFT, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
-	
 	return S_OK;
 }
 
@@ -141,19 +140,9 @@ void CTutorial::Update()
 	//// ポリゴンの更新処理
 	//m_pPolygon->Update();
 
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN)
-		/*CManager::GetMouse()->GetMouseTrigger(0)*/ /*||
-		CManager::GetJoypad()->GetJoystickTrigger(3, 0)*/)
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
 	{
-		m_nNumTutorial++;
-		if (m_nNumTutorial >= TUTORIAL_NUM)
-		{
-			CManager::GetFade()->SetFade(CManager::MODE_TITLE);
-		}
-		//else
-		//{
-		//	m_pPolygon->BindTexture(m_pTexture[m_nNumTutorial]);
-		//}
+		CManager::GetFade()->SetFade(CManager::MODE_TITLE);
 	}
 
 	// カメラクラス更新処理
@@ -166,23 +155,23 @@ void CTutorial::Update()
 	// フェーズごとに処理を変える
 	switch (m_Tutorialphase)
 	{
-	//case PHAZE_MOVE:
-	//	for (int nCount = 0; nCount < CCharaSelect::GetEntryPlayerNum(); nCount++)
-	//	{
-	//		if (CColorTile::GetTileNum(nCount, 1) >= 10)
-	//		{
-	//			m_bTask[nCount] = true;
-	//			if (m_bTask[nCount])
-	//			{
-	//				nTaskClear++;
-	//			}
-	//		}
-	//		if (CCharaSelect::GetEntryPlayerNum() == nTaskClear)
-	//		{
-	//			m_Tutorialphase = PHAZE_PAINT;
-	//		}
-	//	}
-	//	break;
+		//case PHAZE_MOVE:
+		//	for (int nCount = 0; nCount < CCharaSelect::GetEntryPlayerNum(); nCount++)
+		//	{
+		//		if (CColorTile::GetTileNum(nCount, 1) >= 10)
+		//		{
+		//			m_bTask[nCount] = true;
+		//			if (m_bTask[nCount])
+		//			{
+		//				nTaskClear++;
+		//			}
+		//		}
+		//		if (CCharaSelect::GetEntryPlayerNum() == nTaskClear)
+		//		{
+		//			m_Tutorialphase = PHAZE_PAINT;
+		//		}
+		//	}
+		//	break;
 
 	case PHASE_PAINT:
 		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
@@ -232,6 +221,19 @@ void CTutorial::Update()
 	CDebugLog::Print("橙:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(3), CColorTile::GetTileNum(3, 1), CColorTile::GetTileNum(3, 2), CColorTile::GetTileNum(3, 3));
 
 	CDebugLog::Print("チュートリアル:%d\n", m_Tutorialphase);
+
+	if (!m_bNextText)
+	{
+		UpdateText();
+	}
+	else if(m_pText->GetAllShowText())
+	{
+		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_1))
+		{
+			m_pText->ClearText();
+			m_bNextText = false;
+		}
+	}
 }
 
 //=============================
@@ -277,5 +279,43 @@ void CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, cons
 
 		// タスクの初期化
 		ZeroMemory(&m_bTask, sizeof(m_bTask));
+	}
+}
+
+void CTutorial::UpdateText(void)
+{
+	if (!m_pText)
+	{
+		m_pText = CText::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 600.0f, 0.0f), 25.0f, 10.0f, CText::ALIGN_LEFT, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+	}
+
+	// リソーステキストのポインタ取得
+	CResourceText * pResourceText = CResourceText::GetResourceText();
+
+	while (!pResourceText->GetMapString(m_nTextNum).empty())
+	{
+		if (pResourceText->GetMapString(m_nTextNum).find("TEXT_DATASET") == 0)
+		{
+			while (pResourceText->GetMapString(m_nTextNum).find("END_TEXT_DATASET") != 0)
+			{
+				if (pResourceText->GetMapString(m_nTextNum).find("SAY") == 0)
+				{
+					std::string str = CResourceText::GetResourceText()->GetMapString(m_nTextNum);
+					str = str.substr(6);
+					m_pText->AddText(str);
+				}
+				else if (pResourceText->GetMapString(m_nTextNum).find("NR") == 0)
+				{
+					m_pText->AddText("\n");
+				}
+				else if (pResourceText->GetMapString(m_nTextNum).find("ENTER") == 0)
+				{
+					m_bNextText = true;
+					return;
+				}
+				m_nTextNum++;
+			}
+		}
+		m_nTextNum++;
 	}
 }

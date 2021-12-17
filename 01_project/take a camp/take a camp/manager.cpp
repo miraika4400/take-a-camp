@@ -32,6 +32,7 @@
 #include "tile_factory.h"
 #include "resource_character.h"
 #include "stage_select.h"
+#include "resource_text.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -157,6 +158,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	// タイルファクトリーの生成
 	CTileFactory::Create();
 
+	// チュートリアルに使うテキストの読み込み
+	CResourceText::Create();
+
 	// ポーズ状態の時
 	return S_OK;
 }
@@ -187,6 +191,9 @@ void CManager::Uninit(void)
 	CColorManager::Release();
 	// タイルファクトリーの破棄
 	CTileFactory::Release();
+
+	// チュートリアルに使うテキストの破棄
+	CResourceText::Release();
 
 	// テクスチャのアンロード
 	CPause::Unload();    // ポーズ

@@ -20,6 +20,7 @@
 //*****************************
 class CMap;
 class CPolygon;
+class CText;
 
 //*****************************
 // マクロ定義
@@ -63,17 +64,19 @@ private:
 	// メンバ関数
 	//===========
 	void CheckTaskClear(const int nCurTaskNum, const int nTargetNum, const int nPlayernum);
-
+	void UpdateText(void);
 	//============
 	// メンバ変数
 	//===========
 	static LPDIRECT3DTEXTURE9 m_pTexture[TUTORIAL_NUM]; // テクスチャへのポインタ
-	CMap* m_pMap;										// マップのポインタ
+	CMap *m_pMap;										// マップのポインタ
 	CPolygon *m_pPolygon;								// ポリゴンのポインタ
-	int m_nNumTutorial;									// チュートリアル数
+	CText *m_pText;										// テキストのポインタ
 	TUTORIALPHASE m_Tutorialphase;						// チュートリアルの状態
 	bool m_bTask[MAX_PLAYER];
 	bool m_bEntry[MAX_PLAYER];
+	int m_nTextNum;
+	bool m_bNextText;
 };
 
 #endif

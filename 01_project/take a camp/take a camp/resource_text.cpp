@@ -30,7 +30,6 @@ CResourceText *CResourceText::m_pSingle = nullptr; // ƒeƒLƒXƒgƒ|ƒCƒ“ƒ^*ƒVƒ“ƒOƒ‹ƒ
 //===================================
 CResourceText::CResourceText()
 {
-	memset(&m_pSingle, 0, sizeof(m_pSingle));
 }
 
 //===================================
@@ -93,7 +92,6 @@ void CResourceText::Load(void)
 	char cHeadText[256];	// •¶š‚Ì”»•Ê—p
 	char cDie[256];			// g‚í‚È‚¢•¶š
 	int nTextNum = 0;		// ƒ^ƒCƒv‚Ìƒiƒ“ƒo[
-	std::map<int, std::string> Map;
 
 	std::ifstream ifs(TUTORIAL_FILENAME);
 	std::string str;
@@ -111,103 +109,25 @@ void CResourceText::Load(void)
 			while (str.find("END_SCRIPT") != 0)
 			{
 				getline(ifs, str);
+
 				// cHeadText‚ªEFFECT_DATASET‚Ì
 				if (str.find("TEXT_DATASET") == 0)
 				{
+					m_TextMap[nTextNum] = str;
+					nTextNum++;
+
 					// cHeadText‚ªEND_EFFECT_DATASET‚É‚È‚é‚Ü‚Å
 					while (str.find("END_TEXT_DATASET") != 0)
 					{
 						getline(ifs, str);
-
-						if (str.find("SS") == 0)
-						{
-							Map[nTextNum] = str;
-						}
-
-						if (str.find("ENTER") == 0)
-						{
-							Map[nTextNum] = str;
-						}
+				
+						m_TextMap[nTextNum] = str;
 						nTextNum++;
 					}
 				}
 			}
 		}
-
-		// ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
-		fclose(pFile);
 	}
-
-	//======================================================================================
-	//// ƒ`ƒ…[ƒgƒŠƒAƒ‹ƒeƒLƒXƒgƒtƒ@ƒCƒ‹‚ğŠJ‚­
-	//pFile = fopen(TUTORIAL_FILENAME, "r");
-
-	//// ŠJ‚¯‚½‚ç
-	//if (pFile != NULL)
-	//{
-	//	// SCRIPT‚Ì•¶š‚ªŒ©‚Â‚©‚é‚Ü‚Å
-	//	while (strcmp(cHeadText, "SCRIPT") != 0)
-	//	{
-	//		// ƒeƒLƒXƒg‚©‚çcReadText•ª•¶š‚ğó‚¯æ‚é
-	//		fgets(cReadText, sizeof(cReadText), pFile);
-
-	//		// cReedText‚ğcHeadText‚ÉŠi”[
-	//		sscanf(cReadText, "%s", &cHeadText);
-	//	}
-	//	// cHeadText‚ªSCRIPT‚Ì
-	//	if (strcmp(cHeadText, "SCRIPT") == 0)
-	//	{
-	//		// cHeadText‚ªEND_SCRIPT‚É‚È‚é‚Ü‚Å
-	//		while (strcmp(cHeadText, "END_SCRIPT") != 0)
-	//		{
-	//			fgets(cReadText, sizeof(cReadText), pFile);
-	//			sscanf(cReadText, "%s", &cHeadText);
-
-	//			// cHeadText‚ªEFFECT_DATASET‚Ì
-	//			if (strcmp(cHeadText, "TEXT_DATASET") == 0)
-	//			{
-	//				// cHeadText‚ªEND_EFFECT_DATASET‚É‚È‚é‚Ü‚Å
-	//				while (strcmp(cHeadText, "END_TEXT_DATASET") != 0)
-	//				{
-	//					fgets(cReadText, sizeof(cReadText), pFile);
-	//					sscanf(cReadText, "%s", &cHeadText);
-
-	//					if (strcmp(cHeadText, "SS") == 0)
-	//					{
-	//						sscanf(cReadText, "%s %s %s", &cDie, &cDie, Map[nTextNum].c_str());
-	//					}
-
-	//					if (strcmp(cHeadText, "ENTER") == 0)
-	//					{
-	//						sscanf(cReadText, "%s %s %s", &cDie, &cDie, Map[nTextNum].c_str());
-	//					}
-
-
-	//					nTextNum++;
-	//				}
-	//			}
-	//		}
-	//	}
-
-	//	// ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
-	//	fclose(pFile);
-	//}
-	//// ŠJ‚¯‚È‚©‚Á‚½‚ç
-	//else
-	//{
-	//	printf("ŠJ‚¯‚ê‚Ü‚¹‚ñ‚Å‚µ‚½\n");
-	//}
-	//======================================================================================
-
-
-
-	//for (int nCount = 0; nCount < 100; nCount++)
-	//{
-	//	Map[0] = "aiueo";
-	//}
-
-	//CText::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 600.0f, 0.0f), 25.0f, 10.0f, Map[0].c_str(), CText::ALIGN_LEFT, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
-
 }
 
 //===================================
@@ -215,4 +135,6 @@ void CResourceText::Load(void)
 //===================================
 void CResourceText::Unload(void)
 {
+	// ƒ}ƒbƒv‚ÌƒNƒŠƒA
+	m_TextMap.clear();
 }

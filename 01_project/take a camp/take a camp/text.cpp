@@ -30,9 +30,9 @@ CText::CText()
 	ZeroMemory(&m_col, sizeof(m_col));
 	m_format = NULL;
 	ZeroMemory(&m_fontName, sizeof(m_fontName));
-	ZeroMemory(&m_str, sizeof(m_str));
-	nCountBite = 0;
-	nShowTime = 0;
+	m_nCountBite = 0;
+	m_nShowTime = 0;
+	m_bAllShow = false;
 }
 
 //=============================
@@ -45,7 +45,7 @@ CText::~CText()
 //=============================
 // クリエイト
 //=============================
-CText * CText::Create(const D3DXVECTOR3 pos, const float fHeight, const float fWidth, const char* pStr, const FORMAT format, const D3DCOLOR col)
+CText * CText::Create(const D3DXVECTOR3 pos, const float fHeight, const float fWidth, const FORMAT format, const D3DCOLOR col)
 {
 	// メモリの確保
 	CText *pText = new CText;
@@ -53,7 +53,6 @@ CText * CText::Create(const D3DXVECTOR3 pos, const float fHeight, const float fW
 	pText->m_pos = pos;
 	pText->m_fHeight = fHeight;
 	pText->m_fWidth = fWidth;
-	wsprintf(pText->m_str, pStr);
 	pText->m_format = format;
 	pText->m_col = col;
 
@@ -69,14 +68,14 @@ HRESULT CText::Init(void)
 {
 	//フォント生成
 	D3DXCreateFont(CManager::GetRenderer()->GetDevice(),
-		m_fHeight,
-		m_fWidth,
+		(INT)m_fHeight,
+		(UINT)m_fWidth,
 		0,
 		0,
 		FALSE,
 		SHIFTJIS_CHARSET,
 		OUT_DEFAULT_PRECIS,
-		DEFAULT_QUALITY,
+		PROOF_QUALITY,
 		DEFAULT_PITCH,
 		FONT_PATH,
 		&m_pFont);
@@ -112,24 +111,60 @@ void CText::Update(void)
 //=============================
 void CText::Draw(void)
 {
-	char disp[512];
+	// 表示する文字数を制限する
+	std::string Getstr = m_str.substr(0, m_nCountBite + 1);
 
-	strncpy(disp, m_str, nCountBite);
-	disp[nCountBite] = '\0';
+	// 無駄に通したくないのでサイズ分だけにする
+	if (m_nCountBite < (signed)m_str.size())
+	{
+		// 文字を何フレームで表示するか
+		if (m_nShowTime % 1 == 0)
+		{
+			// 1バイト文字と2バイト文字の判別
+			if (IsDBCSLeadByte(Getstr[m_nCountBite]) == 0)
+			{
+				m_nCountBite++;
+			}
+			else
+			{
+				m_nCountBite += 2;
+			}
+			m_nShowTime = 0;
+		}
 
+		// 文字表示フレームを加算
+		m_nShowTime++;
+		m_bAllShow = false;
+	}
+	else
+	{
+		// 全部表示されたらフラグ建て
+		m_bAllShow = true;
+	}
+
+	// 調整中
 	RECT rect;
 	SetRect(&rect, -200, -80, 220, 500);
 
 	OffsetRect(&rect, (int)m_pos.x, (int)m_pos.y);
-	m_pFont->DrawText(NULL, disp, -1, &rect, DT_LEFT | DT_WORDBREAK, m_col);
+	m_pFont->DrawText(NULL, m_str.substr(0, m_nCountBite).c_str(), -1, &rect, DT_LEFT | DT_WORDBREAK, m_col);
+}
 
-	if (nCountBite < 500)
-	{
-		if (nShowTime % 1 == 0)
-		{
-			nCountBite += 2;
-		}
-		nShowTime++;
-	}
+//=============================
+// 文字追加処理
+//=============================
+void CText::AddText(std::string str_text)
+{
+	m_str += str_text;
+}
 
+//=============================
+// テキスト削除する処理
+//=============================
+void CText::ClearText(void)
+{
+	m_nCountBite = 0;
+	m_nShowTime = 0;
+	m_str.erase(m_str.begin(), m_str.end());
+	m_str.shrink_to_fit();
 }

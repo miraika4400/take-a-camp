@@ -13,6 +13,7 @@
 //インクルード
 //=============================================================================
 #include "main.h"
+#include <map>
 
 //=============================================================================
 //マクロ定義
@@ -34,11 +35,14 @@ public:
 	CResourceText();
 	~CResourceText();
 
+	static CResourceText *GetResourceText(void) { return m_pSingle; };	// リソーステキストポインタの取得
+	std::string GetMapString(int nCountLine) { return m_TextMap[nCountLine]; };	// マップに入ってるテキストの情報取得
 private:
 	void Load(void);     // モデル読み込み
 	void Unload(void); // モデル破棄
 
-	static CResourceText *m_pSingle;              // モデルクラスのポインタ*シングルトン用
+	static CResourceText *m_pSingle;		// モデルクラスのポインタ*シングルトン用
+	std::map<int, std::string> m_TextMap;	// テキスト情報保持用のマップ
 };
 
 #endif
