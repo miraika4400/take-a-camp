@@ -457,8 +457,8 @@ void CAttackBased::AttackCreate(void)
 			//攻撃処理
 			Attack(m_nType);
       
-				for (int nCnt = 0; nCnt < m_AttackSquare[m_nLevel].nMaxHitRange; nCnt++)
-				{
+			for (int nCnt = 0; nCnt < m_AttackSquare[m_nLevel].nMaxHitRange; nCnt++)
+			{
 				if (GetAttackSquare().SquareData[nCnt].RangeType == m_nType + 2)
 				{
 					//行列計算
@@ -471,10 +471,8 @@ void CAttackBased::AttackCreate(void)
 					CreateEffect(CreatePos);
 				}
 			}
-
 					
 				
-
 			//タイプが一定になったら
 			if (m_nType == MAX_HIT_TYPE)
 			{
