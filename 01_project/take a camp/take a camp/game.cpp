@@ -29,6 +29,7 @@
 #include "kill_count.h"
 #include "paintnum.h"
 #include "player_model.h"
+#include "building.h"
 #include "game_start.h"
 
 //=============================
@@ -95,7 +96,7 @@ HRESULT CGame::Init(void)
 
 	// 制限時間クラス
 	//CTime::Create();
-
+	CBuilding::Load();
 	// ライトの向きの設定
 	CManager::GetLight()->SetDir(LIGHT_DIR_BASE);
 	// ready goの生成
