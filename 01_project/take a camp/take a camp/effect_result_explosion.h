@@ -42,7 +42,7 @@ public:
 	~CResultExplosion();
 
 	// static
-	static CResultExplosion *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size = EFFECT_EXPLOSION_DEFAULT_SIZE); // クラス生成
+	static CResultExplosion *Create(D3DXVECTOR3 pos, D3DXCOLOR col, D3DXVECTOR3 size = EFFECT_EXPLOSION_DEFAULT_SIZE); // クラス生成
 
 	HRESULT Init(void); // 初期化
 	void Uninit(void);  // 終了

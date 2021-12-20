@@ -45,7 +45,7 @@ CResultExplosion::~CResultExplosion()
 //=============================
 // クリエイト
 //=============================
-CResultExplosion * CResultExplosion::Create(D3DXVECTOR3 pos , D3DXVECTOR3 size)
+CResultExplosion * CResultExplosion::Create(D3DXVECTOR3 pos , D3DXCOLOR col, D3DXVECTOR3 size)
 {
 	// メモリの確保
 	CResultExplosion *pPointa = new CResultExplosion;
@@ -53,11 +53,12 @@ CResultExplosion * CResultExplosion::Create(D3DXVECTOR3 pos , D3DXVECTOR3 size)
 	pPointa->m_pos = pos;
 	pPointa->m_size = size;
 	pPointa->Init();
-
 	pPointa->m_bReCreate = true;
 	for (int nCnt = 0; nCnt < EFFECT_EXPLOSION_TEX_NUM; nCnt++)
 	{
 		if (pPointa->m_apPolygon[nCnt] == NULL) continue;
+		// カラーの設定
+		pPointa->m_apPolygon[nCnt]->SetColor(col);
 		
 	}
 	return pPointa;
@@ -81,7 +82,7 @@ HRESULT CResultExplosion::Init(void)
 	for (int nCnt = 0; nCnt < EFFECT_EXPLOSION_TEX_NUM; nCnt++)
 	{
 		m_apPolygon[nCnt] = CScene2d::Create();
-		m_apPolygon[nCnt]->SetPriority(OBJTYPE_UI_2);
+		m_apPolygon[nCnt]->SetPriority(OBJTYPE_EFFECT_2);
 		m_apPolygon[nCnt]->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_RESULT_EXPLOSION));
 		m_apPolygon[nCnt]->SetPos( m_pos);
 		m_apPolygon[nCnt]->SetSize(m_size);
@@ -98,7 +99,6 @@ HRESULT CResultExplosion::Init(void)
 //=============================
 void CResultExplosion::Uninit(void)
 {
-
 	// 開放処理
 	Release();
 }
@@ -118,7 +118,7 @@ void CResultExplosion::Update(void)
 		{
 			if (m_nTexU == RECREATE_ANIM_NUM)
 			{
-				CResultExplosion*pEnplosion = CResultExplosion::Create(m_pos, m_size*RECREATE_SIZE_RATE);
+				CResultExplosion*pEnplosion = CResultExplosion::Create(m_pos, m_apPolygon[0]->GetColor(), m_size*RECREATE_SIZE_RATE);
 				pEnplosion->m_bReCreate = false;
 			}
 		}

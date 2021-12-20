@@ -18,6 +18,9 @@
 #include "fade.h"
 #include "result_graph.h"
 #include "effect_result_explosion.h"
+#include "stage_texture.h"
+#include "polygon.h"
+#include "camera_charaselect.h"
 
 //**********************************
 // マクロ定義
@@ -36,13 +39,14 @@
 // 静的メンバ変数宣言
 //**********************************
 
-
 //=============================
 // コンストラクタ
 //=============================
 CResult::CResult()
 {
 	m_fFloat = 0.0f;
+	m_pGraph = NULL;
+	m_pBackGroundPolygon = NULL;
 }
 
 //=============================
@@ -70,8 +74,11 @@ CResult * CResult::Create(void)
 HRESULT CResult::Init(void)
 {
 	//　グラフの生成
-	CResultGraph::Create();
+	m_pGraph = CResultGraph::Create();
+	m_pBackGroundPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f));
+	m_pBackGroundPolygon->BindTexture(CStageTexture::GetStateTexturePointa()->GetTexture());
 
+	CManager::SetCamera(CCharaSelectCamera::Create());
 	return S_OK;
 }
 
@@ -80,6 +87,14 @@ HRESULT CResult::Init(void)
 //=============================
 void CResult::Uninit(void)
 {
+	if (m_pBackGroundPolygon != NULL)
+	{
+		m_pBackGroundPolygon->Uninit();
+		delete m_pBackGroundPolygon;
+		m_pBackGroundPolygon = NULL;
+	}
+	CManager::SetCamera(NULL);
+
 	// 開放処理
 	Release();
 }
@@ -90,13 +105,6 @@ void CResult::Uninit(void)
 //=============================
 void CResult::Update(void)
 {
-
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_1))
-	{
-		CResultExplosion::Create(D3DXVECTOR3(0.0f, SCREEN_HEIGHT, 0.0f));
-		CResultExplosion::Create(D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f));
-	}
-
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) ||
 		CManager::GetMouse()->GetMouseTrigger(0) /*||
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0) ||
@@ -112,5 +120,6 @@ void CResult::Update(void)
 //=============================
 void CResult::Draw(void)
 {
-
+	CManager::GetCamera()->SetCamera();
+	m_pBackGroundPolygon->Draw();
 }

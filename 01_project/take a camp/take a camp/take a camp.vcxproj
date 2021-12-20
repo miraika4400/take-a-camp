@@ -239,6 +239,7 @@
     <ClCompile Include="stage_name_ui.cpp" />
     <ClCompile Include="stage_select.cpp" />
     <ClCompile Include="stage_select_polygon.cpp" />
+    <ClCompile Include="stage_texture.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="tile_effect.cpp" />
     <ClCompile Include="tile_effect_charge.cpp" />
@@ -338,6 +339,7 @@
     <ClInclude Include="stage_name_ui.h" />
     <ClInclude Include="stage_select.h" />
     <ClInclude Include="stage_select_polygon.h" />
+    <ClInclude Include="stage_texture.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="tile_effect.h" />
     <ClInclude Include="tile_effect_charge.h" />
