@@ -50,13 +50,15 @@ public:
 	void Update(void);					// 更新処理
 	void Draw(void);					// 描画処理	
 
+	// タイプの取得
 	void SetStartType(START_TYPE type) { m_type = type; }
 	START_TYPE GetType(void) { return m_type; }
 
 private:
-	void GoChange(void);
-	void PlayChange(void);
-	void StartPlayer(void);
+	// メンバ関数
+	void GoChange(void);		// Goのときの処理
+	void PlayChange(void);		// Playのときの処理
+	void StartPlayer(void);		// sutartしたときの処理
 
 	// メンバ変数
 	CPolygon*   m_pPolygon;		// ライフ描画用のポリゴン
@@ -65,6 +67,6 @@ private:
 	D3DXCOLOR   m_col;			// カラー
 	int			m_nCount;		// カウント
 	START_TYPE  m_type;			// UIのタイプ
-	bool m_bStart;
+	bool m_bStart;				// スタートしたかしてないか
 };
 #endif // !_GAME_START_H_
