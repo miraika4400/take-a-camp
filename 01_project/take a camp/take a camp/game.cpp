@@ -29,6 +29,7 @@
 #include "kill_count.h"
 #include "paintnum.h"
 #include "player_model.h"
+#include "building.h"
 #include "game_start.h"
 #include "stage_texture.h"
 
@@ -94,7 +95,7 @@ HRESULT CGame::Init(void)
 	CPaintnum::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 25.0f, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, 50.0f, 0.0f));
 	// 制限時間クラス
 	//CTime::Create();
-
+	CBuilding::Load();
 	// ライトの向きの設定
 	CManager::GetLight()->SetDir(LIGHT_DIR_BASE);
 	// ready goの生成
