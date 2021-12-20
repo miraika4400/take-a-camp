@@ -13,7 +13,7 @@ NR
 SAY = あーたらかーたら
 ENTER
 
-SAY = あーたらかーたら
+SAY = 塗って
 NR
 SAY = あーたらかーたら
 NR
@@ -22,7 +22,34 @@ ENTER
 END_TEXT_DATASET
 
 TEXT_DATASET
+SAY = 重ね塗りして
+NR
 SAY = あーたらかーたら
+NR
+SAY = あーたらかーたら
+ENTER
+END_TEXT_DATASET
+
+TEXT_DATASET
+SAY = 倒して
+NR
+SAY = あーたらかーたら
+NR
+SAY = あーたらかーたら
+ENTER
+END_TEXT_DATASET
+
+TEXT_DATASET
+SAY = 必殺技で倒して
+NR
+SAY = あーたらかーたら
+NR
+SAY = あーたらかーたら
+ENTER
+END_TEXT_DATASET
+
+TEXT_DATASET
+SAY = あとは好きにして
 NR
 SAY = あーたらかーたら
 NR

@@ -56,6 +56,8 @@ CTutorial::CTutorial()
 	m_nTextNum = 0;
 	m_bNextText = false;
 	m_bTextEnd = false;
+	ZeroMemory(&m_nCurTaskNum, sizeof(m_nCurTaskNum));
+	ZeroMemory(&m_nOldCurTaskNum, sizeof(m_nOldCurTaskNum));
 }
 
 //=============================
@@ -141,10 +143,10 @@ void CTutorial::Update()
 	//// ポリゴンの更新処理
 	//m_pPolygon->Update();
 
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
-	{
-		CManager::GetFade()->SetFade(CManager::MODE_TITLE);
-	}
+	//if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
+	//{
+	//	CManager::GetFade()->SetFade(CManager::MODE_TITLE);
+	//}
 
 	// カメラクラス更新処理
 	CCamera * pCamera = CManager::GetCamera();
@@ -153,57 +155,81 @@ void CTutorial::Update()
 		pCamera->Update();
 	}
 
-	// フェーズごとに処理を変える
-	switch (m_Tutorialphase)
+	if (m_bTextEnd)
 	{
-		//case PHAZE_MOVE:
-		//	for (int nCount = 0; nCount < CCharaSelect::GetEntryPlayerNum(); nCount++)
-		//	{
-		//		if (CColorTile::GetTileNum(nCount, 1) >= 10)
-		//		{
-		//			m_bTask[nCount] = true;
-		//			if (m_bTask[nCount])
-		//			{
-		//				nTaskClear++;
-		//			}
-		//		}
-		//		if (CCharaSelect::GetEntryPlayerNum() == nTaskClear)
-		//		{
-		//			m_Tutorialphase = PHAZE_PAINT;
-		//		}
-		//	}
-		//	break;
+		// プレイヤーの更新出来るようにする
+		StartPlayer(true);
+	}
 
-	case PHASE_PAINT:
-		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+	if (!m_bNextText)
+	{
+		UpdateText();
+	}
+	else if (m_pText->GetAllShowText() && !m_bTextEnd)
+	{
+		// プレイヤーの更新を止める
+		StartPlayer(false);
+
+		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
 		{
-			CheckTaskClear(CColorTile::GetTileNum(nCount, 1), TARGET_PAINT, nCount);
+			m_pText->ClearText();
+			m_bNextText = false;
 		}
-		break;
-
-	case PHASE_OVERPAINT:
-		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+	}
+	else
+	{
+		// フェーズごとに処理を変える
+		switch (m_Tutorialphase)
 		{
-			CheckTaskClear(CColorTile::GetTileNum(nCount, 3), TARGET_OVERPAINT, nCount);
-		}
-		break;
+			//case PHAZE_MOVE:
+			//	for (int nCount = 0; nCount < CCharaSelect::GetEntryPlayerNum(); nCount++)
+			//	{
+			//		if (CColorTile::GetTileNum(nCount, 1) >= 10)
+			//		{
+			//			m_bTask[nCount] = true;
+			//			if (m_bTask[nCount])
+			//			{
+			//				nTaskClear++;
+			//			}
+			//		}
+			//		if (CCharaSelect::GetEntryPlayerNum() == nTaskClear)
+			//		{
+			//			m_Tutorialphase = PHAZE_PAINT;
+			//		}
+			//	}
+			//	break;
 
-	case PHASE_ATTACK:
-		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
-		{
-			CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount);
-		}
-		break;
+		case PHASE_PAINT:
+			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+			{
+				CheckTaskClear(CColorTile::GetTileNum(nCount, 1), TARGET_PAINT, nCount);
+			}
+			break;
 
-	case PHASE_FINALATTACK:
-		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
-		{
-			CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount);
-		}
-		break;
+		case PHASE_OVERPAINT:
+			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+			{
+				CheckTaskClear(CColorTile::GetTileNum(nCount, 3), TARGET_OVERPAINT, nCount);
+			}
+			break;
 
-	default:
-		break;
+		case PHASE_ATTACK:
+			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+			{
+				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount);
+			}
+			break;
+
+		case PHASE_FINALATTACK:
+			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+			{
+				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount);
+			}
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	// タイルの色のカウント
@@ -221,20 +247,12 @@ void CTutorial::Update()
 	CDebugLog::Print("緑:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(2), CColorTile::GetTileNum(2, 1), CColorTile::GetTileNum(2, 2), CColorTile::GetTileNum(2, 3));
 	CDebugLog::Print("橙:%d(一:%d,二:%d,三:%d)\n", CColorTile::GetTileNum(3), CColorTile::GetTileNum(3, 1), CColorTile::GetTileNum(3, 2), CColorTile::GetTileNum(3, 3));
 
-	CDebugLog::Print("チュートリアル:%d\n", m_Tutorialphase);
+	for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+	{
+		CDebugLog::Print("現在のタスクごとの数:%d\n", m_nCurTaskNum[nCount]);
+	}
 
-	if (!m_bNextText)
-	{
-		UpdateText();
-	}
-	else if(m_pText->GetAllShowText())
-	{
-		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_1))
-		{
-			m_pText->ClearText();
-			m_bNextText = false;
-		}
-	}
+	CDebugLog::Print("チュートリアル:%d\n", m_Tutorialphase);
 }
 
 //=============================
@@ -261,11 +279,20 @@ void CTutorial::Draw()
 //=============================
 void CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, const int nPlayernum)
 {
+	// 現在のタスクごとの数と1フレーム前の数を比べる
+	if (nCurTaskNum > m_nOldCurTaskNum[nPlayernum])
+	{
+		m_nCurTaskNum[nPlayernum] += nCurTaskNum - m_nOldCurTaskNum[nPlayernum];
+	}
+
 	// タスクごとの処理で受け取った数とその目標数を比べる
-	if (nCurTaskNum >= nTargetNum)
+	if (m_nCurTaskNum[nPlayernum] >= nTargetNum)
 	{
 		m_bTask[nPlayernum] = true;
 	}
+
+	// 現在のタスクごとの数を1フレーム前の数にする
+	m_nOldCurTaskNum[nPlayernum] = nCurTaskNum;
 
 	// trueの数を数える
 	int nTaskClear = std::count(std::begin(m_bTask), std::end(m_bTask), true);
@@ -273,16 +300,22 @@ void CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, cons
 	// プレイヤー数とタスクを完了した数が一致してたら
 	if (CCharaSelect::GetEntryPlayerNum() == nTaskClear)
 	{
-		// 次のフェーズへの移行
-		int nTutorialphase = (int)m_Tutorialphase;
-		nTutorialphase++;
-		m_Tutorialphase = (TUTORIALPHASE)nTutorialphase;
+		// 次のテキストを表示する
+		m_bNextText = false;
+
+		// 次のフェーズに移行する
+		NextPhase();
 
 		// タスクの初期化
 		ZeroMemory(&m_bTask, sizeof(m_bTask));
+		ZeroMemory(&m_nCurTaskNum, sizeof(m_nCurTaskNum));
+		//ZeroMemory(&m_nOldCurTaskNum, sizeof(m_nOldCurTaskNum));
 	}
 }
 
+//============================================
+// テキストの表示
+//============================================
 void CTutorial::UpdateText(void)
 {
 	if (!m_pText)
@@ -312,6 +345,7 @@ void CTutorial::UpdateText(void)
 					str = str.substr(14);
 
 					D3DXVECTOR2 Windowrange[2];
+					ZeroMemory(&Windowrange, sizeof(Windowrange));
 					sscanf(str.c_str(), "%f %f %f %f", &Windowrange[0].x, &Windowrange[0].y, &Windowrange[1].x, &Windowrange[1].y);
 					m_pText->SetWindowRange(Windowrange);
 				}
@@ -320,7 +354,8 @@ void CTutorial::UpdateText(void)
 					str = str.substr(11);
 
 					D3DXVECTOR2 FontSize;
-					sscanf(pResourceText->GetMapString(m_nTextNum).c_str(), "%f %f", &FontSize.x, &FontSize.y);
+					ZeroMemory(&FontSize, sizeof(FontSize));
+					sscanf(str.c_str(), "%f %f", &FontSize.x, &FontSize.y);
 					m_pText->SetFontSize(FontSize);
 				}
 				else if (pResourceText->GetMapString(m_nTextNum).find("COLOR") == 0)
@@ -328,7 +363,8 @@ void CTutorial::UpdateText(void)
 					str = str.substr(8);
 
 					D3DXCOLOR color;
-					sscanf(pResourceText->GetMapString(m_nTextNum).c_str(), "%f %f %f %f", &color.r, &color.g, &color.b, &color.a);
+					ZeroMemory(&color, sizeof(color));
+					sscanf(str.c_str(), "%f %f %f %f", &color.r, &color.g, &color.b, &color.a);
 					m_pText->SetColor(color);
 				}
 				else if (pResourceText->GetMapString(m_nTextNum).find("POS") == 0)
@@ -336,7 +372,8 @@ void CTutorial::UpdateText(void)
 					str = str.substr(6);
 
 					D3DXVECTOR2 Pos;
-					sscanf(pResourceText->GetMapString(m_nTextNum).c_str(), "%f %f", &Pos.x, &Pos.y);
+					ZeroMemory(&Pos, sizeof(Pos));
+					sscanf(str.c_str(), "%f %f", &Pos.x, &Pos.y);
 					m_pText->SetPos(Pos);
 				}
 				else if (pResourceText->GetMapString(m_nTextNum).find("SAY") == 0)
@@ -357,7 +394,35 @@ void CTutorial::UpdateText(void)
 				m_nTextNum++;
 			}
 			m_bTextEnd = true;
+			m_bNextText = true;
+			m_nTextNum++;
+			return;
 		}
 		m_nTextNum++;
+	}
+}
+
+//============================================
+// 次のフェーズへの移行
+//============================================
+void CTutorial::NextPhase(void)
+{
+	int nTutorialphase = (int)m_Tutorialphase;
+	nTutorialphase++;
+	m_Tutorialphase = (TUTORIALPHASE)nTutorialphase;
+}
+
+//============================================
+// プレイヤー更新のフラグを変える
+//============================================
+void CTutorial::StartPlayer(bool bUpdate)
+{
+	CPlayer*pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+
+	while (pPlayer != NULL)
+	{
+		pPlayer->SetUpdateFlag(bUpdate);
+
+		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
 }

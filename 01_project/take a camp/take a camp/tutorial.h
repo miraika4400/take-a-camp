@@ -65,6 +65,9 @@ private:
 	//===========
 	void CheckTaskClear(const int nCurTaskNum, const int nTargetNum, const int nPlayernum);
 	void UpdateText(void);
+	void NextPhase(void);
+	void StartPlayer(bool bUpdate);
+
 	//============
 	// ƒƒ“ƒo•Ï”
 	//===========
@@ -78,6 +81,8 @@ private:
 	int m_nTextNum;
 	bool m_bNextText;
 	bool m_bTextEnd;
+	int m_nCurTaskNum[MAX_PLAYER];
+	int m_nOldCurTaskNum[MAX_PLAYER];
 };
 
 #endif

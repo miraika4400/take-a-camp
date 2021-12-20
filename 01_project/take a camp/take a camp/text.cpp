@@ -144,7 +144,7 @@ void CText::Draw(void)
 
 	// 調整中
 	RECT rect;
-	SetRect(&rect, -200, -80, 220, 500);
+	SetRect(&rect, m_WindowRange[0].x, m_WindowRange[0].y, m_WindowRange[1].x, m_WindowRange[1].y);
 
 	OffsetRect(&rect, (int)m_pos.x, (int)m_pos.y);
 	m_pFont->DrawText(NULL, m_str.substr(0, m_nCountBite).c_str(), -1, &rect, DT_LEFT | DT_WORDBREAK, m_col);
@@ -169,17 +169,17 @@ void CText::ClearText(void)
 	m_str.shrink_to_fit();
 }
 
-//=============================
-// テキスト削除する処理
-//=============================
-void CText::SetWindowRange(D3DXVECTOR2 WindowRange[])
+//===============================
+// テキストを表示する範囲の設定
+//===============================
+void CText::SetWindowRange(D3DXVECTOR2 WindowRange[2])
 {
-	memcpy(m_WindowRange, WindowRange, sizeof(WindowRange));
-	//m_WindowRange = WindowRange;
+	m_WindowRange[0] = WindowRange[0];
+	m_WindowRange[1] = WindowRange[1];
 }
 
 //=============================
-// テキスト削除する処理
+// 文字のサイズの設定
 //=============================
 void CText::SetFontSize(D3DXVECTOR2 FontSize)
 {
@@ -188,7 +188,7 @@ void CText::SetFontSize(D3DXVECTOR2 FontSize)
 }
 
 //=============================
-// テキスト削除する処理
+// 色の設定
 //=============================
 void CText::SetColor(D3DXCOLOR color)
 {
@@ -196,7 +196,7 @@ void CText::SetColor(D3DXCOLOR color)
 }
 
 //=============================
-// テキスト削除する処理
+// 座標の設定
 //=============================
 void CText::SetPos(D3DXVECTOR2 pos)
 {

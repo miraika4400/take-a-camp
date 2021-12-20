@@ -48,12 +48,12 @@ public:
 	void Update(void);  // 更新
 	void Draw(void);    // 描画
 
-	void AddText(std::string str_text);
-	void ClearText(void);
+	void AddText(std::string str_text);	// テキストの追加
+	void ClearText(void);				// 表示されているテキストの削除
 
-	bool GetAllShowText(void) { return m_bAllShow; }
+	bool GetAllShowText(void) { return m_bAllShow; }	// テキストが全部表示されたかの取得
 
-	void SetWindowRange(D3DXVECTOR2 WindowRange[]);
+	void SetWindowRange(D3DXVECTOR2 WindowRange[2]);
 	void SetFontSize(D3DXVECTOR2 FontSize);
 	void SetColor(D3DXCOLOR color);
 	void SetPos(D3DXVECTOR2 pos);
