@@ -83,7 +83,7 @@ HRESULT CPaintnum::Init()
 				m_pPolygon[nCount] = CPolygon::Create(
 					m_PaintInfo[nCount].pos,
 					m_PaintInfo[nCount].size,
-					m_PaintInfo[nCount].col);
+					m_PaintInfo[nCount].col - D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.5f));
 			}
 
 			// ™X‚É•Ï‚¦‚é‚â‚Â‚ğ‰Šú‰»

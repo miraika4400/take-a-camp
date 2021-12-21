@@ -41,7 +41,7 @@ public:
 	//===========
 	CText();
 	~CText();
-	static CText *Create(const D3DXVECTOR2 pos, const float fHeight, const float fWidth, const FORMAT format, const D3DCOLOR col); // クラス生成
+	static CText *Create(const D3DXVECTOR2 pos, const D3DXVECTOR2 fontsize, const FORMAT format, const D3DCOLOR col); // クラス生成
 
 	HRESULT Init(void); // 初期化
 	void Uninit(void);  // 終了
@@ -51,12 +51,22 @@ public:
 	void AddText(std::string str_text);	// テキストの追加
 	void ClearText(void);				// 表示されているテキストの削除
 
-	bool GetAllShowText(void) { return m_bAllShow; }	// テキストが全部表示されたかの取得
+	//============
+	// セッター
+	//============
+	void SetWindowRange(D3DXVECTOR2 WindowRange[2]);	// 文字の表示範囲の設定
+	void SetFontSize(D3DXVECTOR2 FontSize);				// 文字のサイズの設定
+	void SetColor(D3DXCOLOR color);						// 色の設定
+	void SetPos(D3DXVECTOR2 pos);						// 座標の設定
 
-	void SetWindowRange(D3DXVECTOR2 WindowRange[2]);
-	void SetFontSize(D3DXVECTOR2 FontSize);
-	void SetColor(D3DXCOLOR color);
-	void SetPos(D3DXVECTOR2 pos);
+	//============
+	// ゲッター
+	//============
+	bool GetAllShowText(void) { return m_bAllShow; }	// テキストが全部表示されたかの取得
+	D3DXVECTOR2 *GetWindowRange(void) { return m_WindowRange; }
+	D3DXVECTOR2 GetFontSize(void) { return m_Fontsize; }
+	D3DXCOLOR GeColor(void) { return m_col; }
+	D3DXVECTOR2 GetPos(void) { return m_pos; }
 
 private:
 	//============
@@ -64,8 +74,7 @@ private:
 	//===========
 	LPD3DXFONT m_pFont;				// フォント保存用変数
 	D3DXVECTOR2 m_pos;				// 座標
-	float m_fHeight;				// 文字のサイズ
-	float m_fWidth;					// 文字列の幅の上限
+	D3DXVECTOR2 m_Fontsize;			// 文字のサイズ
 	D3DCOLOR m_col;					// 色
 	DWORD m_format;					// 整列方法変換用変数
 	D3DXVECTOR2 m_WindowRange[2];	// 文字の表示範囲

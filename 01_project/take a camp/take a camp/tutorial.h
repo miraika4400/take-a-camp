@@ -67,6 +67,7 @@ private:
 	void UpdateText(void);
 	void NextPhase(void);
 	void StartPlayer(bool bUpdate);
+	void MAX_PLAYERGAUGE(void);
 
 	//============
 	// ƒƒ“ƒo•Ï”

@@ -63,7 +63,6 @@ public:
 		TEXTURE_TILE_CHARGE,		// タイルのチャージ
 		TEXTURE_ICON_BG,			// アイコンの背景
 		TEXTURE_SWORD_ICON,		 	// 剣アイコン
-		TEXTURE_SPEECHBUBBLE,		// 吹き出し
 		TEXTURE_STAGE_NAME_UI,		// ステージ名
 		TEXTURE_STAGE_SELECT_BG,
 		TEXTURE_READEY,				// ready

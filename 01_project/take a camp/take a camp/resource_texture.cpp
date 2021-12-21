@@ -60,7 +60,6 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/tile_effect_charge.png", // タイルのチャージ
 	"./data/Textures/icon_bg.png",	          // アイコンの背景
 	"./data/Textures/sword_icon.png",	      // 剣アイコン
-	"./data/Textures/speechbubble.png",       // 吹き出し
 	"./data/Textures/stage_name.png",	      // ステージ名
 	"./data/Textures/stage_polygon_bg.png",	      // ステージ選択背景
 	"./data/Textures/00_ready.png",	          // ready

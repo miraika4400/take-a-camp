@@ -1,59 +1,46 @@
 SCRIPT		# この行は絶対消さないこと！
 
 TEXT_DATASET
-WINDOWRANGE = -200 -80 220 500
-FONTSIZE = 50 20
-COLOR = 0.0 0.0 0.0 1.0
 POS = 640 600
+WINDOWRANGE = -400 -80 400 80
+FONTSIZE = 40
+COLOR = 0.0 0.0 0.0 1.0
 
-SAY = あーたらかーたら
+SAY = テキストテスト
 NR
-SAY = あーたらかーたら
+SAY = テキストテスト
 NR
-SAY = あーたらかーたら
+SAY = テキストテスト
 ENTER
 
-SAY = 塗って
+SAY = ２つ目のテスト
 NR
-SAY = あーたらかーたら
+SAY = 塗ってください
 NR
-SAY = あーたらかーたら
-ENTER
-END_TEXT_DATASET
-
-TEXT_DATASET
-SAY = 重ね塗りして
-NR
-SAY = あーたらかーたら
-NR
-SAY = あーたらかーたら
+SAY = テキストテスト
 ENTER
 END_TEXT_DATASET
 
 TEXT_DATASET
-SAY = 倒して
+SAY = 次のテキストテスト
 NR
-SAY = あーたらかーたら
+SAY = 重ね塗りしてください
 NR
-SAY = あーたらかーたら
 ENTER
 END_TEXT_DATASET
 
 TEXT_DATASET
-SAY = 必殺技で倒して
-NR
-SAY = あーたらかーたら
-NR
-SAY = あーたらかーたら
+SAY = 倒してください
 ENTER
 END_TEXT_DATASET
 
 TEXT_DATASET
-SAY = あとは好きにして
-NR
-SAY = あーたらかーたら
-NR
-SAY = あーたらかーたら
+SAY = 必殺技で倒してください
+ENTER
+END_TEXT_DATASET
+
+TEXT_DATASET
+SAY = 自由です
 ENTER
 END_TEXT_DATASET
 
