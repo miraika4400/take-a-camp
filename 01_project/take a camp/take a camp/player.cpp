@@ -644,19 +644,16 @@ void CPlayer::Attack(void)
 		}
 	}
 
-
 	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
 	if (m_AttackData.m_bAttack&&m_bMove)
-	{		
-			//行列計算
-			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-			D3DXVECTOR3 AttackPos = m_pAttack->GetAttackSquare().SquareData[0].AttackPos * TILE_ONE_SIDE;
-			CreatePos.x = ((cosf(rot.y)*AttackPos.x) + (sinf(rot.y)*AttackPos.z));
-			CreatePos.y = 1 * AttackPos.y;
-			CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
-
-			
-
+	{
+		//行列計算
+		D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 AttackPos = m_pAttack->GetAttackSquare().SquareData[0].AttackPos * TILE_ONE_SIDE;
+		CreatePos.x = ((cosf(rot.y)*AttackPos.x) + (sinf(rot.y)*AttackPos.z));
+		CreatePos.y = 1 * AttackPos.y;
+		CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
+	
 		//カウントアップ
 		m_AttackData.m_nAttackRotCount++;
 		//攻撃方向指定

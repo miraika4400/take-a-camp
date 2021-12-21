@@ -244,6 +244,7 @@
     <ClCompile Include="tile_effect_charge.cpp" />
     <ClCompile Include="tile_factory.cpp" />
     <ClCompile Include="time.cpp" />
+    <ClCompile Include="time_remaining.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="total_result.cpp" />
     <ClCompile Include="total_score.cpp" />
@@ -343,6 +344,7 @@
     <ClInclude Include="tile_effect_charge.h" />
     <ClInclude Include="tile_factory.h" />
     <ClInclude Include="time.h" />
+    <ClInclude Include="time_remaining.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="total_result.h" />
     <ClInclude Include="total_score.h" />

@@ -432,6 +432,9 @@
     <ClCompile Include="ingame_text.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
+    <ClCompile Include="time_remaining.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -732,6 +735,9 @@
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
     <ClInclude Include="ingame_text.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="time_remaining.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
   </ItemGroup>

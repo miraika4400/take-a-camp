@@ -68,6 +68,7 @@ public:
 		TEXTURE_READEY,				// ready
 		TEXTURE_GO,					// go
 		TEXTURE_FINISH,				// finish
+		TEXTURE_SECONDS,			// 残り何秒
 		TEXTURE_LANCE_ICON,		 	// 槍アイコン
 		TEXTURE_ARROW_ICON,		 	// 矢アイコン
 		TEXTURE_MAGICSTICK_ICON,	// 魔法杖アイコン

@@ -24,7 +24,7 @@ class CNumber;
 //マクロ定義
 //*****************************
 #define MAX_TIME_DIGIT 3  // タイムの最大桁数
-#define TIME_UP 5       // 時間制限
+#define TIME_UP 65       // 時間制限
 
 //*****************************
 //クラス定義
@@ -54,7 +54,9 @@ private:
 	//============
 	// メンバ関数
 	//============
-	void FinishPlayer(void);
+	void FinishPlayer(void);		// プレイヤーを止める処理
+	void TimeUp(void);				// 時間切れ処理
+	void RemainingSeconds(void);	// 残り何秒の処理
 
 	//============
 	// メンバ変数

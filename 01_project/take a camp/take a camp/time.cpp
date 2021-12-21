@@ -14,6 +14,14 @@
 #include "number.h"
 #include "game_finish.h"
 #include "player.h"
+#include "ingame_text.h"
+#include "time_remaining.h"
+//==================================
+// マクロ定義
+//==================================
+#define REMAINING_POS_Y  (350.0f)	// 残り秒数文字のY位置
+#define REMAINING_SIZE_X (550.0f)	// 残り秒数文字のXサイズ
+#define REMAINING_SIZE_Y (150.0f)	// 残り秒数文字のYサイズ
 
 //==================================
 // コンストラクタ
@@ -90,11 +98,14 @@ void CTime::Uninit(void)
 //==================================
 void CTime::Update(void)
 {
+	// タイムを使用していたら
 	if (m_bTime == true)
 	{
+		// 毎フレームごとにカウントを増やしていく
 		m_nA++;
 		if (m_nA % 60 <= 0)
 		{
+			// タイムを減らしていく
 			m_nTime--;
 		}
 	}
@@ -102,23 +113,18 @@ void CTime::Update(void)
 	//数字表示
 	for (int nCntDigit = 0; nCntDigit < MAX_TIME_DIGIT; nCntDigit++)
 	{
+		// ナンバーの更新
 		m_apNumber[nCntDigit]->Update();
 
+		// ナンバーの配置
 		m_apNumber[nCntDigit]->SetNumber((int)((m_nTime % (int)(powf(10.0f, (MAX_TIME_DIGIT - nCntDigit)))) / (float)(powf(10, (MAX_TIME_DIGIT - nCntDigit - 1)))));
 	}
-	// 0になったら
-	if (m_nTime <= 0)
-	{
-		// カウントを止める
-		m_nA = 0;
-		m_nTime = 0;
 
-		// プレイヤーの動きを止める
-		FinishPlayer();
+	// 残り時間表示
+	RemainingSeconds();
 
-		// FINISHの生成
-		CGameFinish::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, FINISH_POS_Y, 0.0f), D3DXVECTOR3(FINISH_SIZE_X, FINISH_SIZE_Y, 0.0f));
-	}
+	// 時間切れ処理
+	TimeUp();
 }
 
 //==================================
@@ -134,15 +140,59 @@ void CTime::Draw(void)
 
 //=============================================================================
 // プレイヤーを止める
+// Akuthor: 佐藤颯紀
 //=============================================================================
 void CTime::FinishPlayer(void)
 {
+	// プレイヤー情報の取得
 	CPlayer*pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
 
+	// プレイヤーがNULLでなければ
 	while (pPlayer != NULL)
 	{
+		// プレイヤーのフラグをfalseに
 		pPlayer->SetUpdateFlag(false);
 
+		// 次へ
 		pPlayer = (CPlayer*)pPlayer->GetNext();
+	}
+}
+
+//=============================================================================
+// 時間切れ
+// Akuthor: 佐藤颯紀
+//=============================================================================
+void CTime::TimeUp(void)
+{
+	// 0になったら
+	if (m_nTime <= 0)
+	{
+		// カウントを止める
+		m_nA = 0;
+		m_nTime = 0;
+
+		// プレイヤーの動きを止める
+		FinishPlayer();
+
+		// FINISHの生成
+		CGameFinish::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, FINISH_POS_Y, 0.0f), D3DXVECTOR3(FINISH_SIZE_X, FINISH_SIZE_Y, 0.0f));
+	}
+}
+
+
+//=============================================================================
+// 残り何秒を出す
+// Akuthor: 佐藤颯紀
+//=============================================================================
+void CTime::RemainingSeconds(void)
+{
+	int nInteger = 0;//計算用変数
+
+	// 一定時間になったら
+	if (m_nTime == 60)
+	{
+		CInGameText::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, REMAINING_POS_Y, 0.0f), D3DXVECTOR3(REMAINING_SIZE_X, REMAINING_SIZE_Y, 0.0f));
+
+		CTime_Remaining::Create();
 	}
 }

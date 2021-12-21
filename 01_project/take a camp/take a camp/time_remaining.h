@@ -1,11 +1,12 @@
 //=============================================================================
 //
-// インゲームのテキスト処理 [ingame_text.h]
+// 残りタイムの処理 [time_remaining.h]
 // Author : 佐藤颯紀
 //
 //=============================================================================
-#ifndef _INGAME_TEXT_H_
-#define _INGAME_TEXT_H_
+
+#ifndef _TIME_REMAINING_H_
+#define _TIME_REMAINING_H_
 
 //=============================================================================
 // インクルードファイル
@@ -15,38 +16,31 @@
 //=============================================================================
 // 前方宣言
 //=============================================================================
-class CPolygon;
+class CNumber;
 
 //=============================================================================
 // マクロ定義
 //=============================================================================
-
+#define MAX_DIGIT 2
 //=============================================================================
 // クラス宣言
 //=============================================================================
-class CInGameText :public CScene
+class CTime_Remaining : public CScene
 {
 public:
-	CInGameText();
-	~CInGameText();
+	CTime_Remaining();
+	~CTime_Remaining();
 
-	static CInGameText*Create(D3DXVECTOR3 pos, D3DXVECTOR3 size);	// 生成処理
+	static CTime_Remaining*Create(void);	// 生成処理
 
 	HRESULT Init(void);					// 初期化処理
 	void Uninit(void);					// 終了処理
 	void Update(void);					// 更新処理
-	void Draw(void);					// 描画処理	
+	void Draw(void);					// 描画処理
 
 private:
-	// メンバ関数
-
-	// メンバ変数
-	CPolygon*   m_pPolygon;		// ライフ描画用のポリゴン
-	D3DXVECTOR3 m_pos;			// 位置
-	D3DXVECTOR3 m_size;			// サイズ
-	D3DXVECTOR3 m_move;			// 移動量
-	D3DXCOLOR   m_col;			// カラー
-	int			m_nCount;		// カウント
+	CNumber* m_apNumber[MAX_DIGIT]; // ナンバーポリゴン
+	int m_nTime;					//タイム変数
 
 };
-#endif // !_INGAME_TEXT_H_
+#endif // !_TIME_REMAINING_H_

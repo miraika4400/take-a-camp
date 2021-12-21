@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// インゲームのテキスト処理 [ingame_text.cpp]
+// 残りタイムの処理 [time_remaining.cpp]
 // Author : 佐藤颯紀
 //
 //=============================================================================
@@ -8,33 +8,27 @@
 //=============================================================================
 // インクルードファイル
 //=============================================================================
-#include "ingame_text.h"
-#include "manager.h"
-#include "polygon.h"
-#include "resource_texture.h"
+#include "time_remaining.h"
+#include "scene.h"
+#include "number.h"
 
 //=============================================================================
 // マクロ定義
 //=============================================================================
+#define REMAINING_TIME 60 
 
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CInGameText::CInGameText()
+CTime_Remaining::CTime_Remaining() :CScene(OBJTYPE_UI_2)
 {
-	m_pPolygon = NULL;							// ポリゴン情報
-	m_pos = VEC3_ZERO;							// 位置情報
-	m_size = VEC3_ZERO;							// サイズ
-	m_size = VEC3_ZERO;
-	m_col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);	// 色情報
-	m_nCount = 0;								// カウンター
-
+	m_nTime = REMAINING_TIME;	// 残り時間
 }
 
 //=============================================================================
 // デストラクタ
 //=============================================================================
-CInGameText::~CInGameText()
+CTime_Remaining::~CTime_Remaining()
 {
 
 }
@@ -42,64 +36,60 @@ CInGameText::~CInGameText()
 //=============================================================================
 // 生成処理
 //=============================================================================
-CInGameText * CInGameText::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
+CTime_Remaining * CTime_Remaining::Create(void)
 {
-	CInGameText *pInGameText = NULL;
+	CTime_Remaining *pRemaining = NULL;
 
 	// メモリの確保
-	pInGameText = new CInGameText; 
-	
+	pRemaining = new CTime_Remaining;
+
 	// NULLチェック
-	if (pInGameText != NULL)
+	if (pRemaining != NULL)
 	{
-		// 位置設定
-		pInGameText->m_pos = pos;
-		// サイズ設定
-		pInGameText->m_size = size;
-		// 初期化処理呼び出し
-		pInGameText->Init();
+		// 初期化
+		pRemaining->Init();
+
 		// オブジェクトタイプ
-		pInGameText->SetPriority(OBJTYPE_UI_2);
+		pRemaining->SetPriority(OBJTYPE_UI_2);
 	}
 
-	return pInGameText;
+	return pRemaining;
 }
 
 //=============================================================================
 // 初期化処理
 //=============================================================================
-HRESULT CInGameText::Init(void)
+HRESULT CTime_Remaining::Init(void)
 {
-	// 色設定
-	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
-	m_move = D3DXVECTOR3(5.0f, 0.0f, 0.0f);
-
-	// ポリゴンの生成
-	m_pPolygon = CPolygon::Create(
-		m_pos,
-		m_size,
-		m_col);
-
-	m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SECONDS));
+	// 桁分回す
+	for (int nCntDigit = 0; nCntDigit < MAX_DIGIT; nCntDigit++)
+	{
+		// ナンバー生成処理
+		m_apNumber[nCntDigit] = CNumber::Create(0,
+			D3DXVECTOR3((float)(SCREEN_WIDTH / 2 + nCntDigit * 75), 100.0f, 0.0f),
+			D3DXVECTOR3(75, 75, 0),
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	}
 
 	return S_OK;
-
 }
 
 //=============================================================================
 // 終了処理
 //=============================================================================
-void CInGameText::Uninit(void)
+void CTime_Remaining::Uninit(void)
 {
-	if (m_pPolygon != NULL)
+	// 桁分回す
+	for (int nCntDigit = 0; nCntDigit < MAX_DIGIT; nCntDigit++)
 	{
-		// ポリゴンの終了処理
-		m_pPolygon->Uninit();
-
-		// メモリの解放
-		delete m_pPolygon;
-		m_pPolygon = NULL;
+		// NULLチェック
+		if (m_apNumber[nCntDigit] != NULL)
+		{
+			// 終了処理
+			m_apNumber[nCntDigit]->Uninit();
+			delete m_apNumber[nCntDigit];
+			m_apNumber[nCntDigit] = NULL;
+		}
 	}
 
 	// 開放処理
@@ -109,27 +99,28 @@ void CInGameText::Uninit(void)
 //=============================================================================
 // 更新処理
 //=============================================================================
-void CInGameText::Update(void)
+void CTime_Remaining::Update(void)
 {
-	// ポリゴンの更新処理
-	m_pPolygon->Update();
-
-	// 毎フレームごとにカウントを増やしていく
-	m_nCount++;
-
-	if (m_nCount == 50)
+	// 回数分回す
+	for (int nCntDigit = 0; nCntDigit < MAX_DIGIT; nCntDigit++)
 	{
-		// 終了処理
-		//Uninit();
-		//return;
+		// 更新処理
+		m_apNumber[nCntDigit]->Update();
+
+		// ナンバーの配置
+		m_apNumber[nCntDigit]->SetNumber((int)((m_nTime % (int)(powf(10.0f, (MAX_DIGIT - nCntDigit)))) / (float)(powf(10, (MAX_DIGIT - nCntDigit - 1)))));
 	}
 }
 
 //=============================================================================
 // 描画処理
 //=============================================================================
-void CInGameText::Draw(void)
+void CTime_Remaining::Draw(void)
 {
-	// ポリゴンの描画処理
-	m_pPolygon->Draw();
+	// 回数分回す
+	for (int nCntDigit = 0; nCntDigit < MAX_DIGIT; nCntDigit++)
+	{
+		// 描画処理
+		m_apNumber[nCntDigit]->Draw();
+	}
 }
