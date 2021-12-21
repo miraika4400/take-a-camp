@@ -194,6 +194,8 @@ HRESULT CPlayer::Init(void)
 	CColorManager::GetColorManager()->SetUsePlayerNum(m_nPlayerNumber, m_nColor);
 	//リムライトカラーの設定
 	SetRimColor(GET_COLORMANAGER->GetIconColor(m_nColor));
+	//テクスチャカラーの設定
+	SetTexColor(GET_COLORMANAGER->GetIconColor(m_nColor));
 	// キルカウント用のクラス
 	m_pKillCount = CKillCount::Create(m_nPlayerNumber);
 	// スキルゲージの生成(後々ここに職種入れてアイコン変える)
@@ -434,8 +436,7 @@ void CPlayer::Move(void)
 		//カウントが一定に達する
 		if (MoveData.m_nMoveFrameCount >= MoveData.m_nMoveFrame)
 		{
-
-			//初動加速処理
+			// 初動加速処理
 			if (MoveData.m_nMoveCount<MoveData.m_nMoveCountData
 				&&m_ItemState != ITEM_STATE_DASH)
 			{
