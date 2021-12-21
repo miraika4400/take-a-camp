@@ -51,6 +51,7 @@ public:
 		OBJTYPE_MOTION,        // モーション
 		OBJTYPE_UI_1,            // UI
 		OBJTYPE_UI_2,            // UI
+        OBJTYPE_EFFECT_2,        // UIより前に出すエフェクト
 		OBJTYPE_ACT_RANGE,	   // 行動範囲
 		OBJTYPE_COLLISION,     // コリジョン
 		OBJTYPE_SYSTEM,        // システム

@@ -58,7 +58,7 @@ public:
 	virtual void Uninit(void);  // èIóπ
 	virtual void Update(void);  // çXêV
 	virtual	void Draw(void);    // ï`âÊ
-	LPDIRECT3DTEXTURE9 GetTexture(void) { return m_apTexture[EFFECTTYPE_MAX]; }
+	LPDIRECT3DTEXTURE9 GetTexture(int nIndex) { return m_apTexture[nIndex]; }
 
 
 private:

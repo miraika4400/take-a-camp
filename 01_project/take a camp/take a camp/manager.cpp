@@ -32,6 +32,7 @@
 #include "tile_factory.h"
 #include "resource_character.h"
 #include "stage_select.h"
+#include "stage_texture.h"
 #include "resource_text.h"
 
 //=============================
@@ -158,6 +159,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	// タイルファクトリーの生成
 	CTileFactory::Create();
 
+	//　ステージテクスチャクラス
+	CStageTexture::Create(D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
+
 	// チュートリアルに使うテキストの読み込み
 	CResourceText::Create();
 
@@ -191,7 +195,8 @@ void CManager::Uninit(void)
 	CColorManager::Release();
 	// タイルファクトリーの破棄
 	CTileFactory::Release();
-
+	// ステージテクスチャの
+	CStageTexture::Release();
 	// チュートリアルに使うテキストの破棄
 	CResourceText::Release();
 

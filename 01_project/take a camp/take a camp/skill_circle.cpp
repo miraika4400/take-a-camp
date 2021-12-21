@@ -143,7 +143,7 @@ void CSkill_circle::Update(void)
 	{
 	case EFFECTTYPE_SKIIL:
 		
-		m_col.a -= 0.02;
+		m_col.a -= 0.02f;
 		m_fRotAngle += 0.5f;
 		m_rot.y += 0.05f;
 		m_size.x += 0.1f;
@@ -159,7 +159,7 @@ void CSkill_circle::Update(void)
 		break;
 	case EFFECTTYPE_SKIILMINI:
 		
-		m_col.a -= 0.02;
+		m_col.a -= 0.02f;
 		m_fRotAngle += 0.075f;
 		m_rot.y -= 0.05f;
 		m_size.x += 0.1f;

@@ -21,6 +21,7 @@
 //*****************************
 class CScene2d;
 class CGauge;
+class CCharacterPolygon;
 
 //*****************************
 // マクロ定義
@@ -38,6 +39,11 @@ public:
 	//============
 	// 列挙定義
 	//============
+	enum
+	{
+		GAUGE_BACK = 0,
+		GAUGE_FRONT,
+	};
 
 	//============
 	// 構造体定義
@@ -45,14 +51,23 @@ public:
 	struct GraphParts
 	{
 		CGauge   * pGauge;    // ゲージ
-		float    fGraphData;  // ゲージ数値
 		int      m_nColorNum; // カラー番号
 	};
 
+	struct Rank
+	{
+		int nPlayerNum;
+		int nPaintNum;
+	};
+
+	struct CharaPolygonData
+	{
+		CCharacterPolygon* pCharaPolygon;
+		float fMoveY;
+	};
 	//============
 	// メンバ関数
 	//============
-
 	CResultGraph();
 	~CResultGraph();
 
@@ -64,9 +79,18 @@ public:
 	void Update(void);  // 更新
 	void Draw(void);    // 描画
 private:
+	void SetMaxNum(void);
+	void CreatePolygon(void);
+	void ManageGraph(void);
+	void ManageCharacterHeight(void);
 	// メンバ変数
 	CScene2d * m_pBg;                  // 背景ポリゴン
 	GraphParts m_aGauge[MAX_PLAYER][GAUGE_NUM];  // ゲージ
+    float m_fMaxNum; // ゲージ内部数値最大値
+	std::vector<Rank> m_aRankData;
+	int m_nActionRank; // アクションを起こす順位
+	int m_nActionCnt;
+	std::vector<CCharacterPolygon*> m_apCharaPolygon;
 };
 
 #endif
