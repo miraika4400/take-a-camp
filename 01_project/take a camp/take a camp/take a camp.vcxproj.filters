@@ -435,6 +435,12 @@
     <ClCompile Include="stage_texture.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
+    <ClCompile Include="confetti.cpp">
+      <Filter>ソース ファイル\09_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="confetti_factory.cpp">
+      <Filter>ソース ファイル\09_Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -739,6 +745,12 @@
     </ClInclude>
     <ClInclude Include="stage_texture.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="confetti.h">
+      <Filter>ヘッダー ファイル\09_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="confetti_factory.h">
+      <Filter>ヘッダー ファイル\09_Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -111,7 +111,7 @@ HRESULT CCharaSelectUi::Init(void)
 		m_aPolygon[nCntPlayer].pPlayerNumber->SetTextureUV(uv);
 
 		// モデルポリゴンの生成
-		m_aPolygon[nCntPlayer].pCharaPolygon = CCharacterPolygon::Create(D3DXVECTOR3(boardPos.x, CHARACTER_MODEL_POS_Y, boardPos.z));
+		m_aPolygon[nCntPlayer].pCharaPolygon = CCharacterPolygon::Create(D3DXVECTOR3(boardPos.x, CHARACTER_MODEL_POS_Y, boardPos.z),CCharacterPolygon::MODE_ROTATION);
 
 		// アイコンの生成
 		m_aPolygon[nCntPlayer].pReadyIcon = CScene2d::Create();
