@@ -37,9 +37,7 @@ class CTutorial : public CScene
 public:
 	enum TUTORIALPHASE
 	{
-		PHASE_START = 0,
-		PHASE_MOVE,
-		PHASE_PAINT,
+		PHASE_PAINT = 0,
 		PHASE_OVERPAINT,
 		PHASE_ATTACK,
 		PHASE_FINALATTACK,
@@ -74,16 +72,15 @@ private:
 	//===========
 	static LPDIRECT3DTEXTURE9 m_pTexture[TUTORIAL_NUM]; // テクスチャへのポインタ
 	CMap *m_pMap;										// マップのポインタ
-	CPolygon *m_pPolygon;								// ポリゴンのポインタ
+	CPolygon *m_pTextWindow;								// ポリゴンのポインタ
 	CText *m_pText;										// テキストのポインタ
 	TUTORIALPHASE m_Tutorialphase;						// チュートリアルの状態
-	bool m_bTask[MAX_PLAYER];
-	bool m_bEntry[MAX_PLAYER];
-	int m_nTextNum;
-	bool m_bNextText;
-	bool m_bTextEnd;
-	int m_nCurTaskNum[MAX_PLAYER];
-	int m_nOldCurTaskNum[MAX_PLAYER];
+	bool m_bTask[MAX_PLAYER];							// プレイヤーごとのタスクを完了したか
+	int m_nTextNum;										// テキストの数
+	bool m_bNextText;									// 次のテキストに行くかいかないか
+	bool m_bTextEnd;									// テキストを表示し終わったか
+	int m_nCurTaskNum[MAX_PLAYER];						// 現在のタスクごとの数
+	int m_nOldCurTaskNum[MAX_PLAYER];					// 1フレーム前のタスクごとの数
 };
 
 #endif

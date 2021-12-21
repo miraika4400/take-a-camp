@@ -52,10 +52,9 @@ LPDIRECT3DTEXTURE9 CTutorial::m_pTexture[TUTORIAL_NUM] = {};
 CTutorial::CTutorial()
 {
 	m_pMap = nullptr;
-	m_pPolygon = nullptr;
+	m_pTextWindow = nullptr;
 	m_pText = nullptr;
 	ZeroMemory(&m_bTask, sizeof(m_bTask));
-	ZeroMemory(&m_bEntry, sizeof(m_bEntry));
 	m_Tutorialphase = PHASE_PAINT;
 	m_nTextNum = 0;
 	m_bNextText = false;
@@ -95,13 +94,6 @@ HRESULT CTutorial::Init()
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	//// テクスチャの生成
-	//m_pTexture[0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SPEECHBUBBLE);
-
-	//m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_WINODW));
-	
-	//m_pPolygon->SetAddMode(true);
-
 	// 背景の設定
 	CBg::Create();
 
@@ -111,11 +103,11 @@ HRESULT CTutorial::Init()
 	// マップ生成
 	m_pMap = CMap::Create(CMapManager::MAP_TYPE_TUTORIAL);
 
-
-	if (!m_pPolygon)
+	// テキスト表示するときの背景を作る
+	if (!m_pTextWindow)
 	{
-		m_pPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 600.0f, 0.0f),
-			D3DXVECTOR3(512.0f, 256.0f, 0.0f),
+		m_pTextWindow = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 600.0f, 0.0f),
+			D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 			TEXTWINDOW_COLOR);
 	}
 
@@ -127,14 +119,14 @@ HRESULT CTutorial::Init()
 //=============================
 void CTutorial::Uninit()
 {
-	if (m_pPolygon)
+	if (m_pTextWindow)
 	{
 		// ポリゴンの終了処理
-		m_pPolygon->Uninit();
+		m_pTextWindow->Uninit();
 
 		// メモリの解放
-		delete m_pPolygon;
-		m_pPolygon = NULL;
+		delete m_pTextWindow;
+		m_pTextWindow = NULL;
 	}
 
 	// カメラクラスの解放処理
@@ -173,10 +165,10 @@ void CTutorial::Update()
 		Pos[3] = D3DXVECTOR3(m_pText->GetPos().x + m_pText->GetWindowRange()[1].x + ADD_TEXTWINDOWRANGE, m_pText->GetPos().y + m_pText->GetWindowRange()[1].y + ADD_TEXTWINDOWRANGE, 0.0f);
 	}
 
-	if (m_pPolygon)
+	if (m_pTextWindow)
 	{
 		// 頂点ごとの情報をセット
-		m_pPolygon->SetVertexPos(Pos);
+		m_pTextWindow->SetVertexPos(Pos);
 	}
 
 	if (m_bTextEnd)
@@ -184,14 +176,14 @@ void CTutorial::Update()
 		// プレイヤーの更新出来るようにする
 		StartPlayer(true);
 
-		m_pPolygon->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+		m_pTextWindow->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 	}
 
 	if (!m_bNextText)
 	{
 		UpdateText();
 
-		m_pPolygon->SetColor(TEXTWINDOW_COLOR);
+		m_pTextWindow->SetColor(TEXTWINDOW_COLOR);
 	}
 	else if (m_pText->GetAllShowText() && !m_bTextEnd)
 	{
@@ -210,24 +202,6 @@ void CTutorial::Update()
 		// フェーズごとに処理を変える
 		switch (m_Tutorialphase)
 		{
-			//case PHAZE_MOVE:
-			//	for (int nCount = 0; nCount < CCharaSelect::GetEntryPlayerNum(); nCount++)
-			//	{
-			//		if (CColorTile::GetTileNum(nCount, 1) >= 10)
-			//		{
-			//			m_bTask[nCount] = true;
-			//			if (m_bTask[nCount])
-			//			{
-			//				nTaskClear++;
-			//			}
-			//		}
-			//		if (CCharaSelect::GetEntryPlayerNum() == nTaskClear)
-			//		{
-			//			m_Tutorialphase = PHAZE_PAINT;
-			//		}
-			//	}
-			//	break;
-
 		case PHASE_PAINT:
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
@@ -309,10 +283,10 @@ void CTutorial::Draw()
 		pCamera->SetCamera();
 	}
 
-	if (m_pPolygon != NULL)
+	if (m_pTextWindow != NULL)
 	{
 		// ポリゴンの描画処理
-		m_pPolygon->Draw();
+		m_pTextWindow->Draw();
 	}
 }
 
@@ -473,7 +447,6 @@ void CTutorial::StartPlayer(bool bUpdate)
 	while (pPlayer != NULL)
 	{
 		pPlayer->SetUpdateFlag(bUpdate);
-
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
 }

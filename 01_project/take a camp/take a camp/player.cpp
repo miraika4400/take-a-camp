@@ -279,7 +279,7 @@ void CPlayer::Update(void)
 		//攻撃可否フラグが立っているか
 		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
 			&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK
-			&&TutorialControll(CTutorial::PHASE_MOVE))
+			&&TutorialControll(CTutorial::PHASE_PAINT))
 		{
 			// 移動処理
 			ControlMove();
@@ -868,7 +868,7 @@ bool CPlayer::TutorialControll(int nTutorialphase)
 			return true;
 		}
 		// 移動は常にするためフェーズに入ったら常時真を返す
-		else if (CTutorial::PHASE_MOVE >= nTutorialphase)
+		else if (CTutorial::PHASE_PAINT >= nTutorialphase)
 		{
 			return true;
 		}

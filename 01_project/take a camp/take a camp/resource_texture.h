@@ -74,6 +74,7 @@ public:
 		TEXTURE_KNIFE_ICON,		 	// ナイフアイコン
 		TEXTURE_STICK_ICON,		 	// 杖アイコン
 		TEXTURE_RESULT_EXPLOSION,   // リザルト*エクスプロ―ジョン
+		TEXTURE_COLOR_GAUGE,		// 色のゲージの枠
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類
