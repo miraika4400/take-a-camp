@@ -66,9 +66,9 @@ HRESULT CCharacterPolygon::Init(void)
 	// 初期化処理
 	CScene2d::Init();
 	// サイズの設定
-	SetSize(CHARACTER_POLYGON_SIZE);
+	SetSize(DEFAULT_CHARACTER_POLYGON_SIZE);
 	// 動的テクスチャの生成
-	m_pDynamicTex = CDynamicTexture::Create(D3DXVECTOR2(CHARACTER_POLYGON_SIZE.x, CHARACTER_POLYGON_SIZE.y));
+	m_pDynamicTex = CDynamicTexture::Create(D3DXVECTOR2(DEFAULT_CHARACTER_POLYGON_SIZE.x, DEFAULT_CHARACTER_POLYGON_SIZE.y));
 	// キャラクターモデルの生成*NONEだとモデル情報がないのでとりあえず騎士で生成
 	m_pCharacterModel = CPlayerModel::Create(CHARACTER_POS, CHARACTER_ROT, CResourceCharacter::CHARACTER_KNIGHT);
 	// リスト構造から外す
@@ -171,4 +171,12 @@ void CCharacterPolygon::SetCharaType(CResourceCharacter::CHARACTER_TYPE type)
 void CCharacterPolygon::SetRimColor(D3DXCOLOR col)
 {
 	m_pCharacterModel->SetRimColor(col);
+}
+
+//=============================================================================
+// Texカラーのセット
+//=============================================================================
+void CCharacterPolygon::SetTexColor(D3DXCOLOR col)
+{
+	m_pCharacterModel->SetTexColor(col);
 }

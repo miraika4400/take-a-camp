@@ -32,6 +32,7 @@
 #include "tile_factory.h"
 #include "resource_character.h"
 #include "stage_select.h"
+#include "stage_texture.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -156,6 +157,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	// タイルファクトリーの生成
 	CTileFactory::Create();
 
+	//　ステージテクスチャクラス
+	CStageTexture::Create(D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
+
 	// ポーズ状態の時
 	return S_OK;
 }
@@ -186,7 +190,8 @@ void CManager::Uninit(void)
 	CColorManager::Release();
 	// タイルファクトリーの破棄
 	CTileFactory::Release();
-
+	// ステージテクスチャの
+	CStageTexture::Release();
 	// テクスチャのアンロード
 	CPause::Unload();    // ポーズ
 

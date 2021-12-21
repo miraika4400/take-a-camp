@@ -429,6 +429,12 @@
     <ClCompile Include="game_finish.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
+    <ClCompile Include="effect_result_explosion.cpp">
+      <Filter>ソース ファイル\09_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="stage_texture.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
     <ClCompile Include="ingame_text.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
@@ -732,6 +738,12 @@
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
     <ClInclude Include="game_finish.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="effect_result_explosion.h">
+      <Filter>ヘッダー ファイル\09_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="stage_texture.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
     <ClInclude Include="ingame_text.h">

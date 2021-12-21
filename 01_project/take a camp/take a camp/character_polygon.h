@@ -22,7 +22,7 @@ class CPlayerModel;
 //===================================================
 // マクロ定義
 //===================================================
-#define CHARACTER_POLYGON_SIZE (D3DXVECTOR3(300.0f,400.0f,0.0f))
+#define DEFAULT_CHARACTER_POLYGON_SIZE (D3DXVECTOR3(300.0f,400.0f,0.0f))
 
 //===================================================
 // クラス宣言
@@ -43,6 +43,7 @@ public:
 	void SetCharaType(CResourceCharacter::CHARACTER_TYPE type);
 	CResourceCharacter::CHARACTER_TYPE GetCharaType(void) { return m_charaType; }
 	void SetRimColor(D3DXCOLOR col);
+	void SetTexColor(D3DXCOLOR col);
 private:
     //===============================================
     // メンバ変数宣言
