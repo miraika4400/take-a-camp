@@ -56,8 +56,10 @@ public:
 
 	struct Rank
 	{
-		int nPlayerNum;
-		int nPaintNum;
+		int nPlayerNum; // プレイヤー番号
+		int nPaintNum;  // 塗数
+		int nKillNum;   // キル数
+		int nRank;      // 順位
 	};
 
 	struct CharaPolygonData
@@ -78,6 +80,8 @@ public:
 	void Uninit(void);  // 終了
 	void Update(void);  // 更新
 	void Draw(void);    // 描画
+
+	bool GetEndFlag(void) { return m_bEnd; }
 private:
 	void SetMaxNum(void);
 	void CreatePolygon(void);
@@ -91,6 +95,7 @@ private:
 	int m_nActionRank; // アクションを起こす順位
 	int m_nActionCnt;
 	std::vector<CCharacterPolygon*> m_apCharaPolygon;
+	bool m_bEnd;
 };
 
 #endif
