@@ -267,64 +267,14 @@ void CPlayer::Update(void)
 {
 	if (!m_bUpdate)
 	{
+		Move(); 
 		CPlayerModel::Update();
 		return;
 	}
 
-	//ステートごとの処理
-	switch (m_PlayerState)
-	{
-	case PLAYER_STATE_NORMAL:	//通常状態
+	// ステート管理
+	ManageState();
 
-		//攻撃可否フラグが立っているか
-		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
-			&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK
-			&&TutorialControll(CTutorial::PHASE_PAINT))
-		{
-			// 移動処理
-			ControlMove();
-			//ジョイパットの取得
-			CInputJoypad* pJoypad = CManager::GetJoypad();
-
-			//攻撃キャンセル
-			if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, pJoypad->BUTTON_PRESS, m_nControllNum))
-			{
-				m_pAttack->CancelSwitch();
-			}
-			//攻撃をチャージしていないとき
-			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE
-				&&TutorialControll(CTutorial::PHASE_FINALATTACK))
-			{
-				// 必殺の処理
-				AttackFinal();
-			}
-			//必殺技を使っていないとき
-			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACKWAITING
-				&&TutorialControll(CTutorial::PHASE_ATTACK))
-			{
-				// 攻撃処理
-				Attack();
-			}
-		}
-		// 当たり判定の位置
-		if (m_pCollision == NULL)
-		{
-			m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y + COLLISION_RADIUS / 2, GetPos().z), COLLISION_RADIUS / 2);
-		}
-
-		break;
-	case PLAYER_STATE_STOP:
-		//攻撃状態を通常に変更
-		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_NORMAL)
-		{
-			m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
-		}
-		break;
-	case PLAYER_STATE_DEATH:	//死亡状態
-		//リスポーン処理
-		Respawn();
-		break;
-	}
 	//移動状況
 	m_bOldMove = m_bMove;
 
@@ -444,7 +394,6 @@ void CPlayer::Move(void)
 				&&m_ItemState != ITEM_STATE_DASH)
 			{
 				MoveData.m_nMoveFrame += (MoveData.m_nMoveFrameData - MoveData.m_nMoveFrame) / (float)(MoveData.m_nMoveCountData - MoveData.m_nMoveCount);
-
 				MoveData.m_nMoveCount++;
 			}
 			//カウント初期化
@@ -620,7 +569,6 @@ void CPlayer::Attack(void)
 	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 	D3DXVECTOR3 rot = GetRot();
 
-
 	// 攻撃ボタンを押したらチャージ
 	if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
 		|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
@@ -642,25 +590,12 @@ void CPlayer::Attack(void)
 		{
 			//攻撃フラグを立てる
 			m_AttackData.m_bAttack = true;
-
-
-			
 		}
 	}
 
-
-	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
-	if (m_AttackData.m_bAttack&&m_bMove)
-	{		
-			//行列計算
-			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-			D3DXVECTOR3 AttackPos = m_pAttack->GetAttackSquare().SquareData[0].AttackPos * TILE_ONE_SIDE;
-			CreatePos.x = ((cosf(rot.y)*AttackPos.x) + (sinf(rot.y)*AttackPos.z));
-			CreatePos.y = 1 * AttackPos.y;
-			CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
-
-			
-
+	//攻撃フラグが立っているか＆移動フラグが立っていない状態か&ステートが通常状態か
+	if (m_AttackData.m_bAttack&&m_bMove&&m_PlayerState == PLAYER_STATE_NORMAL)
+	{
 		//カウントアップ
 		m_AttackData.m_nAttackRotCount++;
 		//攻撃方向指定
@@ -716,8 +651,8 @@ void CPlayer::AttackFinal(void)
 		}
 	}
 
-	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
-	if (m_AttackData.m_bAttack&&m_bMove)
+	//攻撃フラグが立っているか＆移動フラグが立っていない状態か&ステートが通常状態か
+	if (m_AttackData.m_bAttack&&m_bMove&&m_PlayerState == PLAYER_STATE_NORMAL)
 	{
 		//カウントアップ
 		m_AttackData.m_nAttackRotCount++;
@@ -804,6 +739,84 @@ void CPlayer::Invincible(void)
 			m_color.a = 1.0f;
 			m_bInvincible = false;
 		}
+	}
+}
+
+//******************************
+// ステート管理
+//******************************
+void CPlayer::ManageState(void)
+{
+	//ステートごとの処理
+	switch (m_PlayerState)
+	{
+	case PLAYER_STATE_NORMAL:	//通常状態
+
+								//攻撃可否フラグが立っているか
+		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
+			&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK)
+		{
+			// 移動処理
+			ControlMove();
+			//ジョイパットの取得
+			CInputJoypad* pJoypad = CManager::GetJoypad();
+
+			//攻撃キャンセル
+			if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, pJoypad->BUTTON_PRESS, m_nControllNum))
+			{
+				m_pAttack->CancelSwitch();
+			}
+			//攻撃をチャージしていないとき
+			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE)
+			{
+				// 必殺の処理
+				AttackFinal();
+			}
+			//必殺技を使っていないとき
+			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
+			{
+				// 攻撃処理
+				Attack();
+			}
+		}
+		// 当たり判定の位置
+		if (m_pCollision == NULL)
+		{
+			m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(GetPos().x, GetPos().y + COLLISION_RADIUS / 2, GetPos().z), COLLISION_RADIUS / 2);
+		}
+
+		break;
+	case PLAYER_STATE_STOP:
+		//攻撃可否フラグが立っているか
+		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
+			&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK)
+		{
+			//ジョイパットの取得
+			CInputJoypad* pJoypad = CManager::GetJoypad();
+
+			//攻撃キャンセル
+			if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, pJoypad->BUTTON_PRESS, m_nControllNum))
+			{
+				m_pAttack->CancelSwitch();
+			}
+			//攻撃をチャージしていないとき
+			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE)
+			{
+				// 必殺の処理
+				AttackFinal();
+			}
+			//必殺技を使っていないとき
+			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
+			{
+				// 攻撃処理
+				Attack();
+			}
+		}
+		break;
+	case PLAYER_STATE_DEATH:	//死亡状態
+								//リスポーン処理
+		Respawn();
+		break;
 	}
 }
 

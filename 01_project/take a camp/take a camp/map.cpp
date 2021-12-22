@@ -8,16 +8,13 @@
 // ヘッダファイルのインクルード
 //=============================================================================
 #include "map.h"
-#include "tile.h"
-#include "color_tile.h"
 #include "player.h"
-#include "spawn_tile.h"
-#include "color_manager.h"
 #include "needle_tile.h"
 #include "item.h"
 #include <time.h>
 #include "chara_select.h"
 #include "tile_factory.h"
+#include "warp_tile.h"
 
 //=============================================================================
 // マクロ定義

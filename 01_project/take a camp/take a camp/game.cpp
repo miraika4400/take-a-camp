@@ -99,7 +99,7 @@ HRESULT CGame::Init(void)
 	// ÉâÉCÉgÇÃå¸Ç´ÇÃê›íË
 	CManager::GetLight()->SetDir(LIGHT_DIR_BASE);
 	// ready goÇÃê∂ê¨
-	m_pGameStart=CGameStart::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, START_UI_POS_Y, 0.0f), D3DXVECTOR3(START_UI_SIZE_X, START_UI_SIZE_Y, 0.0f));
+	m_pGameStart=CGameStart::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, START_UI_POS_Y, 0.0f), START_UI_SIZE);
 
 	return S_OK;
 }
@@ -146,6 +146,7 @@ void CGame::Update(void)
 	{
 		CManager::SetCamera(CCamera::Create());
 	}
+
 	CKillCount::AddTotalKill();
 	CColorTile::CountColorTile();
 

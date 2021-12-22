@@ -129,7 +129,8 @@ public:
 	void SetState(PLAYER_STATE PlayerState) { m_PlayerState = PlayerState; }	
 	PLAYER_STATE GetState(void) { return m_PlayerState; }			
 	// 無敵状態取得
-	bool GetInvincible(void) { return m_bInvincible; }		
+	bool GetInvincible(void) { return m_bInvincible; }	
+	void SetInvincible(bool bInvincible) { m_bInvincible = bInvincible; }
 	//向きと位置の移動量
 	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }					
 	D3DXVECTOR3 GetPosDest(void) { return MoveData.m_Move; }
@@ -161,6 +162,7 @@ private:
 	void ManageRot(void);		// 向きの管理
 	void Respawn(void);			// リスポーン処理
 	void Invincible(void);		// 無敵処理
+	void ManageState(void);     // ステート管理
 	void ManageItemState(void); // アイテムステートの管理
 	bool TutorialControll(int nTutorialphase);	// チュートリアルの操作処理
 

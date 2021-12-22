@@ -16,9 +16,10 @@ CHARACTER_DATA
 	CHARGE_TIME_LIST_END
 	
 	MOTION_LIST
-		IDLE   = data/Text/motion/motion_knight_neutral.txt
-		CHARGE = data/Text/motion/motion_knight_neutral.txt
-		ATTACK = data/Text/motion/motion_knight_attack.txt
+		IDLE   = data/Text/motion/00_knight/motion_knight_neutral.txt
+		CHARGE = data/Text/motion/00_knight/motion_knight_neutral.txt
+		ATTACK = data/Text/motion/00_knight/motion_knight_attack.txt
+		ROLL   = data/Text/motion/00_knight/motion_knight_roll.txt
 	MOTION_LIST_END
 	
 CHARACTER_DATA_END

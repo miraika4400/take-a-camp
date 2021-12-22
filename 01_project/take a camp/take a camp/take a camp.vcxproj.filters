@@ -297,9 +297,6 @@
     <ClCompile Include="button.cpp">
       <Filter>ソース ファイル\10_Ui\Button</Filter>
     </ClCompile>
-    <ClCompile Include="tile_factory.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="max_color_effect.cpp">
       <Filter>ソース ファイル\09_Effect</Filter>
     </ClCompile>
@@ -399,6 +396,9 @@
     <ClCompile Include="warp_tile.cpp">
       <Filter>ソース ファイル\08_Map\Tile</Filter>
     </ClCompile>
+    <ClCompile Include="tile_factory.cpp">
+      <Filter>ソース ファイル\03_Resource</Filter>
+    </ClCompile>
     <ClCompile Include="stage_name_ui.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
@@ -452,6 +452,9 @@
     </ClCompile>
     <ClCompile Include="dummy.cpp">
       <Filter>ソース ファイル\07_GameModel</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame_text.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -626,9 +629,6 @@
     <ClInclude Include="button.h">
       <Filter>ヘッダー ファイル\10_Ui\Button</Filter>
     </ClInclude>
-    <ClInclude Include="tile_factory.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="max_color_effect.h">
       <Filter>ヘッダー ファイル\09_Effect</Filter>
     </ClInclude>
@@ -722,6 +722,9 @@
     <ClInclude Include="warp_tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
+    <ClInclude Include="tile_factory.h">
+      <Filter>ヘッダー ファイル\03_Resource</Filter>
+    </ClInclude>
     <ClInclude Include="stage_name_ui.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
@@ -775,6 +778,9 @@
     </ClInclude>
     <ClInclude Include="dummy.h">
       <Filter>ヘッダー ファイル\07_GameModel</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame_text.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
