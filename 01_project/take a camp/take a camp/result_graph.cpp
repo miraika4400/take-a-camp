@@ -18,6 +18,8 @@
 #include "manager.h"
 #include "effect_result_explosion.h"
 #include "character_polygon.h"
+#include "confetti_factory.h"
+#include "kill_count.h"
 
 //**********************************
 // マクロ定義
@@ -56,7 +58,7 @@ CResultGraph::CResultGraph() :CScene(OBJTYPE_UI_2)
     m_fMaxNum = 0.0f;
 	m_nActionRank = 0;
 	m_nActionCnt = 0;
-
+	m_bEnd = false;
 }
 
 //==================================
@@ -97,13 +99,34 @@ HRESULT CResultGraph::Init(void)
 	CreatePolygon();
 
 	// ランクソート処理
-	std::sort(m_aRankData.begin(), m_aRankData.end(), [](Rank const& lhs, Rank const& rhs) {return (lhs.nPaintNum > rhs.nPaintNum); });
+	// キル数
+	std::sort(m_aRankData.begin(), m_aRankData.end(), [](Rank const& rank1, Rank const& rank2) {return (rank1.nKillNum > rank2.nKillNum); });
+	// 塗数
+	std::sort(m_aRankData.begin(), m_aRankData.end(), [](Rank const& rank1, Rank const& rank2) {return (rank1.nPaintNum > rank2.nPaintNum); });
+
+	for (int nCnt = 0; nCnt < (int)m_aRankData.size(); nCnt++)
+	{
+		m_aRankData[nCnt].nRank = nCnt;
+
+		if (nCnt > 0)
+		{
+			if (m_aRankData[nCnt].nPaintNum == m_aRankData[nCnt - 1].nPaintNum&&
+				m_aRankData[nCnt].nKillNum == m_aRankData[nCnt - 1].nKillNum)
+			{
+				m_aRankData[nCnt].nRank = m_aRankData[nCnt - 1].nRank;
+			}
+		}
+	}
 
 	// アクション順位の初期化
-	m_nActionRank = m_aRankData.size();
-	// アクションカウントの初期化
-	m_nActionCnt = 0;
+	if (m_aRankData.size() >= 1) m_nActionRank = m_aRankData[m_aRankData.size() - 1].nRank;
 	
+	// アクションカウントの初期化
+	m_nActionCnt = -RANK_ANNOUNCEMENT_COUNT;
+	
+	// エンドフラグの初期化
+	m_bEnd = false;
+
 	return S_OK;
 }
 
@@ -155,8 +178,9 @@ void CResultGraph::SetMaxNum(void)
 		}
 
 		int nTileNum = CColorTile::GetTileNum(nPlayerNum) + (int)MIN_POINT;
-		Rank rank = { nPlayerNum ,nTileNum };
+		Rank rank = { nPlayerNum ,nTileNum ,CKillCount::GetTotalKill(nPlayerNum) };
 		m_aRankData.push_back(rank);
+
 		// 最大数の保管
 		if (m_fMaxNum < nTileNum)
 		{
@@ -187,29 +211,31 @@ void CResultGraph::CreatePolygon(void)
 			float fWight = GAUGE_WIDTH;
 			float fHeight = GAUGE_HEIGHT;
 			D3DXCOLOR col = GET_COLORMANAGER->GetIconColor(m_aGauge[nCntPlayer][nCntGauge].m_nColorNum);
+
 			if (nCntGauge == 0)
 			{
 				fWight = GAUGE_WIDTH + BACK_GAUGE_SIZE;
 				fHeight = GAUGE_HEIGHT + BACK_GAUGE_SIZE / 2.0f;
 				col = BACK_GAUGE_COLOR;
 			}
-
 			// ゲージの生成
 			m_aGauge[nCntPlayer][nCntGauge].pGauge = CGauge::Create(D3DXVECTOR3(posX, GAUGE_POS_Y, 0.0f), fWight, fHeight, m_fMaxNum, col);
-
 			// 目標値の設定
 			m_aGauge[nCntPlayer][nCntGauge].pGauge->SetValueDist(CColorTile::GetTileNum(m_aGauge[nCntPlayer][nCntGauge].m_nColorNum) + MIN_POINT);
 
 		}
 
+		// キャラクターポリゴンの生成
 		CCharacterPolygon * pCharaPolygon = CCharacterPolygon::Create(D3DXVECTOR3(posX, fCreateCharaHeight, 0.0f));
-		fCreateCharaHeight += CHARACTER_CREATE_ADD_HEIGHT;
 		pCharaPolygon->SetSize(CHARACTER_POLYGON_SIZE);
 		pCharaPolygon->SetCharaType(CCharaSelect::GetEntryData(nCntPlayer).charaType);
 		pCharaPolygon->SetRimColor(GET_COLORMANAGER->GetStepColor(CCharaSelect::GetEntryData(nCntPlayer).nColorNum, 1));
 		pCharaPolygon->SetTexColor(GET_COLORMANAGER->GetIconColor(CCharaSelect::GetEntryData(nCntPlayer).nColorNum));
 
+		// キャラクターデータの保存
 		m_apCharaPolygon.push_back(pCharaPolygon);
+
+		fCreateCharaHeight += CHARACTER_CREATE_ADD_HEIGHT;
 
 		// ゲージの設定
 		m_aGauge[nCntPlayer][GAUGE_BACK].pGauge->SetMode(CGauge::MODE_HEIGHT_SELF);
@@ -232,29 +258,52 @@ void CResultGraph::ManageGraph(void)
 		m_nActionRank--;
 	}
 
-	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
-	{
-		if (m_nActionRank >= 0)
-		{
-			if (m_nActionCnt >= RANK_ANNOUNCEMENT_COUNT && m_aRankData[m_nActionRank].nPlayerNum == nCntPlayer)
-			{
-				m_nActionCnt = 0;
-				m_nActionRank--;
-				m_aGauge[nCntPlayer][GAUGE_FRONT].pGauge->SetMode(CGauge::MODE_VALUE_AUTO);
-				m_aGauge[nCntPlayer][GAUGE_FRONT].pGauge->SetRate(ANNOUNCEMENT_RATE);
 
-				D3DXCOLOR iconCol = GET_COLORMANAGER->GetIconColor(m_aGauge[nCntPlayer][GAUGE_FRONT].m_nColorNum);
+	if (m_nActionRank >= 0)
+	{
+		if (m_nActionCnt > RANK_ANNOUNCEMENT_COUNT)
+		{
+			bool bAnnouncement = false;
+			for (int nCntRankData = 0; nCntRankData < (int)m_aRankData.size(); nCntRankData++)
+			{
+				// アクションを起こす順位の比較
+				if (m_aRankData[nCntRankData].nRank != m_nActionRank)    continue;
+
+				// プレイヤー番号
+				int nPlayerNum = m_aRankData[nCntRankData].nPlayerNum;
+				// ゲージのモードを切り替える
+				m_aGauge[nPlayerNum][GAUGE_FRONT].pGauge->SetMode(CGauge::MODE_VALUE_AUTO);
+				m_aGauge[nPlayerNum][GAUGE_FRONT].pGauge->SetRate(ANNOUNCEMENT_RATE);
+
+				// 爆発エフェクトの生成
+				D3DXCOLOR iconCol = GET_COLORMANAGER->GetIconColor(m_aGauge[nPlayerNum][GAUGE_FRONT].m_nColorNum);
 				CResultExplosion::Create(EXPLOSION_POS_1, iconCol);
 				CResultExplosion::Create(EXPLOSION_POS_2, iconCol);
-			}
-		}
 
+				if (m_nActionRank == 0)
+				{// 一位発表時
+					CConfettiFactory::Create(iconCol, 120);
+					m_bEnd = true;
+				}
+				bAnnouncement = true;
+			}
+			// アクションランクを次のランクにする
+			m_nActionRank--;
+			// カウントの初期化*順位が中抜けだったときはカウントを初期化しない
+			m_nActionCnt = 0;
+			if (!bAnnouncement|| m_nActionRank == 0)m_nActionCnt = RANK_ANNOUNCEMENT_COUNT;
+		}
+	}
+
+	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
+	{
 		// NULLチェック
 		if (m_aGauge[nCntPlayer][GAUGE_BACK].pGauge == NULL || m_aGauge[nCntPlayer][1].pGauge == NULL) continue;
 
 		// バックゲージの値の設定
 		m_aGauge[nCntPlayer][GAUGE_BACK].pGauge->SetHeight(m_aGauge[nCntPlayer][1].pGauge->GetHeight() + (BACK_GAUGE_SIZE / 2.0f));
 	}
+
 }
 
 //==================================

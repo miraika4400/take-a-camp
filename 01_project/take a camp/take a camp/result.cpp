@@ -21,6 +21,7 @@
 #include "stage_texture.h"
 #include "polygon.h"
 #include "camera_charaselect.h"
+#include "confetti.h"
 
 //**********************************
 // マクロ定義
@@ -74,9 +75,11 @@ CResult * CResult::Create(void)
 HRESULT CResult::Init(void)
 {
 	//　グラフの生成
-	m_pGraph = CResultGraph::Create();
 	m_pBackGroundPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f));
 	m_pBackGroundPolygon->BindTexture(CStageTexture::GetStateTexturePointa()->GetTexture());
+
+	m_pGraph = CResultGraph::Create();
+
 
 	CManager::SetCamera(CCharaSelectCamera::Create());
 	return S_OK;
