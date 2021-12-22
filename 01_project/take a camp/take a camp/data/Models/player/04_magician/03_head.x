@@ -1029,7 +1029,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\gsp013\\Desktop\\増沢チームリソ\ース\\00_model\\00_player\\04_miniyari\\01_obj\\head.png";
+    "head.png";
    }
   }
   Material {
@@ -1050,7 +1050,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\gsp013\\Desktop\\増沢チームリソ\ース\\00_model\\00_player\\08_kijutusi\\02_mqo\\white.png";
+    "white.png";
    }
   }
   Material {

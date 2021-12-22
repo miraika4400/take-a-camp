@@ -19,6 +19,7 @@ CHARACTER_DATA
 		IDLE   = data/Text/motion/03_thief/motion_thief_neutral.txt
 		CHARGE = data/Text/motion/03_thief/motion_thief_neutral.txt
 		ATTACK = data/Text/motion/03_thief/motion_thief_attack.txt
+		ROLL   = data/Text/motion/03_thief/motion_thief_roll.txt
 	MOTION_LIST_END
 	
 CHARACTER_DATA_END
