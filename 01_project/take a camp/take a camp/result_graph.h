@@ -79,9 +79,10 @@ public:
 	void Update(void);  // 更新
 	void Draw(void);    // 描画
 private:
+	void SetMaxNum(void);
+	void CreatePolygon(void);
 	void ManageGraph(void);
-	void ManageBackGroundColor(void);
-
+	void ManageCharacterHeight(void);
 	// メンバ変数
 	CScene2d * m_pBg;                  // 背景ポリゴン
 	GraphParts m_aGauge[MAX_PLAYER][GAUGE_NUM];  // ゲージ
@@ -89,7 +90,6 @@ private:
 	std::vector<Rank> m_aRankData;
 	int m_nActionRank; // アクションを起こす順位
 	int m_nActionCnt;
-	D3DXCOLOR m_bgCol, m_bgColDist;
 	std::vector<CCharacterPolygon*> m_apCharaPolygon;
 };
 

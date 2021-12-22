@@ -42,7 +42,7 @@ CCharacterPolygon::~CCharacterPolygon()
 //=============================================================================
 // 生成処理
 //=============================================================================
-CCharacterPolygon * CCharacterPolygon::Create(D3DXVECTOR3 pos)
+CCharacterPolygon * CCharacterPolygon::Create(D3DXVECTOR3 pos, CharaPolygonMode mode)
 {
 	// メモリの確保
 	CCharacterPolygon *pCharacterPolygon;
@@ -54,6 +54,7 @@ CCharacterPolygon * CCharacterPolygon::Create(D3DXVECTOR3 pos)
 	// 各値の代入
 	pCharacterPolygon->SetPos(pos);
 	pCharacterPolygon->SetPriority(OBJTYPE_UI_2);
+	pCharacterPolygon->m_mode = mode;
 
 	return pCharacterPolygon;
 }
@@ -106,11 +107,20 @@ void CCharacterPolygon::Uninit(void)
 //=============================================================================
 void CCharacterPolygon::Update(void)
 {
-	// モデルの更新処理
-	if (m_pCharacterModel != NULL)
+	switch (m_mode)
 	{
-		m_pCharacterModel->Update();
-		m_pCharacterModel->SetRot(m_pCharacterModel->GetRot() + CHARACTER_ADD_ROT);
+	case CCharacterPolygon::MODE_NONE:
+		break;
+	case CCharacterPolygon::MODE_ROTATION:
+		// モデルの更新処理
+		if (m_pCharacterModel != NULL)
+		{
+			m_pCharacterModel->Update();
+			m_pCharacterModel->SetRot(m_pCharacterModel->GetRot() + CHARACTER_ADD_ROT);
+		}
+		break;
+	default:
+		break;
 	}
 }
 

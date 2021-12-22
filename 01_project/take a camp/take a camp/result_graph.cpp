@@ -31,15 +31,15 @@
 #define BACK_GAUGE_COLOR (D3DXCOLOR(1.0f,1.0f,1.0f,1.0f))                // バックゲージカラー
 #define GAUGE_POS_Y (710.0f)                                             // ゲージ座標Y
 #define MIN_POINT 1.0f                                                   // 0点でもゲージを出すため最低値の加算
-#define START_RATE 0.001f                                                // スタート時のゲージ係数
+#define START_RATE 0.0008f                                                // スタート時のゲージ係数
 #define ANNOUNCEMENT_RATE 0.1f                                           // 順位発表時のゲージ係数
 #define RANK_ANNOUNCEMENT_COUNT 100                                      // 順位発表カウント
 #define EXPLOSION_POS_1 D3DXVECTOR3(SCREEN_WIDTH,SCREEN_HEIGHT,0.0f)
 #define EXPLOSION_POS_2 D3DXVECTOR3(0.0f,SCREEN_HEIGHT,0.0f)
-#define BG_COLOR_RATE 0.05f
 #define CHARACTER_POLYGON_SIZE (DEFAULT_CHARACTER_POLYGON_SIZE*0.6f)
 #define CHARACTER_HEIGHT_DIST ((SCREEN_HEIGHT - CHARACTER_POLYGON_SIZE.y / 2.0f)-20.0f/2.0f)
 #define CHARACTER_HEIGHT_ADD 15.0f
+#define CHARACTER_CREATE_ADD_HEIGHT -200 //キャラクターを生成する位置を変える
 
 //**********************************
 // 静的メンバ変数宣言
@@ -56,8 +56,7 @@ CResultGraph::CResultGraph() :CScene(OBJTYPE_UI_2)
     m_fMaxNum = 0.0f;
 	m_nActionRank = 0;
 	m_nActionCnt = 0;
-	m_bgCol = BG_COLOR;
-	m_bgColDist = BG_COLOR;
+
 }
 
 //==================================
@@ -85,17 +84,63 @@ CResultGraph * CResultGraph::Create(void)
 //==================================
 HRESULT CResultGraph::Init(void)
 {
-	// 背景カラー
-	m_bgCol = BG_COLOR;
-	m_bgColDist = BG_COLOR;
-
 	// グラフ背景の生成
 	m_pBg = CScene2d::Create();
 	m_pBg->SetSize(BG_SIZE);
-	m_pBg->SetColor(m_bgCol);
+	m_pBg->SetColor(BG_COLOR);
 	m_pBg->SetPriority(OBJTYPE_BG);
 
-    m_fMaxNum = 0.0f; // 前回のゲーム中一番高いスコア
+	// グラフ内部数値最大数のセット
+	SetMaxNum();
+
+	// ゲージクラスの生成
+	CreatePolygon();
+
+	// ランクソート処理
+	std::sort(m_aRankData.begin(), m_aRankData.end(), [](Rank const& lhs, Rank const& rhs) {return (lhs.nPaintNum > rhs.nPaintNum); });
+
+	// アクション順位の初期化
+	m_nActionRank = m_aRankData.size();
+	// アクションカウントの初期化
+	m_nActionCnt = 0;
+	
+	return S_OK;
+}
+
+//==================================
+// 終了処理
+//==================================
+void CResultGraph::Uninit(void)
+{
+	// 開放処理
+	Release();
+}
+
+//==================================
+// 更新処理
+//==================================
+void CResultGraph::Update(void)
+{
+	// グラフ
+	ManageGraph();
+
+	// キャラの座標Yの管理
+	ManageCharacterHeight();
+}
+
+//==================================
+// 描画処理
+//==================================
+void CResultGraph::Draw(void)
+{
+}
+
+//==================================
+// グラフ最大数のセット
+//==================================
+void CResultGraph::SetMaxNum(void)
+{
+	m_fMaxNum = 0.0f; // 前回のゲーム中一番高いスコア
 
 	for (int nCntColor = 0; nCntColor < GET_COLORMANAGER->GetColorNum(); nCntColor++)
 	{
@@ -118,14 +163,20 @@ HRESULT CResultGraph::Init(void)
 			m_fMaxNum = (float)nTileNum;
 		}
 	}
+}
 
+//==================================
+// ポリゴンの生成処理
+//==================================
+void CResultGraph::CreatePolygon(void)
+{
 	// プレイヤー数の取得
 	int nEntryPlayerNum = CCharaSelect::GetEntryPlayerNum();
 
 	// 生成位置X軸の調整
-	float posX = (SCREEN_WIDTH/2.0f) - ((float)(nEntryPlayerNum - 1) * GAUGE_SPACE) / 2.0f;
+	float posX = (SCREEN_WIDTH / 2.0f) - ((float)(nEntryPlayerNum - 1) * GAUGE_SPACE) / 2.0f;
 
-	float fCreateCharaHeight = -200.0f;
+	float fCreateCharaHeight = CHARACTER_CREATE_ADD_HEIGHT;
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
 	{
 		if (!CCharaSelect::GetEntryData(nCntPlayer).bEntry) continue;
@@ -152,12 +203,12 @@ HRESULT CResultGraph::Init(void)
 		}
 
 		CCharacterPolygon * pCharaPolygon = CCharacterPolygon::Create(D3DXVECTOR3(posX, fCreateCharaHeight, 0.0f));
-		fCreateCharaHeight -= 200.0f;
+		fCreateCharaHeight += CHARACTER_CREATE_ADD_HEIGHT;
 		pCharaPolygon->SetSize(CHARACTER_POLYGON_SIZE);
 		pCharaPolygon->SetCharaType(CCharaSelect::GetEntryData(nCntPlayer).charaType);
 		pCharaPolygon->SetRimColor(GET_COLORMANAGER->GetStepColor(CCharaSelect::GetEntryData(nCntPlayer).nColorNum, 1));
 		pCharaPolygon->SetTexColor(GET_COLORMANAGER->GetIconColor(CCharaSelect::GetEntryData(nCntPlayer).nColorNum));
-		
+
 		m_apCharaPolygon.push_back(pCharaPolygon);
 
 		// ゲージの設定
@@ -167,59 +218,6 @@ HRESULT CResultGraph::Init(void)
 		m_aGauge[nCntPlayer][GAUGE_FRONT].pGauge->SetRate(START_RATE);
 		posX += GAUGE_SPACE;
 	}
-	// ランクソート処理
-	std::sort(m_aRankData.begin(), m_aRankData.end(), [](Rank const& lhs, Rank const& rhs) {return (lhs.nPaintNum > rhs.nPaintNum); });
-
-	// アクション順位の初期化
-	m_nActionRank = m_aRankData.size() - 1;
-	// アクションカウントの初期化
-	m_nActionCnt = 0;
-	
-	return S_OK;
-}
-
-//==================================
-// 終了処理
-//==================================
-void CResultGraph::Uninit(void)
-{
-
-	// 開放処理
-	Release();
-}
-
-//==================================
-// 更新処理
-//==================================
-void CResultGraph::Update(void)
-{
-	// グラフ
-	ManageGraph();
-
-	// 背景色の管理
-	ManageBackGroundColor();
-
-	for (int nCnt = 0; nCnt < (int)m_apCharaPolygon.size(); nCnt++)
-	{
-		D3DXVECTOR3 pos = m_apCharaPolygon[nCnt]->GetPos();
-		if (pos.y < CHARACTER_HEIGHT_DIST)
-		{
-			pos.y += CHARACTER_HEIGHT_ADD;
-			if (pos.y > CHARACTER_HEIGHT_DIST)
-			{
-				pos.y = CHARACTER_HEIGHT_DIST;
-			}
-			m_apCharaPolygon[nCnt]->SetPos(pos);
-		}
-	}
-}
-
-//==================================
-// 描画処理
-//==================================
-void CResultGraph::Draw(void)
-{
-
 }
 
 //==================================
@@ -228,6 +226,11 @@ void CResultGraph::Draw(void)
 void CResultGraph::ManageGraph(void)
 {
 	m_nActionCnt++;
+	if (m_nActionCnt >= RANK_ANNOUNCEMENT_COUNT && (int)m_aRankData.size() == m_nActionRank)
+	{
+		m_nActionCnt = 0;
+		m_nActionRank--;
+	}
 
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
 	{
@@ -243,9 +246,6 @@ void CResultGraph::ManageGraph(void)
 				D3DXCOLOR iconCol = GET_COLORMANAGER->GetIconColor(m_aGauge[nCntPlayer][GAUGE_FRONT].m_nColorNum);
 				CResultExplosion::Create(EXPLOSION_POS_1, iconCol);
 				CResultExplosion::Create(EXPLOSION_POS_2, iconCol);
-
-				// 背景色の変更
-				m_bgColDist = GET_COLORMANAGER->GetStepColor(m_aGauge[nCntPlayer][GAUGE_FRONT].m_nColorNum,0);
 			}
 		}
 
@@ -258,13 +258,24 @@ void CResultGraph::ManageGraph(void)
 }
 
 //==================================
-// 背景色の管理
+// キャラの座標Yの管理
 //==================================
-void CResultGraph::ManageBackGroundColor(void)
+void CResultGraph::ManageCharacterHeight(void)
 {
-	m_bgCol.r += (m_bgColDist.r - m_bgCol.r)*BG_COLOR_RATE;
-	m_bgCol.g += (m_bgColDist.g - m_bgCol.g)*BG_COLOR_RATE;
-	m_bgCol.b += (m_bgColDist.b - m_bgCol.b)*BG_COLOR_RATE;
-
-	//m_pBg->SetColor(m_bgCol);
+	for (int nCnt = 0; nCnt < (int)m_apCharaPolygon.size(); nCnt++)
+	{
+		// 座標の取得
+		D3DXVECTOR3 pos = m_apCharaPolygon[nCnt]->GetPos();
+		if (pos.y < CHARACTER_HEIGHT_DIST)
+		{
+			// 高さの加算
+			pos.y += CHARACTER_HEIGHT_ADD;
+			if (pos.y > CHARACTER_HEIGHT_DIST)
+			{// 行き過ぎないよう調整
+				pos.y = CHARACTER_HEIGHT_DIST;
+			}
+			// 座標のセット
+			m_apCharaPolygon[nCnt]->SetPos(pos);
+		}
+	}
 }
