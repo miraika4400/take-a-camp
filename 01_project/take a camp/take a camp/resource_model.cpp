@@ -46,6 +46,7 @@ const std::string CResourceModel::m_aModelPath[CResourceModel::MODEL_MAX]
 	"data/Models/bgobject/03_x/09_enogu.x",
 	"data/Models/bgobject/03_x/10_enpitu.x",
 	"data/Models/bgobject/03_x/11_magcup.x",
+	"data/Models/dummy.x",
 };
 
 //===================================

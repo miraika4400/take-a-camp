@@ -1,7 +1,7 @@
 //====================================================
 //
-//    tutorialの処理[tutorial.cpp]
-//    Author:伊藤　陽梧
+// tutorialの処理[tutorial.cpp]
+// Author:伊藤　陽梧
 //
 //====================================================
 
@@ -19,7 +19,6 @@
 #include "resource_texture.h"
 #include "sound.h"
 #include "camera_base.h"
-#include "map.h"
 #include "light.h"
 #include "bg.h"
 #include "text.h"
@@ -31,11 +30,9 @@
 #include "resource_text.h"
 #include "paintnum.h"
 #include "skill_gauge.h"
-
-//**********************************
-// 静的メンバ変数宣言
-//**********************************
-LPDIRECT3DTEXTURE9 CTutorial::m_pTexture[TUTORIAL_NUM] = {};
+#include "map.h"
+#include "resource_map.h"
+#include "dummy.h"
 
 //**********************************
 // マクロ定義
@@ -111,6 +108,9 @@ HRESULT CTutorial::Init()
 			TEXTWINDOW_COLOR);
 	}
 
+	// ダミーを作る
+	DummyCreate();
+
 	return S_OK;
 }
 
@@ -153,23 +153,8 @@ void CTutorial::Update()
 		pCamera->Update();
 	}
 
-	// 頂点座標の設定
-	D3DXVECTOR3 Pos[NUM_VERTEX];
-
-	if (m_pText)
-	{
-		// 頂点座標の設定
-		Pos[0] = D3DXVECTOR3(m_pText->GetPos().x + m_pText->GetWindowRange()[0].x - ADD_TEXTWINDOWRANGE, m_pText->GetPos().y + m_pText->GetWindowRange()[0].y - ADD_TEXTWINDOWRANGE, 0.0f);
-		Pos[1] = D3DXVECTOR3(m_pText->GetPos().x + m_pText->GetWindowRange()[1].x + ADD_TEXTWINDOWRANGE, m_pText->GetPos().y + m_pText->GetWindowRange()[0].y - ADD_TEXTWINDOWRANGE, 0.0f);
-		Pos[2] = D3DXVECTOR3(m_pText->GetPos().x + m_pText->GetWindowRange()[0].x - ADD_TEXTWINDOWRANGE, m_pText->GetPos().y + m_pText->GetWindowRange()[1].y + ADD_TEXTWINDOWRANGE, 0.0f);
-		Pos[3] = D3DXVECTOR3(m_pText->GetPos().x + m_pText->GetWindowRange()[1].x + ADD_TEXTWINDOWRANGE, m_pText->GetPos().y + m_pText->GetWindowRange()[1].y + ADD_TEXTWINDOWRANGE, 0.0f);
-	}
-
-	if (m_pTextWindow)
-	{
-		// 頂点ごとの情報をセット
-		m_pTextWindow->SetVertexPos(Pos);
-	}
+	// テキスト表示するときの背景のセット
+	SetTextWindow();
 
 	if (m_bTextEnd)
 	{
@@ -202,35 +187,35 @@ void CTutorial::Update()
 		// フェーズごとに処理を変える
 		switch (m_Tutorialphase)
 		{
-		case PHASE_PAINT:
+		case PHASE_PAINT: // 塗るフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
 				CheckTaskClear(CColorTile::GetTileNum(nCount, 1), TARGET_PAINT, nCount);
 			}
 			break;
 
-		case PHASE_OVERPAINT:
+		case PHASE_OVERPAINT: // 重ね塗りするフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
 				CheckTaskClear(CColorTile::GetTileNum(nCount, 3), TARGET_OVERPAINT, nCount);
 			}
 			break;
 
-		case PHASE_ATTACK:
+		case PHASE_ATTACK: // かかしを攻撃するフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
 				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount);
 			}
 			break;
 
-		case PHASE_FINALATTACK:
+		case PHASE_FINALATTACK: // かかしを必殺技で攻撃するフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
 				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount);
 			}
 
 			// 必殺技フェーズはゲージを常時最大に
-			MAX_PLAYERGAUGE();
+			Max_Playergauge();
 			break;
 
 		default:
@@ -454,12 +439,65 @@ void CTutorial::StartPlayer(bool bUpdate)
 //============================================
 // プレイヤーのゲージを最大にする
 //============================================
-void CTutorial::MAX_PLAYERGAUGE(void)
+void CTutorial::Max_Playergauge(void)
 {
 	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
 	while (pPlayer)
 	{
 		pPlayer->GetSkillgauge()->SkillGauge_Max();
 		pPlayer = (CPlayer*)pPlayer->GetNext();
+	}
+}
+
+//============================================
+// ダミーを作る処理
+//============================================
+void CTutorial::DummyCreate(void)
+{
+	CMapManager::MAP_DATA MapData = m_pMap->GetMapData();
+
+	//マップデータがあるか
+	if (&MapData != NULL)
+	{
+		for (int nBlockY = 0; nBlockY < MapData.nStageSizeY; nBlockY++)
+		{
+			for (int nBlockX = 0; nBlockX < MapData.BlockData[nBlockY].nStageSizeX; nBlockX++)
+			{
+				// プレイヤーの生成
+				switch (MapData.BlockData[nBlockY].nBlockType[nBlockX])
+				{
+				case CMapManager::BLOCK_TYPE_DUMMY:	//1Pスタート位置
+					CDummy::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + MapData.m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+					break;
+
+				default:
+					break;
+				}
+			}
+		}
+	}
+}
+
+//============================================
+// テキスト表示するときの背景のセット
+//============================================
+void CTutorial::SetTextWindow(void)
+{
+	// 頂点座標の設定
+	D3DXVECTOR3 Pos[NUM_VERTEX];
+
+	if (m_pText)
+	{
+		// 頂点座標の設定
+		Pos[0] = D3DXVECTOR3(m_pText->GetPos().x + m_pText->GetWindowRange()[0].x - ADD_TEXTWINDOWRANGE, m_pText->GetPos().y + m_pText->GetWindowRange()[0].y - ADD_TEXTWINDOWRANGE, 0.0f);
+		Pos[1] = D3DXVECTOR3(m_pText->GetPos().x + m_pText->GetWindowRange()[1].x + ADD_TEXTWINDOWRANGE, m_pText->GetPos().y + m_pText->GetWindowRange()[0].y - ADD_TEXTWINDOWRANGE, 0.0f);
+		Pos[2] = D3DXVECTOR3(m_pText->GetPos().x + m_pText->GetWindowRange()[0].x - ADD_TEXTWINDOWRANGE, m_pText->GetPos().y + m_pText->GetWindowRange()[1].y + ADD_TEXTWINDOWRANGE, 0.0f);
+		Pos[3] = D3DXVECTOR3(m_pText->GetPos().x + m_pText->GetWindowRange()[1].x + ADD_TEXTWINDOWRANGE, m_pText->GetPos().y + m_pText->GetWindowRange()[1].y + ADD_TEXTWINDOWRANGE, 0.0f);
+	}
+
+	if (m_pTextWindow)
+	{
+		// 頂点ごとの情報をセット
+		m_pTextWindow->SetVertexPos(Pos);
 	}
 }

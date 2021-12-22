@@ -171,6 +171,8 @@
     <ClCompile Include="confetti.cpp" />
     <ClCompile Include="confetti_factory.cpp" />
     <ClCompile Include="dash_item.cpp" />
+    <ClCompile Include="dummy.cpp" />
+    <ClCompile Include="dummy_tile.cpp" />
     <ClCompile Include="dynamic_texture.cpp" />
     <ClCompile Include="game_finish.cpp" />
     <ClCompile Include="game_start.cpp" />
@@ -277,6 +279,8 @@
     <ClInclude Include="confetti.h" />
     <ClInclude Include="confetti_factory.h" />
     <ClInclude Include="dash_item.h" />
+    <ClInclude Include="dummy.h" />
+    <ClInclude Include="dummy_tile.h" />
     <ClInclude Include="dynamic_texture.h" />
     <ClInclude Include="effect_result_explosion.h" />
     <ClInclude Include="game_finish.h" />
