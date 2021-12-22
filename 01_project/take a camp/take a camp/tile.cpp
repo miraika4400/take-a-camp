@@ -174,7 +174,7 @@ void CTile::Update(void)
 
 	// ’e‚Æ‚Ì“–‚½‚è”»’è
 	m_bHitBullet = CollisionBullet();
-	
+
 	//“h‚è”»’è‚Æ‚Ì“–‚½‚è”»’è
 	CollisionPeint();
 }
