@@ -111,7 +111,7 @@ HRESULT CCharaSelectUi::Init(void)
 		m_aPolygon[nCntPlayer].pPlayerNumber->SetTextureUV(uv);
 
 		// モデルポリゴンの生成
-		m_aPolygon[nCntPlayer].pCharaPolygon = CCharacterPolygon::Create(D3DXVECTOR3(boardPos.x, CHARACTER_MODEL_POS_Y, boardPos.z));
+		m_aPolygon[nCntPlayer].pCharaPolygon = CCharacterPolygon::Create(D3DXVECTOR3(boardPos.x, CHARACTER_MODEL_POS_Y, boardPos.z),CCharacterPolygon::MODE_ROTATION);
 
 		// アイコンの生成
 		m_aPolygon[nCntPlayer].pReadyIcon = CScene2d::Create();
@@ -169,6 +169,7 @@ void CCharaSelectUi::Update(void)
 		{// エントリー時
 			m_aPolygon[nCntPlayer].pBack->SetColor(GET_COLORMANAGER->GetIconColor(entryData.nColorNum));
 			m_aPolygon[nCntPlayer].pCharaPolygon->SetRimColor(GET_COLORMANAGER->GetStepColor(entryData.nColorNum,1));
+			m_aPolygon[nCntPlayer].pCharaPolygon->SetTexColor(GET_COLORMANAGER->GetIconColor(entryData.nColorNum));
 			m_aPolygon[nCntPlayer].pControllIcon->SetColor(ICON_COLOR_ON);
 
 			if (entryData.bReady) m_aPolygon[nCntPlayer].pReadyIcon->SetColor(ICON_COLOR_ON);

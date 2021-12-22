@@ -31,6 +31,7 @@
 #include "player_model.h"
 #include "building.h"
 #include "game_start.h"
+#include "stage_texture.h"
 
 //=============================
 // マクロ定義
@@ -86,21 +87,19 @@ HRESULT CGame::Init(void)
 
 	// 背景の生成
 	CBg::Create();
-	CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), CResourceModel::MODEL_DESK,D3DXVECTOR3(0.4f, 0.4f, 0.4f));
+	CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), CResourceModel::MODEL_DESK,D3DXVECTOR3(0.4f, 0.4f, 0.4f))->SetPriority(OBJTYPE_MAP);
 	//ステージ生成
 	m_pMap = CMap::Create(m_MapType);
 	
 	// プレイヤーごとの色の割合の表示
 	CPaintnum::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 25.0f, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, 50.0f, 0.0f));
-
-
 	// 制限時間クラス
 	//CTime::Create();
 	CBuilding::Load();
 	// ライトの向きの設定
 	CManager::GetLight()->SetDir(LIGHT_DIR_BASE);
 	// ready goの生成
-	m_pGameStart=CGameStart::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, START_UI_POS_Y, 0.0f), D3DXVECTOR3(START_UI_SIZE_X, START_UI_SIZE_Y, 0.0f));
+	m_pGameStart=CGameStart::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, START_UI_POS_Y, 0.0f), START_UI_SIZE);
 
 	return S_OK;
 }
@@ -147,6 +146,7 @@ void CGame::Update(void)
 	{
 		CManager::SetCamera(CCamera::Create());
 	}
+
 	CKillCount::AddTotalKill();
 	CColorTile::CountColorTile();
 
@@ -175,4 +175,7 @@ void CGame::Draw(void)
     {
 		pCamera->SetCamera();
     }
+
+	// ステージの書き込み
+	CStageTexture::GetStateTexturePointa()->DrawStageInTex();
 }

@@ -194,6 +194,8 @@ HRESULT CPlayer::Init(void)
 	CColorManager::GetColorManager()->SetUsePlayerNum(m_nPlayerNumber, m_nColor);
 	//リムライトカラーの設定
 	SetRimColor(GET_COLORMANAGER->GetIconColor(m_nColor));
+	//テクスチャカラーの設定
+	SetTexColor(GET_COLORMANAGER->GetIconColor(m_nColor));
 	// キルカウント用のクラス
 	m_pKillCount = CKillCount::Create(m_nPlayerNumber);
 	// スキルゲージの生成(後々ここに職種入れてアイコン変える)
@@ -264,6 +266,7 @@ void CPlayer::Update(void)
 {
 	if (!m_bUpdate)
 	{
+		Move(); 
 		CPlayerModel::Update();
 		return;
 	}
@@ -459,8 +462,7 @@ void CPlayer::Move(void)
 		//カウントが一定に達する
 		if (MoveData.m_nMoveFrameCount >= MoveData.m_nMoveFrame)
 		{
-
-			//初動加速処理
+			// 初動加速処理
 			if (MoveData.m_nMoveCount<MoveData.m_nMoveCountData
 				&&m_ItemState != ITEM_STATE_DASH)
 			{
@@ -665,7 +667,6 @@ void CPlayer::Attack(void)
 		}
 	}
 
-
 	//攻撃フラグが立っているか＆移動フラグが立っていない状態か&ステートが通常状態か
 	if (m_AttackData.m_bAttack&&m_bMove&&m_PlayerState == PLAYER_STATE_NORMAL)
 	{
@@ -675,7 +676,7 @@ void CPlayer::Attack(void)
 		CreatePos.x = ((cosf(rot.y)*AttackPos.x) + (sinf(rot.y)*AttackPos.z));
 		CreatePos.y = 1 * AttackPos.y;
 		CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
-
+	
 		//カウントアップ
 		m_AttackData.m_nAttackRotCount++;
 		//攻撃方向指定

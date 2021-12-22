@@ -39,7 +39,7 @@
 //=============================
 CRuleManager* CGame::m_pRuleManager = NULL;                       // ルールマネージャークラス
 CMap* CGame::m_pMap = NULL;			                              // ステージクラスポインタ
-CMapManager::MAP_TYPE CGame::m_MapType = CMapManager::MAP_TYPE_2; // マップタイプ
+CMapManager::MAP_TYPE CGame::m_MapType = CMapManager::MAP_TYPE_1; // マップタイプ
 
 //=============================
 // コンストラクタ

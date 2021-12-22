@@ -68,17 +68,19 @@ public:
 		TEXTURE_READEY,				// ready
 		TEXTURE_GO,					// go
 		TEXTURE_FINISH,				// finish
+		TEXTURE_SECONDS,			// 残り何秒
 		TEXTURE_LANCE_ICON,		 	// 槍アイコン
 		TEXTURE_ARROW_ICON,		 	// 矢アイコン
 		TEXTURE_MAGICSTICK_ICON,	// 魔法杖アイコン
 		TEXTURE_KNIFE_ICON,		 	// ナイフアイコン
 		TEXTURE_STICK_ICON,		 	// 杖アイコン
+		TEXTURE_RESULT_EXPLOSION,   // リザルト*エクスプロ―ジョン
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類
 	typedef enum
 	{
-		TECTURE_CUBE_SLY,        // キューブテクスチャ(空)
+		TEXTURE_CUBE_SLY,        // キューブテクスチャ(空)
 		TEXTURE_CUBE_MAX              // テクスチャ数
 	}TEXTURE_CUBE_TYPE;
 
