@@ -14,22 +14,22 @@ NUM_MODEL = 16
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data//Models/player/03_thief/00_foundation.x		# [00]土台
-MODEL_FILENAME = data//Models/player/03_thief/01_bodyU.x			# [01]体
-MODEL_FILENAME = data//Models/player/03_thief/02_bodyD.x			# [02]腰
-MODEL_FILENAME = data//Models/player/03_thief/03_head.x				# [03]頭
-MODEL_FILENAME = data//Models/player/03_thief/04_armUR.x			# [04]右上腕
-MODEL_FILENAME = data//Models/player/03_thief/05_armDR.x			# [05]右前腕
-MODEL_FILENAME = data//Models/player/03_thief/06_handR.x			# [06]右手
-MODEL_FILENAME = data//Models/player/03_thief/07_armUL.x			# [07]左上腕
-MODEL_FILENAME = data//Models/player/03_thief/08_armDL.x			# [08]左前腕
-MODEL_FILENAME = data//Models/player/03_thief/09_handL.x			# [09]左手
-MODEL_FILENAME = data//Models/player/03_thief/10_legUR.x			# [10]右もも
-MODEL_FILENAME = data//Models/player/03_thief/11_legDR.x			# [11]右ふくらはぎ
-MODEL_FILENAME = data//Models/player/03_thief/12_footR.x			# [12]右足
-MODEL_FILENAME = data//Models/player/03_thief/13_legUL.x			# [13]左もも
-MODEL_FILENAME = data//Models/player/03_thief/14_legDL.x			# [14]左ふくらはぎ
-MODEL_FILENAME = data//Models/player/03_thief/15_footL.x			# [15]左足
+MODEL_FILENAME = data/Models/player/04_magician/00_foundation.x		# [00]土台
+MODEL_FILENAME = data/Models/player/04_magician/01_bodyU.x			# [01]体
+MODEL_FILENAME = data/Models/player/04_magician/02_bodyD.x			# [02]腰
+MODEL_FILENAME = data/Models/player/04_magician/03_head.x			# [03]頭
+MODEL_FILENAME = data/Models/player/04_magician/04_armUR.x			# [04]右上腕
+MODEL_FILENAME = data/Models/player/04_magician/05_armDR.x			# [05]右前腕
+MODEL_FILENAME = data/Models/player/04_magician/06_handR.x			# [06]右手
+MODEL_FILENAME = data/Models/player/04_magician/07_armUL.x			# [07]左上腕
+MODEL_FILENAME = data/Models/player/04_magician/08_armDL.x			# [08]左前腕
+MODEL_FILENAME = data/Models/player/04_magician/09_handL.x			# [09]左手
+MODEL_FILENAME = data/Models/player/04_magician/10_legUR.x			# [10]右もも
+MODEL_FILENAME = data/Models/player/04_magician/11_legDR.x			# [11]右ふくらはぎ
+MODEL_FILENAME = data/Models/player/04_magician/12_footR.x			# [12]右足
+MODEL_FILENAME = data/Models/player/04_magician/13_legUL.x			# [13]左もも
+MODEL_FILENAME = data/Models/player/04_magician/14_legDL.x			# [14]左ふくらはぎ
+MODEL_FILENAME = data/Models/player/04_magician/15_footL.x			# [15]左足
 
 
 #------------------------------------------------------------------------------
@@ -51,70 +51,70 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 1					# 体
 		PARENT = 0					# (親)NULL
-		POS = 0.0 6.7 0.0
+		POS = 0.0 6.6 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 2					# 腰
 		PARENT = 1					# (親)腰
-		POS = 0.0 0.0 0.0
+		POS = 0.0 0.5 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 3					# 頭
 		PARENT = 1					# (親)上半身
-		POS = 0.0 2.3 0.0
+		POS = 0.0 3.2 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 4					# 右上腕
 		PARENT = 1					# (親)腹
-		POS = -1.6 1.8 0.0
+		POS = -1.2 2.5 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 5					# 右前腕
 		PARENT = 4					# (親)右上腕
-		POS = -2.0 0.0 0.0
+		POS = -1.8 0.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 6					# 右手
 		PARENT = 5					# (親)右前腕
-		POS = -1.4 0.0 0.0
+		POS = -1.8 0.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 7					# 左上腕
 		PARENT = 1					# (親)腹
-		POS = 1.6 1.8 0.0
+		POS = 1.2 2.5 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 	
 	PARTSSET
 		INDEX = 8					# 左前腕
 		PARENT = 7					# (親)左上腕
-		POS = 2.0 0.0 0.0
+		POS = 1.8 0.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET 
 		INDEX = 9					# 左手
 		PARENT = 8					# (親)左前腕
-		POS = 1.4 0.0 0.0
+		POS = 1.8 0.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 10					# 右もも
 		PARENT = 2					# (親)腰
-		POS = -0.55 -0.8 0.0
+		POS = -0.7 -1.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
@@ -128,14 +128,14 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 12					# 右足
 		PARENT = 11					# (親)右ふくらはぎ
-		POS = 0.0 -1.6 0.05
+		POS = 0.0 -1.8 0.2
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET  
 	
 	PARTSSET
 		INDEX = 13					# 左もも
 		PARENT = 2					# (親)腰
-		POS = 0.55 -0.8 0.0
+		POS = 0.7 -1.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 	
@@ -149,7 +149,7 @@ CHARACTERSET
 		PARTSSET
 		INDEX = 15					# 左足
 		PARENT = 14					# (親)左ふくらはぎ
-		POS = 0.0 -1.6 0.05
+		POS = 0.0 -1.8 0.2
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 END_CHARACTERSET
