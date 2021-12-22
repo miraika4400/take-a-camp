@@ -107,21 +107,23 @@ void CCharacterPolygon::Uninit(void)
 //=============================================================================
 void CCharacterPolygon::Update(void)
 {
+	if (m_pCharacterModel == NULL) return;
+
 	switch (m_mode)
 	{
 	case CCharacterPolygon::MODE_NONE:
 		break;
 	case CCharacterPolygon::MODE_ROTATION:
 		// ƒ‚ƒfƒ‹‚ÌXVˆ—
-		if (m_pCharacterModel != NULL)
-		{
-			m_pCharacterModel->Update();
-			m_pCharacterModel->SetRot(m_pCharacterModel->GetRot() + CHARACTER_ADD_ROT);
-		}
+
+		m_pCharacterModel->SetRot(m_pCharacterModel->GetRot() + CHARACTER_ADD_ROT);
+
 		break;
 	default:
 		break;
 	}
+
+	m_pCharacterModel->Update();
 }
 
 //=============================================================================
