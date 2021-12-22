@@ -308,11 +308,37 @@ void CPlayer::Update(void)
 
 		break;
 	case PLAYER_STATE_STOP:
-		//攻撃状態を通常に変更
-		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_NORMAL)
+		//攻撃可否フラグが立っているか
+		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
+			&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK)
 		{
-			m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
+			//ジョイパットの取得
+			CInputJoypad* pJoypad = CManager::GetJoypad();
+
+			//攻撃キャンセル
+			if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, pJoypad->BUTTON_PRESS, m_nControllNum))
+			{
+				m_pAttack->CancelSwitch();
+			}
+			//攻撃をチャージしていないとき
+			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE)
+			{
+				// 必殺の処理
+				AttackFinal();
+			}
+			//必殺技を使っていないとき
+			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
+			{
+				// 攻撃処理
+				Attack();
+			}
 		}
+
+		//攻撃状態を通常に変更
+		//if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_NORMAL)
+		//{
+		//	m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
+		//}
 		break;
 	case PLAYER_STATE_DEATH:	//死亡状態
 		//リスポーン処理
@@ -439,7 +465,6 @@ void CPlayer::Move(void)
 				&&m_ItemState != ITEM_STATE_DASH)
 			{
 				MoveData.m_nMoveFrame += (MoveData.m_nMoveFrameData - MoveData.m_nMoveFrame) / (float)(MoveData.m_nMoveCountData - MoveData.m_nMoveCount);
-
 				MoveData.m_nMoveCount++;
 			}
 			//カウント初期化
@@ -637,24 +662,19 @@ void CPlayer::Attack(void)
 		{
 			//攻撃フラグを立てる
 			m_AttackData.m_bAttack = true;
-
-
-			
 		}
 	}
 
 
-	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
-	if (m_AttackData.m_bAttack&&m_bMove)
-	{		
-			//行列計算
-			D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-			D3DXVECTOR3 AttackPos = m_pAttack->GetAttackSquare().SquareData[0].AttackPos * TILE_ONE_SIDE;
-			CreatePos.x = ((cosf(rot.y)*AttackPos.x) + (sinf(rot.y)*AttackPos.z));
-			CreatePos.y = 1 * AttackPos.y;
-			CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
-
-			
+	//攻撃フラグが立っているか＆移動フラグが立っていない状態か&ステートが通常状態か
+	if (m_AttackData.m_bAttack&&m_bMove&&m_PlayerState == PLAYER_STATE_NORMAL)
+	{
+		//行列計算
+		D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 AttackPos = m_pAttack->GetAttackSquare().SquareData[0].AttackPos * TILE_ONE_SIDE;
+		CreatePos.x = ((cosf(rot.y)*AttackPos.x) + (sinf(rot.y)*AttackPos.z));
+		CreatePos.y = 1 * AttackPos.y;
+		CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
 
 		//カウントアップ
 		m_AttackData.m_nAttackRotCount++;
@@ -711,8 +731,8 @@ void CPlayer::AttackFinal(void)
 		}
 	}
 
-	//攻撃フラグが立っているか＆移動フラグが立っていない状態か
-	if (m_AttackData.m_bAttack&&m_bMove)
+	//攻撃フラグが立っているか＆移動フラグが立っていない状態か&ステートが通常状態か
+	if (m_AttackData.m_bAttack&&m_bMove&&m_PlayerState == PLAYER_STATE_NORMAL)
 	{
 		//カウントアップ
 		m_AttackData.m_nAttackRotCount++;

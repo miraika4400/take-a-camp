@@ -128,7 +128,8 @@ public:
 	void SetState(PLAYER_STATE PlayerState) { m_PlayerState = PlayerState; }	
 	PLAYER_STATE GetState(void) { return m_PlayerState; }			
 	// –³“Gó‘Ôæ“¾
-	bool GetInvincible(void) { return m_bInvincible; }		
+	bool GetInvincible(void) { return m_bInvincible; }	
+	void SetInvincible(bool bInvincible) { m_bInvincible = bInvincible; }
 	//Œü‚«‚ÆˆÊ’u‚ÌˆÚ“®—Ê
 	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }					
 	D3DXVECTOR3 GetPosDest(void) { return MoveData.m_Move; }

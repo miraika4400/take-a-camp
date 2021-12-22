@@ -154,12 +154,6 @@ void CMap::MapCreate(void)
 						tileCol = GET_COLORMANAGER->GetColorDataByPlayerNumber(3).iconColor;
 					}
 					break;
-					case CMapManager::BLOCK_TYPE_WARP_1://ワープタイルタイプ1
-						CWarpTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, CWarpTile::WARP_TILE_TYPE_1);
-						break;
-					case CMapManager::BLOCK_TYPE_WARP_2://ワープタイルタイプ2
-						CWarpTile::Create(D3DXVECTOR3(TILE_ONE_SIDE * -nBlockX, 0.0f, TILE_ONE_SIDE * nBlockY) + m_MapData.m_pos, CWarpTile::WARP_TILE_TYPE_2);
-						break;
 				}
 
 				// タイルの生成

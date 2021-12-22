@@ -54,19 +54,24 @@ public:
 	//*****************************
 	CWarpTile();
 	~CWarpTile();
-	static CWarpTile *Create(D3DXVECTOR3 pos, WARP_TILE_TYPE nWarpTile);	//生成処理（位置と識別番号）
+
+	static void Create_1(D3DXVECTOR3 pos, D3DXCOLOR col);	//生成処理（識別番号1）
+	static void Create_2(D3DXVECTOR3 pos, D3DXCOLOR col);	//生成処理（識別番号2）
+
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 
 private:
 	void HitPlayerAction(CPlayer*pPlayer);	// プレイヤーが乗っているか
-	
+	void HitPlayerActionRelease(void);		// プレイヤーが降りたか
+
 	//*****************************
 	// メンバ変数
 	//*****************************
+	WARP_TILE_STATE m_WarpState;				// 状態変数
 	WARP_TILE_TYPE	m_WarpType;					// ワープ床の識別用変数
-		static std::vector<CWarpTile*> m_pWarpTile;	// ワープ床のポインタ動的配列
+	static std::vector<CWarpTile*> m_pWarpTile;	// ワープ床のポインタ動的配列
 	static int m_nTotalWarpTile;				// 総数
 };
 
