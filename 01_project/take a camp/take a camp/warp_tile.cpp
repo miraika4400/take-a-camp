@@ -171,7 +171,7 @@ void CWarpTile::HitPlayerAction(CPlayer * pPlayer)
 		//数保存
 		int nArray = 0;
 		//同じタイプからワープ先を決める
-		for (int nWarpCount = 0; nWarpCount<m_nTotalWarpTile; nWarpCount++)
+		for (int nWarpCount = 0; nWarpCount < m_nTotalWarpTile; nWarpCount++)
 		{
 			//同じタイプか&&自分以外のポインタ
 			if (m_WarpType == m_pWarpTile.at(nWarpCount)->m_WarpType
