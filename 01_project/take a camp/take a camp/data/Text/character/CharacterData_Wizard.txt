@@ -16,10 +16,10 @@ CHARACTER_DATA
 	CHARGE_TIME_LIST_END
 	
 	MOTION_LIST
-		IDLE   = data/Text/motion/05_winzard/motion_wizard_neutral.txt
-		CHARGE = data/Text/motion/05_winzard/motion_wizard_neutral.txt
-		ATTACK = data/Text/motion/05_winzard/motion_wizard_attack.txt
-		ROLL   = data/Text/motion/05_winzard/motion_wizard_roll.txt
+		IDLE   = data/Text/motion/05_wizard/motion_wizard_neutral.txt
+		CHARGE = data/Text/motion/05_wizard/motion_wizard_neutral.txt
+		ATTACK = data/Text/motion/05_wizard/motion_wizard_attack.txt
+		ROLL   = data/Text/motion/05_wizard/motion_wizard_roll.txt
 	MOTION_LIST_END
 	
 CHARACTER_DATA_END
