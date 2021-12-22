@@ -22,12 +22,12 @@ CResourceCharacter* CResourceCharacter::m_pInstance = NULL;
 // キャラクターラベルリスト
 const std::vector<CResourceCharacter::LabelData> CResourceCharacter::m_aLabelList =
 {
-	{ "KNIGHT", CResourceModelHierarchy::MODEL_HIERARCHY_KNIGHT },
-	{ "LANCER", CResourceModelHierarchy::MODEL_HIERARCHY_LANCER },
-	{ "WIZARD", CResourceModelHierarchy::MODEL_HIERARCHY_WIZARD },
-	{ "THIEF", CResourceModelHierarchy::MODEL_HIERARCHY_THIEF },
+	{ "KNIGHT"  , CResourceModelHierarchy::MODEL_HIERARCHY_KNIGHT },
+	{ "LANCER"  , CResourceModelHierarchy::MODEL_HIERARCHY_LANCER },
+	{ "WIZARD"  , CResourceModelHierarchy::MODEL_HIERARCHY_WIZARD },
+	{ "THIEF"   , CResourceModelHierarchy::MODEL_HIERARCHY_THIEF },
 	{ "MAGICIAN", CResourceModelHierarchy::MODEL_HIERARCHY_MAGICIAN },
-	{ "ARCHER", CResourceModelHierarchy::MODEL_HIERARCHY_ARCHER },
+	{ "ARCHER"  , CResourceModelHierarchy::MODEL_HIERARCHY_ARCHER },
 }; 
 // キャラクターデータのテキストのパス
 const std::string CResourceCharacter::m_aCharacterDataTxtPath[CResourceCharacter::CHARACTER_MAX] =

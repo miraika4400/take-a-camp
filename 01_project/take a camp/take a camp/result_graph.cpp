@@ -42,7 +42,7 @@
 #define CHARACTER_HEIGHT_DIST ((SCREEN_HEIGHT - CHARACTER_POLYGON_SIZE.y / 2.0f)-20.0f/2.0f)
 #define CHARACTER_HEIGHT_ADD 15.0f
 #define CHARACTER_CREATE_ADD_HEIGHT -200 //キャラクターを生成する位置を変える
-
+#define CONFETTI_TIME (120)
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
@@ -282,16 +282,22 @@ void CResultGraph::ManageGraph(void)
 
 				if (m_nActionRank == 0)
 				{// 一位発表時
-					CConfettiFactory::Create(iconCol, 120);
+					CConfettiFactory::Create(iconCol, CONFETTI_TIME);
 					m_bEnd = true;
 				}
 				bAnnouncement = true;
+
+				// 次の順位が一位の時はディレイなく発表する
+				if (nCntRankData > 0 && m_aRankData[nCntRankData - 1].nRank == 0)
+				{
+					bAnnouncement = false;
+				}
 			}
 			// アクションランクを次のランクにする
 			m_nActionRank--;
 			// カウントの初期化*順位が中抜けだったときはカウントを初期化しない
 			m_nActionCnt = 0;
-			if (!bAnnouncement|| m_nActionRank == 0)m_nActionCnt = RANK_ANNOUNCEMENT_COUNT;
+			if (!bAnnouncement || m_nActionRank == 0) m_nActionCnt = RANK_ANNOUNCEMENT_COUNT;
 		}
 	}
 
