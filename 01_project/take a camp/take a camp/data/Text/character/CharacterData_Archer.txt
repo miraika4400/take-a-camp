@@ -16,9 +16,9 @@ CHARACTER_DATA
 	CHARGE_TIME_LIST_END
 	
 	MOTION_LIST
-		IDLE   = data/Text/motion/motion_archer_neutral.txt
-		CHARGE = data/Text/motion/motion_archer_neutral.txt
-		ATTACK = data/Text/motion/motion_archer_attack.txt
+		IDLE   = data/Text/motion/02_archer/motion_archer_neutral.txt
+		CHARGE = data/Text/motion/02_archer/motion_archer_neutral.txt
+		ATTACK = data/Text/motion/02_archer/motion_archer_attack.txt
 	MOTION_LIST_END
 	
 CHARACTER_DATA_END
