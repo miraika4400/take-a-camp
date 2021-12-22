@@ -15,6 +15,7 @@
 #include "spawn_tile.h"
 #include "move_around_tile.h"
 #include "move_sideways_tile.h"
+#include "dummy_tile.h"
 
 //*****************************
 // É}ÉNÉçíËã`
@@ -35,6 +36,7 @@ const std::vector<CTileFactory::LabelData> CTileFactory::m_cLabelData =
 	{ "TILE_NEEDLE" , CNeedleTile::Create },
 	{ "TILE_AROUND_MOVE", CAroundTile::Create },
 	{ "TILE_SIDEWAYS_MOVE",CSidewaysTile::Create },
+	{ "TILE_DUMMY",CDummyTile::Create },
 };
 
 //******************************

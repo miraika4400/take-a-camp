@@ -447,6 +447,12 @@
     <ClCompile Include="confetti_factory.cpp">
       <Filter>ソース ファイル\09_Effect</Filter>
     </ClCompile>
+    <ClCompile Include="dummy_tile.cpp">
+      <Filter>ソース ファイル\08_Map\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="dummy.cpp">
+      <Filter>ソース ファイル\07_GameModel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -763,6 +769,12 @@
     </ClInclude>
     <ClInclude Include="confetti_factory.h">
       <Filter>ヘッダー ファイル\09_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="dummy_tile.h">
+      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="dummy.h">
+      <Filter>ヘッダー ファイル\07_GameModel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

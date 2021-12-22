@@ -1,9 +1,9 @@
-//=============================================================================
+//====================================================
 //
 // tutorialヘッダ [tutorial.h]
-// Author : 増澤 未来
+// Author : 伊藤　陽梧
 //
-//=============================================================================
+//====================================================
 
 //二重インクルード防止
 #ifndef _TUTORIAL_H_
@@ -21,11 +21,6 @@
 class CMap;
 class CPolygon;
 class CText;
-
-//*****************************
-// マクロ定義
-//*****************************
-#define TUTORIAL_NUM (1) // チュートリアルページ数
 
 //*****************************
 //クラス定義
@@ -65,12 +60,13 @@ private:
 	void UpdateText(void);
 	void NextPhase(void);
 	void StartPlayer(bool bUpdate);
-	void MAX_PLAYERGAUGE(void);
+	void Max_Playergauge(void);
+	void DummyCreate(void);
+	void SetTextWindow(void);
 
 	//============
 	// メンバ変数
 	//===========
-	static LPDIRECT3DTEXTURE9 m_pTexture[TUTORIAL_NUM]; // テクスチャへのポインタ
 	CMap *m_pMap;										// マップのポインタ
 	CPolygon *m_pTextWindow;								// ポリゴンのポインタ
 	CText *m_pText;										// テキストのポインタ

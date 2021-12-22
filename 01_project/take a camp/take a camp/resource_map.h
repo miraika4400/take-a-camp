@@ -49,6 +49,7 @@ public:
 		BLOCK_TYPE_NEEDLE_BLOCK,// とげブロック
 		BLOCK_TYPE_AROUND_MOVE_BLOCK,	// 前後移動ブロック
 		BLOCK_TYPE_SIDEWAYS_MOVE_BLOCK, // 横移動ブロック
+		BLOCK_TYPE_DUMMY,		// ダミー
 	}BLOCK_TYPE;
 
 	typedef enum	//マップの種類

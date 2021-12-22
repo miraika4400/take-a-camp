@@ -1,9 +1,9 @@
-////////////////////////////////////////////////////
+//====================================================
 //
-//    resource_model_hierarchyクラスの処理[resource_model_hierarchy.cpp]
-//    Author:増澤 未来
+// resource_textの処理[resource_text.cpp]
+// Author:伊藤　陽梧
 //
-////////////////////////////////////////////////////
+//====================================================
 
 //******************************
 // インクルード
@@ -73,6 +73,7 @@ void CResourceText::Release(void)
 	{
 		// テクスチャ破棄
 		m_pSingle->Unload();
+
 		// メモリの破棄
 		delete m_pSingle;
 		m_pSingle = NULL;
@@ -88,13 +89,14 @@ void CResourceText::Load(void)
 	FILE *pFile = NULL;
 
 	// 変数宣言
-	char cReadText[256];	// 文字として読み取り用
-	char cHeadText[256];	// 文字の判別用
-	char cDie[256];			// 使わない文字
 	int nTextNum = 0;		// タイプのナンバー
 
+	// ファイル読み込み
 	std::ifstream ifs(TUTORIAL_FILENAME);
+
+	// 文字列保持用
 	std::string str;
+
 	if (ifs)
 	{
 		// SCRIPTの文字が見つかるまで
@@ -105,18 +107,18 @@ void CResourceText::Load(void)
 		// strがSCRIPTの時
 		if (str.find("SCRIPT") == 0)
 		{
-			// cHeadTextがEND_SCRIPTになるまで
+			// strがEND_SCRIPTになるまで
 			while (str.find("END_SCRIPT") != 0)
 			{
 				getline(ifs, str);
 
-				// cHeadTextがEFFECT_DATASETの時
+				// strがTEXT_DATASETの時
 				if (str.find("TEXT_DATASET") == 0)
 				{
 					m_TextMap[nTextNum] = str;
 					nTextNum++;
 
-					// cHeadTextがEND_EFFECT_DATASETになるまで
+					// strがEND_TEXT_DATASETになるまで
 					while (str.find("END_TEXT_DATASET") != 0)
 					{
 						getline(ifs, str);
