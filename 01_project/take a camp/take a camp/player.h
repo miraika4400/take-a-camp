@@ -161,6 +161,7 @@ private:
 	void ManageRot(void);		// 向きの管理
 	void Respawn(void);			// リスポーン処理
 	void Invincible(void);		// 無敵処理
+	void ManageState(void);     // ステート管理
 	void ManageItemState(void); // アイテムステートの管理
 
 	//*****************************
