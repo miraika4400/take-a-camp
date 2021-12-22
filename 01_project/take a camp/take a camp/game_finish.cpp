@@ -13,6 +13,7 @@
 #include "fade.h"
 #include "polygon.h"
 #include "resource_texture.h"
+#include "player.h"
 
 //=============================================================================
 // マクロ定義
@@ -26,7 +27,7 @@ CGameFinish::CGameFinish()
 {
 	m_pPolygon = NULL;							// ポリゴン情報
 	m_pos = VEC3_ZERO;							// 位置情報
-	m_size = VEC3_ZERO;
+	m_size = VEC3_ZERO;							// サイズ
 	m_col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);	// 色情報
 	m_nCount = 0;								// カウンター
 }

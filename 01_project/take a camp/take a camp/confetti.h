@@ -28,16 +28,19 @@ public:
 	CConfetti();
 	~CConfetti();
 
-	static CConfetti *Create(void); // クラス生成
+	static CConfetti *Create(D3DXVECTOR3 pos , D3DXCOLOR col,float fMoveAngle = 0.0f); // クラス生成
 
-	virtual HRESULT Init(void); // 初期化
-	virtual void Update(void);  // 更新
+	HRESULT Init(void); // 初期化
+	void Update(void);  // 更新
 
 private:
 	//============
 	// メンバ変数
 	//============
-	D3DXVECTOR3 m_move, m_moveDist;
+	int m_nLife;
+	float m_fMoveAngle;
+	float m_fMoveRate;
+	D3DXVECTOR3 m_move;
 };
 
 #endif

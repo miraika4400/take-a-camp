@@ -40,6 +40,8 @@ public:
 	void Draw(void);					// 描画処理	
 
 private:
+	// メンバ関数
+
 	// メンバ変数
 	CPolygon*   m_pPolygon;		// ライフ描画用のポリゴン
 	D3DXVECTOR3 m_pos;			// 位置
