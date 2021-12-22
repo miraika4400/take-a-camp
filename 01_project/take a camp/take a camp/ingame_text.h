@@ -10,27 +10,28 @@
 //=============================================================================
 // インクルードファイル
 //=============================================================================
-#include "scene.h"
+#include "scene2d.h"
 
 //=============================================================================
 // 前方宣言
 //=============================================================================
-class CPolygon;
+class CNumber;
 
 //=============================================================================
 // マクロ定義
 //=============================================================================
+#define MAX_DIGIT 2
 
 //=============================================================================
 // クラス宣言
 //=============================================================================
-class CInGameText :public CScene
+class CInGameText :public CScene2d
 {
 public:
 	CInGameText();
 	~CInGameText();
 
-	static CInGameText*Create(D3DXVECTOR3 pos, D3DXVECTOR3 size);	// 生成処理
+	static CInGameText*Create(D3DXVECTOR3 pos);	// 生成処理
 
 	HRESULT Init(void);					// 初期化処理
 	void Uninit(void);					// 終了処理
@@ -41,12 +42,12 @@ private:
 	// メンバ関数
 
 	// メンバ変数
-	CPolygon*   m_pPolygon;		// ライフ描画用のポリゴン
 	D3DXVECTOR3 m_pos;			// 位置
 	D3DXVECTOR3 m_size;			// サイズ
 	D3DXVECTOR3 m_move;			// 移動量
 	D3DXCOLOR   m_col;			// カラー
 	int			m_nCount;		// カウント
-
+	CNumber* m_apNumber[MAX_DIGIT]; // ナンバーポリゴン
+	int m_nTime;					// タイム変数
 };
 #endif // !_INGAME_TEXT_H_

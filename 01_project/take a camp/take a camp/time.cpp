@@ -15,7 +15,6 @@
 #include "game_finish.h"
 #include "player.h"
 #include "ingame_text.h"
-#include "time_remaining.h"
 //==================================
 // マクロ定義
 //==================================
@@ -186,13 +185,9 @@ void CTime::TimeUp(void)
 //=============================================================================
 void CTime::RemainingSeconds(void)
 {
-	int nInteger = 0;//計算用変数
-
 	// 一定時間になったら
-	if (m_nTime == 60)
+	if (m_nTime == 60 && m_nA % 60 <= 0)
 	{
-		CInGameText::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, REMAINING_POS_Y, 0.0f), D3DXVECTOR3(REMAINING_SIZE_X, REMAINING_SIZE_Y, 0.0f));
-
-		CTime_Remaining::Create();
+		CInGameText::Create(D3DXVECTOR3(1680, REMAINING_POS_Y, 0.0f));
 	}
 }
