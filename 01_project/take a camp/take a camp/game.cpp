@@ -146,6 +146,7 @@ void CGame::Update(void)
 	{
 		CManager::SetCamera(CCamera::Create());
 	}
+
 	CKillCount::AddTotalKill();
 	CColorTile::CountColorTile();
 
