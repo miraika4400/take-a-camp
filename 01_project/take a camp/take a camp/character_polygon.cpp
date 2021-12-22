@@ -42,7 +42,7 @@ CCharacterPolygon::~CCharacterPolygon()
 //=============================================================================
 // 生成処理
 //=============================================================================
-CCharacterPolygon * CCharacterPolygon::Create(D3DXVECTOR3 pos)
+CCharacterPolygon * CCharacterPolygon::Create(D3DXVECTOR3 pos, CharaPolygonMode mode)
 {
 	// メモリの確保
 	CCharacterPolygon *pCharacterPolygon;
@@ -54,6 +54,7 @@ CCharacterPolygon * CCharacterPolygon::Create(D3DXVECTOR3 pos)
 	// 各値の代入
 	pCharacterPolygon->SetPos(pos);
 	pCharacterPolygon->SetPriority(OBJTYPE_UI_2);
+	pCharacterPolygon->m_mode = mode;
 
 	return pCharacterPolygon;
 }
@@ -66,9 +67,9 @@ HRESULT CCharacterPolygon::Init(void)
 	// 初期化処理
 	CScene2d::Init();
 	// サイズの設定
-	SetSize(CHARACTER_POLYGON_SIZE);
+	SetSize(DEFAULT_CHARACTER_POLYGON_SIZE);
 	// 動的テクスチャの生成
-	m_pDynamicTex = CDynamicTexture::Create(D3DXVECTOR2(CHARACTER_POLYGON_SIZE.x, CHARACTER_POLYGON_SIZE.y));
+	m_pDynamicTex = CDynamicTexture::Create(D3DXVECTOR2(DEFAULT_CHARACTER_POLYGON_SIZE.x, DEFAULT_CHARACTER_POLYGON_SIZE.y));
 	// キャラクターモデルの生成*NONEだとモデル情報がないのでとりあえず騎士で生成
 	m_pCharacterModel = CPlayerModel::Create(CHARACTER_POS, CHARACTER_ROT, CResourceCharacter::CHARACTER_KNIGHT);
 	// リスト構造から外す
@@ -106,11 +107,20 @@ void CCharacterPolygon::Uninit(void)
 //=============================================================================
 void CCharacterPolygon::Update(void)
 {
-	// モデルの更新処理
-	if (m_pCharacterModel != NULL)
+	switch (m_mode)
 	{
-		m_pCharacterModel->Update();
-		m_pCharacterModel->SetRot(m_pCharacterModel->GetRot() + CHARACTER_ADD_ROT);
+	case CCharacterPolygon::MODE_NONE:
+		break;
+	case CCharacterPolygon::MODE_ROTATION:
+		// モデルの更新処理
+		if (m_pCharacterModel != NULL)
+		{
+			m_pCharacterModel->Update();
+			m_pCharacterModel->SetRot(m_pCharacterModel->GetRot() + CHARACTER_ADD_ROT);
+		}
+		break;
+	default:
+		break;
 	}
 }
 
@@ -171,4 +181,12 @@ void CCharacterPolygon::SetCharaType(CResourceCharacter::CHARACTER_TYPE type)
 void CCharacterPolygon::SetRimColor(D3DXCOLOR col)
 {
 	m_pCharacterModel->SetRimColor(col);
+}
+
+//=============================================================================
+// Texカラーのセット
+//=============================================================================
+void CCharacterPolygon::SetTexColor(D3DXCOLOR col)
+{
+	m_pCharacterModel->SetTexColor(col);
 }

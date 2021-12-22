@@ -41,7 +41,7 @@ CButton_Title* CTitle::m_pButton = NULL; // ボタンクラスのポインタ
 //=============================
 // コンストラクタ
 //=============================
-CTitle::CTitle()
+CTitle::CTitle() :CScene(OBJTYPE_SYSTEM)
 {
 	m_pPolygon = NULL;
 }
