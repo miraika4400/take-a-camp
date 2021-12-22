@@ -152,7 +152,10 @@ void CAttackBased::Update(void)
 		{
 			m_nLevel = 0;
 			m_nChargeCount = 0;
+			m_nAttackCount = 0;
+			m_nType = 0;
 		}
+		
 		//攻撃範囲のリセット
 		ResetAttackArea();
 		//チャージタイルフラグが立っている際
