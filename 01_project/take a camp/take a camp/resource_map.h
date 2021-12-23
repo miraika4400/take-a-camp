@@ -51,6 +51,7 @@ public:
 		BLOCK_TYPE_SIDEWAYS_MOVE, // 横移動ブロック
 		BLOCK_TYPE_WARP_1,		// ワープタイル1
 		BLOCK_TYPE_WARP_2,		// ワープタイル2
+		BLOCK_TYPE_DUMMY,		// ダミー
 	}BLOCK_TYPE;
 
 	typedef enum	//マップの種類

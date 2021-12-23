@@ -127,7 +127,19 @@ void CCharaSelect::Update(void)
 
 	if(CManager::GetKeyboard()->GetKeyTrigger(DIK_F1)|| CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
 	{
-		CManager::GetFade()->SetFade(CManager::MODE_STAGE_SELECT);
+		switch (CManager::GetDecMode())
+		{
+		case CManager::MODE_TUTORIAL:
+			CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
+			break;
+
+		case CManager::MODE_GAME:
+			CManager::GetFade()->SetFade(CManager::MODE_STAGE_SELECT);
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	CountEntryPlayerNum();

@@ -35,6 +35,8 @@
 #define LOGO_POS (D3DXVECTOR3(SCREEN_WIDTH/2, 100.0f, 0.0f))
 #define LOGO_SIZE (D3DXVECTOR3(300.0f,75.0f,0.0f))
 #define OBJ_BASE_POS_Y (2000.0f)
+#define CAMERA_POS_V D3DXVECTOR3(0.0f, 0.0f, 30.0f)
+#define CAMERA_POS_R D3DXVECTOR3(0.0f, 2.0f, 0.0f)
 
 //**********************************
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
@@ -80,8 +82,10 @@ HRESULT CResult::Init(void)
 
 	m_pGraph = CResultGraph::Create();
 
-
 	CManager::SetCamera(CCharaSelectCamera::Create());
+	CManager::GetCamera()->SetPosV(CAMERA_POS_V);
+	CManager::GetCamera()->SetPosR(CAMERA_POS_R);
+
 	return S_OK;
 }
 

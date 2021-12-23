@@ -212,6 +212,7 @@ void CResourceCharacter::Load(void)
 					if      (JudgeStr("IDLE"))   m_aCharacterData[nCntCharacter].aMotionTextPath[MOTION_IDLE]   = cMotionPath;
 					else if (JudgeStr("CHARGE")) m_aCharacterData[nCntCharacter].aMotionTextPath[MOTION_CHARGE] = cMotionPath;
 					else if (JudgeStr("ATTACK")) m_aCharacterData[nCntCharacter].aMotionTextPath[MOTION_ATTACK] = cMotionPath;
+					else if (JudgeStr("ROLL"))   m_aCharacterData[nCntCharacter].aMotionTextPath[MOTION_ROLL] = cMotionPath;
 				}
 			}
 		}

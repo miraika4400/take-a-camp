@@ -25,7 +25,7 @@
 // マクロ定義
 //================================================
 #define SPEED_MAX (2000)				// 速度の最大値
-#define ACCELERATION_MAX (1.0f)			// 加速度の最大値
+#define ACCELERATION_MAX (10.0f)		// 加速度の最大値
 #define GRAVITY_MAX (100.0f)			// 重力の最大値
 #define COLCHANGERATE_MAX (1.0f)		// 色変化割合の最大値
 #define FADEOUTRATE_MAX (1.0f)			// フェードアウトの割合の最大値
@@ -395,7 +395,7 @@ void CEffectTool::ImguiEffectMove(void)
 		ImGui::SameLine(); HelpText(u8"2Dから3Dに立体感を出させるもの\n平面XYならZ方向に、平面XZならY方向に");
 		ImGui::DragInt(u8"最小補助軸", &m_EffectInfo.nAuxiliaryAxisSpeedMin, 1, -SPEED_MAX, m_EffectInfo.nAuxiliaryAxisSpeedMax);	// 最小補助軸（2D→3Dで、立体感を出すためのもの）
 		ImGui::SameLine(); HelpText(u8"2Dから3Dに立体感を出させるもの\n平面XYならZ方向に、平面XZならY方向に");
-		ImGui::DragFloat(u8"加速度(1.0最大)", &m_EffectInfo.fAcceleration, 0.001f, FLOAT_ZERO, ACCELERATION_MAX);					// 加速度(1.0最大)
+		ImGui::DragFloat(u8"加速度(1.0最大)", &m_EffectInfo.fAcceleration, 0.001f, FLOAT_ZERO, ACCELERATION_MAX);					// 加速度(10.0最大)
 		ImGui::SameLine(); HelpText(u8"1.0が基準、変化させることで移動にメリハリが付けれる");
 		ImGui::DragFloat(u8"重力", &m_EffectInfo.fGravity, 0.01f, FLOAT_ZERO, GRAVITY_MAX);											// 重力
 		ImGui::SameLine(); HelpText(u8"重力の大きさ");

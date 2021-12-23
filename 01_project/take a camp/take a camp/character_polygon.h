@@ -56,6 +56,8 @@ public:
 	CResourceCharacter::CHARACTER_TYPE GetCharaType(void) { return m_charaType; }
 	void SetRimColor(D3DXCOLOR col);
 	void SetTexColor(D3DXCOLOR col);
+
+	CPlayerModel*GetCharaModel(void) { return m_pCharacterModel; }
 private:
     //===============================================
     // ƒƒ“ƒo•Ï”éŒ¾
