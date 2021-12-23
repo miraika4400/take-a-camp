@@ -253,6 +253,7 @@
     <ClCompile Include="tile_factory.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
+    <ClCompile Include="titletransition_tile.cpp" />
     <ClCompile Include="total_result.cpp" />
     <ClCompile Include="total_score.cpp" />
     <ClCompile Include="tutorial.cpp" />
@@ -360,6 +361,7 @@
     <ClInclude Include="tile_factory.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
+    <ClInclude Include="titletransition_tile.h" />
     <ClInclude Include="total_result.h" />
     <ClInclude Include="total_score.h" />
     <ClInclude Include="tutorial.h" />

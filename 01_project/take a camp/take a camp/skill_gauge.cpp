@@ -340,8 +340,11 @@ void CSkillgauge::SetPolygonPos(void)
 //======================================
 void CSkillgauge::Repaint_AddSkillGauge(void)
 {
-	// ”{—¦‚É‚æ‚Á‚Ä‰ÁŽZ’l‚ð•Ï‚¦‚é
-	m_fGauge += REPAINT_RATE * (m_size.y / SKILLGAUGE_FLAME);
+	if (GetPlayerinfo(m_nPlayerNum)->GetAttack()->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK)
+	{
+		// ”{—¦‚É‚æ‚Á‚Ä‰ÁŽZ’l‚ð•Ï‚¦‚é
+		m_fGauge += REPAINT_RATE * (m_size.y / SKILLGAUGE_FLAME);
+	}
 }
 
 //==================================
