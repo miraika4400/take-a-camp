@@ -199,17 +199,11 @@ HRESULT CPlayer::Init(void)
 	// キルカウント用のクラス
 	m_pKillCount = CKillCount::Create(m_nPlayerNumber);
 	// スキルゲージの生成(後々ここに職種入れてアイコン変える)
-	m_pSkillgauge = CSkillgauge::AllCreate(m_nColor);
-
-	//// プレイヤーの頭上に出すスコア生成
-	//CNumberArray::Create(0, GetPos(), D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(m_nColor), m_nColor);
-	
+	m_pSkillgauge = CSkillgauge::AllCreate(m_nColor);	
 	//向きの移動量
 	m_rotDest = D3DXVECTOR3(0.0f, D3DXToRadian(0.0f), 0.0f);
-
-	// アイテムステート
+	//アイテムステート
 	m_ItemState = ITEM_STATE_NONE;
-	
 	//移動速度の取得
 	MoveData.m_nMoveFrame = MoveData.m_nMoveFrameInitialData;
 	//速度アップカウント
@@ -336,12 +330,6 @@ void CPlayer::Update(void)
 				Attack();
 			}
 		}
-
-		//攻撃状態を通常に変更
-		//if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_NORMAL)
-		//{
-		//	m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
-		//}
 		break;
 	case PLAYER_STATE_DEATH:	//死亡状態
 		//リスポーン処理
@@ -867,4 +855,12 @@ void CPlayer::ManageItemState(void)
 		}
 		break;
 	}
+}
+
+//******************************
+// はじき処理関数
+//******************************
+void CPlayer::Flip(void)
+{
+
 }
