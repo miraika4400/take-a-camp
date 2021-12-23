@@ -900,3 +900,11 @@ bool CPlayer::TutorialControll(int nTutorialphase)
 
 	return false;
 }
+
+//******************************
+// ‚Í‚¶‚«ˆ—ŠÖ”
+//******************************
+void CPlayer::Flip(void)
+{
+
+}

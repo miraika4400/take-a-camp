@@ -82,7 +82,7 @@ HRESULT CDummy::Init(void)
 	BindModel(CResourceModel::GetModel(CResourceModel::MODEL_DUMMY));
 
 	// モデルのサイズの設定
-	SetSize(MODEL_SIZE);
+	//SetSize(MODEL_SIZE);
 
 	// 色設定
 	m_color = MODEL_COLOR;
