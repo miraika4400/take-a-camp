@@ -37,12 +37,14 @@ public:
 
 	HRESULT Init(void);
 	void Uninit(void);
+	void Update(void);
 private:
 
 	//============
 	// メンバ変数
 	//===========
-	CScene3d *m_pCrossPolygon;        // マーク
+	CScene3d *m_pCrossPolygon;	// マーク
+	int m_nPlayerCount;			// プレイヤーのカウント用
 };
 
 #endif

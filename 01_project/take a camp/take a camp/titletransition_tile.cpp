@@ -1,6 +1,6 @@
 //====================================================
 //
-//    dummy_tileクラスの処理[dummy_tile.cpp]
+//    titletransition_tileクラスの処理[titletransition_tile.cpp]
 //    Author:伊藤　陽梧
 //
 //====================================================
@@ -11,6 +11,16 @@
 #include "titletransition_tile.h"
 #include "scene3d.h"
 #include "resource_texture.h"
+#include "tutorial.h"
+#include "collision.h"
+#include "player.h"
+#include "chara_select.h"
+#include "fade.h"
+
+//*****************************
+//マクロ定義
+//*****************************
+#define TILE_COLOR	(D3DXCOLOR(0.1f, 0.1f, 0.6f, 1.0f))
 
 //====================================================
 // コンストラクタ
@@ -18,6 +28,7 @@
 CTitleTransitionTile::CTitleTransitionTile()
 {
 	m_pCrossPolygon = NULL;
+	m_nPlayerCount = 0;
 }
 
 //====================================================
@@ -63,7 +74,7 @@ HRESULT CTitleTransitionTile::Init(void)
 	}
 
 	// タイルの色のセット
-	SetColor(TILE_DEFAULT_COLOR);
+	SetColor(TILE_COLOR);
 
 	return S_OK;
 }
@@ -75,4 +86,55 @@ void CTitleTransitionTile::Uninit(void)
 {
 	// タイルの終了
 	CTile::Uninit();
+}
+
+//====================================================
+// 更新処理
+//====================================================
+void CTitleTransitionTile::Update(void)
+{
+	// タイルの更新
+	CTile::Update();
+
+	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+
+	while (pPlayer != NULL)
+	{
+		// このタイルに載ったら
+		if (CCollision::CollisionSphere(GetCollision(), pPlayer->GetCollision()))
+		{
+			m_nPlayerCount++;
+
+			// 色を透明にして移動できないようにする
+			pPlayer->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+			pPlayer->SetUpdateFlag(false);
+		}
+		pPlayer = (CPlayer*)pPlayer->GetNext();
+	}
+
+	//// このタイルに載ったら
+	//if (GetHitPlayerFlag())
+	//{
+	//	m_nPlayerCount++;
+	//}
+
+	// チュートリアルのポインタの取得
+	CTutorial * pTutrial = CManager::GetTutorial();
+
+	// チュートリアル中だったら
+	if (pTutrial)
+	{
+		// フェーズがすべて終了したとき
+		if (CManager::GetTutorial()->GetTutorialPhase() == CTutorial::PHASE_FINISH)
+		{
+			// 載れるようにする
+			SetRide(false);
+		}
+	}
+
+	//// 全員このタイルに乗ったら
+	//if (CCharaSelect::GetEntryPlayerNum() == m_nPlayerCount)
+	//{
+	//	CManager::GetFade()->SetFade(CManager::MODE_TITLE);
+	//}
 }

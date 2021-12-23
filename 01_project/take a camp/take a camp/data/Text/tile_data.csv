@@ -1,4 +1,4 @@
-Tile_Data_Num,,12
+Tile_Data_Num,,13
 0,なし,TILE_NONE
 1,1Pスポーン,TILE_PLAYER
 2,2Pスポーン,TILE_PLAYER
@@ -11,3 +11,4 @@ Tile_Data_Num,,12
 9,ワープ床1,TILE_WARP_1
 10,ワープ床2,TILE_WARP_2
 11,案山子スポーン,TILE_DUMMY
+12,タイトル遷移用タイル,TILE_TITLETRANSITION

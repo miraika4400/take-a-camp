@@ -52,7 +52,7 @@ CTutorial::CTutorial()
 	m_pTextWindow = nullptr;
 	m_pText = nullptr;
 	ZeroMemory(&m_bTask, sizeof(m_bTask));
-	m_Tutorialphase = PHASE_PAINT;
+	m_Tutorialphase = PHASE_FINISH;
 	m_nTextNum = 0;
 	m_bNextText = false;
 	m_bTextEnd = false;

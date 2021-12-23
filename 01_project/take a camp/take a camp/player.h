@@ -154,6 +154,8 @@ public:
 	// 必殺技ゲージポインタ
 	CSkillgauge *GetSkillgauge(void) { return m_pSkillgauge; }	// タイルの塗り段階所得
 	int GetChargeTilelevel(void) { return m_nChargeTilelevel; }
+	//プレイヤーの色 
+	void SetColor(D3DXCOLOR color) { m_color = color; }
 private:
 	void InitCharacterData(void); // キャラデータの初期化
 	void Move(void);			// 移動処理
@@ -165,7 +167,7 @@ private:
 	void ManageState(void);     // ステート管理
 	void ManageItemState(void); // アイテムステートの管理
 	bool TutorialControll(int nTutorialphase);	// チュートリアルの操作処理
-void Flip(void);				// はじく処理
+	void Flip(void);				// はじく処理
 	//*****************************
 	// メンバ変数
 	//*****************************

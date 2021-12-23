@@ -167,7 +167,10 @@ void CSkillgauge::Update(void)
 
 	// プレイヤーの座標を取得
 	CPlayer * pPlayer = GetPlayerinfo(m_nPlayerNum);
-	m_pos = pPlayer->GetPos();
+	if (pPlayer)
+	{
+		m_pos = pPlayer->GetPos();
+	}
 
 	// 座標のセット
 	SetPos(m_pos + SKILLGAUGE_ADDPOS);
