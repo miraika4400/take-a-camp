@@ -50,8 +50,8 @@ public:
 	void Update(void);	// 更新
 	void Draw(void);	// 描画
 
-	void Repaint_AddSkillGauge(void); // スキルゲージを加算させる処理
-
+	void Repaint_AddSkillGauge(void);	// 必殺技ゲージを加算させる処理
+	void SkillGauge_Max(void);			// 必殺技ゲージを満タンにする処理
 private:
 	//============
 	// メンバ関数

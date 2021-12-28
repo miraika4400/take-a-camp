@@ -73,6 +73,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/knife_icon.png",         // ナイフアイコン
 	"./data/Textures/stick_icon.png",         // 杖アイコン
 	"./data/Textures/effect_explosion.png",   // リザルトエクスプロージョン
+	"./data/Textures/color_gauge_ui.png",	  // 色のゲージの枠
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]

@@ -128,12 +128,12 @@ HRESULT CTile::Init(void)
 	SetSize(TILE_SIZE);
 
 	// 変数の初期化
-	m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f); // 色
-	m_fDistPosY = TILE_POS_Y;        // 座標Yの目標値
-	m_fDistPosYRate = POS_Y_RATE_BASE;    // 座標Yの変更時の係数
-	m_bHitOld = false;                           // 一個前のフレームで当たっていたか保存するよう 
-	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
-	m_bHitBullet = false;        // 弾が当たっているフラグ
+	m_color			= D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f); // 色
+	m_fDistPosY		= TILE_POS_Y;						 // 座標Yの目標値
+	m_fDistPosYRate = POS_Y_RATE_BASE;					 // 座標Yの変更時の係数
+	m_bHitOld		= false;							 // 一個前のフレームで当たっていたか保存するよう 
+	m_bHitPlayer	= false;							 // プレイヤーが当たっているフラグ
+	m_bHitBullet	= false;							 // 弾が当たっているフラグ
 
 	if (m_pCollison == NULL)
 	{

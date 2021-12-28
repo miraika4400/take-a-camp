@@ -20,6 +20,8 @@
 #include "character_polygon.h"
 #include "confetti_factory.h"
 #include "kill_count.h"
+#include "player_model.h"
+#include "motion.h"
 
 //**********************************
 // マクロ定義
@@ -38,11 +40,12 @@
 #define RANK_ANNOUNCEMENT_COUNT 100                                      // 順位発表カウント
 #define EXPLOSION_POS_1 D3DXVECTOR3(SCREEN_WIDTH,SCREEN_HEIGHT,0.0f)
 #define EXPLOSION_POS_2 D3DXVECTOR3(0.0f,SCREEN_HEIGHT,0.0f)
-#define CHARACTER_POLYGON_SIZE (DEFAULT_CHARACTER_POLYGON_SIZE*0.6f)
+#define CHARACTER_POLYGON_SIZE (DEFAULT_CHARACTER_POLYGON_SIZE*0.7f)
 #define CHARACTER_HEIGHT_DIST ((SCREEN_HEIGHT - CHARACTER_POLYGON_SIZE.y / 2.0f)-20.0f/2.0f)
 #define CHARACTER_HEIGHT_ADD 15.0f
-#define CHARACTER_CREATE_ADD_HEIGHT -200 //キャラクターを生成する位置を変える
+#define CHARACTER_CREATE_ADD_HEIGHT -202 //キャラクターを生成する位置を変える
 #define CONFETTI_TIME (120)
+
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
@@ -95,7 +98,7 @@ HRESULT CResultGraph::Init(void)
 	// グラフ内部数値最大数のセット
 	SetMaxNum();
 
-	// ゲージクラスの生成
+	// ポリゴンの生成
 	CreatePolygon();
 
 	// ランクソート処理
@@ -234,7 +237,7 @@ void CResultGraph::CreatePolygon(void)
 
 		// キャラクターデータの保存
 		m_apCharaPolygon.push_back(pCharaPolygon);
-
+		
 		fCreateCharaHeight += CHARACTER_CREATE_ADD_HEIGHT;
 
 		// ゲージの設定
@@ -257,7 +260,6 @@ void CResultGraph::ManageGraph(void)
 		m_nActionCnt = 0;
 		m_nActionRank--;
 	}
-
 
 	if (m_nActionRank >= 0)
 	{
@@ -297,7 +299,7 @@ void CResultGraph::ManageGraph(void)
 			m_nActionRank--;
 			// カウントの初期化*順位が中抜けだったときはカウントを初期化しない
 			m_nActionCnt = 0;
-			if (!bAnnouncement || m_nActionRank == 0) m_nActionCnt = RANK_ANNOUNCEMENT_COUNT;
+			if (!bAnnouncement) m_nActionCnt = RANK_ANNOUNCEMENT_COUNT;
 		}
 	}
 
@@ -328,6 +330,7 @@ void CResultGraph::ManageCharacterHeight(void)
 			if (pos.y > CHARACTER_HEIGHT_DIST)
 			{// 行き過ぎないよう調整
 				pos.y = CHARACTER_HEIGHT_DIST;
+				m_apCharaPolygon[nCnt]->GetCharaModel()->GetMotion(CResourceCharacter::MOTION_ROLL)->SetActiveMotion(true);
 			}
 			// 座標のセット
 			m_apCharaPolygon[nCnt]->SetPos(pos);
