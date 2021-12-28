@@ -13,7 +13,10 @@
 #include "collision.h"
 #include <vector>
 #include <time.h>
-
+//*****************************
+//マクロ定義
+//*****************************
+#define MAX_RESTRAINT (20)
 //******************************
 // 静的メンバ変数宣言
 //******************************
@@ -24,9 +27,10 @@ std::vector<std::vector<CWarpTile*>> CWarpTile::m_pWarpTile(WARP_TILE_TYPE_MAX, 
 //******************************
 CWarpTile::CWarpTile()
 {
+	memset(&m_nPlayerCount, 0, sizeof(m_nPlayerCount));
 	m_nLyncTile = 0;
+	memset(&m_WarpState, WARP_TILE_NORMAL, sizeof(m_WarpState));
 	m_WarpType = WARP_TILE_TYPE_NONE;
-	m_WarpState = WARP_TILE_NORMAL;
 }
 
 //******************************
@@ -137,20 +141,6 @@ void CWarpTile::Uninit(void)
 //******************************
 void CWarpTile::Update(void)
 {
-	switch (m_WarpState)
-	{
-		//通常状態
-	case WARP_TILE_NORMAL:
-
-		break;
-		//ワープ状態
-	case WARP_TILE_WARP:
-		break;
-		//機能停止状態
-	case WARP_TILE_STOP:
-		break;
-
-	}
 
 	// タイル更新処理
 	CTile::Update();
@@ -161,87 +151,41 @@ void CWarpTile::Update(void)
 //******************************
 void CWarpTile::HitPlayerAction(CPlayer * pPlayer)
 {
-	switch (m_WarpState)
+	switch (m_WarpState[pPlayer->GetPlayerNumber()])
 	{
 	case WARP_TILE_NORMAL:	//通常状態
 		{
-		//配列の最大数取得
-		int nMaxArray = m_pWarpTile.at(m_WarpType).size();
-
-		for (int nWarpCount = 0; nWarpCount < nMaxArray; nWarpCount++)
-		{
-			//タイルに乗ないフラグを立てる
-			m_pWarpTile.at(m_WarpType).at(nWarpCount)->SetRide(true);
-
-		}
-			//ワープ状態の変更
-			m_WarpState = WARP_TILE_WARP;
+			//プレイヤーの状況確認
+			if (pPlayer->GetState() != CPlayer::PLAYER_STATE_STOP
+				&&pPlayer->GetState() != CPlayer::PLAYER_STATE_DEATH)
+			{
+				//プレイヤーが動いてないときにステートを停止状態に変更
+				if (pPlayer->GetMoveFlag())
+				{
+					pPlayer->SetState(CPlayer::PLAYER_STATE_STOP);
+					m_WarpState[pPlayer->GetPlayerNumber()] = WARP_TILE_WARP;
+				}
+			}
 			break;
 		}
 	case WARP_TILE_WARP:	//ワープ状態
 		{
-		//プレイヤーの状況確認
-		if (pPlayer->GetState() != CPlayer::PLAYER_STATE_STOP
-			&&pPlayer->GetState() != CPlayer::PLAYER_STATE_DEATH)
-		{
-			//プレイヤーが動いてないときにステートを停止状態に変更
-			if (pPlayer->GetMoveFlag())
-			{
-				pPlayer->SetState(CPlayer::PLAYER_STATE_STOP);
-			}
-
-		}
-		else if (pPlayer->GetState() == CPlayer::PLAYER_STATE_STOP)
-		{
-			bool bLync = false;
-			//ランダムの最大値
-			int nMaxRand = m_pWarpTile.at(m_WarpType).size();
-			//ランダム関数の初期化
-			srand((unsigned int)time(NULL));
-			//同じタイルを選ばないように設定
-			while (!bLync)
-			{
-				//ランダムに飛ばすタイル
-				m_nLyncTile = rand() % nMaxRand;
-				if (m_pWarpTile.at(m_WarpType).at(m_nLyncTile) != this)
-				{
-					//ループを抜ける
-					bLync = true;
-				}
-			}
-			//ランダムに跳ぶタイル位置取得
-			D3DXVECTOR3 Tile = m_pWarpTile.at(m_WarpType).at(m_nLyncTile)->GetPos();
-	
-			//配列の最大数取得
-			int nMaxArray = m_pWarpTile.at(m_WarpType).size();
-			//タイプ設定
-			for (int nWarpCount = 0; nWarpCount < nMaxArray; nWarpCount++)
-			{
-				if (m_nLyncTile != nWarpCount)
-				{
-					m_pWarpTile.at(m_WarpType).at(nWarpCount)->m_WarpState = WARP_TILE_STOP;
-				}
-				else
-				{
-					m_pWarpTile.at(m_WarpType).at(nWarpCount)->m_WarpState = WARP_TILE_WARP_AFTER;
-				}
-			}
-
+			//ワープ先の設定
+			D3DXVECTOR3 Tile = RandTileSelect();
 			//プレイヤーの位置設定
 			pPlayer->SetPos(D3DXVECTOR3(Tile.x, pPlayer->GetPos().y, Tile.z));
-			pPlayer->GetCollision()->SetPos(D3DXVECTOR3(Tile.x, pPlayer->GetPos().y, Tile.z));
-		}
+			
+			m_pWarpTile.at(m_WarpType).at(m_nLyncTile)->m_WarpState[pPlayer->GetPlayerNumber()] = WARP_TILE_WARP_AFTER;
 			break;
 		}
 	case WARP_TILE_WARP_AFTER:	//ワープ先状態
-	{
-		//プレイヤーをノーマル状態に変更
-		pPlayer->SetState(CPlayer::PLAYER_STATE_NORMAL);
-		break;
-	}
-
-	case WARP_TILE_STOP:	//停止状態
 		{
+			m_nPlayerCount[pPlayer->GetPlayerNumber()]++;
+			if (m_nPlayerCount[pPlayer->GetPlayerNumber()]>MAX_RESTRAINT)
+			{
+				//プレイヤーをノーマル状態に変更
+				pPlayer->SetState(CPlayer::PLAYER_STATE_NORMAL);
+			}
 			break;
 		}
 	}
@@ -250,9 +194,9 @@ void CWarpTile::HitPlayerAction(CPlayer * pPlayer)
 //******************************
 // プレイヤーが降りた処理
 //******************************
-void CWarpTile::HitPlayerActionRelease(void)
+void CWarpTile::HitPlayerActionRelease(CPlayer*pPlayer)
 {
-	if (m_WarpState == WARP_TILE_WARP_AFTER)
+	if (m_WarpState[pPlayer->GetPlayerNumber()] == WARP_TILE_WARP_AFTER)
 	{
 		//配列の最大数取得
 		int nMaxArray = m_pWarpTile.at(m_WarpType).size();
@@ -260,11 +204,38 @@ void CWarpTile::HitPlayerActionRelease(void)
 		for (int nWarpCount = 0; nWarpCount < nMaxArray; nWarpCount++)
 		{
 			//タイルのステートを変化
-			m_pWarpTile.at(m_WarpType).at(nWarpCount)->m_WarpState = WARP_TILE_NORMAL;
+			m_pWarpTile.at(m_WarpType).at(nWarpCount)->m_WarpState[pPlayer->GetPlayerNumber()] = WARP_TILE_NORMAL;
+			m_nPlayerCount[pPlayer->GetPlayerNumber()] = 0;
+		}
+	}
 
-			//タイルに乗れるフラグを立てる
-			m_pWarpTile.at(m_WarpType).at(nWarpCount)->SetRide(false);
+}
+
+//******************************
+// 他のワープ先をランダムで取得
+//******************************
+D3DXVECTOR3 CWarpTile::RandTileSelect(void)
+{
+	//ループを続けるか
+	bool bLync = false;
+	//ランダムの最大値
+	int nMaxRand = m_pWarpTile.at(m_WarpType).size();
+	//ランダム関数の初期化
+	srand((unsigned int)time(NULL));
+	//同じタイルを選ばないように設定
+	while (!bLync)
+	{
+		//ランダムに飛ばすタイル
+		m_nLyncTile = rand() % nMaxRand;
+		if (m_pWarpTile.at(m_WarpType).at(m_nLyncTile) != this)
+		{
+			//ループを抜ける
+			bLync = true;
 
 		}
 	}
+	//ランダムに跳ぶタイル位置取得
+	return m_pWarpTile.at(m_WarpType).at(m_nLyncTile)->GetPos();
+
 }
+

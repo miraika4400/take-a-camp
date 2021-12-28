@@ -676,6 +676,17 @@ void CPlayer::AttackFinal(void)
 }
 
 //******************************
+// 無敵状態セッター処理
+//******************************
+void CPlayer::SetInvincible(bool bInvincible)
+{
+	//初期化
+	m_nInvincibleCount = 0;
+	m_color.a = 1.0f;
+	m_bInvincible = bInvincible;
+}
+
+//******************************
 // リスポーン処理
 //******************************
 void CPlayer::Respawn(void)
@@ -734,10 +745,7 @@ void CPlayer::Invincible(void)
 		//カウントが一定になったら
 		if (m_nInvincibleCount >= INVINCIBLE_COUNT)
 		{
-			//初期化
-			m_nInvincibleCount = 0;
-			m_color.a = 1.0f;
-			m_bInvincible = false;
+			SetInvincible(false);
 		}
 	}
 }
@@ -752,7 +760,7 @@ void CPlayer::ManageState(void)
 	{
 	case PLAYER_STATE_NORMAL:	//通常状態
 
-								//攻撃可否フラグが立っているか
+		//攻撃可否フラグが立っているか
 		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
 			&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK)
 		{
@@ -814,7 +822,7 @@ void CPlayer::ManageState(void)
 		}
 		break;
 	case PLAYER_STATE_DEATH:	//死亡状態
-								//リスポーン処理
+		//リスポーン処理
 		Respawn();
 		break;
 	}
@@ -901,10 +909,3 @@ bool CPlayer::TutorialControll(int nTutorialphase)
 	return false;
 }
 
-//******************************
-// はじき処理関数
-//******************************
-void CPlayer::Flip(void)
-{
-
-}

@@ -141,7 +141,7 @@ void CMoveTile::HitPlayerAction(CPlayer * pPlayer)
 //******************************
 // ƒvƒŒƒCƒ„[‚ª~‚è‚½ˆ—
 //******************************
-void CMoveTile::HitPlayerActionRelease(void)
+void CMoveTile::HitPlayerActionRelease(CPlayer*pPlayer)
 {
 	if (m_MoveState == MOVE_STATE_STOP)
 	{

@@ -62,7 +62,7 @@ public:
 
 private:
 	void HitPlayerAction(CPlayer*pPlayer);	// プレイヤーが乗っているか
-	void HitPlayerActionRelease(void);		// プレイヤーが降りたか
+	void HitPlayerActionRelease(CPlayer*pPlayer);		// プレイヤーが降りたか
 
 	void Move(void);						// 移動処理
 

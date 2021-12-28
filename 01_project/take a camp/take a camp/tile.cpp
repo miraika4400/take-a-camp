@@ -43,10 +43,11 @@ std::vector<CTile*> CTile::m_aTileList = {};
 CTile::CTile() :CModel(OBJTYPE_TILE)
 {                       
 	m_color = TILE_DEFAULT_COLOR;
+	memset(&m_pHitPlayerOld, NULL, sizeof(m_pHitPlayerOld));
 	m_pCollison = NULL;
 	m_fDistPosY = TILE_POS_Y;			// 座標Yの目標値
 	m_fDistPosYRate = POS_Y_RATE_BASE;	// 座標Yの変更時の係数
-	m_bHitOld = false;
+	//m_bHitOld = false;
 	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
 	m_bHitBullet = false;        // 弾が当たっているフラグ
 	m_bRide		 = false;		 // 乗れるかフラグ
@@ -131,7 +132,7 @@ HRESULT CTile::Init(void)
 	m_color			= D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f); // 色
 	m_fDistPosY		= TILE_POS_Y;						 // 座標Yの目標値
 	m_fDistPosYRate = POS_Y_RATE_BASE;					 // 座標Yの変更時の係数
-	m_bHitOld		= false;							 // 一個前のフレームで当たっていたか保存するよう 
+	//m_bHitOld		= false;							 // 一個前のフレームで当たっていたか保存するよう 
 	m_bHitPlayer	= false;							 // プレイヤーが当たっているフラグ
 	m_bHitBullet	= false;							 // 弾が当たっているフラグ
 
@@ -304,30 +305,38 @@ void CTile::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pMod
 bool CTile::CollisionPlayer(void)
 {
 	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+	bool bHitOld[MAX_PLAYER];
+	memset(&bHitOld, false, sizeof(bHitOld));
 
 	while (pPlayer != NULL)
 	{
 		if (CCollision::CollisionSphere(m_pCollison, pPlayer->GetCollision()))
 		{
-			if (!m_bHitOld)
+			if (!bHitOld[pPlayer->GetPlayerNumber()])
 			{
 				HitPlayerActionTrigger(pPlayer);
 			}
 			HitPlayerAction(pPlayer);
+
+			//最後に触れたプレイヤー取得
+			m_pHitPlayerOld[pPlayer->GetPlayerNumber()] = pPlayer;
 			// ヒットフラグの保存*当たってる
-			m_bHitOld = true;
-			return true;
+			bHitOld[pPlayer->GetPlayerNumber()] = true;
+			//return true;
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
-	
-	if (m_bHitOld)
+
+	for (int nPlayer = 0; nPlayer<MAX_PLAYER; nPlayer++)
 	{
-		HitPlayerActionRelease();
+		if (!bHitOld[nPlayer] && m_pHitPlayerOld[nPlayer] != nullptr)
+		{
+			HitPlayerActionRelease(m_pHitPlayerOld[nPlayer]);
+			m_pHitPlayerOld[nPlayer] = nullptr;
+
+		}
 	}
 
-	// ヒットフラグの保存*当たってない
-	m_bHitOld = false;
 	return false;
 }
 
@@ -348,7 +357,7 @@ void CTile::HitPlayerActionTrigger(CPlayer * pPlayer)
 //******************************
 // プレイヤーと当たったときのアクション*リリース
 //******************************
-void CTile::HitPlayerActionRelease(void)
+void CTile::HitPlayerActionRelease(CPlayer * pPlayer)
 {
 }
 
