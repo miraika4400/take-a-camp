@@ -19,6 +19,7 @@
 //******************************
 int CWarpTile::m_nTotalWarpTile = 0;
 std::vector<std::vector<CWarpTile*>> CWarpTile::m_pWarpTile(WARP_TILE_TYPE_MAX, std::vector<CWarpTile*>(0));
+
 //******************************
 // コンストラクタ
 //******************************
