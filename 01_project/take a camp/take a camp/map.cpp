@@ -269,9 +269,9 @@ void CMap::ItemSpawn(void)
 				}
 			}
 			//アイテム生成
-			CItem::Create(ItemPos, (CItem::ITEM_EFFECT)(rand() % CItem::ITEM_EFFECT_MAX));
+			CItem::Create(ItemPos, CItem::ITEM_EFFECT_DASH);
 		}
-	
+
 		//カウント初期化
 		m_nItemSpawnCount = 0;
 	}
