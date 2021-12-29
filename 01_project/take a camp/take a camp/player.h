@@ -127,7 +127,7 @@ private:
 	int m_nPlayerNumber;		// プレイヤー番号
 	int m_nColor;				// 色ナンバー
 	int m_nControllNum;         // コントロール番号
-	bool m_bController;         // コントローラー捜査課キーボード操作か
+	bool m_bController;         // コントローラー操作かキーボード操作か
 	bool m_bMove;				// 移動可否フラグ
 	bool m_bInvincible;			// 無敵フラグ
 	PLAYER_STATE m_PlayerState;	// プレイヤーステータス
@@ -135,7 +135,7 @@ private:
 	int m_nInvincibleCount;		// 無敵時間のカウント
 	D3DXVECTOR3	 m_Move;		// 移動量
 	int			 m_MoveCount;	// 移動時のカウント
-	int			m_ReverseCount;//操作反転カウント
+	int			m_ReverseCount; //操作反転カウント
 	D3DXCOLOR	 m_color;		// 色
 	CCollision * m_pCollision;	// 当たり判定
 	CActRange *	 m_pActRange;	// 行動判定
