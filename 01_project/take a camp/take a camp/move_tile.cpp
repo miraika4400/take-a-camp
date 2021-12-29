@@ -43,7 +43,6 @@ CMoveTile::~CMoveTile()
 //******************************
 HRESULT CMoveTile::Init(void)
 {
-
 	//タイルの初期化処理
 	CTile::Init();
 	//色の設定
@@ -118,7 +117,12 @@ void CMoveTile::HitPlayerAction(CPlayer * pPlayer)
 		{
 			//現在位置
 			D3DXVECTOR3 pos = GetPos();
-			pPlayer->SetInvincible(true);
+			//プレイヤーの無敵確認
+			if (!pPlayer->GetInvincible())
+			{
+				//無敵にする
+				pPlayer->SetInvincible(true);
+			}
 			//プレイヤーを移動させる処理
 			pPlayer->SetPos(D3DXVECTOR3(pos.x, pPlayer->GetPos().y, pos.z));
 		}
@@ -127,6 +131,8 @@ void CMoveTile::HitPlayerAction(CPlayer * pPlayer)
 	case MOVE_STATE_STOP:
 		//プレイヤーのステートを停止状態に変更
 		pPlayer->SetState(CPlayer::PLAYER_STATE_NORMAL);
+
+		//プレイヤーの無敵を解除
 		pPlayer->SetInvincible(false);
 		break;
 
