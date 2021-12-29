@@ -165,7 +165,7 @@ private:
 	void ManageState(void);     // ステート管理
 	void ManageItemState(void); // アイテムステートの管理
 	bool TutorialControll(int nTutorialphase);	// チュートリアルの操作処理
-
+void Flip(void);				// はじく処理
 	//*****************************
 	// メンバ変数
 	//*****************************
