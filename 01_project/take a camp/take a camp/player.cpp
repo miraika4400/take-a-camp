@@ -464,7 +464,6 @@ void CPlayer::ControlMove(void)
 		// スティックの座標
 		D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
 
-
 		// 移動値
 		auto MoveValue = [&](D3DXVECTOR3 move, D3DXVECTOR2 actMove, float fRotDistY)
 		{
