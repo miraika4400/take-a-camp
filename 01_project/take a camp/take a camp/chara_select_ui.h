@@ -19,6 +19,7 @@
 // 前方宣言
 //=============================
 class CScene2d;
+class CCharacterPolygon;
 
 //*****************************
 //マクロ定義
@@ -44,6 +45,8 @@ public:
 		CScene2d * pBack;         // 背景
 		CScene2d * pPlayerNumber; // プレイヤー番号
 		CScene2d * pControllIcon; // コントローラータイプアイコン
+		CScene2d * pReadyIcon; // コントローラータイプアイコン
+		CCharacterPolygon * pCharaPolygon;
 		D3DXVECTOR3 pos;          // 座標
 	};
 	//*****************************

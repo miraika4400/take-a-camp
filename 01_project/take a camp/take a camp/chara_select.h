@@ -14,7 +14,7 @@
 //*****************************
 #include "scene.h"
 #include "game.h"
-#include "player.h"
+#include "resource_character.h"
 
 //=============================
 // 前方宣言
@@ -28,7 +28,7 @@
 //クラス定義
 //*****************************
 
-//ゲームクラス
+//キャラ選択クラス
 class CCharaSelect : public CScene
 {
 public:
@@ -44,8 +44,9 @@ public:
 		int nControllNum; // コントローラー番号
 		bool bController; // コントローラーフラグ*trueならコントローラーfalseならキーボード
 		int nColorNum;    // カラー番号
-		CPlayer::CHARA_TYPE charaType; // キャラタイプ
+		CResourceCharacter::CHARACTER_TYPE charaType; // キャラタイプ
 		bool bEntry;      // エントリー状態
+		bool bReady;
 	};
 
 	//*****************************
@@ -61,11 +62,15 @@ public:
 	void Update(void);  // 更新
 	void Draw(void);    // 描画
 	static Entry_Data GetEntryData(int nIndex) { return m_aEntryData[nIndex]; }
+	static void SetEntryData(int nIndex, Entry_Data data) { m_aEntryData[nIndex] = data; }
 	static int GetEntryPlayerNum(void) { return m_nEntryPlayerNum; }
 	static void ResetEntryPlayer(void);
 private:
+	void FadeGameScene(void);
 	void EntryPlayer(void);
 	void CountEntryPlayerNum(void);
+	void CharacterSelect(int nCntData);
+
 	//*****************************
 	// メンバ変数
 	//*****************************
@@ -73,6 +78,7 @@ private:
 	static int m_nEntryPlayerNum;               // エントリー人数
 	bool m_abUseJoy[MAX_PLAYER];           // 使っているコントローラーのフラグ
 	bool m_abUseKey[MAX_PLAYER];           // 使っているコントローラーのフラグ
+	int m_anWaitCnt[MAX_PLAYER];                             // キャラ変更から次変更可能までのカウント
 };
 
 #endif

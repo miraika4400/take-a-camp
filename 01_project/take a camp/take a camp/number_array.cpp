@@ -26,10 +26,11 @@
 #define ODD_NUMBER_DIVISION (2.0f * KERNING_DIVISION)		// 奇数を割る数
 #define EVEN_NUMBER_DIVISION (20.0f * KERNING_DIVISION)	    // 偶数を割る数
 #define NUMBER_POS_Y 35.0f
+
 //==================================
 // コンストラクタ
 //==================================
-CNumberArray::CNumberArray():CScene(OBJTYPE_UI)
+CNumberArray::CNumberArray():CScene(OBJTYPE_UI_2)
 {
 	memset(&m_apNumber, NULL, sizeof(m_apNumber));
 	m_nNumber = 0;
@@ -123,6 +124,10 @@ void CNumberArray::Update(void)
 //==================================
 void CNumberArray::Draw(void)
 {
+	// Zバッファを無効に
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	pDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+
 	for (int nCount = 0; nCount < MAX_ARRAY_NUM; nCount++)
 	{
 		// 中身が入ってたら描画
@@ -131,6 +136,9 @@ void CNumberArray::Draw(void)
 			m_apNumber[nCount]->Draw();
 		}
 	}
+
+	// Zバッファを戻す
+	pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 }
 
 //==================================
@@ -184,8 +192,6 @@ void CNumberArray::SetNumber(void)
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
 
-
-
 	// 数字の設定
 	for (nIndex = 0; nIndex < MAX_ARRAY_NUM; nIndex++)
 	{
@@ -198,7 +204,7 @@ void CNumberArray::SetNumber(void)
 		if (m_apNumber[nIndex] == NULL)
 		{
 			m_apNumber[nIndex] = CBillboard::Create(D3DXVECTOR3(m_pos.x + fKerning, m_pos.y, m_pos.z), m_size);
-			m_apNumber[nIndex]->ReConnection();
+			m_apNumber[nIndex]->OutList();
 			m_apNumber[nIndex]->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_NUMBER));
 		}
 

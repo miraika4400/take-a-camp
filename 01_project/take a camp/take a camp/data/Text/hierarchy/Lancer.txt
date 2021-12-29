@@ -14,22 +14,22 @@ NUM_MODEL = 16
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/Models/player/01_lancer/00_foundation.x		# [00]土台
-MODEL_FILENAME = data/Models/player/01_lancer/01_bodyU.x			# [01]体
-MODEL_FILENAME = data/Models/player/01_lancer/02_bodyD.x			# [02]腰
-MODEL_FILENAME = data/Models/player/01_lancer/03_head.x				# [03]頭
-MODEL_FILENAME = data/Models/player/01_lancer/04_armUR.x			# [04]右上腕
-MODEL_FILENAME = data/Models/player/01_lancer/05_armDR.x			# [05]右前腕
-MODEL_FILENAME = data/Models/player/01_lancer/06_handR.x			# [06]右手
-MODEL_FILENAME = data/Models/player/01_lancer/07_armUL.x			# [07]左上腕
-MODEL_FILENAME = data/Models/player/01_lancer/08_armDL.x			# [08]左前腕
-MODEL_FILENAME = data/Models/player/01_lancer/09_handL.x			# [09]左手
-MODEL_FILENAME = data/Models/player/01_lancer/10_legUR.x			# [10]右もも
-MODEL_FILENAME = data/Models/player/01_lancer/11_legDR.x			# [11]右ふくらはぎ
-MODEL_FILENAME = data/Models/player/01_lancer/12_footR.x			# [12]右足
-MODEL_FILENAME = data/Models/player/01_lancer/13_legUL.x			# [13]左もも
-MODEL_FILENAME = data/Models/player/01_lancer/14_legDL.x			# [14]左ふくらはぎ
-MODEL_FILENAME = data/Models/player/01_lancer/15_footL.x			# [15]左足
+MODEL_FILENAME = data/Models/player/01_Lancer/00_foundation.x		# [00]土台
+MODEL_FILENAME = data/Models/player/01_Lancer/01_bodyU.x			# [01]体
+MODEL_FILENAME = data/Models/player/01_Lancer/02_bodyD.x			# [02]腰
+MODEL_FILENAME = data/Models/player/01_Lancer/03_head.x				# [03]頭
+MODEL_FILENAME = data/Models/player/01_Lancer/04_armUR.x			# [04]右上腕
+MODEL_FILENAME = data/Models/player/01_Lancer/05_armDR.x			# [05]右前腕
+MODEL_FILENAME = data/Models/player/01_Lancer/06_handR.x			# [06]右手
+MODEL_FILENAME = data/Models/player/01_Lancer/07_armUL.x			# [07]左上腕
+MODEL_FILENAME = data/Models/player/01_Lancer/08_armDL.x			# [08]左前腕
+MODEL_FILENAME = data/Models/player/01_Lancer/09_handL.x			# [09]左手
+MODEL_FILENAME = data/Models/player/01_Lancer/10_legUR.x			# [10]右もも
+MODEL_FILENAME = data/Models/player/01_Lancer/11_legDR.x			# [11]右ふくらはぎ
+MODEL_FILENAME = data/Models/player/01_Lancer/12_footR.x			# [12]右足
+MODEL_FILENAME = data/Models/player/01_Lancer/13_legUL.x			# [13]左もも
+MODEL_FILENAME = data/Models/player/01_Lancer/14_legDL.x			# [14]左ふくらはぎ
+MODEL_FILENAME = data/Models/player/01_Lancer/15_footL.x			# [15]左足
 
 
 #------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 1					# 体
 		PARENT = 0					# (親)NULL
-		POS = 0.0 7.8 0.0
+		POS = 0.0 6.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
@@ -72,42 +72,42 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 4					# 右上腕
 		PARENT = 1					# (親)腹
-		POS = -1.6 1.8 0.0
+		POS = -1.1 1.8 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 5					# 右前腕
 		PARENT = 4					# (親)右上腕
-		POS = -2.2 0.0 0.0
+		POS = -2.0 0.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 6					# 右手
 		PARENT = 5					# (親)右前腕
-		POS = -2.6 0.0 0.0
+		POS = -1.8 0.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 7					# 左上腕
 		PARENT = 1					# (親)腹
-		POS = 1.6 1.8 0.0
+		POS = 1.1 1.8 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 	
 	PARTSSET
 		INDEX = 8					# 左前腕
 		PARENT = 7					# (親)左上腕
-		POS = 2.2 0.0 0.0
+		POS = 2.0 0.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET 
 		INDEX = 9					# 左手
 		PARENT = 8					# (親)左前腕
-		POS = 2.6 0.0 0.0
+		POS = 1.8 0.0 0.0
 		ROT = 0.00 0.00 0.00
 	END_PARTSSET
 

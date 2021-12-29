@@ -8,16 +8,13 @@
 // ヘッダファイルのインクルード
 //=============================================================================
 #include "map.h"
-#include "tile.h"
-#include "color_tile.h"
 #include "player.h"
-#include "spawn_tile.h"
-#include "color_manager.h"
 #include "needle_tile.h"
 #include "item.h"
 #include <time.h>
 #include "chara_select.h"
 #include "tile_factory.h"
+#include "warp_tile.h"
 
 //=============================================================================
 // マクロ定義
@@ -36,7 +33,7 @@
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CMap::CMap()
+CMap::CMap() :CScene(OBJTYPE_SYSTEM)
 {
 	m_nItemSpawnCount = 0;
 	memset(&m_MapData, 0, sizeof(m_MapData));
@@ -92,7 +89,12 @@ void CMap::Uninit(void)
 //=============================================================================
 void CMap::Update(void)
 {
-	ItemSpawn();
+	// チュートリアルだけアイテムを出さないようにする
+	if (CManager::GetMode() != CManager::MODE_TUTORIAL)
+	{
+		// アイテムの生成
+		ItemSpawn();
+	}
 }
 
 //=============================================================================
@@ -122,7 +124,8 @@ void CMap::MapCreate(void)
 				CTileFactory* pTileFactory = CTileFactory::GetTileFactory();
 
 				D3DXCOLOR tileCol = TILE_DEFAULT_COLOR;
-				//マス目のタイプ取得
+
+				// プレイヤーの生成
 				switch (m_MapData.BlockData[nBlockY].nBlockType[nBlockX])
 				{
 				case CMapManager::BLOCK_TYPE_1P_START:	//1Pスタート位置
@@ -158,6 +161,7 @@ void CMap::MapCreate(void)
 					break;
 				}
 
+				// タイルの生成
 				if (pTileFactory != NULL
 					&&pTileFactory->GetCreateFunction(m_MapData.BlockData[nBlockY].nBlockType[nBlockX]) != NULL)
 				{
@@ -265,7 +269,7 @@ void CMap::ItemSpawn(void)
 				}
 			}
 			//アイテム生成
-			CItem::Create(ItemPos , CItem::ITEM_EFFECT_REVERSE);
+			CItem::Create(ItemPos, (CItem::ITEM_EFFECT)(rand() % CItem::ITEM_EFFECT_MAX));
 		}
 	
 		//カウント初期化

@@ -28,10 +28,9 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define POS_Y_RATE_BASE   0.03f
-#define POS_Y_RATE_UP     0.1f
-#define BULLET_HIT_POS_Y TILE_POS_Y + 6.0f
-#define TILE_DEFAULT_COLOR D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
+#define POS_Y_RATE_BASE		(0.03f)
+#define POS_Y_RATE_UP		(0.1f)
+#define BULLET_HIT_POS_Y	(TILE_POS_Y + 6.0f)
 
 //*****************************
 // 静的メンバ変数宣言
@@ -45,11 +44,12 @@ CTile::CTile() :CModel(OBJTYPE_TILE)
 {                       
 	m_color = TILE_DEFAULT_COLOR;
 	m_pCollison = NULL;
-	m_fDistPosY = TILE_POS_Y;        // 座標Yの目標値
-	m_fDistPosYRate = POS_Y_RATE_BASE;    // 座標Yの変更時の係数
+	m_fDistPosY = TILE_POS_Y;			// 座標Yの目標値
+	m_fDistPosYRate = POS_Y_RATE_BASE;	// 座標Yの変更時の係数
 	m_bHitOld = false;
 	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
 	m_bHitBullet = false;        // 弾が当たっているフラグ
+	m_bRide		 = false;		 // 乗れるかフラグ
 	m_aTileList.push_back(this);
 }
 
@@ -90,7 +90,7 @@ CTile * CTile::GetHitTile(D3DXVECTOR3 pos)
 		{
 			if (pCollision != NULL)
 			{
-				pCollision->ReConnection();
+				pCollision->OutList();
 				pCollision->Uninit();
 				delete pCollision;
 				pCollision = NULL;
@@ -102,7 +102,7 @@ CTile * CTile::GetHitTile(D3DXVECTOR3 pos)
 
 	if (pCollision != NULL)
 	{
-		pCollision->ReConnection();
+		pCollision->OutList();
 		pCollision->Uninit();
 		delete pCollision;
 		pCollision = NULL;
@@ -128,12 +128,12 @@ HRESULT CTile::Init(void)
 	SetSize(TILE_SIZE);
 
 	// 変数の初期化
-	m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f); // 色
-	m_fDistPosY = TILE_POS_Y;        // 座標Yの目標値
-	m_fDistPosYRate = POS_Y_RATE_BASE;    // 座標Yの変更時の係数
-	m_bHitOld = false;                           // 一個前のフレームで当たっていたか保存するよう 
-	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
-	m_bHitBullet = false;        // 弾が当たっているフラグ
+	m_color			= D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f); // 色
+	m_fDistPosY		= TILE_POS_Y;						 // 座標Yの目標値
+	m_fDistPosYRate = POS_Y_RATE_BASE;					 // 座標Yの変更時の係数
+	m_bHitOld		= false;							 // 一個前のフレームで当たっていたか保存するよう 
+	m_bHitPlayer	= false;							 // プレイヤーが当たっているフラグ
+	m_bHitBullet	= false;							 // 弾が当たっているフラグ
 
 	if (m_pCollison == NULL)
 	{
@@ -174,7 +174,7 @@ void CTile::Update(void)
 
 	// 弾との当たり判定
 	m_bHitBullet = CollisionBullet();
-	
+
 	//塗り判定との当たり判定
 	CollisionPeint();
 }
@@ -290,7 +290,7 @@ void CTile::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pMod
 		pEffect->SetFloatArray("LightDirection", (float*)&D3DXVECTOR3(lightDir.x, lightDir.y, lightDir.z), 3);
 
 		// 視点位置
-		D3DXVECTOR3 eye = CManager::GetCamera()->GetPos();
+		D3DXVECTOR3 eye = CManager::GetCamera()->GetPosV();
 		pEffect->SetFloatArray("Eye", (float*)&D3DXVECTOR3(eye.x, eye.y, eye.z), 3);
 
 		// スペキュラの情報を送る
@@ -320,6 +320,11 @@ bool CTile::CollisionPlayer(void)
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
+	
+	if (m_bHitOld)
+	{
+		HitPlayerActionRelease();
+	}
 
 	// ヒットフラグの保存*当たってない
 	m_bHitOld = false;
@@ -327,18 +332,27 @@ bool CTile::CollisionPlayer(void)
 }
 
 //******************************
-// 弾と当たったときのアクション*プレス
+// プレイヤーと当たったときのアクション*プレス
 //******************************
 void CTile::HitPlayerAction(CPlayer * pPlayer)
 {
 }
 
 //******************************
-// 弾と当たったときのアクション*トリガー
+// プレイヤーと当たったときのアクション*トリガー
 //******************************
 void CTile::HitPlayerActionTrigger(CPlayer * pPlayer)
 {
 }
+
+//******************************
+// プレイヤーと当たったときのアクション*リリース
+//******************************
+void CTile::HitPlayerActionRelease(void)
+{
+}
+
+
 
 //******************************
 // 弾との当たり判定

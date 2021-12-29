@@ -58,6 +58,23 @@ public:
 		MODEL_STAGE01,            // ステージモデル01
 		MODEL_BULLET01,			  // バレットモデル01
 		MODEL_NEEDLE,             // とげ
+		MODEL_ITEM_DASH,		  // ダッシュアイテム
+		MODEL_ITEM_REVERSE,       // 反転アイテム
+		MODEL_DESK,               // 机
+
+		MODEL_TREE,
+		MODEL_MATO,
+		MODEL_BUKITATE,
+		MODEL_CHEST,
+		MODLE_TARU,
+		MODEL_GAITOU,
+		MODEL_HATA,
+		MODEL_SAKU,
+		MODEL_ENOGU,
+		MODEL_ENPITU,
+		MODEL_MAGCUP,
+		MODEL_DUMMY,
+
 		MODEL_MAX        // モデル数
 	}MODEL_TYPE;
 

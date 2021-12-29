@@ -17,7 +17,7 @@
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define BUTTON_SIZE D3DXVECTOR3(200.0f,60.0f,0.0f)	// サイズ
+#define BUTTON_SIZE D3DXVECTOR3(350.0f,100.0f,0.0f)	// サイズ
 #define BUTTON_COLOR D3DXCOLOR(1.0f,1.0f,1.0f,1.0f)		// カラー
 #define NOT_BUTTON_COLOR D3DXCOLOR(1.0f,1.0f,1.0f,0.5f)	// 選択されてないときのカラー
 
@@ -53,7 +53,7 @@ CButton_Title * CButton_Title::Create(D3DXVECTOR3 pos, BUTTON_TYPE type)
 
 	// 各値の代入
 	pButton_Title->SetPos(pos);
-	pButton_Title->SetPriority(OBJTYPE_UI);
+	pButton_Title->SetPriority(OBJTYPE_UI_2);
 	pButton_Title->m_type = type;
 
 	// タイプがスタートだった場合
@@ -155,12 +155,14 @@ void CButton_Title::Select(void)
 		{
 			// ゲーム画面に遷移
 			CManager::GetFade()->SetFade(CManager::MODE_CHARA_SELECT);
+			CManager::SetDecMode(CManager::MODE_GAME);
 		}
 		// ボタンの種類がチュートリアルだった場合
 		if (m_nButton == BUTTON_TUTORIAL)
 		{
 			// チュートリアル画面に遷移
-			CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
+			CManager::GetFade()->SetFade(CManager::MODE_CHARA_SELECT);
+			CManager::SetDecMode(CManager::MODE_TUTORIAL);
 		}
 	}
 }

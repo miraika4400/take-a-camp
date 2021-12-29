@@ -9,6 +9,8 @@
 // インクルード
 //******************************
 #include "item.h"
+#include "dash_item.h"
+#include "reverse_item.h"
 #include "manager.h"
 #include "player.h"
 #include "collision.h"
@@ -17,8 +19,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define MODEL_SIZE D3DXVECTOR3( 0.6f, 0.6f, 0.6f)
-#define ITEM_ONE_SIDE (10.0f)
+#define MODEL_SIZE		(D3DXVECTOR3( 0.6f, 0.6f, 0.6f))
+#define ITEM_ONE_SIDE	(10.0f)
 
 //******************************
 // コンストラクタ
@@ -50,16 +52,15 @@ CItem * CItem::Create(D3DXVECTOR3 pos,ITEM_EFFECT effect)
 {
 	//メモリの確保
 	CItem *pItem;
-	pItem = new CItem;
-
-	//効果処理セット
-	pItem->SetItemEffect(effect);
-
-	//初期化処理
-	pItem->Init();
-
-	//位置セット
-	pItem->SetPos(pos);
+	switch (effect)
+	{
+	case ITEM_EFFECT_DASH:
+		pItem = CDashItem::Create(pos);
+		break;
+	case ITEM_EFFECT_REVERSE:
+		pItem = CReverseItem::Create(pos);
+		break;
+	}
 
 	//影生成
 	pItem->m_pShadow = CShadow::Create(D3DXVECTOR3(pos.x, 0.2f, pos.z), D3DXVECTOR3(8.0f, 0.0f, 8.0f));
@@ -75,19 +76,6 @@ HRESULT CItem::Init(void)
 	//モデル初期化
 	CModel::Init();
 	
-	// モデル割り当て
-	switch (m_ItemEffect)
-	{
-	case ITEM_EFFECT_DASH:	
-		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_PLAYER01));
-		break;
-	case ITEM_EFFECT_REVERSE:
-		BindModel(CResourceModel::GetModel(CResourceModel::MODEL_PLAYER01));
-		break;
-	default:
-		break;
-	}
-
 	// モデルのサイズの設定
 	SetSize(MODEL_SIZE);
 
@@ -102,7 +90,7 @@ void CItem::Uninit(void)
 	//コリジョンの終了処理
 	if (m_pCollision != NULL)
 	{
-		m_pCollision->ReConnection();
+		m_pCollision->OutList();
 		m_pCollision->Uninit();
 		delete m_pCollision;
 		m_pCollision = NULL;
@@ -138,7 +126,7 @@ void CItem::Update(void)
 
 	if (m_bDeath == true)
 	{
-		Uninit();
+		CItem::Uninit();
 	}
 }
 
@@ -212,30 +200,28 @@ void CItem::CollisionItem(void)
 		{
 			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 			{
-
+				//消滅フラグ
 				m_bDeath = true;
-				switch (m_ItemEffect)
-				{
-				case ITEM_EFFECT_DASH:
-					pPlayer->SetItemState(CPlayer::ITEM_STATE_DASH);
-					break;
-				case ITEM_EFFECT_REVERSE:
-					pPlayer->SetItemState(CPlayer::ITEM_STATE_REVERSE);
-					break;
-				default:
-					break;
-				}
-
+				//アイテム効果処理
+				ItemEffect(pPlayer);
 				//影の終了処理
 				if (m_pShadow != NULL)
 				{
 					m_pShadow->Uninit();
 					m_pShadow = NULL;
 				}
-
 				return;
 			}
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
+}
+
+//******************************
+// アイテム効果処理
+// Akuthor: 吉田悠人
+//******************************
+void CItem::ItemEffect(CPlayer*pPlayer)
+{
+
 }

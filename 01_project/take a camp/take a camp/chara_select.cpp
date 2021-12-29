@@ -15,10 +15,16 @@
 #include "keyboard.h"
 #include "manager.h"
 #include "fade.h"
+#include "player.h"
+#include "camera_charaselect.h"
+#include "bg.h"
+#include "light.h"
 
 //=============================
 // マクロ定義
 //=============================
+#define WAIT_TIME 10
+#define MIN_PLAYER_NUM 2
 
 //=============================
 // 静的メンバ変数宣言
@@ -34,6 +40,7 @@ CCharaSelect::CCharaSelect()
 	// 変数のクリア
 	ZeroMemory(&m_abUseJoy, sizeof(m_abUseJoy));
 	ZeroMemory(&m_abUseKey, sizeof(m_abUseKey));
+	ZeroMemory(&m_anWaitCnt, sizeof(m_anWaitCnt));
 }
 
 //=============================
@@ -67,9 +74,17 @@ HRESULT CCharaSelect::Init(void)
 		m_abUseKey[nCntData] = false;
 	}
 
+	// エントリー情報のリセット
 	ResetEntryPlayer();
-
+	// UIの生成
 	CCharaSelectUi::Create();
+	// カメラ生成
+	CManager::SetCamera(CCharaSelectCamera::Create());
+	// 背景の生成
+	CBg::Create();
+
+	// ライトの向きの設定
+	CManager::GetLight()->SetDir(LIGHT_DIR_CHARA_FRONT);
 
 	return S_OK;
 }
@@ -79,6 +94,14 @@ HRESULT CCharaSelect::Init(void)
 //=============================
 void CCharaSelect::Uninit(void)
 {
+	// カメラクラスの解放処理
+	CCamera * pCamera = CManager::GetCamera();
+	if (pCamera != NULL)
+	{
+		CManager::SetCamera(NULL);
+		pCamera = NULL;
+	}
+
 	// 開放処理
 	Release();
 }
@@ -88,15 +111,35 @@ void CCharaSelect::Uninit(void)
 //=============================
 void CCharaSelect::Update(void)
 {
+	// カメラクラス更新処理
+	CCamera * pCamera = CManager::GetCamera();
+	if (pCamera != NULL)
+	{
+		pCamera->Update();
+	}
 
 	// エントリー処理
 	EntryPlayer();
+
+	FadeGameScene();
 
 #ifdef _DEBUG
 
 	if(CManager::GetKeyboard()->GetKeyTrigger(DIK_F1)|| CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
 	{
-		CManager::GetFade()->SetFade(CManager::MODE_GAME);
+		switch (CManager::GetDecMode())
+		{
+		case CManager::MODE_TUTORIAL:
+			CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
+			break;
+
+		case CManager::MODE_GAME:
+			CManager::GetFade()->SetFade(CManager::MODE_STAGE_SELECT);
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	CountEntryPlayerNum();
@@ -109,6 +152,12 @@ void CCharaSelect::Update(void)
 //=============================
 void CCharaSelect::Draw(void)
 {
+	// カメラクラス更新処理
+	CCamera * pCamera = CManager::GetCamera();
+	if (pCamera != NULL)
+	{
+		pCamera->SetCamera();
+	}
 }
 
 //=============================
@@ -122,10 +171,32 @@ void CCharaSelect::ResetEntryPlayer(void)
 		m_aEntryData[nCntData].bEntry = false;
 		m_aEntryData[nCntData].nColorNum = nCntData; // 仮
 		m_aEntryData[nCntData].nControllNum = -1;
-		m_aEntryData[nCntData].charaType = CPlayer::CHARA_TYPE_FIGHTER;
+		m_aEntryData[nCntData].charaType = CResourceCharacter::CHARACTER_NONE;
+		m_aEntryData[nCntData].bReady = false;
+	}
+	m_nEntryPlayerNum = 0;
+}
+
+//=============================
+// ゲームシーンにフェード
+//=============================
+void CCharaSelect::FadeGameScene(void)
+{
+	int nReadyPlayerNum = 0;
+	for (int nCntData = 0; nCntData < MAX_PLAYER; nCntData++)
+	{
+		if (m_aEntryData[nCntData].bEntry && !m_aEntryData[nCntData].bReady) return;
+		else if (m_aEntryData[nCntData].bEntry && m_aEntryData[nCntData].bReady) nReadyPlayerNum++;
 	}
 
-	m_nEntryPlayerNum = 0;
+	// プレイヤー数のカウント
+	CountEntryPlayerNum();
+
+	if (m_nEntryPlayerNum >= MIN_PLAYER_NUM&&nReadyPlayerNum == m_nEntryPlayerNum)
+	{// エントリー数がMIN_PLAYER_NUM以上且つエントリー数と準備完了数が一緒の時
+
+		CManager::GetFade()->SetFade(CManager::MODE_STAGE_SELECT);
+	}
 }
 
 //=============================
@@ -142,9 +213,14 @@ void CCharaSelect::EntryPlayer(void)
 		m_aEntryData[nCntData].bController = bController;
 		// コントローラー番号のセット
 		m_aEntryData[nCntData].nControllNum = nCntJoy;
+		// キャラタイプ
+		m_aEntryData[nCntData].charaType = CResourceCharacter::CHARACTER_KNIGHT;
 		// コントローラーを使用状態に
 		if (bController) m_abUseJoy[nCntJoy] = true;
+		// キーボードを使用状態に
 		else m_abUseKey[nCntJoy] = true;
+		// カウントの初期化
+		m_anWaitCnt[nCntData] = 0;
 	};
 
 	// エントリー解除処理
@@ -173,9 +249,12 @@ void CCharaSelect::EntryPlayer(void)
 			if (   m_aEntryData[nCntData].bController && pJoy->GetButtonState(XINPUT_GAMEPAD_START, CInputJoypad::BUTTON_TRIGGER, m_aEntryData[nCntData].nControllNum)
 				||!m_aEntryData[nCntData].bController && pKey->GetKeyTrigger(CPlayer::GetPlayerControllKey(m_aEntryData[nCntData].nControllNum, CPlayer::KEY_PROGRESS)))
 			{
+				// エントリーのキャンセル
 				EntryCancelPlayer(nCntData);
 				break;
 			}
+			if (m_anWaitCnt[nCntData] > 0) m_anWaitCnt[nCntData]--;
+			CharacterSelect(nCntData);
 		}
 
 		for (int nCntJoy = 0; nCntJoy < MAX_PLAYER; nCntJoy++)
@@ -186,6 +265,7 @@ void CCharaSelect::EntryPlayer(void)
 				if (!m_abUseJoy[nCntJoy] && pJoy->GetButtonState(XINPUT_GAMEPAD_START, CInputJoypad::BUTTON_TRIGGER, nCntJoy))
 				{// コントローラーでエントリー
 					EntryPlayer(nCntData, nCntJoy, true);
+					pJoy->EnableVibration(1.0f, 1.0f, 10.0f, nCntJoy);
 					break;
 				}
 
@@ -196,6 +276,7 @@ void CCharaSelect::EntryPlayer(void)
 					EntryPlayer(nCntData, nCntJoy, false);
 					break;
 				}
+				m_aEntryData[nCntData].charaType = CResourceCharacter::CHARACTER_NONE;
 			}
 		}
 	}
@@ -214,4 +295,73 @@ void CCharaSelect::CountEntryPlayerNum(void)
 			m_nEntryPlayerNum++;
 		}
 	}
+}
+
+//=============================
+// キャラセレクト
+//=============================
+void CCharaSelect::CharacterSelect(int nCntData)
+{
+	if (m_anWaitCnt[nCntData] > 0) return;
+
+	// キーボード・ゲームパッドの情報の取得
+	CInputKeyboard *pKey = CManager::GetKeyboard();
+	CInputJoypad * pJoy = CManager::GetJoypad();
+
+	// スティックの座標
+	D3DXVECTOR2 StickPos = pJoy->GetStickState(pJoy->PAD_LEFT_STICK, m_aEntryData[nCntData].nControllNum);
+
+	if (m_aEntryData[nCntData].bReady)
+	{
+		// 決定キー
+		if (!m_aEntryData[nCntData].bController && pKey->GetKeyTrigger(CPlayer::GetPlayerControllKey(m_aEntryData[nCntData].nControllNum, CPlayer::KEY_RECESSION))
+			|| m_aEntryData[nCntData].bController && pJoy->GetButtonState(XINPUT_GAMEPAD_A, pJoy->BUTTON_TRIGGER, m_aEntryData[nCntData].nControllNum))
+		{
+			m_aEntryData[nCntData].bReady = false;
+		}
+		return;
+	}
+
+	int nType = m_aEntryData[nCntData].charaType;
+	// キャラの選択処理
+	if (!m_aEntryData[nCntData].bController && pKey->GetKeyPress(CPlayer::GetPlayerControllKey(m_aEntryData[nCntData].nControllNum, CPlayer::KEY_LEFT))
+		|| m_aEntryData[nCntData].bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+			|| pJoy->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoy->BUTTON_PRESS, m_aEntryData[nCntData].nControllNum)))
+	{
+		
+		// 進む
+		nType--;
+		if (nType < 0)
+		{
+			nType = CResourceCharacter::CHARACTER_MAX - 1;
+		}
+		m_aEntryData[nCntData].charaType = (CResourceCharacter::CHARACTER_TYPE)nType;
+
+		m_anWaitCnt[nCntData] = WAIT_TIME;
+		return;
+	}
+	if (!m_aEntryData[nCntData].bController && pKey->GetKeyPress(CPlayer::GetPlayerControllKey(m_aEntryData[nCntData].nControllNum, CPlayer::KEY_RIGHT))
+		|| m_aEntryData[nCntData].bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
+			|| pJoy->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoy->BUTTON_PRESS, m_aEntryData[nCntData].nControllNum)))
+	{
+		// 戻る
+		nType++;
+		if (nType >= CResourceCharacter::CHARACTER_MAX)
+		{
+			nType = 0;
+		}
+		m_aEntryData[nCntData].charaType = (CResourceCharacter::CHARACTER_TYPE)nType;
+		m_anWaitCnt[nCntData] = WAIT_TIME;
+		return;
+	}
+
+	// 決定キー
+	if (!m_aEntryData[nCntData].bController && pKey->GetKeyTrigger(CPlayer::GetPlayerControllKey(m_aEntryData[nCntData].nControllNum, CPlayer::KEY_RECESSION))
+		|| m_aEntryData[nCntData].bController && pJoy->GetButtonState(XINPUT_GAMEPAD_A, pJoy->BUTTON_TRIGGER, m_aEntryData[nCntData].nControllNum))
+	{
+		m_aEntryData[nCntData].bReady = true;
+	}
+
+	// カウントの初期化
+	m_anWaitCnt[nCntData] = 0;
 }

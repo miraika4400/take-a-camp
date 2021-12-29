@@ -19,7 +19,7 @@ CInputJoypad::CInputJoypad()
 	memset(m_aJoyState, 0, sizeof(m_aJoyState));
 	memset(m_aJoyStateTrigger, 0, sizeof(m_aJoyStateTrigger));
 	memset(m_aJoyStateRelease, 0, sizeof(m_aJoyStateRelease));
-	
+
 	memset(m_aJoyStateLTRT, 0, sizeof(m_aJoyStateLTRT));
 	memset(m_aJoyStateTriggerLTRT, 0, sizeof(m_aJoyStateTriggerLTRT));
 	memset(m_aJoyStateReleaseLTRT, 0, sizeof(m_aJoyStateReleaseLTRT));
@@ -65,50 +65,17 @@ void CInputJoypad::Update(void)
 	memset(m_aJoyStateTriggerLTRT, 0, sizeof(m_aJoyStateTriggerLTRT));
 	memset(m_aJoyStateReleaseLTRT, 0, sizeof(m_aJoyStateReleaseLTRT));
 
-	for (int nCountJoystick = 0; nCountJoystick < MAX_JOYSTICK_NUM; nCountJoystick++)
+	for (int nCountJoystick = 0; nCountJoystick < XUSER_MAX_COUNT; nCountJoystick++)
 	{
 		// ジョイパッドの情報の取得
 		if (GetPadState(state, nCountJoystick) == ERROR_SUCCESS)
 		{
 			// ボタンの更新
-			for (int nCntButton = 0; nCntButton < MAX_PAD_BUTTON; nCntButton++)
-			{
-				//キーリリース
-				m_aJoyStateRelease[nCountJoystick][nCntButton] = (m_aJoyState[nCountJoystick][nCntButton] ^ state.Gamepad.wButtons) & ~state.Gamepad.wButtons;
-
-				// 押してるときにキーの情報を入れる
-				if (state.Gamepad.wButtons == Return_XInput((PAD_BUTTON_STATE)nCntButton))
-				{
-					//キートリガー
-					m_aJoyStateTrigger[nCountJoystick][nCntButton] = (m_aJoyState[nCountJoystick][nCntButton] ^ state.Gamepad.wButtons) & state.Gamepad.wButtons;
-
-					//キープレス情報を保存
-					m_aJoyState[nCountJoystick][nCntButton] = state.Gamepad.wButtons;
-				}
-				else
-				{
-					//キープレス情報を保存
-					m_aJoyState[nCountJoystick][nCntButton] = 0;
-				}
-			}
-
+			UpdateButton(state, nCountJoystick);
 			// LTRTの更新
-			for (int nCntTrigger = 0; nCntTrigger < MAX_PAD_TRIGGER; nCntTrigger++)
-			{
-				switch ((PAD_TRRIGER_STATE)nCntTrigger)
-				{
-				case PAD_LT: // 左トリガー
-					UpdateTriggerState(state.Gamepad.bLeftTrigger, nCntTrigger, nCountJoystick);
-					break;
-
-				case PAD_RT: // 右トリガー
-					UpdateTriggerState(state.Gamepad.bRightTrigger, nCntTrigger, nCountJoystick);
-					break;
-
-				default:
-					break;
-				}
-			}
+			UpdateTrigger(state, nCountJoystick);
+			// 振動の更新
+			UpdateVibration(nCountJoystick);
 		}
 	}
 }
@@ -252,6 +219,156 @@ int CInputJoypad::Return_Button(const WORD Xinput_Gamepad)
 }
 
 //====================================================
+// バイブレーションの開始
+// L_magnification:左のバイブレーションの倍率(0.0f～1.0f)
+// R_magnification:右のバイブレーションの倍率(0.0f～1.0f)
+// fVibTime       :振動する時間
+// nJoystickNum   :コントローラの番号
+//====================================================
+void CInputJoypad::EnableVibration(const float L_magnification, const float R_magnification, const float fVibTime, const int nJoystickNum)
+{
+	// 振動値を出す
+	float fL_vib = 65535 * L_magnification;
+	float fR_vib = 65535 * R_magnification;
+
+	// 振動する時間
+	m_fVibrationTime[nJoystickNum] = fVibTime;
+
+	// 振動用の構造体
+	XINPUT_VIBRATION vibration;
+
+	// 初期化
+	ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
+
+	// 振動値代入
+	vibration.wLeftMotorSpeed = (WORD)fL_vib;
+	vibration.wRightMotorSpeed = (WORD)fR_vib;
+
+	// 振動させる
+	XInputSetState(nJoystickNum, &vibration);
+}
+
+//====================================================
+// バイブレーションの終了
+// nJoystickNum:コントローラの番号
+//====================================================
+void CInputJoypad::DisableVibration(int nJoystickNum)
+{
+	// 振動用の構造体
+	XINPUT_VIBRATION vibration;
+
+	// 初期化
+	ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
+
+	// 振動値代入
+	vibration.wLeftMotorSpeed = 0;
+	vibration.wRightMotorSpeed = 0;
+
+	// 振動を止める
+	XInputSetState(nJoystickNum, &vibration);
+}
+
+//====================================================
+// ボタンの更新処理
+//====================================================
+void CInputJoypad::UpdateButton(const XINPUT_STATE state, const int nJoystickNum)
+{
+	for (int nCntButton = 0; nCntButton < MAX_PAD_BUTTON; nCntButton++)
+	{
+		//キーリリース
+		m_aJoyStateRelease[nJoystickNum][nCntButton] = (m_aJoyState[nJoystickNum][nCntButton] ^ state.Gamepad.wButtons) & ~state.Gamepad.wButtons;
+
+		// 押してるときにキーの情報を入れる
+		if (state.Gamepad.wButtons & Return_XInput((PAD_BUTTON_STATE)nCntButton))
+		{
+			//キートリガー
+			m_aJoyStateTrigger[nJoystickNum][nCntButton] = (m_aJoyState[nJoystickNum][nCntButton] ^ state.Gamepad.wButtons) & state.Gamepad.wButtons;
+
+			//キープレス情報を保存
+			m_aJoyState[nJoystickNum][nCntButton] = state.Gamepad.wButtons;
+		}
+		else
+		{
+			//キープレス情報を保存
+			m_aJoyState[nJoystickNum][nCntButton] = 0;
+		}
+	}
+}
+
+//====================================================
+// トリガーの更新処理
+//====================================================
+void CInputJoypad::UpdateTrigger(const XINPUT_STATE state, const int nJoystickNum)
+{
+	for (int nCntTrigger = 0; nCntTrigger < MAX_PAD_TRIGGER; nCntTrigger++)
+	{
+		switch ((PAD_TRRIGER_STATE)nCntTrigger)
+		{
+		case PAD_LT: // 左トリガー
+			UpdateTriggerState(state.Gamepad.bLeftTrigger, nCntTrigger, nJoystickNum);
+			break;
+
+		case PAD_RT: // 右トリガー
+			UpdateTriggerState(state.Gamepad.bRightTrigger, nCntTrigger, nJoystickNum);
+			break;
+
+		default:
+			break;
+		}
+	}
+}
+
+//====================================================
+// トリガーの情報更新処理
+// nTriggerPush:トリガーの押し込んだ量
+// nPadTrigger:スティックの座標
+// nJoystickNum:コントローラの番号
+//====================================================
+void CInputJoypad::UpdateTriggerState(const int nTriggerPush, const int nPadTrigger, int nJoystickNum)
+{
+	if (nTriggerPush > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	{
+		//キートリガー
+		m_aJoyStateTriggerLTRT[nJoystickNum][nPadTrigger] = (m_aJoyStateLTRT[nJoystickNum][nPadTrigger] ^ true) & true;
+
+		//キーリリース
+		m_aJoyStateReleaseLTRT[nJoystickNum][nPadTrigger] = false;
+
+		//キープレス情報を保存
+		m_aJoyStateLTRT[nJoystickNum][nPadTrigger] = true;
+	}
+	else
+	{
+		if (nTriggerPush == 0 && m_aJoyStateLTRT[nJoystickNum][nPadTrigger] == true)
+		{
+			//キーリリース
+			m_aJoyStateReleaseLTRT[nJoystickNum][nPadTrigger] = true;
+		}
+
+		//キープレス情報を保存
+		m_aJoyStateLTRT[nJoystickNum][nPadTrigger] = false;
+	}
+}
+
+//====================================================
+// 振動の更新処理
+//====================================================
+void CInputJoypad::UpdateVibration(const int nJoystickNum)
+{
+	// 振動の時間が指定されたら減算
+	if (m_fVibrationTime[nJoystickNum] > 0.0f)
+	{
+		m_fVibrationTime[nJoystickNum]--;
+	}
+	else
+	{
+		// 初期値に戻して振動を停止
+		m_fVibrationTime[nJoystickNum] = 0.0f;
+		DisableVibration(nJoystickNum);
+	}
+}
+
+//====================================================
 // ボタンの取得
 // wButton_State:どのボタンか
 // Push_State:押し込み方
@@ -263,7 +380,7 @@ bool CInputJoypad::GetButtonState(const WORD wButton_State, const BUTTON_PUSH_ST
 	XINPUT_STATE state;
 	ZeroMemory(&state, sizeof(state));	// 初期化
 
-	// ジョイパッドの情報の取得
+										// ジョイパッドの情報の取得
 	if (GetPadState(state, nJoystickNum) == ERROR_SUCCESS)
 	{
 		// 押し方によって渡すものを変える
@@ -413,87 +530,23 @@ D3DXVECTOR2 CInputJoypad::GetStickState(const PAD_STICK_STATE Pad_Stick_State, i
 			break;
 		}
 	}
+
 	// 入力されてないなら0.0fを返す
 	return D3DXVECTOR2(0.0f, 0.0f);
 }
 
-
 //====================================================
-// バイブレーションの開始
-// L_magnification:左のバイブレーションの倍率(0.0f～1.0f)
-// R_magnification:右のバイブレーションの倍率(0.0f～1.0f)
+// ジョイパッドの情報の取得
+// state:コントローラの情報
 // nJoystickNum:コントローラの番号
+// 返り値:コントローラが接続されているかどうか
 //====================================================
-void CInputJoypad::EnableVibration(const float L_magnification, const float R_magnification, int nJoystickNum)
+DWORD CInputJoypad::GetPadState(XINPUT_STATE& state, int nJoystickNum)
 {
-	// 振動値を出す
-	float fL_vib = 65535 * L_magnification;
-	float fR_vib = 65535 * R_magnification;
+	ZeroMemory(&state, sizeof(state));						// 初期化
+	DWORD dwResult = XInputGetState(nJoystickNum, &state);	// 情報取得
 
-	// 振動用の構造体
-	XINPUT_VIBRATION vibration;
-
-	// 初期化
-	ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
-
-	// 振動値代入
-	vibration.wLeftMotorSpeed = (WORD)fL_vib;
-	vibration.wRightMotorSpeed = (WORD)fR_vib;
-
-	// 振動させる
-	XInputSetState(nJoystickNum, &vibration);
-}
-
-//====================================================
-// バイブレーションの終了
-// nJoystickNum:コントローラの番号
-//====================================================
-void CInputJoypad::DisableVibration(int nJoystickNum)
-{
-	// 振動用の構造体
-	XINPUT_VIBRATION vibration;
-
-	// 初期化
-	ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
-
-	// 振動値代入
-	vibration.wLeftMotorSpeed = 0;
-	vibration.wRightMotorSpeed = 0;
-
-	// 振動を止める
-	XInputSetState(nJoystickNum, &vibration);
-}
-
-//====================================================
-// トリガーの更新処理
-// nTriggerPush:トリガーの押し込んだ量
-// nPadTrigger:スティックの座標
-// nJoystickNum:コントローラの番号
-//====================================================
-void CInputJoypad::UpdateTriggerState(const int nTriggerPush, const int nPadTrigger, int nJoystickNum)
-{
-	if (nTriggerPush > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
-	{
-		//キートリガー
-		m_aJoyStateTriggerLTRT[nJoystickNum][nPadTrigger] = (m_aJoyStateLTRT[nJoystickNum][nPadTrigger] ^ true) & true;
-
-		//キーリリース
-		m_aJoyStateReleaseLTRT[nJoystickNum][nPadTrigger] = false;
-
-		//キープレス情報を保存
-		m_aJoyStateLTRT[nJoystickNum][nPadTrigger] = true;
-	}
-	else
-	{
-		if (nTriggerPush == 0 && m_aJoyStateLTRT[nJoystickNum][nPadTrigger] == true)
-		{
-			//キーリリース
-			m_aJoyStateReleaseLTRT[nJoystickNum][nPadTrigger] = true;
-		}
-
-		//キープレス情報を保存
-		m_aJoyStateLTRT[nJoystickNum][nPadTrigger] = false;
-	}
+	return dwResult;
 }
 
 //====================================================
@@ -557,18 +610,4 @@ bool CInputJoypad::GetJoystickTriggerLTRT(const int nPad_Trigger, const int nJoy
 bool CInputJoypad::GetJoystickReleaseLTRT(const int nPad_Trigger, const int nJoystickNum)
 {
 	return m_aJoyStateReleaseLTRT[nJoystickNum][nPad_Trigger];
-}
-
-//====================================================
-// ジョイパッドの情報の取得
-// state:コントローラの情報
-// nJoystickNum:コントローラの番号
-// 返り値:コントローラが接続されているかどうか
-//====================================================
-DWORD CInputJoypad::GetPadState(XINPUT_STATE& state, int nJoystickNum)
-{
-	ZeroMemory(&state, sizeof(state));						// 初期化
-	DWORD dwResult = XInputGetState(nJoystickNum, &state);	// 情報取得
-
-	return dwResult;
 }

@@ -16,7 +16,7 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define WINDOW_NAME      "" // ウインドウのキャプション名
+#define WINDOW_NAME      "color" // ウインドウのキャプション名
 #define IS_WINDOW_SCREEN true    // ウィンドウかフルスクリーンか
 
 //*****************************************************************************
@@ -36,7 +36,7 @@ int					g_nCountFPS = 0;			// FPSカウンタ
 // メイン関数
 //=============================================================================
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-{
+ {
 #ifdef _DEBUG
 	// メモリリーク見つける君
 	::_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CRTDBG_ALLOC_MEM_DF);

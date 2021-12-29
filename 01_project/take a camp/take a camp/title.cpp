@@ -41,7 +41,7 @@ CButton_Title* CTitle::m_pButton = NULL; // ボタンクラスのポインタ
 //=============================
 // コンストラクタ
 //=============================
-CTitle::CTitle()
+CTitle::CTitle() :CScene(OBJTYPE_SYSTEM)
 {
 	m_pPolygon = NULL;
 }
@@ -74,7 +74,7 @@ HRESULT CTitle::Init(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	m_pPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 200.0f, 0.0f),
-		D3DXVECTOR3(800.0f, 400.0f, 0.0f),
+		D3DXVECTOR3(1200.0f, 318.0f, 0.0f),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_TITLE));
@@ -84,6 +84,7 @@ HRESULT CTitle::Init(void)
 
 	// 背景の設定
 	CBg::Create();
+	CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), CResourceModel::MODEL_DESK, D3DXVECTOR3(0.4f, 0.4f, 0.4f));
 
 	// エントリー人数の初期化
 	CCharaSelect::ResetEntryPlayer();
@@ -91,12 +92,9 @@ HRESULT CTitle::Init(void)
 	// ステージ生成
 	m_pMap = CMap::Create(m_MapType);
 
-	// ライトクラスの生成
-	CManager::SetLight();
-
 	// ボタンの生成
-	m_pButton = CButton_Title::Create(D3DXVECTOR3(800.0f, 600.0f, 0.0f), CButton_Title::BUTTON_START);
-	m_pButton = CButton_Title::Create(D3DXVECTOR3(800.0f, 660.0f, 0.0f), CButton_Title::BUTTON_TUTORIAL);
+	m_pButton = CButton_Title::Create(D3DXVECTOR3(SCREEN_WIDTH/2, 500.0f, 0.0f), CButton_Title::BUTTON_START);
+	m_pButton = CButton_Title::Create(D3DXVECTOR3(SCREEN_WIDTH/2, 630.0f, 0.0f), CButton_Title::BUTTON_TUTORIAL);
 
 	return S_OK;
 }
@@ -124,18 +122,6 @@ void CTitle::Uninit(void)
 		m_pPolygon = NULL;
 	}
 
-	// ライトクラスの解放処理
-	CLight * pLight = CManager::GetLight();
-	if (pLight != NULL)
-	{
-		// ライトの終了処理
-		pLight->Uninit();
-
-		// メモリの解放
-		delete pLight;
-		pLight = NULL;
-	}
-
 	// 開放処理
 	Release();
 }
@@ -146,14 +132,12 @@ void CTitle::Uninit(void)
 //=============================
 void CTitle::Update(void)
 {
-	// カメラクラスの解放処理
 	// カメラクラス更新処理
 	CCamera * pCamera = CManager::GetCamera();
 	if (pCamera != NULL)
 	{
 		pCamera->Update();
 	}
-
 
 	// ポリゴンの更新処理
 	m_pPolygon->Update();

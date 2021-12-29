@@ -19,6 +19,7 @@
 #include "resource_model.h"
 #include "resource_shader.h"
 #include "resource_attack.h"
+#include "resource_model_hierarchy.h"
 #include "camera_base.h"
 #include "debug_log.h"
 #include "pause.h"
@@ -29,11 +30,16 @@
 #include "chara_select.h"
 #include "total_result.h"
 #include "tile_factory.h"
+#include "resource_character.h"
+#include "stage_select.h"
+#include "stage_texture.h"
+#include "resource_text.h"
 
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CManager::MODE   CManager::m_mode = MODE_TITLE;       // ゲームモード
+CManager::MODE   CManager::m_mode = MODE_TITLE;      // ゲームモード
+CManager::MODE   CManager::m_Decmode = MODE_TITLE;   // 判定用モード
 CRenderer       *CManager::m_pRenderer = NULL;       // レンダラーポインタ
 CInputKeyboard  *CManager::m_pInputKeyboard = NULL;  // キーボード
 CInputJoypad    *CManager::m_pJoypad = NULL;         // ジョイパッド
@@ -50,6 +56,7 @@ CCamera         *CManager::m_pCamera = NULL;         // カメラクラス
 CLight			*CManager::m_pLight = NULL;			 // ライトクラス
 bool             CManager::m_bPause = false;         // ポーズフラグ
 CCharaSelect    *CManager::m_pCharaSelectMode = NULL;// キャラ選択
+CStageSelect    *CManager::m_pStageSelectMode = NULL;// ステージ選択
 //=============================
 // コンストラクタ
 //=============================
@@ -70,7 +77,7 @@ CManager::~CManager()
 //=============================
 HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 {
-	
+
 	// メモリの確保・初期化
 
 	// キーボード
@@ -113,6 +120,14 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 		return E_FAIL;
 	}
 
+	// ライトクラスの生成
+	m_pLight = new CLight;
+	// ライトクラスの初期化
+	if (FAILED(m_pLight->Init()))
+	{
+		return E_FAIL;
+	}
+
 	// デバッグログ
 	CDebugLog::Init();
 	
@@ -126,6 +141,10 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CResourceModel::Create();
 	// シェーダーリソースクラスの生成
 	CResourceShader::Create();
+	// 階層構造リソースクラス
+	CResourceModelHierarchy::Create();
+	// キャラクターリソースの生成
+	CResourceCharacter::Create();
 
 	// テクスチャ・モデルの読み込み
 	CPause::Load();    // ポーズ
@@ -134,14 +153,17 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	//攻撃範囲読み込み
 	CAttackManager::Create();
 
-	// プレイヤー階層構造
-	CPlayer::Load();
-
 	// カラーマネージャーの生成
 	CColorManager::Create();
 
 	// タイルファクトリーの生成
 	CTileFactory::Create();
+
+	//　ステージテクスチャクラス
+	CStageTexture::Create(D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+	// チュートリアルに使うテキストの読み込み
+	CResourceText::Create();
 
 	// ポーズ状態の時
 	return S_OK;
@@ -164,16 +186,22 @@ void CManager::Uninit(void)
 	CResourceModel::Release();
 	// シェーダーリソースクラスの破棄
 	CResourceShader::Release();
+	// 階層構造リソースクラス
+	CResourceModelHierarchy::Release();
+	// キャラクターリソースの破棄
+	CResourceCharacter::Release();
+
 	// カラーマーマネージャーの破棄
 	CColorManager::Release();
 	// タイルファクトリーの破棄
 	CTileFactory::Release();
+	// ステージテクスチャの
+	CStageTexture::Release();
+	// チュートリアルに使うテキストの破棄
+	CResourceText::Release();
 
 	// テクスチャのアンロード
 	CPause::Unload();    // ポーズ
-
-	// プレイヤー階層構造
-	CPlayer::Unload();
 
 	if (m_pSound != NULL)
 	{
@@ -234,6 +262,13 @@ void CManager::Uninit(void)
 		m_pPause->Uninit();
 		delete m_pPause;
 		m_pPause = NULL;
+	}
+
+	if (m_pLight != NULL)
+	{
+		m_pLight->Uninit();
+		delete m_pLight;
+		m_pLight = NULL;
 	}
 }
 
@@ -358,6 +393,10 @@ void CManager::SetMode(MODE mode)
 		m_pCharaSelectMode = NULL;
 
 		break;
+	case MODE_STAGE_SELECT:
+		m_pStageSelectMode = NULL;
+
+		break;
 	case MODE_GAME:
 		// NULLクリア
 		m_pGame = NULL;
@@ -404,6 +443,10 @@ void CManager::SetMode(MODE mode)
 		m_pCharaSelectMode = CCharaSelect::Create();
 
 		break;
+	case MODE_STAGE_SELECT:
+		m_pStageSelectMode = CStageSelect::Create();
+
+		break;
 	case MODE_GAME:
 		// ゲーム生成
 		m_pGame = CGame::Create();
@@ -427,6 +470,14 @@ void CManager::SetMode(MODE mode)
 }
 
 //=============================
+// 判定用モードセット
+//=============================
+void CManager::SetDecMode(MODE mode)
+{
+	m_Decmode = mode;
+}
+
+//=============================
 // カメラクラスのセット処理
 //=============================
 void CManager::SetCamera(CCamera * pCamera)
@@ -440,22 +491,4 @@ void CManager::SetCamera(CCamera * pCamera)
 
 	// セット
 	m_pCamera = pCamera;
-}
-
-//=============================
-// ライトのセット処理
-//=============================
-HRESULT CManager::SetLight(void)
-{
-	// ライトクラスの生成
-	m_pLight = new CLight;
-	// ライトクラスの初期化
-	if (m_pLight != NULL)
-	{
-		if (FAILED(m_pLight->Init()))
-		{
-			return -1;
-		}
-	}
-	return S_OK;
 }

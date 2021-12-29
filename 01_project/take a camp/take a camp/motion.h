@@ -30,7 +30,7 @@ class CCollision;
 //*****************************
 
 // パーティクルクラス
-class CMotion :CScene
+class CMotion : public CScene
 {
 public:
 
@@ -68,7 +68,7 @@ private:
 	D3DXVECTOR3 m_rot[MAX_KEYFRAME][MAX_PARTS_NUM];// 回転の目標値
 	D3DXVECTOR3 m_addPos[MAX_PARTS_NUM];     // 座標の加算値
 	D3DXVECTOR3 m_addRot[MAX_PARTS_NUM];     // 回転の加算値
-
+	D3DXVECTOR3 m_defaultModelPos[MAX_PARTS_NUM];             // モデルのデフォルト値
 	int m_nNumKey;                   // キーフレームの数
 	int m_nNumParts;                 // パーツ数
 	int m_nNumFrame[MAX_KEYFRAME];   // フレーム数

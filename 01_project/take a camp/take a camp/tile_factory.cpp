@@ -13,6 +13,11 @@
 #include "color_tile.h"
 #include "needle_tile.h"
 #include "spawn_tile.h"
+#include "move_around_tile.h"
+#include "move_sideways_tile.h"
+#include "warp_tile.h"
+#include "dummy_tile.h"
+
 //*****************************
 // É}ÉNÉçíËã`
 //*****************************
@@ -25,11 +30,16 @@ std::vector<CTile::SENTENCE_FUNC> CTileFactory::m_CreateSentence = {};
 CTileFactory* CTileFactory::m_pInstance = NULL;
 const std::vector<CTileFactory::LabelData> CTileFactory::m_cLabelData = 
 {
-	{ "TILE_NONE"    , NULL},
-	{ "TILE_"        , NULL },
-	{ "TILE_NORMAL"  , CColorTile::Create },
-	{ "TILE_PLAYER"  , CSpawnTile::Create },
-	{ "TILE_NEEDLE"  , CNeedleTile::Create },
+	{ "TILE_NONE"   , NULL},
+	{ "TILE_"       , NULL },
+	{ "TILE_NORMAL" , CColorTile::Create },
+	{ "TILE_PLAYER" , CSpawnTile::Create },
+	{ "TILE_NEEDLE" , CNeedleTile::Create },
+	{ "TILE_AROUND_MOVE", CAroundTile::Create },
+	{ "TILE_SIDEWAYS_MOVE",CSidewaysTile::Create },
+	{ "TILE_WARP_1" , CWarpTile::Create_1 },
+	{ "TILE_WARP_2" , CWarpTile::Create_2 },
+	{ "TILE_DUMMY",CDummyTile::Create },
 };
 
 //******************************

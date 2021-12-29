@@ -27,6 +27,11 @@
 #include "color_manager.h"
 #include "color_tile.h"
 #include "kill_count.h"
+#include "paintnum.h"
+#include "player_model.h"
+#include "building.h"
+#include "game_start.h"
+#include "stage_texture.h"
 
 //=============================
 // ƒ}ƒNƒ’è‹`
@@ -45,6 +50,7 @@ CMapManager::MAP_TYPE CGame::m_MapType = CMapManager::MAP_TYPE_1; // ƒ}ƒbƒvƒ^ƒCƒ
 CGame::CGame()
 {
 	// •Ï”‚ÌƒNƒŠƒA
+	m_pGameStart = NULL;
 }
 
 //=============================
@@ -77,18 +83,23 @@ HRESULT CGame::Init(void)
 	// ƒ}ƒl[ƒWƒƒ[‚Ì”Ô†‚ÌƒŠƒZƒbƒg
 	GET_COLORMANAGER->UseNumReset();
 
-	CManager::SetCamera(CTpsCamera::Create());
+	CManager::SetCamera(CCamera::Create());
 
 	// ”wŒi‚Ì¶¬
 	CBg::Create();
-	
+	CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), CResourceModel::MODEL_DESK, D3DXVECTOR3(0.4f, 0.4f, 0.4f))->SetPriority(OBJTYPE_MAP);
 	//ƒXƒe[ƒW¶¬
 	m_pMap = CMap::Create(m_MapType);
 	
-	// ƒ‰ƒCƒgƒNƒ‰ƒX‚Ì¶¬
-	CManager::SetLight();
-
-	CTime::Create();
+	// ƒvƒŒƒCƒ„[‚²‚Æ‚ÌF‚ÌŠ„‡‚Ì•\Ž¦
+	CPaintnum::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 40.0f, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, 50.0f, 0.0f) - SUBTRACT_GAUGE_SIZE);
+	// §ŒÀŽžŠÔƒNƒ‰ƒX
+	//CTime::Create();
+	CBuilding::Load();
+	// ƒ‰ƒCƒg‚ÌŒü‚«‚ÌÝ’è
+	CManager::GetLight()->SetDir(LIGHT_DIR_BASE);
+	// ready go‚Ì¶¬
+	m_pGameStart=CGameStart::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, START_UI_POS_Y, 0.0f), START_UI_SIZE);
 
 	return S_OK;
 }
@@ -103,19 +114,6 @@ void CGame::Uninit(void)
 	if (pCamera != NULL)
 	{
 		CManager::SetCamera(NULL);
-		pCamera = NULL;
-	}
-	
-	// ƒ‰ƒCƒgƒNƒ‰ƒX‚Ì‰ð•úˆ—
-	CLight * pLight = CManager::GetLight();
-	if (pLight != NULL)
-	{
-		// ƒ‰ƒCƒg‚ÌI—¹ˆ—
-		pLight->Uninit();
-
-		// ƒƒ‚ƒŠ‚Ì‰ð•ú
-		delete pLight;
-		pLight = NULL;
 	}
 
 	// ŠJ•úˆ—
@@ -127,7 +125,6 @@ void CGame::Uninit(void)
 //=============================
 void CGame::Update(void)
 {
-
 	// ƒJƒƒ‰ƒNƒ‰ƒXXVˆ—
 	CCamera * pCamera = CManager::GetCamera();
 	if (pCamera != NULL)
@@ -149,6 +146,7 @@ void CGame::Update(void)
 	{
 		CManager::SetCamera(CCamera::Create());
 	}
+
 	CKillCount::AddTotalKill();
 	CColorTile::CountColorTile();
 
@@ -177,4 +175,7 @@ void CGame::Draw(void)
     {
 		pCamera->SetCamera();
     }
+
+	// ƒXƒe[ƒW‚Ì‘‚«ž‚Ý
+	CStageTexture::GetStateTexturePointa()->DrawStageInTex();
 }

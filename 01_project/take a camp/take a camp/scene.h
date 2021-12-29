@@ -42,14 +42,18 @@ public:
 		OBJTYPE_TILE,          // タイル
 		OBJTYPE_COLOR_TILE,    // 色付きタイル
 		OBJTYPE_PLAYER,        // プレイヤー
+		OBJTYPE_DUMMY,         // ダミー
 		OBJTYPE_BULLET,        // 弾
 		OBJTYPE_PEINT,		   // 塗り判定用
 		OBJTYPE_ITEM,          // アイテム
 		OBJTYPE_MAP,           // マップ
+		OBJTYPE_BULDING,       // マップ
 		OBJTYPE_EFFECT,        // エフェクト
 		OBJTYPE_PARTICLE,      // パーティクル
 		OBJTYPE_MOTION,        // モーション
-		OBJTYPE_UI,            // UI
+		OBJTYPE_UI_1,          // UI
+		OBJTYPE_UI_2,          // UI
+        OBJTYPE_EFFECT_2,      // UIより前に出すエフェクト
 		OBJTYPE_ACT_RANGE,	   // 行動範囲
 		OBJTYPE_COLLISION,     // コリジョン
 		OBJTYPE_SYSTEM,        // システム
@@ -67,7 +71,7 @@ public:
 	static int GetNumAll(void) { return m_nIDAll; } // これまで生成されたオブジェクトの数
 	 
 	void SetPriority(const int  nPriority);   // プライオリティの設定
-	OBJTYPE GetType(void) { return m_type; }  // オブジェクトタイプの取得
+	int GetType(void) { return m_nPriority; }  // オブジェクトタイプの取得
 	int GetID(void) { return m_nNumID; }      // 配列番号の取得
 
 	static CScene*GetTop(int nIndex) { return m_pTop[nIndex]; }  // リスト構造トップの取得
@@ -81,7 +85,7 @@ public:
 	virtual void Update(void) = 0;  // 更新
 	virtual void Draw(void) = 0;    // 描画
 
-	void ReConnection(void); // リスト構造から自身を消してつなぎなおす
+	void OutList(void); // リスト構造から自身を消してつなぎなおす
 protected:
 	void Release(void);      // 解放処理
 private:
@@ -92,7 +96,6 @@ private:
 	//============
 	static int m_nIDAll;                   // 生成したポリゴン数
 	int     m_nNumID;                      // 生成したポリゴンの配列
-	OBJTYPE m_type;                        // オブジェクトタイプ
 	int     m_nPriority;                   // プライオリティ
 	bool    m_bReleasFlag;                 // 削除フラグ
 

@@ -26,37 +26,62 @@ public:
 	// テクスチャ種類
 	typedef enum
 	{
-		TEXTURE_TITLE = 0,       // タイトル
-		TEXTURE_TUTORIAL,        // チュートリアル
-		TEXTURE_TUTORIAL_FLAG,   // チュートリアル(はたあげ)
-		TEXTURE_TUTORIAL_FRY,    // チュートリアル(連打)
-		TEXTURE_TUTORIAL_REMEMBER,// チュートリアル(記憶)
-		TEXTURE_PARTICLE_SQUARE,    // パーティクル*箱
-		TEXTURE_PARTICLE_TEARS,  // パーティクル*涙
-		TEXTURE_PARTICLE_CIRCLE, // パーティクル*円
-		TEXTURE_PARTICLE_GURUGURU, // ぐるぐる
-		TEXTURE_NUMBER,          // ナンバー
-		TEXTURE_FRAME,           // 枠
-		TEXTURE_CROSS_MARK,      // ×マーク
-		TEXTURE_NEEDLE,          // とげ穴
-		TEXTURE_SHADOW,			 // 影
-		TEXTURE_PLAYERNUMBER,	 // プレイヤー番号
-		TEXTURE_NONE,			 // NONE
-		TEXTURE_CONTROLLER,		 // コントローラーアイコン
-		TEXTURE_KEYBOARD,		 // キーボードアイコン
-		TEXTURE_CHARASELECT_BACK,// キャラ選択背景
-		TEXTURE_BUTTON_START,	 // タイトルのボタン(スタート)
-		TEXTYRE_BUTTON_TUTORIAL, // タイトルのボタン(チュートリアル)
-		TEXTURE_MAX_COLOR_EFFECT,// 最大塗段階時のエフェクト
-		TEXTURE_ATTACK_AREA,      // 攻撃範囲
-		TEXTURE_CLOCK_FRAME,      // 時計の枠
-		TEXTURE_CLOCK_HANDS,      // 時計の針
-		TEXTURE_MAX              // テクスチャ数
+		TEXTURE_TITLE = 0,			// タイトル
+		TEXTURE_TUTORIAL,			// チュートリアル
+		TEXTURE_TUTORIAL_FLAG,		// チュートリアル(はたあげ)
+		TEXTURE_TUTORIAL_FRY,		// チュートリアル(連打)
+		TEXTURE_TUTORIAL_REMEMBER,	// チュートリアル(記憶)
+		TEXTURE_RESULT_KNIGHT,		// リザルト(ナイトの背景)
+		TEXTURE_RESULT_LANCER,		// リザルト(ランサーの背景)
+		TEXTURE_RESULT_WIZARD,		// リザルト(ウィザードの背景)
+		TEXTURE_RESULT_THIEF,		// リザルト(シーフの背景)
+		TEXTURE_RESULT_MAGICIAN,	// リザルト(奇術師の背景)
+		TEXTURE_RESULT_ARCHER,		// リザルト(アーチャーの背景)
+		TEXTURE_RESULT_KILL,		// リザルトのキルUI
+		TEXTURE_RESULT_TILE,		// リザルトのタイルUI
+		TEXTURE_PARTICLE_SQUARE,    // パーティクル*ダイヤ
+		TEXTURE_PARTICLE_SKILL,		// パーティクル*涙
+		TEXTURE_PARTICLE_CIRCLE,	// パーティクル*円
+		TEXTURE_PARTICLE_GURUGURU,	// ぐるぐる
+		TEXTURE_NUMBER,				// ナンバー
+		TEXTURE_FRAME,				// 枠
+		TEXTURE_CROSS_MARK,			// ×マーク
+		TEXTURE_NEEDLE,				// とげ穴
+		TEXTURE_SHADOW,				// 影
+		TEXTURE_PLAYERNUMBER,		// プレイヤー番号
+		TEXTURE_NONE_UI,				// NONE
+		TEXTURE_CONTROLLER,			// コントローラーアイコン
+		TEXTURE_KEYBOARD,			// キーボードアイコン
+		TEXTURE_CHARASELECT_BACK,	// キャラ選択背景
+		TEXTURE_BUTTON_START,		// タイトルのボタン(スタート)
+		TEXTYRE_BUTTON_TUTORIAL,	// タイトルのボタン(チュートリアル)
+		TEXTURE_MAX_COLOR_EFFECT,	// 最大塗段階時のエフェクト
+		TEXTURE_ATTACK_AREA,		// 攻撃範囲
+		TEXTURE_CLOCK_FRAME,		// 時計の枠
+		TEXTURE_CLOCK_HANDS,		// 時計の針
+		TEXTURE_TOON_SHADOW,		// トゥーンシャドウ
+		TEXTURE_TILE_CHARGE,		// タイルのチャージ
+		TEXTURE_ICON_BG,			// アイコンの背景
+		TEXTURE_SWORD_ICON,		 	// 剣アイコン
+		TEXTURE_STAGE_NAME_UI,		// ステージ名
+		TEXTURE_STAGE_SELECT_BG,
+		TEXTURE_READEY,				// ready
+		TEXTURE_GO,					// go
+		TEXTURE_FINISH,				// finish
+		TEXTURE_SECONDS,			// 残り何秒
+		TEXTURE_LANCE_ICON,		 	// 槍アイコン
+		TEXTURE_ARROW_ICON,		 	// 矢アイコン
+		TEXTURE_MAGICSTICK_ICON,	// 魔法杖アイコン
+		TEXTURE_KNIFE_ICON,		 	// ナイフアイコン
+		TEXTURE_STICK_ICON,		 	// 杖アイコン
+		TEXTURE_RESULT_EXPLOSION,   // リザルト*エクスプロ―ジョン
+		TEXTURE_COLOR_GAUGE,		// 色のゲージの枠
+		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類
 	typedef enum
 	{
-		TECTURE_CUBE_SLY,        // キューブテクスチャ(空)
+		TEXTURE_CUBE_SLY,        // キューブテクスチャ(空)
 		TEXTURE_CUBE_MAX              // テクスチャ数
 	}TEXTURE_CUBE_TYPE;
 

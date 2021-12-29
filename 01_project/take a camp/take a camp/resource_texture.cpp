@@ -12,6 +12,7 @@
 #include "renderer.h"
 #include "manager.h"
 #include <assert.h>
+
 //******************************
 // マクロ定義
 //******************************
@@ -23,16 +24,24 @@ CResourceTexture *CResourceTexture::m_pSingleTex = NULL; // テクスチャクラスのポ
 // テクスチャのパス
 const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 {
-	"./data/Textures/title.png",        // タイトル背景
+	"./data/Textures/00_title.png",     // タイトル背景
 	"./data/Textures/tutorial_0.png",   // チュートリアル
     "./data/Textures/tutorial_1.png",   // チュートリアル
     "./data/Textures/tutorial_2.png",   // チュートリアル
     "./data/Textures/tutorial_3.png",   // チュートリアル
-	"./data/Textures/effect/kirakira.png",		// パーティクル*四角
-	"./data/Textures/Tears.png",              // パーティクル*涙
-	"./data/Textures/particle004.png",        // パーティクル*円
-	"./data/Textures/guruguru.png",        // パーティクル*円
-	"./data/Textures/number.png",             // ナンバー
+	"./data/Textures/frame/knight_flame.png",	   // リザルト(ナイトの背景)
+	"./data/Textures/frame/lancer_flame.png",	   // リザルト(ランサーの背景)
+	"./data/Textures/frame/wizard_flame.png",	   // リザルト(ウィザードの背景)
+	"./data/Textures/frame/thief_flame.png",	   // リザルト(シーフの背景)
+	"./data/Textures/frame/magician_flame.png.png",// リザルト(奇術師の背景)
+	"./data/Textures/frame/archer_flame.png",	   // リザルト(アーチャーの背景)
+	"./data/Textures/kill.png",			// リザルトのキルUI
+	"./data/Textures/tile.png",			// リザルトのタイルUI
+	"./data/Textures/effect/kirakira.png",	// パーティクル*四角
+	"./data/Textures/effect/00_wave.png",	// パーティクル*波紋
+	"./data/Textures/effect/shoot.png",		// パーティクル*円
+	"./data/Textures/effect/meteor.png",			// パーティクル*円
+	"./data/Textures/number.png",			// ナンバー
 	"./data/Textures/frame.png",              // 枠
 	"./data/Textures/cross_mark.png",         // バツマーク
 	"./data/Textures/needle_hole.png",        // とげ穴
@@ -42,12 +51,29 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/joypad.png",		      // コントローラーアイコン
 	"./data/Textures/keyboars.png",		      // キーボードアイコン
 	"./data/Textures/chara_select_frame.png", // キャラ選択背景
-	"./data/Textures/suma.png",				  // タイトルのボタン(スタート)
-	"./data/Textures/ka-bi-.jpg",			  // タイトルのボタン(チュートリアル)
+	"./data/Textures/00_gamestart.png",		  // タイトルのボタン(スタート)
+	"./data/Textures/00_tutorial.png",		  // タイトルのボタン(チュートリアル)
 	"./data/Textures/tile_effect_00.png",	  // 最大塗段階時のエフェクト
 	"./data/Textures/attack_area.png",	      // 攻撃範囲
 	"./data/Textures/clock_frame.png",	      // 時計の枠
 	"./data/Textures/clock_hands.png",	      // 時計の針
+	"./data/Textures/Toon_Shadow.png",	      // トゥーンシャドウ
+	"./data/Textures/tile_effect_charge.png", // タイルのチャージ
+	"./data/Textures/icon_bg.png",	          // アイコンの背景
+	"./data/Textures/sword_icon.png",	      // 剣アイコン
+	"./data/Textures/stage_name.png",	      // ステージ名
+	"./data/Textures/stage_polygon_bg.png",	      // ステージ選択背景
+	"./data/Textures/00_ready.png",	          // ready
+	"./data/Textures/01_go.png",			  // go
+	"./data/Textures/00_finish.png",		  // finish
+	"./data/Textures/00_nanbyou.png",		  // 残り何秒
+	"./data/Textures/lance_icon.png",         // 槍アイコン
+	"./data/Textures/arrow_icon.png",         // 矢アイコン
+	"./data/Textures/magicstick_icon.png",    // 魔法杖アイコン
+	"./data/Textures/knife_icon.png",         // ナイフアイコン
+	"./data/Textures/stick_icon.png",         // 杖アイコン
+	"./data/Textures/effect_explosion.png",   // リザルトエクスプロージョン
+	"./data/Textures/color_gauge_ui.png",	  // 色のゲージの枠
 };
 // テクスチャのパス
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]

@@ -26,6 +26,7 @@ const std::string CResourceShader::m_aEffectPath[CResourceShader::SHADER_MAX]
 {
 	"data/HLSL/TileShader.fx",       // タイル
 	"data/HLSL/PlayerShader.fx",     // プレイヤー
+	"data/HLSL/BlurShader.fx",     // ブラー
 };
 
 // テクニック名

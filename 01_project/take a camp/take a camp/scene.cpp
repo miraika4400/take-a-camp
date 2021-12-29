@@ -89,7 +89,7 @@ void CScene::ReleaseAll(void)
 			// 終了処理
 			pScene->Uninit();
 			// リストをつなげなおす
-			pScene->ReConnection();
+			pScene->OutList();
 			// オブジェクトの削除
 			delete pScene;
 			// ネクストの情報を渡す
@@ -136,7 +136,7 @@ void CScene::UpdateAll(void)
 			if (pScene->m_bReleasFlag)
 			{
 				// リストをつなげなおす
-				pScene->ReConnection();
+				pScene->OutList();
 				// 終了処理
 				delete pScene;
 			}
@@ -162,7 +162,7 @@ void CScene::DrawAll(void)
 			// 死亡フラグチェック
 			if (!pScene->m_bReleasFlag)
 			{
-				// 終了処理
+				// 描画処理
 				pScene->Draw();
 			}
 			// ネクストの情報を渡す
@@ -176,7 +176,7 @@ void CScene::DrawAll(void)
 //====================================
 void CScene::SetPriority(const int nPriority)
 {
-	ReConnection();
+	OutList();
 
 	// プライオリティの設定
 	m_nPriority = nPriority;
@@ -225,7 +225,7 @@ void CScene::Release(void)
 //====================================
 // リストの再接続
 //====================================
-void CScene::ReConnection(void)
+void CScene::OutList(void)
 {
 	// ネクストの情報をつなげる
 	if (m_pNext != NULL)
