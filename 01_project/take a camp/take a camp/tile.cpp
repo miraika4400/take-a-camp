@@ -304,9 +304,14 @@ void CTile::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pMod
 //******************************
 bool CTile::CollisionPlayer(void)
 {
+	//プレイヤー
 	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+	
+	//プレイヤーが当たっているか
 	bool bHitOld[MAX_PLAYER];
 	memset(&bHitOld, false, sizeof(bHitOld));
+	//プレイヤーが一人でも当たっているか
+	bool bCollisionPlayer = false;
 
 	while (pPlayer != NULL)
 	{
@@ -322,7 +327,7 @@ bool CTile::CollisionPlayer(void)
 			m_pHitPlayerOld[pPlayer->GetPlayerNumber()] = pPlayer;
 			// ヒットフラグの保存*当たってる
 			bHitOld[pPlayer->GetPlayerNumber()] = true;
-			//return true;
+			bCollisionPlayer = true;
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
@@ -333,11 +338,10 @@ bool CTile::CollisionPlayer(void)
 		{
 			HitPlayerActionRelease(m_pHitPlayerOld[nPlayer]);
 			m_pHitPlayerOld[nPlayer] = nullptr;
-
 		}
 	}
 
-	return false;
+	return bCollisionPlayer;
 }
 
 //******************************
