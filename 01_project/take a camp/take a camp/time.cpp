@@ -116,7 +116,7 @@ void CTime::Update(void)
 		m_apNumber[nCntDigit]->Update();
 
 		// ナンバーの配置
-		m_apNumber[nCntDigit]->SetNumber((int)((m_nTime % (int)(powf(10.0f, (MAX_TIME_DIGIT - nCntDigit)))) / (float)(powf(10, (MAX_TIME_DIGIT - nCntDigit - 1)))));
+		m_apNumber[nCntDigit]->SetNumber((int)((m_nTime % (int)(powf(10.0f, (MAX_TIME_DIGIT - nCntDigit)))) / (int)(powf(10, (MAX_TIME_DIGIT - nCntDigit - 1)))));
 	}
 
 	// 残り時間表示
