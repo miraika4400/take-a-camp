@@ -57,6 +57,7 @@
 #define ROT_FACING_02			(360)							// 回転向き
 #define DASH_FRAME				(60*5)							// ダッシュ時有効フレーム数
 #define ATTCK_ROT_INPUT			(15)							// 攻撃方向受付するフレーム数
+#define SKILL_ROT_INPUT			(35)							// 必殺技の方向受付フレーム数
 
 //*****************************
 // 静的メンバ変数宣言
@@ -424,6 +425,7 @@ void CPlayer::AttackRot(void)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
+		//m_AttackData.m_bAttackRot = true;
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
 		|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
@@ -447,6 +449,27 @@ void CPlayer::AttackRot(void)
 		//m_AttackData.m_bAttackRot = true;
 	}
 
+
+	while (m_rotDest.y - GetRot().y > D3DXToRadian(ROT_FACING_01))
+	{
+		m_rotDest.y -= D3DXToRadian(ROT_FACING_02);
+	}
+
+	while (m_rotDest.y - GetRot().y < D3DXToRadian(-ROT_FACING_01))
+	{
+		m_rotDest.y += D3DXToRadian(ROT_FACING_02);
+	}
+
+
+	if (D3DXToDegree(GetRot().y) + 1 >= D3DXToDegree(m_rotDest.y)
+		&& D3DXToDegree(GetRot().y) - 1 <= D3DXToDegree(m_rotDest.y))
+	{
+		m_AttackData.m_bAttackRot = false;
+	}
+	else
+	{
+		m_AttackData.m_bAttackRot = true;
+	}
 }
 
 //******************************
@@ -654,11 +677,28 @@ void CPlayer::AttackFinal(void)
 	{
 		//カウントアップ
 		m_AttackData.m_nAttackRotCount++;
-		//攻撃方向変更
+		//攻撃方向指定
 		AttackRot();
-		
-		if (m_AttackData.m_nAttackRotCount>= ATTCK_ROT_INPUT
-			|| m_AttackData.m_bAttackRot)
+
+		//攻撃時に方向を変更したら
+		if (m_AttackData.m_bAttackRot)
+		{
+			//フレーム数が一定に達したら
+			if (m_AttackData.m_nAttackRotCount >= SKILL_ROT_INPUT)
+			{
+				//フラグを回収
+				m_AttackData.m_bAttackRot = false;
+				//カウント初期化
+				m_AttackData.m_nAttackRotCount = 0;
+				//フラグを回収
+				m_AttackData.m_bAttack = false;
+				//攻撃スイッチ処理
+				m_pAttack->AttackFinalSwitch();
+				//アニメーション処理
+				GetMotion(CResourceCharacter::MOTION_ATTACK)->SetActiveMotion(true);
+			}
+		}
+		else if (m_AttackData.m_nAttackRotCount >= ATTCK_ROT_INPUT)
 		{
 			//フラグを回収
 			m_AttackData.m_bAttackRot = false;
