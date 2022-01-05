@@ -1,13 +1,13 @@
 //====================================================
 //
-// titletransition_tileヘッダ [titletransition_tile.h]
+// jobchange_tileヘッダ [jobchange_tile.h]
 // Author : 伊藤　陽梧
 //
 //====================================================
 
 //二重インクルード防止
-#ifndef _TITLETRANSITION_TILE_H_
-#define _TITLETRANSITION_TILE_H_
+#ifndef _JOBCHANGE_TILE_H_
+#define _JOBCHANGE_TILE_H_
 
 //====================================================
 // インクルード
@@ -24,14 +24,14 @@ class CScene3d;
 //====================================================
 
 // ダミータイルクラス
-class CTitleTransitionTile : public CTile
+class CJobchangeTile : public CTile
 {
 public:
 	//============
 	// メンバ関数
 	//===========
-	CTitleTransitionTile();
-	~CTitleTransitionTile();
+	CJobchangeTile();
+	~CJobchangeTile();
 
 	static void Create(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
 
@@ -44,7 +44,6 @@ private:
 	// メンバ変数
 	//===========
 	CScene3d *m_pCrossPolygon;	// マーク
-	int m_nPlayerCount;			// プレイヤーのカウント用
 };
 
 #endif

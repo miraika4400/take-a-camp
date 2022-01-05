@@ -8,7 +8,7 @@
 //====================================================
 // インクルード
 //====================================================
-#include "titletransition_tile.h"
+#include "jobchange_tile.h"
 #include "scene3d.h"
 #include "resource_texture.h"
 #include "tutorial.h"
@@ -25,27 +25,27 @@
 //====================================================
 // コンストラクタ
 //====================================================
-CTitleTransitionTile::CTitleTransitionTile()
+CJobchangeTile::CJobchangeTile()
 {
 	m_pCrossPolygon = NULL;
-	m_nPlayerCount = 0;
+	//m_nPlayerCount = 0;
 }
 
 //====================================================
 // デストラクタ
 //====================================================
-CTitleTransitionTile::~CTitleTransitionTile()
+CJobchangeTile::~CJobchangeTile()
 {
 }
 
 //====================================================
 // クラス生成
 //====================================================
-void CTitleTransitionTile::Create(D3DXVECTOR3 pos, D3DXCOLOR col)
+void CJobchangeTile::Create(D3DXVECTOR3 pos, D3DXCOLOR col)
 {
 	// メモリの確保
-	CTitleTransitionTile *pTile;
-	pTile = new CTitleTransitionTile;
+	CJobchangeTile *pTile;
+	pTile = new CJobchangeTile;
 
 	// 初期化
 	pTile->Init();
@@ -55,17 +55,17 @@ void CTitleTransitionTile::Create(D3DXVECTOR3 pos, D3DXCOLOR col)
 	pTile->SetPriority(OBJTYPE_TILE); // オブジェクトタイプ
 	pTile->SetRide(true);			  // 載れないようにフラグを立てる
 
-	// ×マークの生成
-	//pTile->m_pCrossPolygon = CScene3d::Create(D3DXVECTOR3(pos.x, pos.y + (TILE_SIZE_Y / 2) + 1.0f, pos.z), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
-	//pTile->m_pCrossPolygon->SetColor(col);
-	//pTile->m_pCrossPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CROSS_MARK));
-	//pTile->m_pCrossPolygon->SetPriority(OBJTYPE_MAP);
+									  // ×マークの生成
+									  //pTile->m_pCrossPolygon = CScene3d::Create(D3DXVECTOR3(pos.x, pos.y + (TILE_SIZE_Y / 2) + 1.0f, pos.z), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
+									  //pTile->m_pCrossPolygon->SetColor(col);
+									  //pTile->m_pCrossPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CROSS_MARK));
+									  //pTile->m_pCrossPolygon->SetPriority(OBJTYPE_MAP);
 }
 
 //====================================================
 // 初期化処理
 //====================================================
-HRESULT CTitleTransitionTile::Init(void)
+HRESULT CJobchangeTile::Init(void)
 {
 	// タイルの初期化
 	if (FAILED(CTile::Init()))
@@ -82,7 +82,7 @@ HRESULT CTitleTransitionTile::Init(void)
 //====================================================
 // 終了処理
 //====================================================
-void CTitleTransitionTile::Uninit(void)
+void CJobchangeTile::Uninit(void)
 {
 	// タイルの終了
 	CTile::Uninit();
@@ -91,7 +91,7 @@ void CTitleTransitionTile::Uninit(void)
 //====================================================
 // 更新処理
 //====================================================
-void CTitleTransitionTile::Update(void)
+void CJobchangeTile::Update(void)
 {
 	// タイルの更新
 	CTile::Update();

@@ -459,6 +459,9 @@
     <ClCompile Include="titletransition_tile.cpp">
       <Filter>ソース ファイル\08_Map\Tile</Filter>
     </ClCompile>
+    <ClCompile Include="jobchange_tile.cpp">
+      <Filter>ソース ファイル\08_Map\Tile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -786,6 +789,9 @@
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
     <ClInclude Include="titletransition_tile.h">
+      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="jobchange_tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
   </ItemGroup>

@@ -178,6 +178,7 @@
     <ClCompile Include="game_start.cpp" />
     <ClCompile Include="ingame_text.cpp" />
     <ClCompile Include="item.cpp" />
+    <ClCompile Include="jobchange_tile.cpp" />
     <ClCompile Include="kill_count.cpp" />
     <ClCompile Include="max_color_effect.cpp" />
     <ClCompile Include="move_around_tile.cpp" />
@@ -288,6 +289,7 @@
     <ClInclude Include="game_start.h" />
     <ClInclude Include="ingame_text.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="jobchange_tile.h" />
     <ClInclude Include="kill_count.h" />
     <ClInclude Include="max_color_effect.h" />
     <ClInclude Include="move_sideways_tile.h" />
