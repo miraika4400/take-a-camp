@@ -215,6 +215,8 @@ void CCharaSelect::EntryPlayer(void)
 		m_aEntryData[nCntData].nControllNum = nCntJoy;
 		// キャラタイプ
 		m_aEntryData[nCntData].charaType = CResourceCharacter::CHARACTER_KNIGHT;
+		// レディ状態の初期化
+		m_aEntryData[nCntData].bReady = false;
 		// コントローラーを使用状態に
 		if (bController) m_abUseJoy[nCntJoy] = true;
 		// キーボードを使用状態に

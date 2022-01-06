@@ -110,6 +110,8 @@ private:
 	bool m_bHitPlayer;			// プレイヤーが当たっているフラグ
 	bool m_bHitBullet;			// 弾が当たっているフラグ
 	bool m_bRide;				// 乗れかのフラグ
+								//プレイヤーが当たっているか
+	bool m_abHitOld[MAX_PLAYER];
 };
 
 
