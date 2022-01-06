@@ -1,6 +1,6 @@
 //====================================================
 //
-// titletransition_tileクラスの処理[titletransition_tile.cpp]
+// jobchange_tileクラスの処理[jobchange_tile.cpp]
 // Author:伊藤　陽梧
 //
 //====================================================
@@ -20,7 +20,7 @@
 //====================================================
 // マクロ定義
 //====================================================
-#define TILE_COLOR	(D3DXCOLOR(0.1f, 0.1f, 0.6f, 1.0f))
+#define TILE_COLOR	(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f))
 
 //====================================================
 // コンストラクタ
@@ -28,7 +28,7 @@
 CJobchangeTile::CJobchangeTile()
 {
 	m_pCrossPolygon = NULL;
-	//m_nPlayerCount = 0;
+	m_CharacterType = CResourceCharacter::CHARACTER_NONE;
 }
 
 //====================================================
@@ -39,9 +39,37 @@ CJobchangeTile::~CJobchangeTile()
 }
 
 //====================================================
+// 生成するタイルごとに処理を分ける
+//====================================================
+void CJobchangeTile::CreateKnight(D3DXVECTOR3 pos, D3DXCOLOR col)
+{
+	Create(pos, CResourceTexture::TEXTURE_SWORD_ICON, CResourceCharacter::CHARACTER_KNIGHT);
+}
+void CJobchangeTile::CreateLancer(D3DXVECTOR3 pos, D3DXCOLOR col)
+{
+	Create(pos, CResourceTexture::TEXTURE_LANCE_ICON, CResourceCharacter::CHARACTER_LANCER);
+}
+void CJobchangeTile::CreateWizard(D3DXVECTOR3 pos, D3DXCOLOR col)
+{
+	Create(pos, CResourceTexture::TEXTURE_MAGICSTICK_ICON, CResourceCharacter::CHARACTER_WIZARD);
+}
+void CJobchangeTile::CreateThief(D3DXVECTOR3 pos, D3DXCOLOR col)
+{
+	Create(pos, CResourceTexture::TEXTURE_KNIFE_ICON, CResourceCharacter::CHARACTER_THIEF);
+}
+void CJobchangeTile::CreateMagician(D3DXVECTOR3 pos, D3DXCOLOR col)
+{
+	Create(pos, CResourceTexture::TEXTURE_STICK_ICON, CResourceCharacter::CHARACTER_MAGICIAN);
+}
+void CJobchangeTile::CreateArcher(D3DXVECTOR3 pos, D3DXCOLOR col)
+{
+	Create(pos, CResourceTexture::TEXTURE_ARROW_ICON, CResourceCharacter::CHARACTER_ARCHER);
+}
+
+//====================================================
 // クラス生成
 //====================================================
-void CJobchangeTile::Create(D3DXVECTOR3 pos, D3DXCOLOR col)
+void CJobchangeTile::Create(D3DXVECTOR3 pos, CResourceTexture::TEXTURE_TYPE type, CResourceCharacter::CHARACTER_TYPE Char_type)
 {
 	// メモリの確保
 	CJobchangeTile *pTile;
@@ -54,12 +82,13 @@ void CJobchangeTile::Create(D3DXVECTOR3 pos, D3DXCOLOR col)
 	pTile->SetPos(pos);
 	pTile->SetPriority(OBJTYPE_TILE); // オブジェクトタイプ
 	pTile->SetRide(true);			  // 載れないようにフラグを立てる
+	pTile->m_CharacterType = Char_type;
 
-									  // ×マークの生成
-									  //pTile->m_pCrossPolygon = CScene3d::Create(D3DXVECTOR3(pos.x, pos.y + (TILE_SIZE_Y / 2) + 1.0f, pos.z), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
-									  //pTile->m_pCrossPolygon->SetColor(col);
-									  //pTile->m_pCrossPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CROSS_MARK));
-									  //pTile->m_pCrossPolygon->SetPriority(OBJTYPE_MAP);
+	// ×マークの生成
+	pTile->m_pCrossPolygon = CScene3d::Create(D3DXVECTOR3(pos.x, pos.y + (TILE_SIZE_Y / 2) + 1.0f, pos.z), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
+	pTile->m_pCrossPolygon->SetColor(TILE_COLOR);
+	pTile->m_pCrossPolygon->BindTexture(CResourceTexture::GetTexture(type));
+	pTile->m_pCrossPolygon->SetPriority(OBJTYPE_MAP);
 }
 
 //====================================================
@@ -100,10 +129,10 @@ void CJobchangeTile::Update(void)
 	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
 	while (pPlayer != NULL)
 	{
-		// このタイルに載ったら
+		// このタイルに載ったら指定の職種に変える
 		if (CCollision::CollisionSphere(GetCollision(), pPlayer->GetCollision()))
 		{
-			CManager::GetFade()->SetFade(CManager::MODE_TITLE);
+			pPlayer->SetCharacterType(m_CharacterType);
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}

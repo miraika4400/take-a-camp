@@ -13,6 +13,8 @@
 // インクルード
 //====================================================
 #include "tile.h"
+#include "resource_texture.h"
+#include "resource_character.h"
 
 //====================================================
 //前方宣言
@@ -33,17 +35,27 @@ public:
 	CJobchangeTile();
 	~CJobchangeTile();
 
-	static void Create(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
+	// 生成するタイルごとの処理
+	static void CreateKnight(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
+	static void CreateLancer(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
+	static void CreateWizard(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
+	static void CreateThief(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
+	static void CreateMagician(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
+	static void CreateArcher(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
 
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
+	// クラス生成
+	static void Create(D3DXVECTOR3 pos, CResourceTexture::TEXTURE_TYPE Tex_type, CResourceCharacter::CHARACTER_TYPE Char_type);
+
+	HRESULT Init(void);	// 初期化
+	void Uninit(void);	// 終了
+	void Update(void);	// 更新
 private:
 
 	//============
 	// メンバ変数
 	//===========
 	CScene3d *m_pCrossPolygon;	// マーク
+	CResourceCharacter::CHARACTER_TYPE m_CharacterType;
 };
 
 #endif
