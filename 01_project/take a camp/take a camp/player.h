@@ -155,15 +155,15 @@ public:
 	CSkillgauge *GetSkillgauge(void) { return m_pSkillgauge; }	// タイルの塗り段階所得
 	int GetChargeTilelevel(void) { return m_nChargeTilelevel; }
 private:
-	void InitCharacterData(void); // キャラデータの初期化
-	void Move(void);			// 移動処理
-	void AttackRot(void);		// 攻撃時の向き処理
-	void ControlMove(void);		// コントロール処理
-	void ManageRot(void);		// 向きの管理
-	void Respawn(void);			// リスポーン処理
-	void Invincible(void);		// 無敵処理
-	void ManageState(void);     // ステート管理
-	void ManageItemState(void); // アイテムステートの管理
+	void InitCharacterData(void);	// キャラデータの初期化
+	void Move(void);				// 移動処理
+	void AttackRot(void);			// 攻撃時の向き処理
+	void ControlMove(void);			// コントロール処理
+	void ManageRot(void);			// 向きの管理
+	void Respawn(void);				// リスポーン処理
+	void Invincible(void);			// 無敵処理
+	void ManageState(void);			// ステート管理
+	void ManageItemState(void);		// アイテムステートの管理
 	bool TutorialControll(int nTutorialphase);	// チュートリアルの操作処理
 
 	//*****************************
