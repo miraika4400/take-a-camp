@@ -14,6 +14,10 @@
 #include "resource_texture.h"
 #include "color_manager.h"
 #include "character_polygon.h"
+#include "attack_area_ui.h"
+#include "player.h"
+#include "keyboard.h"
+#include "joypad.h"
 
 //=============================
 // マクロ定義
@@ -121,6 +125,8 @@ HRESULT CCharaSelectUi::Init(void)
 		m_aPolygon[nCntPlayer].pReadyIcon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_READEY));
 		m_aPolygon[nCntPlayer].pReadyIcon->SetPriority(OBJTYPE_UI_2);
 
+		m_aPolygon[nCntPlayer].pAttackUiPolygon = CAttackAreaUi::Create(boardPos);
+		m_aPolygon[nCntPlayer].pAttackUiPolygon->SetDrawFlag(true);
 		boardPos.x += UI_SPACE;
 	}
 
@@ -195,6 +201,23 @@ void CCharaSelectUi::Update(void)
 			m_aPolygon[nCntPlayer].pPlayerNumber->SetTextureUV(uv);
 			m_aPolygon[nCntPlayer].pPlayerNumber->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PLAYERNUMBER));
 
+			// キーボードとジョイパッドの取得
+			CInputKeyboard * pKey = CManager::GetKeyboard();
+			CInputJoypad* pJoypad = CManager::GetJoypad();
+			// 攻撃ボタンを押したら
+			if (!entryData.bController && pKey->GetKeyPress(CPlayer::GetPlayerControllKey(entryData.nControllNum,CPlayer::KEY_ATTCK_FINAL))
+				|| entryData.bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, entryData.nControllNum))
+			{
+				m_aPolygon[nCntPlayer].pAttackUiPolygon->SetCharaType(entryData.charaType);
+
+				m_aPolygon[nCntPlayer].pAttackUiPolygon->SetDrawFlag(true);
+			}
+			else
+			{
+				m_aPolygon[nCntPlayer].pAttackUiPolygon->SetDrawFlag(false);
+			}
+
+
 		}
 		else
 		{// 非エントリー時
@@ -203,10 +226,16 @@ void CCharaSelectUi::Update(void)
 			m_aPolygon[nCntPlayer].pReadyIcon->SetColor(ICON_COLOR_OFF);
 			m_aPolygon[nCntPlayer].pPlayerNumber->SetTextureUV(uv);
 			m_aPolygon[nCntPlayer].pPlayerNumber->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_NONE_UI));
+			m_aPolygon[nCntPlayer].pAttackUiPolygon->SetDrawFlag(false);
 		}
 
-		// キャラタイプの設定
-		m_aPolygon[nCntPlayer].pCharaPolygon->SetCharaType(entryData.charaType);
+		if (m_aPolygon[nCntPlayer].pCharaPolygon->GetCharaType() != entryData.charaType)
+		{// キャラクターが変わったとき
+			m_aPolygon[nCntPlayer].pAttackUiPolygon->Reset();;
+			m_aPolygon[nCntPlayer].pAttackUiPolygon->SetCharaType(entryData.charaType);
+			m_aPolygon[nCntPlayer].pCharaPolygon->SetCharaType(entryData.charaType);
+		}
+		
 	}
 }
 

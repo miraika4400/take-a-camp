@@ -308,7 +308,6 @@ bool CTile::CollisionPlayer(void)
 	//プレイヤー
 	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
 	
-	
 	//プレイヤーが一人でも当たっているか
 	bool bCollisionPlayer = false;
 

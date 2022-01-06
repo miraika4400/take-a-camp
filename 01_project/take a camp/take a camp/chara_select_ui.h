@@ -20,7 +20,7 @@
 //=============================
 class CScene2d;
 class CCharacterPolygon;
-
+class CAttackAreaUi;
 //*****************************
 //マクロ定義
 //*****************************
@@ -47,6 +47,7 @@ public:
 		CScene2d * pControllIcon; // コントローラータイプアイコン
 		CScene2d * pReadyIcon;    // コントローラータイプアイコン
 		CCharacterPolygon * pCharaPolygon;
+		CAttackAreaUi*pAttackUiPolygon;
 		D3DXVECTOR3 pos;          // 座標
 	};
 	//*****************************

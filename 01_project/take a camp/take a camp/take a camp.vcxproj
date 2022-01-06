@@ -155,6 +155,7 @@
     <ClCompile Include="act_range.cpp" />
     <ClCompile Include="attack.cpp" />
     <ClCompile Include="attack_archer.cpp" />
+    <ClCompile Include="attack_area_ui.cpp" />
     <ClCompile Include="attack_knight.cpp" />
     <ClCompile Include="attack_area.cpp" />
     <ClCompile Include="attack_lancer.cpp" />
@@ -262,6 +263,7 @@
     <ClInclude Include="act_range.h" />
     <ClInclude Include="attack.h" />
     <ClInclude Include="attack_archer.h" />
+    <ClInclude Include="attack_area_ui.h" />
     <ClInclude Include="attack_knight.h" />
     <ClInclude Include="attack_area.h" />
     <ClInclude Include="attack_lancer.h" />
