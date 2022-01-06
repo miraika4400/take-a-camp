@@ -268,7 +268,7 @@ void CPlayer::Update(void)
 {
 	if (!m_bUpdate)
 	{
-		Move(); 
+		//プレイヤーのモデルパーツ更新処理
 		CPlayerModel::Update();
 		return;
 	}
@@ -425,28 +425,24 @@ void CPlayer::AttackRot(void)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
-		//m_AttackData.m_bAttackRot = true;
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
 		|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
-		//m_AttackData.m_bAttackRot = true;
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
 		|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
-		//m_AttackData.m_bAttackRot = true;
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
 		|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
-		//m_AttackData.m_bAttackRot = true;
 	}
 
 
