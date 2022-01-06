@@ -52,6 +52,7 @@ CTile::CTile() :CModel(OBJTYPE_TILE)
 	m_bHitBullet = false;        // 弾が当たっているフラグ
 	m_bRide		 = false;		 // 乗れるかフラグ
 	m_aTileList.push_back(this);
+	memset(&m_abHitOld, false, sizeof(m_abHitOld));
 }
 
 //******************************
@@ -307,9 +308,6 @@ bool CTile::CollisionPlayer(void)
 	//プレイヤー
 	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
 	
-	//プレイヤーが当たっているか
-	bool bHitOld[MAX_PLAYER];
-	memset(&bHitOld, false, sizeof(bHitOld));
 	//プレイヤーが一人でも当たっているか
 	bool bCollisionPlayer = false;
 
@@ -317,7 +315,7 @@ bool CTile::CollisionPlayer(void)
 	{
 		if (CCollision::CollisionSphere(m_pCollison, pPlayer->GetCollision()))
 		{
-			if (!bHitOld[pPlayer->GetPlayerNumber()])
+			if (!m_abHitOld[pPlayer->GetPlayerNumber()])
 			{
 				HitPlayerActionTrigger(pPlayer);
 			}
@@ -326,15 +324,20 @@ bool CTile::CollisionPlayer(void)
 			//最後に触れたプレイヤー取得
 			m_pHitPlayerOld[pPlayer->GetPlayerNumber()] = pPlayer;
 			// ヒットフラグの保存*当たってる
-			bHitOld[pPlayer->GetPlayerNumber()] = true;
+			m_abHitOld[pPlayer->GetPlayerNumber()] = true;
 			bCollisionPlayer = true;
 		}
+		else
+		{
+			m_abHitOld[pPlayer->GetPlayerNumber()] = false;
+		}
+
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
 
 	for (int nPlayer = 0; nPlayer<MAX_PLAYER; nPlayer++)
 	{
-		if (!bHitOld[nPlayer] && m_pHitPlayerOld[nPlayer] != nullptr)
+		if (!m_abHitOld[nPlayer] && m_pHitPlayerOld[nPlayer] != nullptr)
 		{
 			HitPlayerActionRelease(m_pHitPlayerOld[nPlayer]);
 			m_pHitPlayerOld[nPlayer] = nullptr;

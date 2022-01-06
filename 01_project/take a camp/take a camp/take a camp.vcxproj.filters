@@ -300,9 +300,6 @@
     <ClCompile Include="max_color_effect.cpp">
       <Filter>ソース ファイル\09_Effect</Filter>
     </ClCompile>
-    <ClCompile Include="attack_area.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
-    </ClCompile>
     <ClCompile Include="total_result.cpp">
       <Filter>ソース ファイル\06_GameScene</Filter>
     </ClCompile>
@@ -455,6 +452,12 @@
     </ClCompile>
     <ClCompile Include="ingame_text.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_area_ui.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_area.cpp">
+      <Filter>ソース ファイル\09_Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -780,6 +783,9 @@
       <Filter>ヘッダー ファイル\07_GameModel</Filter>
     </ClInclude>
     <ClInclude Include="ingame_text.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_area_ui.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
   </ItemGroup>
