@@ -1,4 +1,4 @@
-Tile_Data_Num,,13
+Tile_Data_Num,,19
 0,なし,TILE_NONE
 1,1Pスポーン,TILE_PLAYER
 2,2Pスポーン,TILE_PLAYER
@@ -12,3 +12,9 @@ Tile_Data_Num,,13
 10,ワープ床2,TILE_WARP_2
 11,案山子スポーン,TILE_DUMMY
 12,タイトル遷移用タイル,TILE_TITLETRANSITION
+13,騎士チェンジ,TILE_KNIGHT
+14,槍兵チェンジ,TILE_LANCER
+15,魔術師チェンジ,TILE_WIZARD
+16,盗賊チェンジ,TILE_THIEF
+17,奇術師チェンジ,TILE_MAGICIAN
+18,弓使いチェンジ,TILE_ARCHER
