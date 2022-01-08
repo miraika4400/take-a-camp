@@ -619,13 +619,14 @@ void CPlayer::Attack(void)
 	// 攻撃ボタンを押したらチャージ
 	if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
 		|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
-	{
-		//攻撃チャージを開始
-		m_pAttack->ChargeFlag();
+	{	
 		if (pHitTile != NULL)
 		{
 			m_nChargeTilelevel = pHitTile->GetStepNum();
 		}
+		//攻撃チャージを開始
+		m_pAttack->ChargeFlag();
+		
 	}
 				
 	//チャージ状態か
@@ -688,6 +689,7 @@ void CPlayer::AttackFinal(void)
 	// キーボードとジョイパッドの取得
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 	CInputJoypad* pJoypad = CManager::GetJoypad();
+	CColorTile*pHitTile = CColorTile::GetHitColorTile(GetPos());
 
 	// アタックタイプが通常状態なら
 	if (m_AttackData.m_bFinalAttack)
@@ -696,7 +698,13 @@ void CPlayer::AttackFinal(void)
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
 			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
 		{
+	
+			if (pHitTile != NULL)
+			{
+				m_nChargeTilelevel = pHitTile->GetStepNum();
+			}
 			m_pAttack->AttackFinalFlag();
+
 		}
 	}
 

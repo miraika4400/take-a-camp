@@ -27,7 +27,7 @@ CBillboard::CBillboard()
 	m_pTexture = NULL;
 	m_pVtxBuff = NULL;
 	m_pos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f);
-
+	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_col = { 1.0f,1.0f,1.0f,1.0f };
 	m_size = { 0.0f,0.0f,0.0f };
 	m_fAngle = 0.0f;

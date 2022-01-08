@@ -54,11 +54,15 @@ CSkill_circle::~CSkill_circle()
 //=============================================================================
 //生成処理関数
 //=============================================================================
-CSkill_circle * CSkill_circle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col, const EFFECTTYPE type)
+CSkill_circle * CSkill_circle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col,const int nlife, const EFFECTTYPE type)
 {
 	//インスタンス生成
 	CSkill_circle *pSkill_circle;
 	pSkill_circle = new CSkill_circle;
+
+	//タイプ代入
+	pSkill_circle->m_type = type;
+
 	//初期化処理
 	pSkill_circle->Init();
 
@@ -78,6 +82,23 @@ CSkill_circle * CSkill_circle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 s
 		pSkill_circle->SetRowRot(NORMAL_SKIIL_ROWROT);
 		break;
 
+	case EFFECTTYPE_METEOR:
+
+		pSkill_circle->SetHighRot(EXPLOSION_SKIIL_HIGHROT);
+		pSkill_circle->SetRowRot(EXPLOSION_SKIIL_ROWROT);
+		break;
+
+	case EFFECTTYPE_METEOR_CENTER:
+		pSkill_circle->SetHighRot(EXPLOSION_SKIIL_CENTER_HIGHROT);
+		pSkill_circle->SetRowRot(EXPLOSION_SKIIL_CENTER_ROWROT);
+
+
+		break;
+	case EFFECTTYPE_METEOR_IMPACT:
+		pSkill_circle->SetHighRot(EXPLOSION_SKIIL_IMPACT_HIGHROT);
+		pSkill_circle->SetRowRot(EXPLOSION_SKIIL_IMPACT_ROWROT);
+		break;
+
 	default:
 		break;
 	}
@@ -88,11 +109,12 @@ CSkill_circle * CSkill_circle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 s
 	pSkill_circle->SetSize(size);
 	//サイズ代入
 	pSkill_circle->m_size = size;
+	//位置代入
+	pSkill_circle->m_pos = pos;
 	//カラー設定 
 	pSkill_circle->SetColor(col);
 	pSkill_circle->m_col = col;
-	//タイプd代入
-	pSkill_circle->m_type = type;
+
 
 
 	return pSkill_circle;
@@ -110,10 +132,14 @@ HRESULT CSkill_circle::Init(void)
 	//テクスチャのゲット
 	m_apTexture[EFFECTTYPE_SKIIL] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SKILL);
 	m_apTexture[EFFECTTYPE_SKIILMINI] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SKILL);
+	m_apTexture[EFFECTTYPE_METEOR] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SKILL);
+	m_apTexture[EFFECTTYPE_METEOR_CENTER] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SKILL);
+	m_apTexture[EFFECTTYPE_METEOR_IMPACT] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SKILL);
+
 	//テクスチャ割り当て
 
 	BindTexture(m_apTexture[m_type]);
-
+	
 	return S_OK;
 }
 
@@ -132,8 +158,8 @@ void CSkill_circle::Update(void)
 {
 	bool bUse = true;
 
-	D3DXVECTOR3 pos = GetPos();
-	D3DXVECTOR3 size = GetSize();
+	m_pos = GetPos();
+	m_size = GetSize();
 	
 	
 
@@ -148,7 +174,7 @@ void CSkill_circle::Update(void)
 		m_rot.y += 0.05f;
 		m_size.x += 0.1f;
 		m_size.z += 0.1f;
-		SetPos(pos);
+		SetPos(m_pos);
 		SetSize(m_size);
 		SetRot(m_rot);
 		SetAddRotValue(m_fRotAngle);
@@ -164,7 +190,7 @@ void CSkill_circle::Update(void)
 		m_rot.y -= 0.05f;
 		m_size.x += 0.1f;
 		m_size.z += 0.1f;
-		SetPos(pos);
+		SetPos(m_pos);
 		SetSize(m_size);
 		SetRot(m_rot);
 		SetAddRotValue(m_fRotAngle);
@@ -173,6 +199,46 @@ void CSkill_circle::Update(void)
 			m_fRotAngle = 5.0f;
 		}
 		break;
+
+	case EFFECTTYPE_METEOR:
+
+		m_nLife--;
+		m_rot.y-= 0.05f;
+		m_size.x += 0.05f;
+		m_size.z += 0.05f;
+		SetPos(m_pos);
+		SetSize(m_size);
+		SetRot(m_rot);
+
+		break;
+
+	case EFFECTTYPE_METEOR_CENTER:
+
+		m_nLife--;
+		m_rot.y -= 0.05f;
+		m_size.x += 0.0001f;
+		m_size.y += 2.0f;
+		m_size.z += 0.0001f;
+		m_pos.y += 2.0f;
+		
+		SetPos(m_pos);
+		SetSize(m_size);
+		SetRot(m_rot);
+
+		break;
+
+	case EFFECTTYPE_METEOR_IMPACT:
+
+		m_nLife--;
+		m_rot.y -= 0.05f;
+		m_size.x += 0.25f;
+		m_size.z += 0.25f;
+		SetPos(m_pos);
+		SetSize(m_size);
+		SetRot(m_rot);
+
+		break;
+
 	default:
 		break;
 	}

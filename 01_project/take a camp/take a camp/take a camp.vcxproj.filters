@@ -94,12 +94,6 @@
     <Filter Include="hlslファイル">
       <UniqueIdentifier>{bfc01b98-9db7-440f-9869-a456c8baf8f9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\10_Ui">
-      <UniqueIdentifier>{1d71ec2f-55c1-4788-81a4-2e83ccb026e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\10_Ui\Button">
-      <UniqueIdentifier>{fef93b09-26b2-4cc5-a994-507b403fdd02}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\10_Ui\Button">
       <UniqueIdentifier>{1288eef2-ed2a-442b-ae45-5783bfebf3f0}</UniqueIdentifier>
     </Filter>
@@ -129,6 +123,12 @@
     </Filter>
     <Filter Include="ソース ファイル\07_GameModel\Item">
       <UniqueIdentifier>{337f0e6e-4961-41ef-a225-d843ca384f01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\09_Effect\10_Ui">
+      <UniqueIdentifier>{1d71ec2f-55c1-4788-81a4-2e83ccb026e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\09_Effect\10_Ui\Button">
+      <UniqueIdentifier>{fef93b09-26b2-4cc5-a994-507b403fdd02}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -172,10 +172,10 @@
       <Filter>ソース ファイル\04_ModelBase</Filter>
     </ClCompile>
     <ClCompile Include="score.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="number.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="joypad.cpp">
       <Filter>ソース ファイル\05_Input</Filter>
@@ -247,16 +247,16 @@
       <Filter>ソース ファイル\07_GameModel\Attack\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="gauge.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="result_graph.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="time.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="number_array.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="map.cpp">
       <Filter>ソース ファイル\08_Map</Filter>
@@ -286,16 +286,16 @@
       <Filter>ソース ファイル\07_GameModel</Filter>
     </ClCompile>
     <ClCompile Include="chara_select_ui.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="kill_count.cpp">
       <Filter>ソース ファイル\07_GameModel\Player</Filter>
     </ClCompile>
     <ClCompile Include="button_title.cpp">
-      <Filter>ソース ファイル\10_Ui\Button</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui\Button</Filter>
     </ClCompile>
     <ClCompile Include="button.cpp">
-      <Filter>ソース ファイル\10_Ui\Button</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui\Button</Filter>
     </ClCompile>
     <ClCompile Include="tile_factory.cpp">
       <Filter>ソース ファイル</Filter>
@@ -304,7 +304,7 @@
       <Filter>ソース ファイル\09_Effect</Filter>
     </ClCompile>
     <ClCompile Include="attack_area.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="total_result.cpp">
       <Filter>ソース ファイル\06_GameScene</Filter>
@@ -325,7 +325,7 @@
       <Filter>ソース ファイル\07_GameModel</Filter>
     </ClCompile>
     <ClCompile Include="total_score.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="resource_character.cpp">
       <Filter>ソース ファイル\03_Resource</Filter>
@@ -346,7 +346,7 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="skill_gauge.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="move_tile.cpp">
       <Filter>ソース ファイル\08_Map\Tile\Move</Filter>
@@ -355,7 +355,7 @@
       <Filter>ソース ファイル\08_Map\Tile\Move</Filter>
     </ClCompile>
     <ClCompile Include="paintnum.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="player_model.cpp">
       <Filter>ソース ファイル\07_GameModel\Player</Filter>
@@ -370,7 +370,7 @@
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
     <ClCompile Include="character_polygon.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="stage_select.cpp">
       <Filter>ソース ファイル\06_GameScene</Filter>
@@ -397,10 +397,10 @@
       <Filter>ソース ファイル\08_Map\Tile</Filter>
     </ClCompile>
     <ClCompile Include="stage_name_ui.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="stage_select_polygon.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="base_Cylinder.cpp">
       <Filter>ソース ファイル</Filter>
@@ -424,7 +424,7 @@
       <Filter>ソース ファイル\07_GameModel</Filter>
     </ClCompile>
     <ClCompile Include="game_start.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
+      <Filter>ソース ファイル\09_Effect\10_Ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

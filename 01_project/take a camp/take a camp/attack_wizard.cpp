@@ -15,6 +15,7 @@
 #include "skill_effect.h"
 #include "skill_circle.h"
 #include "color_manager.h"
+
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -56,16 +57,17 @@ void CAttackWizard::CreateEffect(D3DXVECTOR3 pos)
 {
 	CPlayer *pPlaryer = GetPlayer();
 	//エフェクト生成
-	CSkill_effect::Create(pPlaryer->GetPos() + pos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
-		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() - 1),
-		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), CSkill_effect::SKILLTYPE_KNIGHT);
-}
+	CSkill_effect::Create(pPlaryer->GetPos() + pos + WIZARD_EFFECT_POS, WIZARD_EFFECT_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 0),
+		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 1),
+		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 2), WIZARD_EFFECT_LIFE, CSkill_effect::SKILLTYPE_WIZARD);
 
+}
 ////=============================================================================
 //// 攻撃生成関数
 ////=============================================================================
 //void CAttackWizard::AttackCreate(void)
 //{
+
 //	//プレイヤーのポインタ
 //	CPlayer *pPlaryer = GetPlayer();
 //

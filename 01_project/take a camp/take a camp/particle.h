@@ -38,8 +38,10 @@ public:
 	{
 		PARTICLE_SQUARE = 0, // 四角
 		PARTICLE_TEARS,   // 涙
-		PARTICLE_CIRCLE,  // 丸
-		PARTICLE_GURUGURU, // ぐるぐる
+		PARTICLE_SHOOT,  // ゆみの起動
+		PARTICLE_METEOR, // 爆発
+		PARTICLE_METEOR_SHADOW, // 爆発の影
+		PARTICLE_GURUGURU,
 		PARTICLE_MAX,     // タイプの最大数
 	}PARTICLE_TYPE;
 
@@ -70,6 +72,7 @@ private:
 	LPDIRECT3DTEXTURE9 m_apTexture[PARTICLE_MAX]; // テクスチャ
 	D3DXVECTOR3   m_move;	 	  // 移動量
 	D3DXVECTOR3   m_size;		  // 大きさ
+
 	int           m_nLife;	  	  // 寿命
 	float		  m_fRotAngle;	  // 回転角度
 	float		  m_fFadeout;	  // フェードアウト　

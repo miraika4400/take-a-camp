@@ -70,20 +70,33 @@ CParticle * CParticle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, con
 	pParticle->m_fFadeout = fadeout;		 // ƒtƒF[ƒhƒAƒEƒg
 	pParticle->m_fRotAngle = 0.0f;           // ‰ñ“]Šp“x
 	pParticle->SetColor(col);                // ƒJƒ‰[Ý’è
-	pParticle->SetAngle((float)(rand() % 360));       // ‰ñ“]Šp“x‚ðƒ‰ƒ“ƒ_ƒ€
+	//pParticle->SetAngle((float)(rand() % 360));       // ‰ñ“]Šp“x‚ðƒ‰ƒ“ƒ_ƒ€
 	pParticle->SetAddMode(false);             // ‰ÁŽZ‡¬
 	
 
 	switch (type)
 	{
 	case PARTICLE_SQUARE:
-		
+		pParticle->SetAngle((float)(rand() % 360));       // ‰ñ“]Šp“x‚ðƒ‰ƒ“ƒ_ƒ€
+
 		break;
 
 	case PARTICLE_TEARS:
 		break;
 
-	case PARTICLE_CIRCLE:
+	case PARTICLE_SHOOT:
+		break;
+
+	case PARTICLE_METEOR:
+		pParticle->SetAddMode(true); 
+	
+		break;
+	case PARTICLE_METEOR_SHADOW:
+		pParticle->SetAddMode(false);
+		break;
+
+	case PARTICLE_GURUGURU:
+		pParticle->SetAngle((float)(rand() % 360));       // ‰ñ“]Šp“x‚ðƒ‰ƒ“ƒ_ƒ€
 		break;
 
 	default:
@@ -105,7 +118,9 @@ HRESULT CParticle::Init(void)
 
 	m_apTexture[PARTICLE_SQUARE] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SQUARE);
 	m_apTexture[PARTICLE_TEARS] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SKILL);
-	m_apTexture[PARTICLE_CIRCLE] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_CIRCLE);
+	m_apTexture[PARTICLE_SHOOT] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SHOOT);
+	m_apTexture[PARTICLE_METEOR] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_METEOR);
+	m_apTexture[PARTICLE_METEOR_SHADOW] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_METEOR_SHADOW);
 	m_apTexture[PARTICLE_GURUGURU] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_GURUGURU);
 	// ƒeƒNƒXƒ`ƒƒŠ„‚è“–‚Ä
 	BindTexture(m_apTexture[m_type]);
@@ -141,8 +156,17 @@ void CParticle::Update(void)
 	case PARTICLE_TEARS:
 		break;
 
-	case PARTICLE_CIRCLE:
+	case PARTICLE_SHOOT:
 		break;
+
+	case PARTICLE_METEOR:
+		m_col.r += m_fFadeout;
+		SetColor(m_col);
+		break;
+
+	case PARTICLE_METEOR_SHADOW:
+		break;
+
 	case PARTICLE_GURUGURU:
 		m_col.a -= m_fFadeout;
 		SetColor(m_col);

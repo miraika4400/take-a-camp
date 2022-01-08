@@ -92,8 +92,8 @@ HRESULT Cbase_Cylinder::Init(void)
 	{	// 頂点座標の設定
 		FLOAT theta = (2 * D3DX_PI * nCnt) / (NUM_CYL_VERTEX - 1);
 		
-		pVtx[2 * nCnt + 0].pos = D3DXVECTOR3(sinf(theta), -1.0f, cosf(theta));
-		pVtx[2 * nCnt + 1].pos = D3DXVECTOR3(sinf(theta),  1.0f, cosf(theta));
+		pVtx[2 * nCnt + 0].pos = D3DXVECTOR3(sinf(theta), 0.0f, cosf(theta));
+		pVtx[2 * nCnt + 1].pos = D3DXVECTOR3(sinf(theta),  0.0f, cosf(theta));
 		// テクスチャUV座標の設定
 		pVtx[2 * nCnt + 0].tex = D3DXVECTOR2(((FLOAT)nCnt) / (NUM_CYL_VERTEX - 1), 0.0f);
 		pVtx[2 * nCnt + 1].tex = D3DXVECTOR2(((FLOAT)nCnt) / (NUM_CYL_VERTEX - 1), 1.0f);
@@ -228,7 +228,7 @@ void Cbase_Cylinder::SetPos(const D3DXVECTOR3 pos)
 		FLOAT theta = (2 * D3DX_PI * nCnt) / (NUM_CYL_VERTEX - 2);
 
 		pVtx[2 * nCnt + 0].pos = D3DXVECTOR3(sinf(theta) * (float)+(m_size.x / 2.0f) * (m_fHighRot + m_fRotAngle), + m_size.y , cosf(theta) * ((float)m_size.z / 2.0f)* (m_fHighRot + m_fRotAngle));
-		pVtx[2 * nCnt + 1].pos = D3DXVECTOR3(sinf(theta) * (float)+(m_size.x / 2.0f) *  m_fRowRot, - m_size.y , cosf(theta) * ((float)m_size.z / 2.0f)* m_fRowRot);
+		pVtx[2 * nCnt + 1].pos = D3DXVECTOR3(sinf(theta) * (float)+(m_size.x / 2.0f) *  m_fRowRot                , - m_size.y, cosf(theta) * ((float)m_size.z / 2.0f)*  m_fRowRot);
     }
 
 	// アンロック
