@@ -205,19 +205,14 @@ void CCharaSelectUi::Update(void)
 			CInputKeyboard * pKey = CManager::GetKeyboard();
 			CInputJoypad* pJoypad = CManager::GetJoypad();
 			// 攻撃ボタンを押したら
-			if (!entryData.bController && pKey->GetKeyPress(CPlayer::GetPlayerControllKey(entryData.nControllNum,CPlayer::KEY_ATTCK_FINAL))
-				|| entryData.bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, entryData.nControllNum))
+			if (!entryData.bController && pKey->GetKeyTrigger(CPlayer::GetPlayerControllKey(entryData.nControllNum,CPlayer::KEY_ATTCK_FINAL))
+				|| entryData.bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_TRIGGER, entryData.nControllNum))
 			{
+				// 攻撃範囲にキャラタイプの適用
 				m_aPolygon[nCntPlayer].pAttackUiPolygon->SetCharaType(entryData.charaType);
-
-				m_aPolygon[nCntPlayer].pAttackUiPolygon->SetDrawFlag(true);
+				// 攻撃範囲表示の切り替え
+				m_aPolygon[nCntPlayer].pAttackUiPolygon->SwitchDrawFlag();
 			}
-			else
-			{
-				m_aPolygon[nCntPlayer].pAttackUiPolygon->SetDrawFlag(false);
-			}
-
-
 		}
 		else
 		{// 非エントリー時

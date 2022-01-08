@@ -38,6 +38,7 @@ public:
 	void Draw(void);
 
 	void SetDrawFlag(bool bDraw) { m_bDraw = bDraw; }
+	void SwitchDrawFlag(void) { m_bDraw ^= true; }
 	void SetCharaType(CResourceCharacter::CHARACTER_TYPE type) { m_nCharaType = type; }
 
 	void Reset(void);
