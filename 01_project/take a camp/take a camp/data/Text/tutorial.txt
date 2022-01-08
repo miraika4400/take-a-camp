@@ -19,7 +19,7 @@ SCRIPT		# この行は絶対消さないこと！
 TEXT_DATASET
 POS = 640 620
 WINDOWRANGE = -330 -40 330 40
-FONTSIZE = 40
+FONTSIZE = 35
 COLOR = 0.0 0.0 0.0 1.0
 SAY = 移動してタイルを10マス塗ってみよう！
 NR
@@ -29,45 +29,64 @@ END_TEXT_DATASET
 
 TEXT_DATASET
 POS = 640 640
-WINDOWRANGE = -320 -20 320 20
+WINDOWRANGE = -300 -20 300 20
+SAY = いいね！
+ENTER
+WINDOWRANGE = -380 -20 380 20
 SAY = 次はタイルを10マス重ね塗りしてみよう！
+ENTER
+WINDOWRANGE = -370 -40 370 40
+SAY = 同じマスを何度も通ると重ね塗りできて、
 NR
-SAY = 同じマスを何度も通ると重ね塗りできるよ！
+SAY = ３段階まで重ね塗りできるよ！
 ENTER
 END_TEXT_DATASET
 
 TEXT_DATASET
-WINDOWRANGE = -300 -40 300 40
+WINDOWRANGE = -300 -20 300 20
 SAY = 完璧！
 ENTER
-SAY = 次はスキルを使ってみよう！
+WINDOWRANGE = -370 -20 370 20
+SAY = 次はスキルでかかしを倒してみよう！
 ENTER
-SAY = スキルは自分が塗ったタイル上で
+WINDOWRANGE = -370 -40 370 40
+SAY = スキル攻撃はチャージ式、Xボタンを押すと
 NR
-SAY = Xボタンを押すと使えるよ！
+SAY = 溜められるよ！
 ENTER
-WINDOWRANGE = -360 -40 360 40
-SAY = さらに、重ね塗りしたマスの上でXボタンを長押しすると
+WINDOWRANGE = -370 -40 370 40
+SAY = チャージを始めたマスの段階によって
 NR
-SAY = スキルをチャージできるよ！
+SAY = チャージの最大レベルも変わっていくんだ！
 ENTER
-SAY = チャージするとスキル範囲が大幅UP！！
+WINDOWRANGE = -370 -20 370 20
+SAY = 最大チャージすると、スキル範囲が大幅UP！！
 ENTER
 END_TEXT_DATASET
 
 TEXT_DATASET
-WINDOWRANGE = -300 -40 300 40
+WINDOWRANGE = -320 -20 320 20
 SAY = 次は必殺技でかかしを倒してみよう！
+ENTER
+WINDOWRANGE = -390 -40 390 40
+SAY = 必殺技はキャラの頭上にあるマークが
 NR
-SAY = 必殺技はYボタンだよ！
+SAY = 溜まっている状態でYボタンを押すと使えるよ！
 ENTER
 END_TEXT_DATASET
 
 TEXT_DATASET
-WINDOWRANGE = -320 -40 320 40
-SAY = チュートリアルステージで自由に遊んでみよう！
+WINDOWRANGE = -320 -20 320 20
+SAY = チュートリアルはこれでおしまい！
 ENTER
-SAY = 青いマスに乗るとタイトルに戻るよ！
+WINDOWRANGE = -320 -40 320 40
+SAY = あとはチュートリアルステージで
+NR
+SAY = 自由に遊んでみよう！
+ENTER
+SAY = チュートリアルから出たいときは
+NR
+SAY = 青いマスに乗るとタイトルに戻れるよ！
 ENTER
 END_TEXT_DATASET
 NGE = -90 -20 90 20
