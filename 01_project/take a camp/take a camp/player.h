@@ -130,7 +130,7 @@ public:
 	PLAYER_STATE GetState(void) { return m_PlayerState; }			
 	// 無敵状態取得
 	bool GetInvincible(void) { return m_bInvincible; }	
-	void SetInvincible(bool bInvincible) { m_bInvincible = bInvincible; }
+	void SetInvincible(bool bInvincible);
 	//向きと位置の移動量
 	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }					
 	D3DXVECTOR3 GetPosDest(void) { return MoveData.m_Move; }
@@ -155,46 +155,46 @@ public:
 	CSkillgauge *GetSkillgauge(void) { return m_pSkillgauge; }	// タイルの塗り段階所得
 	int GetChargeTilelevel(void) { return m_nChargeTilelevel; }
 private:
-	void InitCharacterData(void); // キャラデータの初期化
-	void Move(void);			// 移動処理
-	void AttackRot(void);		// 攻撃時の向き処理
-	void ControlMove(void);		// コントロール処理
-	void ManageRot(void);		// 向きの管理
-	void Respawn(void);			// リスポーン処理
-	void Invincible(void);		// 無敵処理
-	void ManageState(void);     // ステート管理
-	void ManageItemState(void); // アイテムステートの管理
+	void InitCharacterData(void);	// キャラデータの初期化
+	void Move(void);				// 移動処理
+	void AttackRot(void);			// 攻撃時の向き処理
+	void ControlMove(void);			// コントロール処理
+	void ManageRot(void);			// 向きの管理
+	void Respawn(void);				// リスポーン処理
+	void Invincible(void);			// 無敵処理
+	void ManageState(void);			// ステート管理
+	void ManageItemState(void);		// アイテムステートの管理
 	bool TutorialControll(int nTutorialphase);	// チュートリアルの操作処理
-void Flip(void);				// はじく処理
+
 	//*****************************
 	// メンバ変数
 	//*****************************
 	static int m_anControllKey[MAX_PLAYER][KEY_MAX];
 
-	PLAYER_STATE m_PlayerState;	// プレイヤーステータス
-	CKillCount * m_pKillCount;	// プレイヤーのキルカウントポインタ
-	int m_nPlayerNumber;		// プレイヤー番号
-	D3DXCOLOR m_color;			// 色
-	int m_nColor;				// 色ナンバー
-	int m_nControllNum;         // コントロール番号
-	bool m_bController;         // コントローラー操作かキーボード操作か
-	CAttackBased* m_pAttack;	// 攻撃用クラス
-	ATTACK_DATA m_AttackData;	// 攻撃用データ
-	bool m_bInvincible;			// 無敵フラグ
-	bool m_bUpdate;             // 更新フラグ
-	int m_nInvincibleCount;		// 無敵時間のカウント
-	int	m_nRespawnCount;		// リスポーンまでのカウント
-	bool m_bMove;				// 移動可否フラグ
-	bool m_bOldMove;			// 前回の移動可否フラグの状態
-	MOVE_DATA MoveData;			// 移動データ
-	ITEM_STATE m_ItemState;		// アイテムステータス
-	int	m_ReverseCount;			// アイテム効果 操作反転カウント
-	int m_nDashCnt;				// アイテム効果 速度アップカウント
-	CCollision * m_pCollision;	// 当たり判定
-	CActRange *	 m_pActRange;	// 行動判定
-	D3DXVECTOR3  m_rotDest;		// 回転(目標の値)
-	D3DXVECTOR3  m_RespawnPos;	// リスポーン位置
-	CSkillgauge * m_pSkillgauge;// 必殺技ゲージ
+	PLAYER_STATE m_PlayerState;		// プレイヤーステータス
+	CKillCount * m_pKillCount;		// プレイヤーのキルカウントポインタ
+	int m_nPlayerNumber;			// プレイヤー番号
+	D3DXCOLOR m_color;				// 色
+	int m_nColor;					// 色ナンバー
+	int m_nControllNum;				// コントロール番号
+	bool m_bController;				// コントローラー操作かキーボード操作か
+	CAttackBased* m_pAttack;		// 攻撃用クラス
+	ATTACK_DATA m_AttackData;		// 攻撃用データ
+	bool m_bInvincible;				// 無敵フラグ
+	bool m_bUpdate;					// 更新フラグ
+	int m_nInvincibleCount;			// 無敵時間のカウント
+	int	m_nRespawnCount;			// リスポーンまでのカウント
+	bool m_bMove;					// 移動可否フラグ
+	bool m_bOldMove;				// 前回の移動可否フラグの状態
+	MOVE_DATA MoveData;				// 移動データ
+	ITEM_STATE m_ItemState;			// アイテムステータス
+	int	m_ReverseCount;				// アイテム効果 操作反転カウント
+	int m_nDashCnt;					// アイテム効果 速度アップカウント
+	CCollision * m_pCollision;		// 当たり判定
+	CActRange *	 m_pActRange;		// 行動判定
+	D3DXVECTOR3  m_rotDest;			// 回転(目標の値)
+	D3DXVECTOR3  m_RespawnPos;		// リスポーン位置
+	CSkillgauge * m_pSkillgauge;	// 必殺技ゲージ
 	int m_nChargeTilelevel;			// チャージ開始タイルの塗り段階
 
 	// モーション用変数

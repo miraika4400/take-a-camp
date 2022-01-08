@@ -19,6 +19,7 @@
 //前方宣言
 //*****************************
 class CModel;
+class CPlayer;
 
 //*****************************
 //マクロ定義
@@ -39,7 +40,6 @@ public:
 		WARP_TILE_NORMAL = 0,	//通常状態
 		WARP_TILE_WARP,			//ワープ状態
 		WARP_TILE_WARP_AFTER,	//ワープ先の状態
-		WARP_TILE_STOP			//停止状態
 	}WARP_TILE_STATE;
 
 	//識別用タイプ
@@ -65,14 +65,15 @@ public:
 	void Update(void);
 
 private:
-	void HitPlayerAction(CPlayer*pPlayer);	// プレイヤーが乗っているか
-	void HitPlayerActionRelease(void);		// プレイヤーが降りたか
-
+	void HitPlayerAction(CPlayer*pPlayer);			// プレイヤーが乗っているか
+	void HitPlayerActionRelease(CPlayer*pPlayer);	// プレイヤーが降りたか
+	D3DXVECTOR3 RandTileSelect(void);				// 他のワープ先をランダムで取得
 	//*****************************
 	// メンバ変数
 	//*****************************
 	int				m_nLyncTile;								// つながっているタイル
-	WARP_TILE_STATE m_WarpState;								// 状態変数
+	int				m_nPlayerCount[MAX_PLAYER];					// 行動できるまでのカウント
+	WARP_TILE_STATE m_WarpState[MAX_PLAYER];					// 状態変数
 	WARP_TILE_TYPE	m_WarpType;									// ワープ床の識別用変数
 	static std::vector<std::vector<CWarpTile*>> m_pWarpTile;	// ワープ床のポインタ動的配列
 	static int m_nTotalWarpTile;								// 総数

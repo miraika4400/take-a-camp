@@ -91,7 +91,7 @@ private:
 	bool CollisionPlayer(void);								// プレイヤーとの当たり判定
 	virtual void HitPlayerAction(CPlayer * pPlayer);        // 弾と当たったときのアクション*プレス
 	virtual void HitPlayerActionTrigger(CPlayer * pPlayer); // 弾と当たったときのアクション*トリガー
-	virtual void HitPlayerActionRelease(void); // 弾と当たったときのアクション*リリース
+	virtual void HitPlayerActionRelease(CPlayer * pPlayer); // 弾と当たったときのアクション*リリース
 
 
 	bool CollisionBullet(void);								// 弾との当たり判定
@@ -103,12 +103,15 @@ private:
 	static std::vector<CTile*> m_aTileList;
 	D3DXCOLOR m_color;			// カラー
 	CCollision * m_pCollison;	// 当たり判定
+	CPlayer	* m_pHitPlayerOld[MAX_PLAYER];	// 当たっていたプレイヤー
 	float m_fDistPosY;			// 座標Yの目標値
 	float m_fDistPosYRate;		// 座標Yの変更時の係数
-	bool m_bHitOld;				// 一個前のフレームで当たっていたか保存するよう
+	//bool m_bHitOld;			// 一個前のフレームで当たっていたか保存するよう
 	bool m_bHitPlayer;			// プレイヤーが当たっているフラグ
 	bool m_bHitBullet;			// 弾が当たっているフラグ
 	bool m_bRide;				// 乗れかのフラグ
+								//プレイヤーが当たっているか
+	bool m_abHitOld[MAX_PLAYER];
 };
 
 

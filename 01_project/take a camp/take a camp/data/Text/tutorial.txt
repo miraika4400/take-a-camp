@@ -4,7 +4,7 @@ SCRIPT		# この行は絶対消さないこと！
 //
 // POS        :ウィンドウを表示する中心の座標
 // WINDOWRANGE:ウィンドウを表示する範囲
-//             左から「左上のX座標、Y座標、右上のX座標、Y座標」
+//             左から「左上のX座標、Y座標、右下のX座標、Y座標」
 // FONTSIZE   :フォントのサイズ
 // COLOR      :フォントの色
 // SAY        :表示する文字(セリフ)
@@ -30,30 +30,48 @@ END_TEXT_DATASET
 TEXT_DATASET
 POS = 640 640
 WINDOWRANGE = -320 -20 320 20
-SAY = タイルを10マス重ね塗りしてみよう！
-ENTER
-END_TEXT_DATASET
-
-TEXT_DATASET
-WINDOWRANGE = -300 -40 300 40
-SAY = 攻撃してかかしを倒してみよう！
+SAY = 次はタイルを10マス重ね塗りしてみよう！
 NR
-SAY = 攻撃はXボタンだよ！
+SAY = 同じマスを何度も通ると重ね塗りできるよ！
 ENTER
 END_TEXT_DATASET
 
 TEXT_DATASET
 WINDOWRANGE = -300 -40 300 40
-SAY = 必殺技でかかしを倒してみよう！
+SAY = 完璧！
+ENTER
+SAY = 次はスキルを使ってみよう！
+ENTER
+SAY = スキルは自分が塗ったタイル上で
+NR
+SAY = Xボタンを押すと使えるよ！
+ENTER
+WINDOWRANGE = -360 -40 360 40
+SAY = さらに、重ね塗りしたマスの上でXボタンを長押しすると
+NR
+SAY = スキルをチャージできるよ！
+ENTER
+SAY = チャージするとスキル範囲が大幅UP！！
+ENTER
+END_TEXT_DATASET
+
+TEXT_DATASET
+WINDOWRANGE = -300 -40 300 40
+SAY = 次は必殺技でかかしを倒してみよう！
 NR
 SAY = 必殺技はYボタンだよ！
 ENTER
 END_TEXT_DATASET
 
 TEXT_DATASET
-WINDOWRANGE = -90 -20 90 20
-SAY = 自由だよ!
+WINDOWRANGE = -320 -40 320 40
+SAY = チュートリアルステージで自由に遊んでみよう！
 ENTER
+SAY = 青いマスに乗るとタイトルに戻るよ！
+ENTER
+END_TEXT_DATASET
+NGE = -90 -20 90 20
+
 END_TEXT_DATASET
 
 END_SCRIPT		# この行は絶対消さないこと！

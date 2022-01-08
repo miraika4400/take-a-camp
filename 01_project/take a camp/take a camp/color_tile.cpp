@@ -331,8 +331,6 @@ void CColorTile::ManageEffect(void)
 		m_bBlinkingColor = false;
 		m_pCharge->SetDrawFlag(false);
 	}
-
-	
 }
 
 //******************************
@@ -467,7 +465,6 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 				}
 			}
 		}
-
 	}
 }
 
