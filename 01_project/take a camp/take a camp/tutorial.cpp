@@ -42,6 +42,7 @@
 #define TARGET_KILL (2)				// スキルで倒す人数
 #define ADD_TEXTWINDOWRANGE (10.0f)	// テキストウィンドウの範囲を加算する値
 #define TEXTWINDOW_COLOR (D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.2f))	// テキストウィンドウの色
+#define TEXTSHOWTIME (1200)			// テキストを表示する時間
 
 //=============================
 // コンストラクタ
@@ -52,12 +53,13 @@ CTutorial::CTutorial()
 	m_pTextWindow = nullptr;
 	m_pText = nullptr;
 	ZeroMemory(&m_bTask, sizeof(m_bTask));
-	m_Tutorialphase = PHASE_FINISH;
+	m_Tutorialphase = PHASE_PAINT;
 	m_nTextNum = 0;
 	m_bNextText = false;
 	m_bTextEnd = false;
 	ZeroMemory(&m_nCurTaskNum, sizeof(m_nCurTaskNum));
 	ZeroMemory(&m_nOldCurTaskNum, sizeof(m_nOldCurTaskNum));
+	m_nTextShowTime = 0;
 }
 
 //=============================
@@ -156,6 +158,7 @@ void CTutorial::Update()
 	// テキスト表示するときの背景のセット
 	SetTextWindow();
 
+	// テキスト表示が終わったら
 	if (m_bTextEnd)
 	{
 		// プレイヤーの更新出来るようにする
@@ -164,19 +167,25 @@ void CTutorial::Update()
 		m_pTextWindow->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 	}
 
+	// テキスト表示
 	if (!m_bNextText)
 	{
 		UpdateText();
 
 		m_pTextWindow->SetColor(TEXTWINDOW_COLOR);
+
+		m_nTextShowTime = TEXTSHOWTIME;
 	}
+	// 一文表示終えたら
 	else if (m_pText->GetAllShowText() && !m_bTextEnd)
 	{
+		m_nTextShowTime--;
+
 		// プレイヤーの更新を止める
 		StartPlayer(false);
 
-		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN)
-			|| CManager::GetJoypad()->GetButtonState(XINPUT_GAMEPAD_START, CInputJoypad::BUTTON_TRIGGER, 0))
+		// テキストを表示する時間が0になったら
+		if (m_nTextShowTime <= 0)
 		{
 			m_pText->ClearText();
 			m_bNextText = false;

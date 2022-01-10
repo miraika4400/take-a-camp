@@ -20,6 +20,10 @@
 //=============================
 class CPolygon;
 
+//=============================
+// マクロ定義
+//=============================
+#define MAX_FONT_NUM (5)
 
 //=============================
 // クラス定義
@@ -72,16 +76,16 @@ private:
 	//============
 	// メンバ変数
 	//===========
-	LPD3DXFONT m_pFont;				// フォント保存用変数
-	D3DXVECTOR2 m_pos;				// 座標
-	D3DXVECTOR2 m_Fontsize;			// 文字のサイズ
-	D3DCOLOR m_col;					// 色
-	DWORD m_format;					// 整列方法変換用変数
-	D3DXVECTOR2 m_WindowRange[2];	// 文字の表示範囲
-	std::string m_str;				// 表示する文字列
-	int m_nCountBite;				// 1バイトずつのカウント
-	int m_nShowTime;				// 文字を見せる時間
-	bool m_bAllShow;				// すべて表示されたかどうか
+	LPD3DXFONT m_apFont[MAX_FONT_NUM];	// フォント保存用変数
+	D3DXVECTOR2 m_pos;					// 座標
+	D3DXVECTOR2 m_Fontsize;				// 文字のサイズ
+	D3DXCOLOR m_col;					// 色
+	DWORD m_format;						// 整列方法変換用変数
+	D3DXVECTOR2 m_WindowRange[2];		// 文字の表示範囲
+	std::string m_str;					// 表示する文字列
+	int m_nCountBite;					// 1バイトずつのカウント
+	int m_nShowTime;					// 文字を見せる時間
+	bool m_bAllShow;					// すべて表示されたかどうか
 };
 
 #endif

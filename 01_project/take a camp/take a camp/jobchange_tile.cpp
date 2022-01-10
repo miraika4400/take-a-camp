@@ -16,6 +16,7 @@
 #include "player.h"
 #include "chara_select.h"
 #include "fade.h"
+#include "chara_select.h"
 
 //====================================================
 // マクロ定義
@@ -125,6 +126,9 @@ void CJobchangeTile::Update(void)
 	// タイルの更新
 	CTile::Update();
 
+	// プレイヤーのナンバー
+	int nPlayerNum = 0;
+
 	// このタイルの当たり判定
 	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
 	while (pPlayer != NULL)
@@ -132,9 +136,19 @@ void CJobchangeTile::Update(void)
 		// このタイルに載ったら指定の職種に変える
 		if (CCollision::CollisionSphere(GetCollision(), pPlayer->GetCollision()))
 		{
+			// タイルに保持しているキャラタイプにセット
 			pPlayer->SetCharacterType(m_CharacterType);
+
+			// 攻撃範囲を変えるためキャラセレクトのキャラタイプを変える
+			CCharaSelect::Entry_Data EntryData = CCharaSelect::GetEntryData(nPlayerNum);
+			EntryData.charaType = m_CharacterType;
+			CCharaSelect::SetEntryData(nPlayerNum, EntryData);
+
+			// 攻撃の初期化
+			pPlayer->InitCharacterData();
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
+		nPlayerNum++;
 	}
 
 	// チュートリアル中だったら

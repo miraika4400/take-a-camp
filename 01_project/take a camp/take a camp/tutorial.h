@@ -77,6 +77,7 @@ private:
 	bool m_bTextEnd;									// テキストを表示し終わったか
 	int m_nCurTaskNum[MAX_PLAYER];						// 現在のタスクごとの数
 	int m_nOldCurTaskNum[MAX_PLAYER];					// 1フレーム前のタスクごとの数
+	int m_nTextShowTime;								// テキストを表示する時間
 };
 
 #endif

@@ -113,7 +113,7 @@ public:
 	void Death(void);		// 死亡処理関数
 	void Attack(void);		// 攻撃処理
 	void AttackFinal(void); // 必殺技処理
-
+	void InitCharacterData(void); // キャラデータの初期化
 
 	//*****************************
 	//セッター・ゲッター
@@ -157,7 +157,6 @@ public:
 	//プレイヤーの色 
 	void SetColor(D3DXCOLOR color) { m_color = color; }
 private:
-	void InitCharacterData(void); // キャラデータの初期化
 	void Move(void);			// 移動処理
 	void AttackRot(void);		// 攻撃時の向き処理
 	void ControlMove(void);		// コントロール処理
