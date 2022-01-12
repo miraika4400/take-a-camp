@@ -74,19 +74,19 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/stick_icon.png",         // ñƒAƒCƒRƒ“
 	"./data/Textures/effect_explosion.png",   // ƒŠƒUƒ‹ƒgƒGƒNƒXƒvƒ[ƒWƒ‡ƒ“
 	"./data/Textures/color_gauge_ui.png",	  // F‚ÌƒQ[ƒW‚Ì˜g
-	"./data/Textures/attack_area/all_lv1_attack.png",                  // UŒ‚”ÍˆÍ*ƒŒƒxƒ‹1
-	"./data/Textures/attack_area/00_knight/knight_lv2_attack.png",     // UŒ‚”ÍˆÍ
-	"./data/Textures/attack_area/00_knight/knight_lv3_attack.png",     // UŒ‚”ÍˆÍ
-	"./data/Textures/attack_area/01_lancer/lancer_lv2_attack.png",     // UŒ‚”ÍˆÍ
-	"./data/Textures/attack_area/01_lancer/lancer_lv3_attack.png",     // UŒ‚”ÍˆÍ
-	"./data/Textures/attack_area/02_wizard/wizard_lv2_attack.png",     // UŒ‚”ÍˆÍ
-	"./data/Textures/attack_area/02_wizard/wizard_lv3_attack.png",     // UŒ‚”ÍˆÍ
-	"./data/Textures/attack_area/03_thief/thief_lv2_attack.png",       // UŒ‚”ÍˆÍ
-	"./data/Textures/attack_area/03_thief/thief_lv3_attack.png",       // UŒ‚”ÍˆÍ
-	"./data/Textures/attack_area/04_magician/magician_lv2_attack.png", // UŒ‚”ÍˆÍ
-	"./data/Textures/attack_area/04_magician/magician_lv3_attack.png", // UŒ‚”ÍˆÍ
-	"./data/Textures/attack_area/05_archer/archer_lv2_attack.png",     // UŒ‚”ÍˆÍ
-	"./data/Textures/attack_area/05_archer/archer_lv3_attack.png",     // UŒ‚”ÍˆÍ
+	"./data/Textures/attack_area/all_lv1_attack.png",                  // UŒ‚”ÍˆÍ*‘SƒLƒƒƒ‰ƒŒƒxƒ‹1
+	"./data/Textures/attack_area/00_knight/knight_lv2_attack.png",     // UŒ‚”ÍˆÍ*‹RmƒŒƒxƒ‹2
+	"./data/Textures/attack_area/00_knight/knight_lv3_attack.png",     // UŒ‚”ÍˆÍ*‹RmƒŒƒxƒ‹3
+	"./data/Textures/attack_area/01_lancer/lancer_lv2_attack.png",     // UŒ‚”ÍˆÍ*‘„ƒŒƒxƒ‹2
+	"./data/Textures/attack_area/01_lancer/lancer_lv3_attack.png",     // UŒ‚”ÍˆÍ*‘„ƒŒƒxƒ‹3
+	"./data/Textures/attack_area/02_wizard/wizard_lv2_attack.png",     // UŒ‚”ÍˆÍ*–‚–@ƒŒƒxƒ‹2
+	"./data/Textures/attack_area/02_wizard/wizard_lv3_attack.png",     // UŒ‚”ÍˆÍ*–‚–@ƒŒƒxƒ‹3
+	"./data/Textures/attack_area/03_thief/thief_lv2_attack.png",       // UŒ‚”ÍˆÍ*“‘¯ƒŒƒxƒ‹2
+	"./data/Textures/attack_area/03_thief/thief_lv3_attack.png",       // UŒ‚”ÍˆÍ*“‘¯ƒŒƒxƒ‹3
+	"./data/Textures/attack_area/04_magician/magician_lv2_attack.png", // UŒ‚”ÍˆÍ*ŠïptƒŒƒxƒ‹2
+	"./data/Textures/attack_area/04_magician/magician_lv3_attack.png", // UŒ‚”ÍˆÍ*ŠïptƒŒƒxƒ‹3
+	"./data/Textures/attack_area/05_archer/archer_lv2_attack.png",     // UŒ‚”ÍˆÍ*‹|ƒŒƒxƒ‹2
+	"./data/Textures/attack_area/05_archer/archer_lv3_attack.png",     // UŒ‚”ÍˆÍ*‹|ƒŒƒxƒ‹3
 };
 
 // ƒeƒNƒXƒ`ƒƒ‚ÌƒpƒX

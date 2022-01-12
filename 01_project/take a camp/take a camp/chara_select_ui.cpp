@@ -33,9 +33,9 @@
 #define BACK_DEFAULT_COLOR D3DXCOLOR(0.7f,0.7f,0.7f,1.0f)    // デフォルトのカラー
 #define ICON_COLOR_ON      D3DXCOLOR(1.0f,1.0f,1.0f,1.7f)    // アイコンのカラー
 #define ICON_COLOR_OFF     D3DXCOLOR(1.0f,1.0f,1.0f,0.0f)    // アイコンのカラー
-#define PLAYER_NUMBER_POS_Y 60.0f
-#define CHARACTER_MODEL_POS_Y 340.0f
-#define READY_ICON_POS_Y  450.0f
+#define PLAYER_NUMBER_POS_Y 60.0f                            // 
+#define CHARACTER_MODEL_POS_Y 340.0f                         // 
+#define READY_ICON_POS_Y  450.0f                             // 
 
 //=============================
 // 静的メンバ変数宣言
