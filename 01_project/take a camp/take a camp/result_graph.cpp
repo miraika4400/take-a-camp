@@ -266,7 +266,7 @@ void CResultGraph::ManageGraph(void)
 		if (m_nActionCnt > RANK_ANNOUNCEMENT_COUNT)
 		{
 			bool bAnnouncement = false;
-			for (int nCntRankData = 0; nCntRankData < (int)m_aRankData.size(); nCntRankData++)
+			for (int nCntRankData = (int)m_aRankData.size() - 1; nCntRankData >= 0; nCntRankData--)
 			{
 				// アクションを起こす順位の比較
 				if (m_aRankData[nCntRankData].nRank != m_nActionRank)    continue;
@@ -299,7 +299,7 @@ void CResultGraph::ManageGraph(void)
 			m_nActionRank--;
 			// カウントの初期化*順位が中抜けだったときはカウントを初期化しない
 			m_nActionCnt = 0;
-			if (!bAnnouncement) m_nActionCnt = RANK_ANNOUNCEMENT_COUNT;
+			if (!bAnnouncement|| m_nActionRank == 0) m_nActionCnt = RANK_ANNOUNCEMENT_COUNT;
 		}
 	}
 

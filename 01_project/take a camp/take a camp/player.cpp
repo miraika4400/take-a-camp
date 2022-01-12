@@ -57,6 +57,7 @@
 #define ROT_FACING_02			(360)							// 回転向き
 #define DASH_FRAME				(60*5)							// ダッシュ時有効フレーム数
 #define ATTCK_ROT_INPUT			(15)							// 攻撃方向受付するフレーム数
+#define SKILL_ROT_INPUT			(35)							// 必殺技の方向受付フレーム数
 
 //*****************************
 // 静的メンバ変数宣言
@@ -267,7 +268,7 @@ void CPlayer::Update(void)
 {
 	if (!m_bUpdate)
 	{
-		Move(); 
+		//プレイヤーのモデルパーツ更新処理
 		CPlayerModel::Update();
 		return;
 	}
@@ -424,30 +425,47 @@ void CPlayer::AttackRot(void)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
-		m_AttackData.m_bAttackRot = true;
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
 		|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
-		m_AttackData.m_bAttackRot = true;
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
 		|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
-		m_AttackData.m_bAttackRot = true;
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
 		|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
 			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
-		m_AttackData.m_bAttackRot = true;
 	}
 
+
+	while (m_rotDest.y - GetRot().y > D3DXToRadian(ROT_FACING_01))
+	{
+		m_rotDest.y -= D3DXToRadian(ROT_FACING_02);
+	}
+
+	while (m_rotDest.y - GetRot().y < D3DXToRadian(-ROT_FACING_01))
+	{
+		m_rotDest.y += D3DXToRadian(ROT_FACING_02);
+	}
+
+
+	if (D3DXToDegree(GetRot().y) + 1 >= D3DXToDegree(m_rotDest.y)
+		&& D3DXToDegree(GetRot().y) - 1 <= D3DXToDegree(m_rotDest.y))
+	{
+		m_AttackData.m_bAttackRot = false;
+	}
+	else
+	{
+		m_AttackData.m_bAttackRot = true;
+	}
 }
 
 //******************************
@@ -463,7 +481,6 @@ void CPlayer::ControlMove(void)
 
 		// スティックの座標
 		D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, m_nControllNum);
-
 
 		// 移動値
 		auto MoveValue = [&](D3DXVECTOR3 move, D3DXVECTOR2 actMove, float fRotDistY)
@@ -656,10 +673,28 @@ void CPlayer::AttackFinal(void)
 	{
 		//カウントアップ
 		m_AttackData.m_nAttackRotCount++;
+		//攻撃方向指定
 		AttackRot();
-		
-		if (m_AttackData.m_nAttackRotCount>= ATTCK_ROT_INPUT
-			|| m_AttackData.m_bAttackRot)
+
+		//攻撃時に方向を変更したら
+		if (m_AttackData.m_bAttackRot)
+		{
+			//フレーム数が一定に達したら
+			if (m_AttackData.m_nAttackRotCount >= SKILL_ROT_INPUT)
+			{
+				//フラグを回収
+				m_AttackData.m_bAttackRot = false;
+				//カウント初期化
+				m_AttackData.m_nAttackRotCount = 0;
+				//フラグを回収
+				m_AttackData.m_bAttack = false;
+				//攻撃スイッチ処理
+				m_pAttack->AttackFinalSwitch();
+				//アニメーション処理
+				GetMotion(CResourceCharacter::MOTION_ATTACK)->SetActiveMotion(true);
+			}
+		}
+		else if (m_AttackData.m_nAttackRotCount >= ATTCK_ROT_INPUT)
 		{
 			//フラグを回収
 			m_AttackData.m_bAttackRot = false;
@@ -673,6 +708,17 @@ void CPlayer::AttackFinal(void)
 			GetMotion(CResourceCharacter::MOTION_ATTACK)->SetActiveMotion(true);
 		}
 	}
+}
+
+//******************************
+// 無敵状態セッター処理
+//******************************
+void CPlayer::SetInvincible(bool bInvincible)
+{
+	//初期化
+	m_nInvincibleCount = 0;
+	m_color.a = 1.0f;
+	m_bInvincible = bInvincible;
 }
 
 //******************************
@@ -734,10 +780,7 @@ void CPlayer::Invincible(void)
 		//カウントが一定になったら
 		if (m_nInvincibleCount >= INVINCIBLE_COUNT)
 		{
-			//初期化
-			m_nInvincibleCount = 0;
-			m_color.a = 1.0f;
-			m_bInvincible = false;
+			SetInvincible(false);
 		}
 	}
 }
@@ -752,7 +795,7 @@ void CPlayer::ManageState(void)
 	{
 	case PLAYER_STATE_NORMAL:	//通常状態
 
-								//攻撃可否フラグが立っているか
+		//攻撃可否フラグが立っているか
 		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
 			&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK)
 		{
@@ -814,7 +857,7 @@ void CPlayer::ManageState(void)
 		}
 		break;
 	case PLAYER_STATE_DEATH:	//死亡状態
-								//リスポーン処理
+		//リスポーン処理
 		Respawn();
 		break;
 	}
@@ -901,10 +944,3 @@ bool CPlayer::TutorialControll(int nTutorialphase)
 	return false;
 }
 
-//******************************
-// はじき処理関数
-//******************************
-void CPlayer::Flip(void)
-{
-
-}

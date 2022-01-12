@@ -42,7 +42,7 @@
 #define TARGET_KILL (2)				// スキルで倒す人数
 #define ADD_TEXTWINDOWRANGE (10.0f)	// テキストウィンドウの範囲を加算する値
 #define TEXTWINDOW_COLOR (D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.2f))	// テキストウィンドウの色
-#define TEXTSHOWTIME (1200)			// テキストを表示する時間
+#define TEXTSHOWTIME (180)			// テキストを表示する時間
 
 //=============================
 // コンストラクタ
@@ -181,8 +181,8 @@ void CTutorial::Update()
 	{
 		m_nTextShowTime--;
 
-		// プレイヤーの更新を止める
-		StartPlayer(false);
+		//// プレイヤーの更新を止める
+		//StartPlayer(false);
 
 		// テキストを表示する時間が0になったら
 		if (m_nTextShowTime <= 0)

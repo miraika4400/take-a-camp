@@ -128,6 +128,7 @@ void CPlayerModel::ManageMotion(void)
 			if (m_apMotion[nCntMotion]->GetActiveMotion())
 			{
 				m_apMotion[CResourceCharacter::MOTION_IDLE]->SetActiveMotion(false);
+				break;
 			}
 		}
 		else
