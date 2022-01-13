@@ -15,7 +15,7 @@
 #include "skill_effect.h"
 #include "skill_circle.h"
 #include "color_manager.h"
-
+#include "sound.h"
 
 //=============================================================================
 // コンストラクタ
@@ -62,3 +62,30 @@ void CAttackArcher::CreateEffect(D3DXVECTOR3 pos)
 		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), CSkill_effect::SKILLTYPE_KNIGHT);
 	
 }
+
+//=============================================================================
+// SE再生
+//=============================================================================
+void CAttackArcher::PlaySE(void)
+{
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
+	// レベル情報の取得
+	int nLevel = GetLevel();
+
+	// 通常攻撃なら
+	if (nLevel < MAX_LEVEL)
+	{
+		// SE再生
+		pSound->Play(CSound::LABEL_SE_YUMI_ATTACK);
+	}
+	//　必殺なら
+	else
+	{
+		// SE再生
+		pSound->Play(CSound::LABEL_SE_YUMI_FINALATTACK);
+	}
+
+}
+

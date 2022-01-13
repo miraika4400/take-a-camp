@@ -755,9 +755,6 @@
     <ClInclude Include="attack_magician.h">
       <Filter>ヘッダー ファイル\07_GameModel\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="attack_archer.h">
-      <Filter>ヘッダー ファイル\07_GameModel</Filter>
-    </ClInclude>
     <ClInclude Include="building.h">
       <Filter>ヘッダー ファイル\07_GameModel</Filter>
     </ClInclude>
@@ -799,6 +796,9 @@
     </ClInclude>
     <ClInclude Include="jobchange_tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_archer.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Attack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

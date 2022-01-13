@@ -633,6 +633,7 @@ void CPlayer::Attack(void)
 			//アニメーション処理
 			GetMotion(CResourceCharacter::MOTION_ATTACK)->SetActiveMotion(true);
 
+
 		}
 	}
 }

@@ -15,7 +15,7 @@
 #include "skill_effect.h"
 #include "skill_circle.h"
 #include "color_manager.h"
-
+#include "sound.h"
 
 //=============================================================================
 // コンストラクタ
@@ -61,3 +61,16 @@ void CAttackMagician::CreateEffect(D3DXVECTOR3 pos)
 		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() - 1),
 		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), CSkill_effect::SKILLTYPE_KNIGHT);
 }
+
+//=============================================================================
+// SE再生
+//=============================================================================
+void CAttackMagician::PlaySE(void)
+{
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
+	// SE再生
+	pSound->Play(CSound::LABEL_SE_KIJUTUSI_ATTACK);
+}
+

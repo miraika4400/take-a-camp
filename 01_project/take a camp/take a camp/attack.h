@@ -26,6 +26,7 @@ class CPeintCollision;
 #define MAX_ATTACK (4)	//攻撃の最大回数
 #define MAX_ATTACK_AREA_NUM (128)
 #define MAX_FINAL_PEINT	(128)
+#define MAX_LEVEL  (3)  // 最大レベル
 
 //=============================================================================
 // クラス定義
@@ -87,6 +88,7 @@ public:
 	int         GetAttackCount(void) { return m_nAttackCount; }
 private:
 	virtual void CreateEffect(D3DXVECTOR3 pos); // エフェクト生成
+	virtual void PlaySE(void) {} // エフェクト生成
 	void		Charge(void);								    // 攻撃のチャージ処理
 
 	CPlayer *		m_pPlayer;												// プレイヤークラス
