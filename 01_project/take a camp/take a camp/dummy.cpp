@@ -32,7 +32,6 @@ CDummy::CDummy() : CModel(OBJTYPE_DUMMY)
 	m_color = MODEL_COLOR;
 	m_nRespawnCount = 0;
 	m_pCollision = nullptr;
-	m_nColor = 0;
 	memset(&m_RespawnPos, 0, sizeof(D3DXVECTOR3));
 	m_DummyState = DUMMY_STATE_NORMAL;
 }
@@ -80,9 +79,6 @@ HRESULT CDummy::Init(void)
 
 	// モデルの割り当て
 	BindModel(CResourceModel::GetModel(CResourceModel::MODEL_DUMMY));
-
-	// モデルのサイズの設定
-	//SetSize(MODEL_SIZE);
 
 	// 色設定
 	m_color = MODEL_COLOR;

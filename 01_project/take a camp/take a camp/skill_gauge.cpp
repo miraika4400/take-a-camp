@@ -167,7 +167,10 @@ void CSkillgauge::Update(void)
 
 	// プレイヤーの座標を取得
 	CPlayer * pPlayer = GetPlayerinfo(m_nPlayerNum);
-	m_pos = pPlayer->GetPos();
+	if (pPlayer)
+	{
+		m_pos = pPlayer->GetPos();
+	}
 
 	// 座標のセット
 	SetPos(m_pos + SKILLGAUGE_ADDPOS);
@@ -340,8 +343,11 @@ void CSkillgauge::SetPolygonPos(void)
 //======================================
 void CSkillgauge::Repaint_AddSkillGauge(void)
 {
-	// 倍率によって加算値を変える
-	m_fGauge += REPAINT_RATE * (m_size.y / SKILLGAUGE_FLAME);
+	if (GetPlayerinfo(m_nPlayerNum)->GetAttack()->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK)
+	{
+		// 倍率によって加算値を変える
+		m_fGauge += REPAINT_RATE * (m_size.y / SKILLGAUGE_FLAME);
+	}
 }
 
 //==================================
