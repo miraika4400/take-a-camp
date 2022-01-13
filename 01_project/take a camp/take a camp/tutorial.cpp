@@ -34,11 +34,11 @@
 #include "resource_map.h"
 #include "dummy.h"
 
-//**********************************
+//=============================
 // マクロ定義
-//**********************************
+//=============================
 #define TARGET_PAINT (15)			// 塗る枚数
-#define TARGET_OVERPAINT (1)		// 重ね塗りする枚数
+#define TARGET_OVERPAINT (15)		// 重ね塗りする枚数
 #define TARGET_KILL (5)				// スキルで倒す人数
 #define ADD_TEXTWINDOWRANGE (10.0f)	// テキストウィンドウの範囲を加算する値
 #define TEXTWINDOW_COLOR (D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.2f))	// テキストウィンドウの色
@@ -326,7 +326,7 @@ void CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, cons
 		NextPhase();
 
 		// タスクの初期化
-		ZeroMemory(&m_bTask, sizeof(m_bTask));
+		m_bTask = nullptr;
 		ZeroMemory(&m_nCurTaskNum, sizeof(m_nCurTaskNum));
 
 		// 倒した数が必殺技と攻撃で同期しているので
