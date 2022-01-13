@@ -240,7 +240,7 @@ void CPlayer::InitCharacterData(void)
 		delete m_pAttack;
 		m_pAttack = NULL;
 	}
-	//UŒ‚—pƒNƒ‰ƒX¶¬(¡ŒãE‹Æ‚²‚Æ‚Écreate‚·‚éUŒ‚ˆ—‚ð•Ï‚¦‚é)
+	//UŒ‚—pƒNƒ‰ƒX¶¬(¡ŒãE‹Æ‚²‚Æ‚ÉUŒ‚ƒ^ƒCƒv‚ð•Ï‚¦‚é)
 	m_pAttack = CAttackBased::Create(this, CCharaSelect::GetEntryData(m_nPlayerNumber).charaType);
 }
 
@@ -422,25 +422,25 @@ void CPlayer::AttackRot(void)
 
 	if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
 		|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, CInputJoypad::BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_PREVIOUS);
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
 		|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, CInputJoypad::BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_AFTER);
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
 		|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, CInputJoypad::BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_LEFT);
 	}
 	else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
 		|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, CInputJoypad::BUTTON_PRESS, m_nControllNum)))
 	{
 		m_rotDest.y = D3DXToRadian(ROTDEST_RIGHT);
 	}
@@ -523,25 +523,25 @@ void CPlayer::ControlMove(void)
 
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_PROGRESS])
 			|| m_bController && ((StickPos.y > 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, pJoypad->BUTTON_PRESS, m_nControllNum)))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, CInputJoypad::BUTTON_PRESS, m_nControllNum)))
 		{
 			MoveValue(D3DXVECTOR3(0.0f, 0.0f, -MOVE_DIST), D3DXVECTOR2(0, -1), D3DXToRadian(ROTDEST_PREVIOUS));
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RECESSION])
 			|| m_bController && ((StickPos.y < 0.0f && StickPos.x < STICK_DECISION_RANGE && StickPos.x > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, pJoypad->BUTTON_PRESS, m_nControllNum)))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, CInputJoypad::BUTTON_PRESS, m_nControllNum)))
 		{
 			MoveValue(D3DXVECTOR3(0.0f, 0.0f, MOVE_DIST), D3DXVECTOR2(0, 1), D3DXToRadian(ROTDEST_AFTER));
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_LEFT])
 			|| m_bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, CInputJoypad::BUTTON_PRESS, m_nControllNum)))
 		{
 			MoveValue(D3DXVECTOR3(MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(-1, 0), D3DXToRadian(ROTDEST_LEFT));
 		}
 		else if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_RIGHT])
 			|| m_bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoypad->BUTTON_PRESS, m_nControllNum)))
+				|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, CInputJoypad::BUTTON_PRESS, m_nControllNum)))
 		{
 			MoveValue(D3DXVECTOR3(-MOVE_DIST, 0.0f, 0.0f), D3DXVECTOR2(1, 0), D3DXToRadian(ROTDEST_RIGHT));
 		}
@@ -588,7 +588,7 @@ void CPlayer::Attack(void)
 
 	// UŒ‚ƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½‚çƒ`ƒƒ[ƒW
 	if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_BULLET])
-		|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_PRESS, m_nControllNum))
+		|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_X, CInputJoypad::BUTTON_PRESS, m_nControllNum))
 	{
 		//UŒ‚ƒ`ƒƒ[ƒW‚ðŠJŽn
 		m_pAttack->ChargeFlag();
@@ -603,7 +603,7 @@ void CPlayer::Attack(void)
 	{
 		// —£‚µ‚½‚çUŒ‚‚ª‚Å‚é‚æ‚¤‚É
 		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_BULLET])
-			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, pJoypad->BUTTON_RELEASE, m_nControllNum))
+			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_X, CInputJoypad::BUTTON_RELEASE, m_nControllNum))
 		{
 			//UŒ‚ƒtƒ‰ƒO‚ð—§‚Ä‚é
 			m_AttackData.m_bAttack = true;
@@ -652,7 +652,7 @@ void CPlayer::AttackFinal(void)
 	{
 		// UŒ‚ƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½‚ç
 		if (!m_bController && pKey->GetKeyPress(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
-			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_PRESS, m_nControllNum))
+			|| m_bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, CInputJoypad::BUTTON_PRESS, m_nControllNum))
 		{
 			m_pAttack->AttackFinalFlag();
 		}
@@ -663,7 +663,7 @@ void CPlayer::AttackFinal(void)
 	{
 		// —£‚µ‚½‚ç’e‚ª‚Å‚é‚æ‚¤‚É
 		if (!m_bController && pKey->GetKeyRelease(m_anControllKey[m_nControllNum][KEY_ATTCK_FINAL])
-			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_RELEASE, m_nControllNum))
+			|| m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, CInputJoypad::BUTTON_RELEASE, m_nControllNum))
 		{
 			m_AttackData.m_bAttack = true;
 		}
@@ -806,7 +806,7 @@ void CPlayer::ManageState(void)
 			CInputJoypad* pJoypad = CManager::GetJoypad();
 
 			//UŒ‚ƒLƒƒƒ“ƒZƒ‹
-			if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, pJoypad->BUTTON_PRESS, m_nControllNum))
+			if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, CInputJoypad::BUTTON_PRESS, m_nControllNum))
 			{
 				m_pAttack->CancelSwitch();
 			}
@@ -839,7 +839,7 @@ void CPlayer::ManageState(void)
 			CInputJoypad* pJoypad = CManager::GetJoypad();
 
 			//UŒ‚ƒLƒƒƒ“ƒZƒ‹
-			if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, pJoypad->BUTTON_PRESS, m_nControllNum))
+			if (m_bController && pJoypad->GetButtonState(XINPUT_GAMEPAD_RIGHT_SHOULDER, CInputJoypad::BUTTON_PRESS, m_nControllNum))
 			{
 				m_pAttack->CancelSwitch();
 			}

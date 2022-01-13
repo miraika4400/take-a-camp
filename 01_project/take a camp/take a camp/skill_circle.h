@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// スキルエフェクト定義 [skill_circle.h]
+// スキルサークル [skill_circle.h]
 // Author : 齋藤大行
 //
 //=============================================================================
@@ -20,9 +20,9 @@
 //*****************************
 #define NORMAL_SKIIL_HIGHROT (1.0f)
 #define NORMAL_SKIIL_ROWROT (1.7f)
-#define NORMAL_SKIIL_SIZE D3DXVECTOR3(8.5f,6.5f,8.5f)
-#define NORMAL_SKIIL_POS D3DXVECTOR3(0.0f,0.0f,0.0f)
-#define NORMAL_SKIIL_COL D3DXCOLOR(0.0f,0.0f,0.0f)
+#define NORMAL_SKIIL_SIZE (D3DXVECTOR3(8.5f,6.5f,8.5f))
+#define NORMAL_SKIIL_POS (D3DXVECTOR3(0.0f,0.0f,0.0f))
+#define NORMAL_SKIIL_COL (D3DXCOLOR(0.0f,0.0f,0.0f))
 
 
 //=============================================================================
@@ -70,7 +70,7 @@ private:
 	D3DXVECTOR3			    m_move;	 	    // 移動量
 	D3DXVECTOR3			    m_rot;	 	    // 向き
 	D3DXVECTOR3	            m_size;		    // 大きさ
-	int                     m_nLife;	    // 寿命
+	int                     m_nTile;	    // 寿命
 	float		            m_fRotAngle;    // 回転角度
 	float		            m_fFadeout;	    // フェードアウト　
 	bool		            m_bFadeoutFlag; // フェードアウトのフラグ

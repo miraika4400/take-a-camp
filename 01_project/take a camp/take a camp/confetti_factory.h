@@ -38,7 +38,7 @@ private:
 	//============
 	// ƒƒ“ƒo•Ï”
 	//============
-	int m_nLife;
+	int m_nTile;
 	int m_nCntConfetti;
 	D3DXCOLOR m_col;
 };

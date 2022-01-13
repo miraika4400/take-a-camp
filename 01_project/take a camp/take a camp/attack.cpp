@@ -257,6 +257,13 @@ void CAttackBased::Attack(int AttackType)
 			CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
 			//当たり判定生成
 			CBullet::Create(CreatePos + pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_pPlayer->GetPlayerNumber());
+			
+			if (nAttack == m_AttackSquare[m_nLevel].nMaxHitRange-1)
+			{
+				OnceEffect(CreatePos);
+			}
+
+			CreateEffect(CreatePos);
 
 			// 必殺技の打てるレベルなら
 			if (m_nLevel == LEVEL_MAX - 1)
@@ -307,6 +314,13 @@ void CAttackBased::ChargeFlag(void)
 // エフェクト生成
 //=============================================================================
 void CAttackBased::CreateEffect(D3DXVECTOR3 pos)
+{
+}
+
+//=============================================================================
+// エフェクト(一回)生成
+//=============================================================================
+void CAttackBased::OnceEffect(D3DXVECTOR3 pos)
 {
 }
 
@@ -463,21 +477,19 @@ void CAttackBased::AttackCreate(void)
 		{
 			//攻撃処理
 			Attack(m_nType);
-      
-			for (int nCnt = 0; nCnt < m_AttackSquare[m_nLevel].nMaxHitRange; nCnt++)
-			{
-				if (GetAttackSquare().SquareData[nCnt].RangeType == m_nType + 2)
-				{
-					//行列計算
-					D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-					D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nCnt].AttackPos * TILE_ONE_SIDE;
-					CreatePos.x = ((cosf(pPlaryer->GetRotDest().y)*AttackPos.x) + (sinf(pPlaryer->GetRotDest().y)*AttackPos.z));
-					CreatePos.y = 1 * AttackPos.y;
-					CreatePos.z = ((-sinf(pPlaryer->GetRotDest().y)*AttackPos.x) + (cosf(pPlaryer->GetRotDest().y)*AttackPos.z));
-
-					CreateEffect(CreatePos);
-				}
-			}
+			//for (int nCnt = 0; nCnt < m_AttackSquare[m_nLevel].nMaxHitRange; nCnt++)
+			//{
+			//	if (GetAttackSquare().SquareData[nCnt].RangeType == m_nType + 2)
+			//	{
+			//		//行列計算
+			//		D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			//		D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nCnt].AttackPos * TILE_ONE_SIDE;
+			//		CreatePos.x = ((cosf(pPlaryer->GetRotDest().y)*AttackPos.x) + (sinf(pPlaryer->GetRotDest().y)*AttackPos.z));
+			//		CreatePos.y = 1 * AttackPos.y;
+			//		CreatePos.z = ((-sinf(pPlaryer->GetRotDest().y)*AttackPos.x) + (cosf(pPlaryer->GetRotDest().y)*AttackPos.z));
+			//		//CreateEffect(CreatePos);
+			//	}
+			//}
 					
 				
 			//タイプが一定になったら

@@ -33,7 +33,7 @@
 //==================================
 CConfetti::CConfetti() :CScene2d(OBJTYPE_EFFECT_2)
 {
-	m_nLife = 0;
+	m_nTile = 0;
 	m_move = D3DXVECTOR3(0.0f,0.0f,0.0f);
 	m_fMoveAngle = 0.0f;
 	m_fMoveRate = MOVE_RATE;
@@ -86,7 +86,7 @@ HRESULT CConfetti::Init(void)
 	SetSize(D3DXVECTOR3(fRandSize, fRandSize, 0.0f));
 
 	// 寿命の設定
-	m_nLife = MIN_LIFE + rand() % RAND_LIFE_AMPLITUDE;
+	m_nTile = MIN_LIFE + rand() % RAND_LIFE_AMPLITUDE;
 	
 	// 初期角度の設定
 	float fAngle = D3DXToRadian(rand() % 360);
@@ -124,8 +124,8 @@ void CConfetti::Update(void)
 	else           SetAngle(GetAngle() + -ADD_ANGLE);
 
 	// 寿命処理
-	m_nLife--;
-	if (m_nLife < 0)
+	m_nTile--;
+	if (m_nTile < 0)
 	{
 		// サイズを小さくする
 		D3DXVECTOR3 size = GetSize();

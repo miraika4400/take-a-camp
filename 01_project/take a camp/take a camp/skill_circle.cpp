@@ -21,9 +21,6 @@
 // マクロ定義
 //=============================================================================
 
-
-
-
 //=============================================================================
 //コンストラクタ
 //=============================================================================
@@ -34,7 +31,7 @@ CSkill_circle::CSkill_circle(int nPliority)
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_nLife = 50;
+	m_nTile = 50;
 	m_fRotAngle = 0.0f;
 	m_fFadeout = 0.0f;
 	m_bFadeoutFlag = true;
@@ -64,15 +61,14 @@ CSkill_circle * CSkill_circle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 s
 
 	switch (type)
 	{
-	case EFFECTTYPE_SKIIL:
 
+	case EFFECTTYPE_SKIIL:
 		pSkill_circle->SetAddMode(false);
 		pSkill_circle->SetHighRot(NORMAL_SKIIL_HIGHROT);
 		pSkill_circle->SetRowRot(NORMAL_SKIIL_ROWROT);
 		break;
 
 	case EFFECTTYPE_SKIILMINI:
-
 		pSkill_circle->SetAddMode(false);
 		pSkill_circle->SetHighRot(NORMAL_SKIIL_HIGHROT);
 		pSkill_circle->SetRowRot(NORMAL_SKIIL_ROWROT);
@@ -111,7 +107,6 @@ HRESULT CSkill_circle::Init(void)
 	m_apTexture[EFFECTTYPE_SKIIL] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SKILL);
 	m_apTexture[EFFECTTYPE_SKIILMINI] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SKILL);
 	//テクスチャ割り当て
-
 	BindTexture(m_apTexture[m_type]);
 
 	return S_OK;
@@ -134,10 +129,6 @@ void CSkill_circle::Update(void)
 
 	D3DXVECTOR3 pos = GetPos();
 	D3DXVECTOR3 size = GetSize();
-	
-	
-
-
 
 	switch (m_type)
 	{
@@ -176,7 +167,8 @@ void CSkill_circle::Update(void)
 	default:
 		break;
 	}
-	if (m_nLife <= 0 || m_col.a <= 0)
+
+	if (m_nTile <= 0 || m_col.a <= 0)
 	{
 		bUse = false;
 	}

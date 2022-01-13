@@ -70,8 +70,8 @@ public:
 	//攻撃マスデータ
 	CAttackManager::ATTACK_SQUARE_DATA GetAttackSquare(void);			
 	// レベル
-	void		SetLevel(int nLevel) { m_nLevel = nLevel; }
-	int         GetLevel(void) { return m_nLevel; }
+	void		SetLevel(int nLevel) { m_nLevel = nLevel; }		
+	int			GetLevel(void) { return m_nLevel; }
 	// プレイヤー
 	void		SetPlayer(CPlayer* pPlayer) { m_pPlayer = pPlayer; }	
 	CPlayer*	GetPlayer(void) { return m_pPlayer; }					
@@ -83,13 +83,11 @@ public:
 	bool		GetAttackFlag(void) { return m_bAttack; }				
 	// 攻撃タイプ
 	void		SetType(CResourceCharacter::CHARACTER_TYPE type) { m_nAttackType = type; }
-	// 攻撃までのカウント
-	void        SetAttackCount(int nAttackCount) { m_nAttackCount = nAttackCount; }
-	int         GetAttackCount(void) { return m_nAttackCount; }
 private:
-	virtual void CreateEffect(D3DXVECTOR3 pos); // エフェクト生成
-	virtual void PlaySE(void) {} // エフェクト生成
-	void		Charge(void);								    // 攻撃のチャージ処理
+	void		Charge(void);					// 攻撃のチャージ処理
+	virtual void CreateEffect(D3DXVECTOR3 pos);	// エフェクト生成
+	virtual void OnceEffect(D3DXVECTOR3 pos);	//	一回だけのエフェクト
+    virtual void PlaySE(void) {} // エフェクト生成
 
 	CPlayer *		m_pPlayer;												// プレイヤークラス
 	CAttackArea *	m_apAttackArea[MAX_ATTACK_AREA_NUM];					// 攻撃範囲ポインタ

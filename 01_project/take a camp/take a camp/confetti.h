@@ -37,7 +37,7 @@ private:
 	//============
 	// ƒƒ“ƒo•Ï”
 	//============
-	int m_nLife;
+	int m_nTile;
 	float m_fMoveAngle;
 	float m_fMoveRate;
 	D3DXVECTOR3 m_move;

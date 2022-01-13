@@ -70,7 +70,7 @@ private:
 	LPDIRECT3DTEXTURE9 m_apTexture[PARTICLE_MAX]; // テクスチャ
 	D3DXVECTOR3   m_move;	 	  // 移動量
 	D3DXVECTOR3   m_size;		  // 大きさ
-	int           m_nLife;	  	  // 寿命
+	int           m_nTile;	  	  // 寿命
 	float		  m_fRotAngle;	  // 回転角度
 	float		  m_fFadeout;	  // フェードアウト　
 	bool		  m_bFadeoutFlag; // フェードアウトの7フラグ
