@@ -46,14 +46,15 @@ public:
 	//*****************************
 	struct CharaSelectUI
 	{
-		CScene2d * pBack;         // 背景
-		CScene2d * pPlayerNumber; // プレイヤー番号
-		CScene2d * pControllIcon; // コントローラータイプアイコン
-		CScene2d * pReadyIcon;    // レディアイコン
-        CScene2d * apStatus[STATUS_NUM];      // ステータス
-		CCharacterPolygon * pCharaPolygon;
-		CAttackAreaUi*pAttackUiPolygon;   
-		D3DXVECTOR3 pos;          // 座標
+		CScene2d * pBack;                   // 背景
+		CScene2d * pPlayerNumber;           // プレイヤー番号
+		CScene2d * pControllIcon;           // コントローラータイプアイコン
+		CScene2d * pReadyIcon;              // レディアイコン
+        CScene2d * pNaviAttackArea;         // 攻撃範囲表示誘導
+        CScene2d * apStatus[STATUS_NUM];    // ステータス
+		CCharacterPolygon * pCharaPolygon;  // 
+		CAttackAreaUi*pAttackUiPolygon;     // 
+		D3DXVECTOR3 pos;                    // 座標
 	};
 
     // キャラ性能

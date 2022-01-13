@@ -92,12 +92,14 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/attack_area/05_archer/archer_lv1_attack.png",     // UŒ‚”ÍˆÍ
 	"./data/Textures/attack_area/05_archer/archer_lv2_attack.png",     // UŒ‚”ÍˆÍ
 	"./data/Textures/attack_area/05_archer/archer_lv3_attack.png",     // UŒ‚”ÍˆÍ
-    "./data/Textures/status/00_beginner.png",
-    "./data/Textures/status/01_intermediate.png",
-    "./data/Textures/status/02_advanced.png",
-    "./data/Textures/status/03_short.png",
-    "./data/Textures/status/04_medium.png",
-    "./data/Textures/status/05_long.png",
+    "./data/Textures/status/00_beginner.png",      // ‰SÒ
+    "./data/Textures/status/01_intermediate.png",  // ’†‹‰Ò
+    "./data/Textures/status/02_advanced.png",      // ã‹‰Ò
+    "./data/Textures/status/03_short.png",         // ‹ß‹——£
+    "./data/Textures/status/04_medium.png",        // ’†‹——£
+    "./data/Textures/status/05_long.png",          // ‰“‹——£
+    "./data/Textures/navi_attack_area.png", // UŒ‚”ÍˆÍ—U“±UI
+    
 };
 
 // ƒeƒNƒXƒ`ƒƒ‚ÌƒpƒX

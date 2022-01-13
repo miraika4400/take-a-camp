@@ -100,6 +100,7 @@ public:
         TEXTURE_RANGE_SHORT,           // 近距離
         TEXTURE_RANGE_MEDIAM,          // 中距離
         TEXTURE_RANGE_LONG,            // 遠距離
+        TEXTURE_NAVI_ATTACK_AREA,      // 攻撃範囲表示誘導UI
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類
