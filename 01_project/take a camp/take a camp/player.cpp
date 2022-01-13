@@ -240,7 +240,7 @@ void CPlayer::InitCharacterData(void)
 		delete m_pAttack;
 		m_pAttack = NULL;
 	}
-	//攻撃用クラス生成(今後職業ごとにcreateする攻撃処理を変える)
+	//攻撃用クラス生成(今後職業ごとに攻撃タイプを変える)
 	m_pAttack = CAttackBased::Create(this, CCharaSelect::GetEntryData(m_nPlayerNumber).charaType);
 }
 

@@ -46,7 +46,7 @@ CBullet::CBullet() :CModel(OBJTYPE_BULLET)
 {
 	m_move = VEC3_ZERO;		// 移動量
 	m_size = VEC3_ZERO;		// サイズ
-	m_nLife = 0;			// ライフ
+	m_nTile = 0;			// ライフ
 	m_fSpeed = 0.0f;		// 速さ
 	m_pCollision = NULL;	// 当たり判定
 	memset(&m_pPeintCollision, 0, sizeof(m_pPeintCollision));
@@ -103,7 +103,7 @@ HRESULT CBullet::Init(void)
 	BindModel(CResourceModel::GetModel(CResourceModel::MODEL_BULLET01));
 	
 	// ライフ
-	m_nLife = BULLET_LIFE;
+	m_nTile = BULLET_LIFE;
 
 	return S_OK;
 }
@@ -155,13 +155,13 @@ void CBullet::Update()
 	BulletPos += m_move;
 
 	// ライフを毎フレームごと減らしていく
-	m_nLife--;
+	m_nTile--;
 
 	// 位置の設定
 	SetPos(BulletPos);
 
 	// ライフが０になったら
-	if (m_nLife == 0)
+	if (m_nTile == 0)
 	{
 		// 終了処理
 		Uninit();

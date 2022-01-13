@@ -44,7 +44,7 @@ private:
 	D3DXVECTOR3 m_pos;				// 位置
 	D3DXVECTOR3 m_size;				// サイズ
 	CCollision * m_pCollision;		// 当たり判定
-	int m_nLife;					// ライフ
+	int m_nTile;					// ライフ
 	int m_nPlayerNum;				// プレイヤーの番号
 	int m_nColorNumber;				// カラー設定
 	bool m_bDeath;					// 死亡フラグ

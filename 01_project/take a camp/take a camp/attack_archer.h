@@ -12,6 +12,10 @@
 //=============================================================================
 #include "attack.h"
 #include "scene.h"
+//*****************************
+// 前方宣言
+//*****************************
+class CSkillArrow;
 
 //=============================================================================
 // クラス定義
@@ -27,6 +31,10 @@ public:
 
 private:
 	void CreateEffect(D3DXVECTOR3 pos); // エフェクト生成
+	void OnceEffect(D3DXVECTOR3 pos);// 一回だけのエフェクト
+
+	CSkillArrow*	m_pSkillArrow;
+
 
 };
 #endif

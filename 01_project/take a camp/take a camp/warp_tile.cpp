@@ -83,6 +83,94 @@ void CWarpTile::Create_2(D3DXVECTOR3 pos, D3DXCOLOR col)
 	}
 }
 
+//******************************
+// 生成処理(タイプ3)
+//******************************
+void CWarpTile::Create_3(D3DXVECTOR3 pos, D3DXCOLOR col)
+{
+	//動的配列にメモリ確保
+	m_pWarpTile.at(WARP_TILE_TYPE_3).emplace_back(new CWarpTile);
+
+	//NULLチェック
+	if (m_pWarpTile.at(WARP_TILE_TYPE_3).at(m_pWarpTile.at(WARP_TILE_TYPE_3).size() - 1) != NULL)
+	{
+		m_pWarpTile.at(WARP_TILE_TYPE_3).at(m_pWarpTile.at(WARP_TILE_TYPE_3).size() - 1)->m_WarpType = WARP_TILE_TYPE_3;
+		//初期化処理
+		m_pWarpTile.at(WARP_TILE_TYPE_3).at(m_pWarpTile.at(WARP_TILE_TYPE_3).size() - 1)->Init();
+		//位置設定
+		m_pWarpTile.at(WARP_TILE_TYPE_3).at(m_pWarpTile.at(WARP_TILE_TYPE_3).size() - 1)->SetPos(pos);
+		//ワープタイルの総数追加
+		m_nTotalWarpTile++;
+	}
+
+}
+
+//******************************
+// 生成処理(タイプ4)
+//******************************
+void CWarpTile::Create_4(D3DXVECTOR3 pos, D3DXCOLOR col)
+{
+	//動的配列にメモリ確保
+	m_pWarpTile.at(WARP_TILE_TYPE_4).emplace_back(new CWarpTile);
+
+	//NULLチェック
+	if (m_pWarpTile.at(WARP_TILE_TYPE_4).at(m_pWarpTile.at(WARP_TILE_TYPE_4).size() - 1) != NULL)
+	{
+		m_pWarpTile.at(WARP_TILE_TYPE_4).at(m_pWarpTile.at(WARP_TILE_TYPE_4).size() - 1)->m_WarpType = WARP_TILE_TYPE_4;
+		//初期化処理
+		m_pWarpTile.at(WARP_TILE_TYPE_4).at(m_pWarpTile.at(WARP_TILE_TYPE_4).size() - 1)->Init();
+		//位置設定
+		m_pWarpTile.at(WARP_TILE_TYPE_4).at(m_pWarpTile.at(WARP_TILE_TYPE_4).size() - 1)->SetPos(pos);
+		//ワープタイルの総数追加
+		m_nTotalWarpTile++;
+	}
+
+}
+
+//******************************
+// 生成処理(タイプ5)
+//******************************
+void CWarpTile::Create_5(D3DXVECTOR3 pos, D3DXCOLOR col)
+{
+	//動的配列にメモリ確保
+	m_pWarpTile.at(WARP_TILE_TYPE_5).emplace_back(new CWarpTile);
+
+	//NULLチェック
+	if (m_pWarpTile.at(WARP_TILE_TYPE_5).at(m_pWarpTile.at(WARP_TILE_TYPE_5).size() - 1) != NULL)
+	{
+		m_pWarpTile.at(WARP_TILE_TYPE_5).at(m_pWarpTile.at(WARP_TILE_TYPE_5).size() - 1)->m_WarpType = WARP_TILE_TYPE_5;
+		//初期化処理
+		m_pWarpTile.at(WARP_TILE_TYPE_5).at(m_pWarpTile.at(WARP_TILE_TYPE_5).size() - 1)->Init();
+		//位置設定
+		m_pWarpTile.at(WARP_TILE_TYPE_5).at(m_pWarpTile.at(WARP_TILE_TYPE_5).size() - 1)->SetPos(pos);
+		//ワープタイルの総数追加
+		m_nTotalWarpTile++;
+	}
+
+}
+
+//******************************
+// 生成処理(タイプ6)
+//******************************
+void CWarpTile::Create_6(D3DXVECTOR3 pos, D3DXCOLOR col)
+{
+	//動的配列にメモリ確保
+	m_pWarpTile.at(WARP_TILE_TYPE_6).emplace_back(new CWarpTile);
+
+	//NULLチェック
+	if (m_pWarpTile.at(WARP_TILE_TYPE_6).at(m_pWarpTile.at(WARP_TILE_TYPE_6).size() - 1) != NULL)
+	{
+		m_pWarpTile.at(WARP_TILE_TYPE_6).at(m_pWarpTile.at(WARP_TILE_TYPE_6).size() - 1)->m_WarpType = WARP_TILE_TYPE_6;
+		//初期化処理
+		m_pWarpTile.at(WARP_TILE_TYPE_6).at(m_pWarpTile.at(WARP_TILE_TYPE_6).size() - 1)->Init();
+		//位置設定
+		m_pWarpTile.at(WARP_TILE_TYPE_6).at(m_pWarpTile.at(WARP_TILE_TYPE_6).size() - 1)->SetPos(pos);
+		//ワープタイルの総数追加
+		m_nTotalWarpTile++;
+	}
+
+}
+
 
 
 //******************************
@@ -107,6 +195,31 @@ HRESULT CWarpTile::Init(void)
 		//カラーの設定
 		SetColor(D3DXCOLOR(1.0f,0.0f,1.0f,1.0f));
 		break;
+	case WARP_TILE_TYPE_3:
+		//テクスチャの設定
+
+		//カラーの設定
+		SetColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+		break;
+	case WARP_TILE_TYPE_4:
+		//テクスチャの設定
+
+		//カラーの設定
+		SetColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+		break;
+	case WARP_TILE_TYPE_5:
+		//テクスチャの設定
+
+		//カラーの設定
+		SetColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+		break;
+	case WARP_TILE_TYPE_6:
+		//テクスチャの設定
+
+		//カラーの設定
+		SetColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+		break;
+
 	}
 	return S_OK;
 }

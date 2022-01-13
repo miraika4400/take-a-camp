@@ -40,16 +40,19 @@ public:
 		TEXTURE_RESULT_KILL,		// リザルトのキルUI
 		TEXTURE_RESULT_TILE,		// リザルトのタイルUI
 		TEXTURE_PARTICLE_SQUARE,    // パーティクル*ダイヤ
-		TEXTURE_PARTICLE_SKILL,		// パーティクル*涙
+		TEXTURE_PARTICLE_SKILL,		// パーティクル*波紋
 		TEXTURE_PARTICLE_CIRCLE,	// パーティクル*円
+		TEXTURE_PARTICLE_ARROW,		// パーティクル*矢
+		TEXTURE_PARTICLE_TRUMP,		// パーティクル*トランプ
 		TEXTURE_PARTICLE_GURUGURU,	// ぐるぐる
 		TEXTURE_NUMBER,				// ナンバー
 		TEXTURE_FRAME,				// 枠
 		TEXTURE_CROSS_MARK,			// ×マーク
 		TEXTURE_NEEDLE,				// とげ穴
+		TEXTURE_MOVE_TILE,			// 移動タイルの模様
 		TEXTURE_SHADOW,				// 影
 		TEXTURE_PLAYERNUMBER,		// プレイヤー番号
-		TEXTURE_NONE_UI,				// NONE
+		TEXTURE_NONE_UI,			// NONE
 		TEXTURE_CONTROLLER,			// コントローラーアイコン
 		TEXTURE_KEYBOARD,			// キーボードアイコン
 		TEXTURE_CHARASELECT_BACK,	// キャラ選択背景

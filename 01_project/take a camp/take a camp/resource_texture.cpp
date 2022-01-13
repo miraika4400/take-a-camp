@@ -40,11 +40,14 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/effect/kirakira.png",	// パーティクル*四角
 	"./data/Textures/effect/00_wave.png",	// パーティクル*波紋
 	"./data/Textures/effect/shoot.png",		// パーティクル*円
-	"./data/Textures/effect/meteor.png",			// パーティクル*円
+	"./data/Textures/effect/arrow.png",		// パーティクル*矢
+	"./data/Textures/effect/trump.png",		// パーティクル*トランプ
+	"./data/Textures/effect/meteor.png",	// ぐるぐる
 	"./data/Textures/number.png",			// ナンバー
 	"./data/Textures/frame.png",              // 枠
 	"./data/Textures/cross_mark.png",         // バツマーク
 	"./data/Textures/needle_hole.png",        // とげ穴
+	"./data/Textures/move_tile.png",        // 移動タイルの模様
 	"./data/Textures/shadow.png",		      // 影
 	"./data/Textures/player_number.png",      // プレイヤー番号
 	"./data/Textures/none_logo.png",	      // NONE
@@ -62,7 +65,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/icon_bg.png",	          // アイコンの背景
 	"./data/Textures/sword_icon.png",	      // 剣アイコン
 	"./data/Textures/stage_name.png",	      // ステージ名
-	"./data/Textures/stage_polygon_bg.png",	      // ステージ選択背景
+	"./data/Textures/stage_polygon_bg.png",	  // ステージ選択背景
 	"./data/Textures/00_ready.png",	          // ready
 	"./data/Textures/01_go.png",			  // go
 	"./data/Textures/00_finish.png",		  // finish
