@@ -155,6 +155,7 @@
     <ClCompile Include="act_range.cpp" />
     <ClCompile Include="attack.cpp" />
     <ClCompile Include="attack_archer.cpp" />
+    <ClCompile Include="attack_area_ui.cpp" />
     <ClCompile Include="attack_knight.cpp" />
     <ClCompile Include="attack_area.cpp" />
     <ClCompile Include="attack_lancer.cpp" />
@@ -178,6 +179,7 @@
     <ClCompile Include="game_start.cpp" />
     <ClCompile Include="ingame_text.cpp" />
     <ClCompile Include="item.cpp" />
+    <ClCompile Include="jobchange_tile.cpp" />
     <ClCompile Include="kill_count.cpp" />
     <ClCompile Include="max_color_effect.cpp" />
     <ClCompile Include="move_around_tile.cpp" />
@@ -257,6 +259,7 @@
     <ClCompile Include="tile_factory.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
+    <ClCompile Include="titletransition_tile.cpp" />
     <ClCompile Include="total_result.cpp" />
     <ClCompile Include="total_score.cpp" />
     <ClCompile Include="tutorial.cpp" />
@@ -266,6 +269,7 @@
     <ClInclude Include="act_range.h" />
     <ClInclude Include="attack.h" />
     <ClInclude Include="attack_archer.h" />
+    <ClInclude Include="attack_area_ui.h" />
     <ClInclude Include="attack_knight.h" />
     <ClInclude Include="attack_area.h" />
     <ClInclude Include="attack_lancer.h" />
@@ -291,6 +295,7 @@
     <ClInclude Include="game_start.h" />
     <ClInclude Include="ingame_text.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="jobchange_tile.h" />
     <ClInclude Include="kill_count.h" />
     <ClInclude Include="max_color_effect.h" />
     <ClInclude Include="move_sideways_tile.h" />
@@ -368,6 +373,7 @@
     <ClInclude Include="tile_factory.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
+    <ClInclude Include="titletransition_tile.h" />
     <ClInclude Include="total_result.h" />
     <ClInclude Include="total_score.h" />
     <ClInclude Include="tutorial.h" />

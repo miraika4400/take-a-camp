@@ -22,12 +22,30 @@ public:
 	//============
 	typedef enum
 	{
-		LABEL_BGM_TITLE = 0,        // タイトルBGM
-		LABEL_BGM_TUTORIAL,         // チュートリアル
-		LABEL_BGM_GAME,             // ゲームのBGM
-		LABEL_BGM_RESULT,           // リザルトのBGM
-		SOUND_LABEL_MAX,            // サウンド最大数
+		LABEL_BGM_TITLE = 0,			// タイトルBGM
+		LABEL_BGM_SELECT,				// キャラクターセレクトBGM
+		LABEL_BGM_GAME,					// ゲームのBGM
+		LABEL_BGM_RESULT,				// リザルトのBGM
+		LABEL_SE_KENSI_ATTACK,			// 剣士の攻撃SE
+		LABEL_SE_KENSI_FINALATTACK,		// 剣士の必殺SE
+		LABEL_SE_YARI_ATTACK,			// 槍の攻撃SE
+		LABEL_SE_YARI_FINALATTACK,		// 槍の必殺SE
+		LABEL_SE_MAHOU_ATTACK,			// 魔法の攻撃SE
+		LABEL_SE_MAHOU_FINALATTACK,		// 魔法の必殺SE
+		LABEL_SE_YUMI_ATTACK,			// 弓の攻撃SE
+		LABEL_SE_YUMI_FINALATTACK,		// 弓の必殺SE
+		LABEL_SE_TOZOKU_ATTACK,			// 盗賊の攻撃SE
+		LABEL_SE_TOZOKU_FINALATTACK,	// 盗賊の必殺SE
+		LABEL_SE_KIJUTUSI_ATTACK,		// 奇術師の攻撃SE
+		SOUND_LABEL_MAX,				// サウンド最大数
 	}LABEL;
+
+	typedef enum
+	{
+		SOUND_LOOP_ON = -1,	//ループする
+		SOUND_LOOP_OFF,		//ループしない
+	}SOUND_LOOP;
+
 
 	//============
 	// メンバ関数

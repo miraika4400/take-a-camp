@@ -67,7 +67,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/stage_name.png",	      // ƒXƒe[ƒW–¼
 	"./data/Textures/stage_polygon_bg.png",	  // ƒXƒe[ƒW‘I‘ğ”wŒi
 	"./data/Textures/00_ready.png",	          // ready
-	"./data/Textures/01_go.png",			  // go
+	"./data/Textures/01_go!!.png",			  // go
 	"./data/Textures/00_finish.png",		  // finish
 	"./data/Textures/00_nanbyou.png",		  // c‚è‰½•b
 	"./data/Textures/lance_icon.png",         // ‘„ƒAƒCƒRƒ“
@@ -77,7 +77,34 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/stick_icon.png",         // ñƒAƒCƒRƒ“
 	"./data/Textures/effect_explosion.png",   // ƒŠƒUƒ‹ƒgƒGƒNƒXƒvƒ[ƒWƒ‡ƒ“
 	"./data/Textures/color_gauge_ui.png",	  // F‚ÌƒQ[ƒW‚Ì˜g
+    "./data/Textures/attack_area/00_knight/knight_lv1_attack.png",     // UŒ‚”ÍˆÍ
+	"./data/Textures/attack_area/00_knight/knight_lv2_attack.png",     // UŒ‚”ÍˆÍ
+	"./data/Textures/attack_area/00_knight/knight_lv3_attack.png",     // UŒ‚”ÍˆÍ
+    "./data/Textures/attack_area/01_lancer/lancer_lv1_attack.png",     // UŒ‚”ÍˆÍ
+	"./data/Textures/attack_area/01_lancer/lancer_lv2_attack.png",     // UŒ‚”ÍˆÍ
+	"./data/Textures/attack_area/01_lancer/lancer_lv3_attack.png",     // UŒ‚”ÍˆÍ
+    "./data/Textures/attack_area/02_wizard/wizard_lv1_attack.png",     // UŒ‚”ÍˆÍ
+	"./data/Textures/attack_area/02_wizard/wizard_lv2_attack.png",     // UŒ‚”ÍˆÍ
+	"./data/Textures/attack_area/02_wizard/wizard_lv3_attack.png",     // UŒ‚”ÍˆÍ
+    "./data/Textures/attack_area/03_thief/thief_lv1_attack.png",       // UŒ‚”ÍˆÍ
+	"./data/Textures/attack_area/03_thief/thief_lv2_attack.png",       // UŒ‚”ÍˆÍ
+	"./data/Textures/attack_area/03_thief/thief_lv3_attack.png",       // UŒ‚”ÍˆÍ
+    "./data/Textures/attack_area/04_magician/magician_lv1_attack.png", // UŒ‚”ÍˆÍ
+	"./data/Textures/attack_area/04_magician/magician_lv2_attack.png", // UŒ‚”ÍˆÍ
+	"./data/Textures/attack_area/04_magician/magician_lv3_attack.png", // UŒ‚”ÍˆÍ
+    "./data/Textures/attack_area/05_archer/archer_lv1_attack.png",     // UŒ‚”ÍˆÍ
+	"./data/Textures/attack_area/05_archer/archer_lv2_attack.png",     // UŒ‚”ÍˆÍ
+	"./data/Textures/attack_area/05_archer/archer_lv3_attack.png",     // UŒ‚”ÍˆÍ
+    "./data/Textures/status/00_beginner.png",      // ‰SÒ
+    "./data/Textures/status/01_intermediate.png",  // ’†‹‰Ò
+    "./data/Textures/status/02_advanced.png",      // ã‹‰Ò
+    "./data/Textures/status/03_short.png",         // ‹ß‹——£
+    "./data/Textures/status/04_medium.png",        // ’†‹——£
+    "./data/Textures/status/05_long.png",          // ‰“‹——£
+    "./data/Textures/navi_attack_area.png", // UŒ‚”ÍˆÍ—U“±UI
+    
 };
+
 // ƒeƒNƒXƒ`ƒƒ‚ÌƒpƒX
 const std::string CResourceTexture::m_aCubeTexPath[CResourceTexture::TEXTURE_CUBE_MAX]
 {

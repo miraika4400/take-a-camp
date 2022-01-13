@@ -34,14 +34,15 @@
 #include "resource_map.h"
 #include "dummy.h"
 
-//**********************************
+//=============================
 // マクロ定義
-//**********************************
-#define TARGET_PAINT (10)			// 塗る枚数
-#define TARGET_OVERPAINT (10)		// 重ね塗りする枚数
-#define TARGET_KILL (2)				// スキルで倒す人数
+//=============================
+#define TARGET_PAINT (15)			// 塗る枚数
+#define TARGET_OVERPAINT (15)		// 重ね塗りする枚数
+#define TARGET_KILL (5)				// スキルで倒す人数
 #define ADD_TEXTWINDOWRANGE (10.0f)	// テキストウィンドウの範囲を加算する値
 #define TEXTWINDOW_COLOR (D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.2f))	// テキストウィンドウの色
+#define TEXTSHOWTIME (90)			// テキストを表示する時間
 
 //=============================
 // コンストラクタ
@@ -50,14 +51,17 @@ CTutorial::CTutorial()
 {
 	m_pMap = nullptr;
 	m_pTextWindow = nullptr;
+	ZeroMemory(&m_pTaskTex, sizeof(m_pTaskTex));
+	ZeroMemory(&m_pCheckTex, sizeof(m_pCheckTex));
 	m_pText = nullptr;
-	ZeroMemory(&m_bTask, sizeof(m_bTask));
+	m_bTask = false;
 	m_Tutorialphase = PHASE_PAINT;
 	m_nTextNum = 0;
 	m_bNextText = false;
 	m_bTextEnd = false;
 	ZeroMemory(&m_nCurTaskNum, sizeof(m_nCurTaskNum));
 	ZeroMemory(&m_nOldCurTaskNum, sizeof(m_nOldCurTaskNum));
+	m_nTextShowTime = 0;
 }
 
 //=============================
@@ -111,6 +115,17 @@ HRESULT CTutorial::Init()
 	// ダミーを作る
 	DummyCreate();
 
+	// プレイヤーが動けなかったから動けるようにする
+	StartPlayer(true);
+
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+	// BGM停止
+	pSound->Stop(CSound::LABEL_BGM_SELECT);
+	// BGM再生
+	pSound->Play(CSound::LABEL_BGM_GAME);
+
+
 	return S_OK;
 }
 
@@ -156,62 +171,43 @@ void CTutorial::Update()
 	// テキスト表示するときの背景のセット
 	SetTextWindow();
 
+	// テキスト表示が終わったら
 	if (m_bTextEnd)
 	{
 		// プレイヤーの更新出来るようにする
 		StartPlayer(true);
 
+		// テキストウィンドウの色を無色に
 		m_pTextWindow->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
-	}
 
-	if (!m_bNextText)
-	{
-		UpdateText();
-
-		m_pTextWindow->SetColor(TEXTWINDOW_COLOR);
-	}
-	else if (m_pText->GetAllShowText() && !m_bTextEnd)
-	{
-		// プレイヤーの更新を止める
-		StartPlayer(false);
-
-		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN)
-			|| CManager::GetJoypad()->GetButtonState(XINPUT_GAMEPAD_START, CInputJoypad::BUTTON_TRIGGER, 0))
-		{
-			m_pText->ClearText();
-			m_bNextText = false;
-		}
-	}
-	else
-	{
 		// フェーズごとに処理を変える
 		switch (m_Tutorialphase)
 		{
 		case PHASE_PAINT: // 塗るフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
-				CheckTaskClear(CColorTile::GetTileNum(nCount, 1), TARGET_PAINT, nCount);
+				CheckTaskClear(CColorTile::GetTileNum(nCount, 1), TARGET_PAINT * CCharaSelect::GetEntryPlayerNum(), nCount);
 			}
 			break;
 
 		case PHASE_OVERPAINT: // 重ね塗りするフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
-				CheckTaskClear(CColorTile::GetTileNum(nCount, 3), TARGET_OVERPAINT, nCount);
+				CheckTaskClear(CColorTile::GetTileNum(nCount, 3), TARGET_OVERPAINT * CCharaSelect::GetEntryPlayerNum(), nCount);
 			}
 			break;
 
 		case PHASE_ATTACK: // かかしを攻撃するフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
-				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount);
+				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL * CCharaSelect::GetEntryPlayerNum(), nCount);
 			}
 			break;
 
 		case PHASE_FINALATTACK: // かかしを必殺技で攻撃するフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
-				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount);
+				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL * CCharaSelect::GetEntryPlayerNum(), nCount);
 			}
 
 			// 必殺技フェーズはゲージを常時最大に
@@ -220,6 +216,34 @@ void CTutorial::Update()
 
 		default:
 			break;
+		}
+
+	}
+
+	// テキスト表示
+	if (!m_bNextText)
+	{
+		// テキストの更新
+		UpdateText();
+
+		// ウインドウの背景の色の設定
+		m_pTextWindow->SetColor(TEXTWINDOW_COLOR);
+
+		// 表示する時間の設定
+		m_nTextShowTime = TEXTSHOWTIME;
+	}
+	// 一文表示終えたら
+	else if (m_pText->GetAllShowText() && !m_bTextEnd)
+	{
+		// 表示する時間の減算
+		m_nTextShowTime--;
+
+		// テキストを表示する時間が0になったら
+		if (m_nTextShowTime <= 0)
+		{
+			// テキストのクリアと次のテキスト表示
+			m_pText->ClearText();
+			m_bNextText = false;
 		}
 	}
 
@@ -286,21 +310,24 @@ void CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, cons
 		m_nCurTaskNum[nPlayernum] += nCurTaskNum - m_nOldCurTaskNum[nPlayernum];
 	}
 
-	// タスクごとの処理で受け取った数とその目標数を比べる
-	if (m_nCurTaskNum[nPlayernum] >= nTargetNum)
+	int nAllTaskNum = 0;
+
+	for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 	{
-		m_bTask[nPlayernum] = true;
+		nAllTaskNum += m_nCurTaskNum[nCount];
+	}
+
+	// タスクごとの処理で受け取った数とその目標数を比べる
+	if (nAllTaskNum >= nTargetNum)
+	{
+		m_bTask = true;
 	}
 
 	// 現在のタスクごとの数を1フレーム前の数にする
 	m_nOldCurTaskNum[nPlayernum] = nCurTaskNum;
 
-	// trueの数を数える
-	int nTaskClear = std::count(std::begin(m_bTask), std::end(m_bTask), true);
-
-	// プレイヤー数とタスクを完了した数が一致してたら
-	if (CCharaSelect::GetEntryPlayerNum() == nTaskClear
-		&& CCharaSelect::GetEntryPlayerNum() == nPlayernum)
+	// タスクを完了した数が一致してたら
+	if (m_bTask)
 	{
 		// 次のテキストを表示する
 		m_bNextText = false;
@@ -309,7 +336,7 @@ void CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, cons
 		NextPhase();
 
 		// タスクの初期化
-		ZeroMemory(&m_bTask, sizeof(m_bTask));
+		m_bTask = nullptr;
 		ZeroMemory(&m_nCurTaskNum, sizeof(m_nCurTaskNum));
 
 		// 倒した数が必殺技と攻撃で同期しているので

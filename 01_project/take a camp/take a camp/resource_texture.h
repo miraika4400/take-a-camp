@@ -79,6 +79,31 @@ public:
 		TEXTURE_STICK_ICON,		 	// 杖アイコン
 		TEXTURE_RESULT_EXPLOSION,   // リザルト*エクスプロ―ジョン
 		TEXTURE_COLOR_GAUGE,		// 色のゲージの枠
+        TEXTURE_ATTACK_AREA_KNIGHT1,   // 攻撃範囲
+		TEXTURE_ATTACK_AREA_KNIGHT2,   // 攻撃範囲
+		TEXTURE_ATTACK_AREA_KNIGHT3,   // 攻撃範囲
+        TEXTURE_ATTACK_AREA_LANCER1,   // 攻撃範囲
+		TEXTURE_ATTACK_AREA_LANCER2,   // 攻撃範囲
+		TEXTURE_ATTACK_AREA_LANCER3,   // 攻撃範囲
+        TEXTURE_ATTACK_AREA_WIZARD1,   // 攻撃範囲
+		TEXTURE_ATTACK_AREA_WIZARD2,   // 攻撃範囲
+		TEXTURE_ATTACK_AREA_WIZARD3,   // 攻撃範囲
+        TEXTURE_ATTACK_AREA_THIEF1,	   // 攻撃範囲
+		TEXTURE_ATTACK_AREA_THIEF2,	   // 攻撃範囲
+		TEXTURE_ATTACK_AREA_THIEF3,	   // 攻撃範囲
+        TEXTURE_ATTACK_AREA_MAGICIAN1, // 攻撃範囲
+		TEXTURE_ATTACK_AREA_MAGICIAN2, // 攻撃範囲
+		TEXTURE_ATTACK_AREA_MAGICIAN3, // 攻撃範囲
+        TEXTURE_ATTACK_AREA_ARCHER1,   // 攻撃範囲
+        TEXTURE_ATTACK_AREA_ARCHER2,   // 攻撃範囲
+		TEXTURE_ATTACK_AREA_ARCHER3,   // 攻撃範囲
+        TEXTURE_DIFFECULT_BEGINNER,    // 初心者
+        TEXTURE_DIFFECULT_INTERMEDIATE,// 中級者
+        TEXTURE_DIFFECULT_ADVANCED,    // 上級者
+        TEXTURE_RANGE_SHORT,           // 近距離
+        TEXTURE_RANGE_MEDIAM,          // 中距離
+        TEXTURE_RANGE_LONG,            // 遠距離
+        TEXTURE_NAVI_ATTACK_AREA,      // 攻撃範囲表示誘導UI
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類

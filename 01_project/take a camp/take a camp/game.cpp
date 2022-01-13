@@ -32,6 +32,7 @@
 #include "building.h"
 #include "game_start.h"
 #include "stage_texture.h"
+#include "sound.h"
 
 //=============================
 // マクロ定義
@@ -100,6 +101,11 @@ HRESULT CGame::Init(void)
 	CManager::GetLight()->SetDir(LIGHT_DIR_BASE);
 	// ready goの生成
 	m_pGameStart=CGameStart::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, START_UI_POS_Y, 0.0f), START_UI_SIZE);
+
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+	// BGM再生
+	pSound->Play(CSound::LABEL_BGM_GAME);
 
 	return S_OK;
 }

@@ -4,7 +4,7 @@ SCRIPT		# この行は絶対消さないこと！
 //
 // POS        :ウィンドウを表示する中心の座標
 // WINDOWRANGE:ウィンドウを表示する範囲
-//             左から「左上のX座標、Y座標、右上のX座標、Y座標」
+//             左から「左上のX座標、Y座標、右下のX座標、Y座標」
 // FONTSIZE   :フォントのサイズ
 // COLOR      :フォントの色
 // SAY        :表示する文字(セリフ)
@@ -19,7 +19,7 @@ SCRIPT		# この行は絶対消さないこと！
 TEXT_DATASET
 POS = 640 620
 WINDOWRANGE = -330 -40 330 40
-FONTSIZE = 40
+FONTSIZE = 35
 COLOR = 0.0 0.0 0.0 1.0
 SAY = 移動してタイルを10マス塗ってみよう！
 NR
@@ -29,31 +29,68 @@ END_TEXT_DATASET
 
 TEXT_DATASET
 POS = 640 640
+WINDOWRANGE = -300 -20 300 20
+SAY = いいね！
+ENTER
+WINDOWRANGE = -380 -20 380 20
+SAY = 次はタイルを10マス重ね塗りしてみよう！
+ENTER
+WINDOWRANGE = -370 -40 370 40
+SAY = 同じマスを何度も通ると重ね塗りできて、
+NR
+SAY = ３段階まで重ね塗りできるよ！
+ENTER
+END_TEXT_DATASET
+
+TEXT_DATASET
+WINDOWRANGE = -300 -20 300 20
+SAY = 完璧！
+ENTER
+WINDOWRANGE = -370 -20 370 20
+SAY = 次はスキルでかかしを倒してみよう！
+ENTER
+WINDOWRANGE = -370 -40 370 40
+SAY = スキル攻撃はチャージ式、Xボタンを押すと
+NR
+SAY = 溜められるよ！
+ENTER
+WINDOWRANGE = -370 -40 370 40
+SAY = チャージを始めたマスの段階によって
+NR
+SAY = チャージの最大レベルも変わっていくんだ！
+ENTER
+WINDOWRANGE = -370 -20 370 20
+SAY = 最大チャージすると、スキル範囲が大幅UP！！
+ENTER
+END_TEXT_DATASET
+
+TEXT_DATASET
 WINDOWRANGE = -320 -20 320 20
-SAY = タイルを10マス重ね塗りしてみよう！
+SAY = 次は必殺技でかかしを倒してみよう！
 ENTER
-END_TEXT_DATASET
-
-TEXT_DATASET
-WINDOWRANGE = -300 -40 300 40
-SAY = 攻撃してかかしを倒してみよう！
+WINDOWRANGE = -390 -40 390 40
+SAY = 必殺技はキャラの頭上にあるマークが
 NR
-SAY = 攻撃はXボタンだよ！
+SAY = 溜まっている状態でYボタンを押すと使えるよ！
 ENTER
 END_TEXT_DATASET
 
 TEXT_DATASET
-WINDOWRANGE = -300 -40 300 40
-SAY = 必殺技でかかしを倒してみよう！
+WINDOWRANGE = -320 -20 320 20
+SAY = チュートリアルはこれでおしまい！
+ENTER
+WINDOWRANGE = -320 -40 320 40
+SAY = あとはチュートリアルステージで
 NR
-SAY = 必殺技はYボタンだよ！
+SAY = 自由に遊んでみよう！
+ENTER
+SAY = チュートリアルから出たいときは
+NR
+SAY = 青いマスに乗るとタイトルに戻れるよ！
 ENTER
 END_TEXT_DATASET
+NGE = -90 -20 90 20
 
-TEXT_DATASET
-WINDOWRANGE = -90 -20 90 20
-SAY = 自由だよ!
-ENTER
 END_TEXT_DATASET
 
 END_SCRIPT		# この行は絶対消さないこと！

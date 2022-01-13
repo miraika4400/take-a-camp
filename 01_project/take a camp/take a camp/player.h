@@ -28,11 +28,6 @@ class CSkillgauge;
 class CTutorial;
 
 //*****************************
-// マクロ定義
-//*****************************
-#define STICK_DECISION_RANGE	(32768.0f / 1.001f)				// スティックの上下左右の判定する範囲
-
-//*****************************
 // クラス定義
 //*****************************
 
@@ -113,7 +108,7 @@ public:
 	void Death(void);		// 死亡処理関数
 	void Attack(void);		// 攻撃処理
 	void AttackFinal(void); // 必殺技処理
-
+	void InitCharacterData(void); // キャラデータの初期化
 
 	//*****************************
 	//セッター・ゲッター
@@ -154,17 +149,19 @@ public:
 	// 必殺技ゲージポインタ
 	CSkillgauge *GetSkillgauge(void) { return m_pSkillgauge; }	// タイルの塗り段階所得
 	int GetChargeTilelevel(void) { return m_nChargeTilelevel; }
+	//プレイヤーの色 
+	void SetColor(D3DXCOLOR color) { m_color = color; }
 private:
-	void InitCharacterData(void);	// キャラデータの初期化
-	void Move(void);				// 移動処理
-	void AttackRot(void);			// 攻撃時の向き処理
-	void ControlMove(void);			// コントロール処理
-	void ManageRot(void);			// 向きの管理
-	void Respawn(void);				// リスポーン処理
-	void Invincible(void);			// 無敵処理
-	void ManageState(void);			// ステート管理
-	void ManageItemState(void);		// アイテムステートの管理
+	void Move(void);			// 移動処理
+	void AttackRot(void);		// 攻撃時の向き処理
+	void ControlMove(void);		// コントロール処理
+	void ManageRot(void);		// 向きの管理
+	void Respawn(void);			// リスポーン処理
+	void Invincible(void);		// 無敵処理
+	void ManageState(void);     // ステート管理
+	void ManageItemState(void); // アイテムステートの管理
 	bool TutorialControll(int nTutorialphase);	// チュートリアルの操作処理
+	void Flip(void);				// はじく処理
 
 	//*****************************
 	// メンバ変数

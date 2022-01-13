@@ -22,6 +22,7 @@
 #include "polygon.h"
 #include "camera_charaselect.h"
 #include "confetti.h"
+#include "sound.h"
 
 //**********************************
 // マクロ定義
@@ -86,6 +87,11 @@ HRESULT CResult::Init(void)
 	CManager::GetCamera()->SetPosV(CAMERA_POS_V);
 	CManager::GetCamera()->SetPosR(CAMERA_POS_R);
 
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+	// BGM再生
+	pSound->Play(CSound::LABEL_BGM_RESULT);
+
 	return S_OK;
 }
 
@@ -112,13 +118,15 @@ void CResult::Uninit(void)
 //=============================
 void CResult::Update(void)
 {
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) ||
-		CManager::GetMouse()->GetMouseTrigger(0) /*||
-		CManager::GetJoypad()->GetJoystickTrigger(3, 0) ||
-		CManager::GetJoypad()->GetJoystickTrigger(11, 0)*/)
+	for (int nControllNum = 0; nControllNum < XUSER_MAX_COUNT; nControllNum++)
 	{
-		// デバッグ用画面遷移コマンド
-		CManager::GetFade()->SetFade(CManager::MODE_TOTAL_RESULT);
+		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) ||
+			CManager::GetMouse()->GetMouseTrigger(0) ||
+			CManager::GetJoypad()->GetButtonState(XINPUT_GAMEPAD_A, CInputJoypad::BUTTON_TRIGGER, nControllNum))
+		{
+			// デバッグ用画面遷移コマンド
+			CManager::GetFade()->SetFade(CManager::MODE_TOTAL_RESULT);
+		}
 	}
 }
 

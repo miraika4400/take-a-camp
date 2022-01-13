@@ -17,13 +17,14 @@
 // マクロ定義
 //=============================
 #define FONT_PATH ("data/fonts/meiryo.ttc")
+#define SHIFT_POS (2)
 
 //=============================
 // コンストラクタ
 //=============================
 CText::CText()
 {
-	m_pFont = nullptr;
+	ZeroMemory(&m_apFont, sizeof(m_apFont));
 	ZeroMemory(&m_pos, sizeof(m_pos));
 	ZeroMemory(&m_Fontsize, sizeof(m_Fontsize));
 	ZeroMemory(&m_col, sizeof(m_col));
@@ -53,6 +54,7 @@ CText * CText::Create(const D3DXVECTOR2 pos, const D3DXVECTOR2 fontsize, const F
 	pText->m_Fontsize = fontsize;
 	pText->m_format = format;
 	pText->m_col = col;
+	pText->SetPriority(OBJTYPE_UI_2);
 
 	// 初期化
 	pText->Init();
@@ -64,19 +66,22 @@ CText * CText::Create(const D3DXVECTOR2 pos, const D3DXVECTOR2 fontsize, const F
 //=============================
 HRESULT CText::Init(void)
 {
-	//フォント生成
-	D3DXCreateFont(CManager::GetRenderer()->GetDevice(),
-		(INT)m_Fontsize.x,
-		(UINT)m_Fontsize.y,
-		0,
-		0,
-		FALSE,
-		SHIFTJIS_CHARSET,
-		OUT_DEFAULT_PRECIS,
-		PROOF_QUALITY,
-		DEFAULT_PITCH,
-		FONT_PATH,
-		&m_pFont);
+	for (int nFont = 0; nFont < MAX_FONT_NUM; nFont++)
+	{
+		//フォント生成
+		D3DXCreateFont(CManager::GetRenderer()->GetDevice(),
+			(INT)(m_Fontsize.x),
+			(UINT)(m_Fontsize.y),
+			0,
+			0,
+			FALSE,
+			SHIFTJIS_CHARSET,
+			OUT_DEFAULT_PRECIS,
+			PROOF_QUALITY,
+			DEFAULT_PITCH,
+			FONT_PATH,
+			&m_apFont[nFont]);
+	}
 
 	return S_OK;
 }
@@ -86,12 +91,14 @@ HRESULT CText::Init(void)
 //=============================
 void CText::Uninit(void)
 {
-	if (m_pFont != NULL)
+	for (int nFont = 0; nFont < MAX_FONT_NUM; nFont++)
 	{
-		m_pFont->Release();
-		m_pFont = NULL;
+		if (m_apFont[nFont] != NULL)
+		{
+			m_apFont[nFont]->Release();
+			m_apFont[nFont] = NULL;
+		}
 	}
-
 	// 開放処理
 	Release();
 }
@@ -142,10 +149,25 @@ void CText::Draw(void)
 
 	// 調整中
 	RECT rect;
-	SetRect(&rect, (int)m_WindowRange[0].x, (int)m_WindowRange[0].y, (int)m_WindowRange[1].x, (int)m_WindowRange[1].y);
-
+	SetRect(&rect, (int)m_WindowRange[0].x, (int)m_WindowRange[0].y - SHIFT_POS, (int)m_WindowRange[1].x, (int)m_WindowRange[1].y - SHIFT_POS);
 	OffsetRect(&rect, (int)m_pos.x, (int)m_pos.y);
-	m_pFont->DrawText(NULL, m_str.substr(0, m_nCountBite).c_str(), -1, &rect, DT_LEFT | DT_WORDBREAK, m_col);
+	m_apFont[0]->DrawText(NULL, m_str.substr(0, m_nCountBite).c_str(), -1, &rect, DT_LEFT | DT_WORDBREAK, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+	SetRect(&rect, (int)m_WindowRange[0].x, (int)m_WindowRange[0].y + SHIFT_POS, (int)m_WindowRange[1].x, (int)m_WindowRange[1].y + SHIFT_POS);
+	OffsetRect(&rect, (int)m_pos.x, (int)m_pos.y);
+	m_apFont[1]->DrawText(NULL, m_str.substr(0, m_nCountBite).c_str(), -1, &rect, DT_LEFT | DT_WORDBREAK, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+	SetRect(&rect, (int)m_WindowRange[0].x - SHIFT_POS, (int)m_WindowRange[0].y, (int)m_WindowRange[1].x - SHIFT_POS, (int)m_WindowRange[1].y);
+	OffsetRect(&rect, (int)m_pos.x, (int)m_pos.y);
+	m_apFont[2]->DrawText(NULL, m_str.substr(0, m_nCountBite).c_str(), -1, &rect, DT_LEFT | DT_WORDBREAK, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+	SetRect(&rect, (int)m_WindowRange[0].x + SHIFT_POS, (int)m_WindowRange[0].y, (int)m_WindowRange[1].x + SHIFT_POS, (int)m_WindowRange[1].y);
+	OffsetRect(&rect, (int)m_pos.x, (int)m_pos.y);
+	m_apFont[3]->DrawText(NULL, m_str.substr(0, m_nCountBite).c_str(), -1, &rect, DT_LEFT | DT_WORDBREAK, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+	SetRect(&rect, (int)m_WindowRange[0].x, (int)m_WindowRange[0].y, (int)m_WindowRange[1].x, (int)m_WindowRange[1].y);
+	OffsetRect(&rect, (int)m_pos.x, (int)m_pos.y);
+	m_apFont[4]->DrawText(NULL, m_str.substr(0, m_nCountBite).c_str(), -1, &rect, DT_LEFT | DT_WORDBREAK, m_col);
 }
 
 //=============================
@@ -181,19 +203,10 @@ void CText::SetWindowRange(D3DXVECTOR2 WindowRange[2])
 //=============================
 void CText::SetFontSize(D3DXVECTOR2 FontSize)
 {
+	m_Fontsize = FontSize;
+
 	// 途中でサイズ変えられなかったからもう一回クリエイトする
-	D3DXCreateFont(CManager::GetRenderer()->GetDevice(),
-		(INT)FontSize.x,
-		(UINT)FontSize.y,
-		0,
-		0,
-		FALSE,
-		SHIFTJIS_CHARSET,
-		OUT_DEFAULT_PRECIS,
-		PROOF_QUALITY,
-		DEFAULT_PITCH,
-		FONT_PATH,
-		&m_pFont);
+	Init();
 }
 
 //=============================
