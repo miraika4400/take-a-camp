@@ -96,6 +96,11 @@ HRESULT CTitle::Init(void)
 	m_pButton = CButton_Title::Create(D3DXVECTOR3(SCREEN_WIDTH/2, 500.0f, 0.0f), CButton_Title::BUTTON_START);
 	m_pButton = CButton_Title::Create(D3DXVECTOR3(SCREEN_WIDTH/2, 630.0f, 0.0f), CButton_Title::BUTTON_TUTORIAL);
 
+	// ƒTƒEƒ“ƒhî•ñ‚ÌŽæ“¾
+	CSound *pSound = CManager::GetSound();
+	// BGMÄ¶
+	pSound->Play(CSound::LABEL_BGM_TITLE);
+
 	return S_OK;
 }
 

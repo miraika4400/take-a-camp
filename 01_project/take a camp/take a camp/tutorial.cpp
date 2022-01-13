@@ -111,6 +111,14 @@ HRESULT CTutorial::Init()
 	// ダミーを作る
 	DummyCreate();
 
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+	// BGM停止
+	pSound->Stop(CSound::LABEL_BGM_SELECT);
+	// BGM再生
+	pSound->Play(CSound::LABEL_BGM_GAME);
+
+
 	return S_OK;
 }
 

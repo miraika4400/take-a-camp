@@ -110,20 +110,33 @@ void CGameStart::Update(void)
 	D3DXVECTOR3 size = GetSize();
 	D3DXCOLOR col = GetColor();
 
+	// readyの間の動き
 	if (m_type == START_TYPE_READEY)
 	{
-		size.x += -4;
-		size.y += 0.25 * -4;
+		size.x += -10;
+		size.y += 0.25 * -10;
 
 		col.a += -0.01;
 	}
 
+	// goのサイズを
 	if (m_type == START_TYPE_GO)
 	{
-		size.x += 6;
-		size.y += 0.25 * 6;
+		// サイズ変更
+		size.x = 360.0f;
+		size.y = 90.0f;
 
-		col.a += 0.03;
+		col.a = 1.0f;
+	}
+
+	// goを動かす
+	if (m_type == START_TYPE_PLAY)
+	{
+		// サイズの大きさを毎フレームごとに変える
+		size.x += 30;
+		size.y += 0.25 * 30;
+
+		col.a += -0.05;
 	}
 
 	// 毎フレームごとにカウントを増やしていく
@@ -141,9 +154,9 @@ void CGameStart::Update(void)
 		break;
 
 	case START_TYPE_PLAY:
-		col.a = 1.0f;
+		//col.a = 1.0f;
 		// プレイ状態にはいったら
-		if (m_nCount == 100)
+		if (m_nCount == 15)
 		{
 			Uninit();
 			return;
@@ -207,7 +220,7 @@ void CGameStart::PlayChange(void)
 	D3DXCOLOR col = GetColor();
 
 	// カウントが一定値になったら
-	if (col.a >= 1.0)
+	if (m_nCount == 5)
 	{
 		// プレイヤーの状態を通常状態に
 		StartPlayer();

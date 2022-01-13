@@ -19,6 +19,7 @@
 #include "camera_charaselect.h"
 #include "bg.h"
 #include "light.h"
+#include "sound.h"
 
 //=============================
 // マクロ定義
@@ -85,6 +86,11 @@ HRESULT CCharaSelect::Init(void)
 
 	// ライトの向きの設定
 	CManager::GetLight()->SetDir(LIGHT_DIR_CHARA_FRONT);
+
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+	// BGM再生
+	pSound->Play(CSound::LABEL_BGM_SELECT);
 
 	return S_OK;
 }
