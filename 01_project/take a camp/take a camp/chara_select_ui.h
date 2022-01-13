@@ -49,10 +49,10 @@ public:
 		CScene2d * pBack;         // 背景
 		CScene2d * pPlayerNumber; // プレイヤー番号
 		CScene2d * pControllIcon; // コントローラータイプアイコン
-		CScene2d * pReadyIcon;    // コントローラータイプアイコン
+		CScene2d * pReadyIcon;    // レディアイコン
         CScene2d * apStatus[STATUS_NUM];      // ステータス
 		CCharacterPolygon * pCharaPolygon;
-		CAttackAreaUi*pAttackUiPolygon;
+		CAttackAreaUi*pAttackUiPolygon;   
 		D3DXVECTOR3 pos;          // 座標
 	};
 

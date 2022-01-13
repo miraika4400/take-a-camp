@@ -31,9 +31,9 @@
 #define UI_SPACE 320.0f                                      // UI間の左右のスペース
 #define BACK_DEFAULT_COLOR D3DXCOLOR(0.7f,0.7f,0.7f,1.0f)    // デフォルトのカラー
 #define ICON_COLOR_ON      D3DXCOLOR(1.0f,1.0f,1.0f,1.7f)    // アイコンのカラー
-#define PLAYER_NUMBER_POS_Y 60.0f
-#define CHARACTER_MODEL_POS_Y 340.0f
-#define READY_ICON_POS_Y  450.0f
+#define PLAYER_NUMBER_POS_Y 60.0f                            // 
+#define CHARACTER_MODEL_POS_Y 340.0f                         // 
+#define READY_ICON_POS_Y  450.0f                             // 
 #define STATUS_SIZE (D3DXVECTOR3(1089.0f,192.0f,0.0f)*0.26f)
 #define STATUS_POS_Y (560.0f)
 #define STATUS_POS_Y_OFFSET (STATUS_SIZE.y*1.1f)
