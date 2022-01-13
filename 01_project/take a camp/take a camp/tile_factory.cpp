@@ -17,6 +17,8 @@
 #include "move_sideways_tile.h"
 #include "warp_tile.h"
 #include "dummy_tile.h"
+#include "titletransition_tile.h"
+#include "jobchange_tile.h"
 
 //*****************************
 // É}ÉNÉçíËã`
@@ -40,6 +42,13 @@ const std::vector<CTileFactory::LabelData> CTileFactory::m_cLabelData =
 	{ "TILE_WARP_1" , CWarpTile::Create_1 },
 	{ "TILE_WARP_2" , CWarpTile::Create_2 },
 	{ "TILE_DUMMY",CDummyTile::Create },
+	{ "TILE_TITLETRANSITION",CTitleTransitionTile::Create },
+	{ "TILE_KNIGHT",CJobchangeTile::CreateKnight },
+	{ "TILE_LANCER",CJobchangeTile::CreateLancer },
+	{ "TILE_WIZARD",CJobchangeTile::CreateWizard },
+	{ "TILE_THIEF",CJobchangeTile::CreateThief },
+	{ "TILE_MAGICIAN",CJobchangeTile::CreateMagician },
+	{ "TILE_ARCHER",CJobchangeTile::CreateArcher },
 };
 
 //******************************
