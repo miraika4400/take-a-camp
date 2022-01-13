@@ -11,7 +11,6 @@
 #include "chara_select_ui.h"
 #include "chara_select.h"
 #include "scene2d.h"
-#include "resource_texture.h"
 #include "color_manager.h"
 #include "character_polygon.h"
 #include "attack_area_ui.h"
@@ -31,15 +30,30 @@
 #define ANIMATION_INTERVAL 15                                // アニメーション移行フレーム数
 #define UI_SPACE 320.0f                                      // UI間の左右のスペース
 #define BACK_DEFAULT_COLOR D3DXCOLOR(0.7f,0.7f,0.7f,1.0f)    // デフォルトのカラー
-#define ICON_COLOR_ON      D3DXCOLOR(1.0f,1.0f,1.0f,1.7f)    // アイコンのカラー
-#define ICON_COLOR_OFF     D3DXCOLOR(1.0f,1.0f,1.0f,0.0f)    // アイコンのカラー
-#define PLAYER_NUMBER_POS_Y 60.0f
-#define CHARACTER_MODEL_POS_Y 340.0f
-#define READY_ICON_POS_Y  450.0f
+#define PLAYER_NUMBER_POS_Y 60.0f                            // 
+#define CHARACTER_MODEL_POS_Y 350.0f                         // 
+#define READY_ICON_POS_Y  450.0f                             // 
+#define STATUS_SIZE (D3DXVECTOR3(1089.0f,192.0f,0.0f)*0.26f) // 
+#define STATUS_POS_Y (570.0f)                                // 
+#define STATUS_POS_Y_OFFSET (STATUS_SIZE.y*1.1f)             // 
+#define ON_COLOR  (D3DXCOLOR(1.0f,1.0f,1.0f,1.0f))           // 
+#define OFF_COLOR (D3DXCOLOR(1.0f,1.0f,1.0f,0.0f))           // 
+#define NAVI_SIZE (D3DXVECTOR3(732.0f,150.0f,0.0f)*0.2f)     // 
+#define NAVI_POS_Y (670.0f)                                  // 
+#define NAVI_POS_X_OFFSET (50.0f)                            // 
 
 //=============================
 // 静的メンバ変数宣言
 //=============================
+const CCharaSelectUi::CharaStatus CCharaSelectUi::m_aStatusTexNum[CResourceCharacter::CHARACTER_MAX] = 
+{
+    { CResourceTexture::TEXTURE_DIFFECULT_BEGINNER    ,CResourceTexture::TEXTURE_RANGE_SHORT },  // 騎士
+    { CResourceTexture::TEXTURE_DIFFECULT_INTERMEDIATE,CResourceTexture::TEXTURE_RANGE_MEDIAM }, // 槍
+    { CResourceTexture::TEXTURE_DIFFECULT_INTERMEDIATE,CResourceTexture::TEXTURE_RANGE_LONG },   // 弓
+    { CResourceTexture::TEXTURE_DIFFECULT_BEGINNER    ,CResourceTexture::TEXTURE_RANGE_SHORT },  // 盗賊
+    { CResourceTexture::TEXTURE_DIFFECULT_ADVANCED    ,CResourceTexture::TEXTURE_RANGE_MEDIAM }, // 奇術
+    { CResourceTexture::TEXTURE_DIFFECULT_ADVANCED    ,CResourceTexture::TEXTURE_RANGE_LONG },   // 魔法
+};
 
 //=============================
 // コンストラクタ
@@ -103,7 +117,7 @@ HRESULT CCharaSelectUi::Init(void)
 		m_aPolygon[nCntPlayer].pControllIcon = CScene2d::Create();
 		m_aPolygon[nCntPlayer].pControllIcon->SetSize(CONTOROll_ICON_SIZE);
 		m_aPolygon[nCntPlayer].pControllIcon->SetPos(boardPos);
-		m_aPolygon[nCntPlayer].pControllIcon->SetColor(ICON_COLOR_OFF);
+		m_aPolygon[nCntPlayer].pControllIcon->SetColor(OFF_COLOR);
 		m_aPolygon[nCntPlayer].pControllIcon->SetPriority(OBJTYPE_UI_2);
 
 		// プレイヤー番号の生成
@@ -121,12 +135,33 @@ HRESULT CCharaSelectUi::Init(void)
 		m_aPolygon[nCntPlayer].pReadyIcon = CScene2d::Create();
 		m_aPolygon[nCntPlayer].pReadyIcon->SetSize(READY_SIZE);
 		m_aPolygon[nCntPlayer].pReadyIcon->SetPos(D3DXVECTOR3(boardPos.x, READY_ICON_POS_Y, boardPos.z));
-		m_aPolygon[nCntPlayer].pReadyIcon->SetColor(ICON_COLOR_OFF);
+		m_aPolygon[nCntPlayer].pReadyIcon->SetColor(OFF_COLOR);
 		m_aPolygon[nCntPlayer].pReadyIcon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_READEY));
 		m_aPolygon[nCntPlayer].pReadyIcon->SetPriority(OBJTYPE_UI_2);
 
+        for (int nCntStatus = 0; nCntStatus < STATUS_NUM; nCntStatus++)
+        {
+            m_aPolygon[nCntPlayer].apStatus[nCntStatus] = CScene2d::Create();
+            m_aPolygon[nCntPlayer].apStatus[nCntStatus]->SetSize(STATUS_SIZE);
+            m_aPolygon[nCntPlayer].apStatus[nCntStatus]->SetPos(D3DXVECTOR3(boardPos.x, STATUS_POS_Y + (nCntStatus*STATUS_POS_Y_OFFSET), boardPos.z));
+            m_aPolygon[nCntPlayer].apStatus[nCntStatus]->SetPriority(OBJTYPE_UI_2);
+        }
+        
+        // ステータステクスチャ
+        m_aPolygon[nCntPlayer].apStatus[0]->BindTexture(CResourceTexture::GetTexture(m_aStatusTexNum[CResourceCharacter::CHARACTER_KNIGHT].nDifficult));
+        m_aPolygon[nCntPlayer].apStatus[1]->BindTexture(CResourceTexture::GetTexture(m_aStatusTexNum[CResourceCharacter::CHARACTER_KNIGHT].nRange));
+
+        // 攻撃範囲誘導UI
+        m_aPolygon[nCntPlayer].pNaviAttackArea = CScene2d::Create();
+        m_aPolygon[nCntPlayer].pNaviAttackArea->SetSize(NAVI_SIZE);
+        m_aPolygon[nCntPlayer].pNaviAttackArea->SetPos(D3DXVECTOR3(boardPos.x+ NAVI_POS_X_OFFSET, NAVI_POS_Y, boardPos.z));
+        m_aPolygon[nCntPlayer].pNaviAttackArea->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_NAVI_ATTACK_AREA));
+        m_aPolygon[nCntPlayer].pNaviAttackArea->SetPriority(OBJTYPE_UI_2);
+
+        // 攻撃範囲テクスチャ
 		m_aPolygon[nCntPlayer].pAttackUiPolygon = CAttackAreaUi::Create(boardPos);
 		m_aPolygon[nCntPlayer].pAttackUiPolygon->SetDrawFlag(true);
+
 		boardPos.x += UI_SPACE;
 	}
 
@@ -176,12 +211,19 @@ void CCharaSelectUi::Update(void)
 			m_aPolygon[nCntPlayer].pBack->SetColor(GET_COLORMANAGER->GetIconColor(entryData.nColorNum));
 			m_aPolygon[nCntPlayer].pCharaPolygon->SetRimColor(GET_COLORMANAGER->GetStepColor(entryData.nColorNum,1));
 			m_aPolygon[nCntPlayer].pCharaPolygon->SetTexColor(GET_COLORMANAGER->GetIconColor(entryData.nColorNum));
-			m_aPolygon[nCntPlayer].pControllIcon->SetColor(ICON_COLOR_ON);
+			m_aPolygon[nCntPlayer].pControllIcon->SetColor(ON_COLOR);
 
-			if (entryData.bReady) m_aPolygon[nCntPlayer].pReadyIcon->SetColor(ICON_COLOR_ON);
-			else m_aPolygon[nCntPlayer].pReadyIcon->SetColor(ICON_COLOR_OFF);
-
-			if (entryData.bController)
+            // レディカラー
+			if (entryData.bReady) m_aPolygon[nCntPlayer].pReadyIcon->SetColor(ON_COLOR);
+			else m_aPolygon[nCntPlayer].pReadyIcon->SetColor(OFF_COLOR);
+            
+            // 攻撃範囲表示UI
+            m_aPolygon[nCntPlayer].pNaviAttackArea->SetColor(ON_COLOR);
+            
+            // ステータスカラー
+            for (int nCntStatus = 0; nCntStatus < STATUS_NUM; nCntStatus++) m_aPolygon[nCntPlayer].apStatus[nCntStatus]->SetColor(ON_COLOR);
+			
+            if (entryData.bController)
 			{
 				m_aPolygon[nCntPlayer].pControllIcon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CONTROLLER));
 			}
@@ -217,18 +259,26 @@ void CCharaSelectUi::Update(void)
 		else
 		{// 非エントリー時
 			m_aPolygon[nCntPlayer].pBack->SetColor(BACK_DEFAULT_COLOR);
-			m_aPolygon[nCntPlayer].pControllIcon->SetColor(ICON_COLOR_OFF);
-			m_aPolygon[nCntPlayer].pReadyIcon->SetColor(ICON_COLOR_OFF);
+			m_aPolygon[nCntPlayer].pControllIcon->SetColor(OFF_COLOR);
+			m_aPolygon[nCntPlayer].pReadyIcon->SetColor(OFF_COLOR);
+            for (int nCntStatus = 0; nCntStatus < STATUS_NUM; nCntStatus++) m_aPolygon[nCntPlayer].apStatus[nCntStatus]->SetColor(OFF_COLOR);
 			m_aPolygon[nCntPlayer].pPlayerNumber->SetTextureUV(uv);
 			m_aPolygon[nCntPlayer].pPlayerNumber->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_NONE_UI));
 			m_aPolygon[nCntPlayer].pAttackUiPolygon->SetDrawFlag(false);
+            m_aPolygon[nCntPlayer].pNaviAttackArea->SetColor(OFF_COLOR);
 		}
 
 		if (m_aPolygon[nCntPlayer].pCharaPolygon->GetCharaType() != entryData.charaType)
 		{// キャラクターが変わったとき
-			m_aPolygon[nCntPlayer].pAttackUiPolygon->Reset();;
-			m_aPolygon[nCntPlayer].pAttackUiPolygon->SetCharaType(entryData.charaType);
+           
+            m_aPolygon[nCntPlayer].pAttackUiPolygon->SetCharaType(entryData.charaType);
+			m_aPolygon[nCntPlayer].pAttackUiPolygon->Reset();
+
 			m_aPolygon[nCntPlayer].pCharaPolygon->SetCharaType(entryData.charaType);
+
+            if (entryData.charaType == -1) continue;
+            m_aPolygon[nCntPlayer].apStatus[0]->BindTexture(CResourceTexture::GetTexture(m_aStatusTexNum[entryData.charaType].nDifficult));
+            m_aPolygon[nCntPlayer].apStatus[1]->BindTexture(CResourceTexture::GetTexture(m_aStatusTexNum[entryData.charaType].nRange));
 		}
 		
 	}

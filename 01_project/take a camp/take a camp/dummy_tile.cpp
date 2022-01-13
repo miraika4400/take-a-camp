@@ -33,22 +33,22 @@ CDummyTile::~CDummyTile()
 void CDummyTile::Create(D3DXVECTOR3 pos, D3DXCOLOR col)
 {
 	// メモリの確保
-	CDummyTile *pTile;
-	pTile = new CDummyTile;
+	CDummyTile *pDummyTile;
+	pDummyTile = new CDummyTile;
 
 	// 初期化
-	pTile->Init();
+	pDummyTile->Init();
 
 	// 各値の代入・セット
-	pTile->SetPos(pos);
-	pTile->SetPriority(OBJTYPE_TILE); // オブジェクトタイプ
-	pTile->SetRide(true);			  // 載れないようにフラグを立てる
+	pDummyTile->SetPos(pos);
+	pDummyTile->SetPriority(OBJTYPE_TILE); // オブジェクトタイプ
+	pDummyTile->SetRide(true);			  // 載れないようにフラグを立てる
 
 	// ×マークの生成
-	pTile->m_pCrossPolygon = CScene3d::Create(D3DXVECTOR3(pos.x, pos.y + (TILE_SIZE_Y / 2) + 1.0f, pos.z), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
-	pTile->m_pCrossPolygon->SetColor(col);
-	pTile->m_pCrossPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CROSS_MARK));
-	pTile->m_pCrossPolygon->SetPriority(OBJTYPE_MAP);
+	pDummyTile->m_pCrossPolygon = CScene3d::Create(D3DXVECTOR3(pos.x, pos.y + (TILE_SIZE_Y / 2) + 1.0f, pos.z), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
+	pDummyTile->m_pCrossPolygon->SetColor(col);
+	pDummyTile->m_pCrossPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CROSS_MARK));
+	pDummyTile->m_pCrossPolygon->SetPriority(OBJTYPE_MAP);
 }
 
 //====================================================
@@ -56,11 +56,13 @@ void CDummyTile::Create(D3DXVECTOR3 pos, D3DXCOLOR col)
 //====================================================
 HRESULT CDummyTile::Init(void)
 {
+	// タイルの初期化
 	if (FAILED(CTile::Init()))
 	{
 		return E_FAIL;
 	}
 
+	// タイルの色のセット
 	SetColor(TILE_DEFAULT_COLOR);
 
 	return S_OK;
@@ -71,5 +73,6 @@ HRESULT CDummyTile::Init(void)
 //====================================================
 void CDummyTile::Uninit(void)
 {
+	// タイルの終了
 	CTile::Uninit();
 }

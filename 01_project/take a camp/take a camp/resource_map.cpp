@@ -23,7 +23,7 @@ char* CMapManager::m_pFileName[MAP_TYPE_MAX] =
 {
 	"data/Text/stage/stage01.csv" , // マップ1
 	"data/Text/stage/stage02.csv" , // マップ2
-	"data/Text/stage/stage03.csv" , // マップ3
+	"data/Text/stage/stage04.csv" , // マップ3
 	"data/Text/stage/stage_tutorial.csv" , // チュートリアルマップ
 };
 CMapManager *CMapManager::m_pMapBasis = NULL;

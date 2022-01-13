@@ -71,12 +71,13 @@ private:
 	CPolygon *m_pTextWindow;								// ポリゴンのポインタ
 	CText *m_pText;										// テキストのポインタ
 	TUTORIALPHASE m_Tutorialphase;						// チュートリアルの状態
-	bool m_bTask[MAX_PLAYER];							// プレイヤーごとのタスクを完了したか
+	bool m_bTask;										// プレイヤーがタスクを完了したか
 	int m_nTextNum;										// テキストの数
 	bool m_bNextText;									// 次のテキストに行くかいかないか
 	bool m_bTextEnd;									// テキストを表示し終わったか
 	int m_nCurTaskNum[MAX_PLAYER];						// 現在のタスクごとの数
 	int m_nOldCurTaskNum[MAX_PLAYER];					// 1フレーム前のタスクごとの数
+	int m_nTextShowTime;								// テキストを表示する時間
 };
 
 #endif
