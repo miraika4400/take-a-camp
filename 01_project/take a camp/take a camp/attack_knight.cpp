@@ -68,16 +68,16 @@ void CAttackKnight::CreateEffect(D3DXVECTOR3 pos)
 		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() - 1),
 		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), CSkill_effect::SKILLTYPE_KNIGHT);
 
-	if (nLevel < 4)
-	{
-		// SEÄ¶
-		pSound->Play(CSound::LABEL_SE_KENSI_ATTACK);
-	}
+	//if (nLevel < 3)
+	//{
+	//	// SEÄ¶
+	//	pSound->Play(CSound::LABEL_SE_KENSI_ATTACK);
+	//}
 
-	if (nLevel == 3)
-	{
-		pSound->Play(CSound::LABEL_SE_KENSI_FINALATTACK);
-	}
+	//if (nLevel == 3)
+	//{
+	//	pSound->Play(CSound::LABEL_SE_KENSI_FINALATTACK);
+	//}
 }
 
 //

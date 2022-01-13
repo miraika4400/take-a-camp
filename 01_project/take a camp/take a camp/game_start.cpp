@@ -124,7 +124,7 @@ void CGameStart::Update(void)
 	{
 		// サイズ変更
 		size.x = 360.0f;
-		size.y = 90.0f;
+		size.y = 180.0f;
 
 		col.a = 1.0f;
 	}
@@ -134,7 +134,7 @@ void CGameStart::Update(void)
 	{
 		// サイズの大きさを毎フレームごとに変える
 		size.x += 30;
-		size.y += 0.25 * 30;
+		size.y += 0.5 * 30;
 
 		col.a += -0.05;
 	}
