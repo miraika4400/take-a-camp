@@ -69,26 +69,30 @@ HRESULT CAttackAreaUi::Init(void)
 	m_bDraw = false;
 	m_nCntLevel = 0;
 
-	// テクスチャの割り当て
-	BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_ALL1));
 	// 騎士
-	m_apTex[CResourceCharacter::CHARACTER_KNIGHT][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_KNIGHT2);
-	m_apTex[CResourceCharacter::CHARACTER_KNIGHT][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_KNIGHT3);
+    m_apTex[CResourceCharacter::CHARACTER_KNIGHT][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_KNIGHT1);
+	m_apTex[CResourceCharacter::CHARACTER_KNIGHT][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_KNIGHT2);
+	m_apTex[CResourceCharacter::CHARACTER_KNIGHT][2] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_KNIGHT3);
 	// 槍
-	m_apTex[CResourceCharacter::CHARACTER_LANCER][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_LANCER2);
-	m_apTex[CResourceCharacter::CHARACTER_LANCER][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_LANCER3);
+    m_apTex[CResourceCharacter::CHARACTER_LANCER][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_LANCER1);
+    m_apTex[CResourceCharacter::CHARACTER_LANCER][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_LANCER2);
+    m_apTex[CResourceCharacter::CHARACTER_LANCER][2] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_LANCER3);
 	// 魔法
-	m_apTex[CResourceCharacter::CHARACTER_WIZARD][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_WIZARD2);
-	m_apTex[CResourceCharacter::CHARACTER_WIZARD][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_WIZARD3);
+    m_apTex[CResourceCharacter::CHARACTER_WIZARD][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_WIZARD1);
+    m_apTex[CResourceCharacter::CHARACTER_WIZARD][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_WIZARD2);
+    m_apTex[CResourceCharacter::CHARACTER_WIZARD][2] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_WIZARD3);
 	// 盗賊
-	m_apTex[CResourceCharacter::CHARACTER_THIEF][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_THIEF2);
-	m_apTex[CResourceCharacter::CHARACTER_THIEF][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_THIEF3);
+    m_apTex[CResourceCharacter::CHARACTER_THIEF][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_THIEF1);
+    m_apTex[CResourceCharacter::CHARACTER_THIEF][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_THIEF2);
+    m_apTex[CResourceCharacter::CHARACTER_THIEF][2] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_THIEF3);
 	// 奇術師
-	m_apTex[CResourceCharacter::CHARACTER_MAGICIAN][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_MAGICIAN2);
-	m_apTex[CResourceCharacter::CHARACTER_MAGICIAN][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_MAGICIAN3);
+    m_apTex[CResourceCharacter::CHARACTER_MAGICIAN][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_MAGICIAN1);
+    m_apTex[CResourceCharacter::CHARACTER_MAGICIAN][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_MAGICIAN2);
+    m_apTex[CResourceCharacter::CHARACTER_MAGICIAN][2] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_MAGICIAN3);
 	// 弓
-	m_apTex[CResourceCharacter::CHARACTER_ARCHER][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_ARCHER2);
-	m_apTex[CResourceCharacter::CHARACTER_ARCHER][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_ARCHER3);
+    m_apTex[CResourceCharacter::CHARACTER_ARCHER][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_ARCHER1);
+    m_apTex[CResourceCharacter::CHARACTER_ARCHER][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_ARCHER2);
+    m_apTex[CResourceCharacter::CHARACTER_ARCHER][2] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_ARCHER3);
 
 	SetSize(SIZE);
 	SetColor(COLOR);
@@ -113,15 +117,9 @@ void CAttackAreaUi::Update(void)
 			m_nLevel = 0;
 		}
 
+        if (m_nCharaType == CResourceCharacter::CHARACTER_NONE) return;
 		// テクスチャの切り替え
-		if (m_nLevel == 0)
-		{
-			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_ALL1));
-		}
-		else
-		{
-			BindTexture(m_apTex[m_nCharaType][(m_nLevel - 1)]);
-		}
+		BindTexture(m_apTex[m_nCharaType][m_nLevel]);
 	}
 }
 
@@ -141,6 +139,6 @@ void CAttackAreaUi::Reset(void)
 {
 	// カウントの初期化
 	m_nLevel = 0;
-	// テクスチャの切り替え
-	BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_ALL1));
+    // テクスチャの切り替え
+    BindTexture(m_apTex[m_nCharaType][m_nLevel]);
 }
