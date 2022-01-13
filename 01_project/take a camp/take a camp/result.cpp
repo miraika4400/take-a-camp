@@ -118,13 +118,15 @@ void CResult::Uninit(void)
 //=============================
 void CResult::Update(void)
 {
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) ||
-		CManager::GetMouse()->GetMouseTrigger(0) /*||
-		CManager::GetJoypad()->GetJoystickTrigger(3, 0) ||
-		CManager::GetJoypad()->GetJoystickTrigger(11, 0)*/)
+	for (int nControllNum = 0; nControllNum < XUSER_MAX_COUNT; nControllNum++)
 	{
-		// デバッグ用画面遷移コマンド
-		CManager::GetFade()->SetFade(CManager::MODE_TOTAL_RESULT);
+		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) ||
+			CManager::GetMouse()->GetMouseTrigger(0) ||
+			CManager::GetJoypad()->GetButtonState(XINPUT_GAMEPAD_A, CInputJoypad::BUTTON_TRIGGER, nControllNum))
+		{
+			// デバッグ用画面遷移コマンド
+			CManager::GetFade()->SetFade(CManager::MODE_TOTAL_RESULT);
+		}
 	}
 }
 

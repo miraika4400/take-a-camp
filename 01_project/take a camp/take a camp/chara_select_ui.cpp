@@ -248,7 +248,7 @@ void CCharaSelectUi::Update(void)
 			CInputJoypad* pJoypad = CManager::GetJoypad();
 			// 攻撃ボタンを押したら
 			if (!entryData.bController && pKey->GetKeyTrigger(CPlayer::GetPlayerControllKey(entryData.nControllNum,CPlayer::KEY_ATTCK_FINAL))
-				|| entryData.bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, pJoypad->BUTTON_TRIGGER, entryData.nControllNum))
+				|| entryData.bController &&pJoypad->GetButtonState(XINPUT_GAMEPAD_Y, CInputJoypad::BUTTON_TRIGGER, entryData.nControllNum))
 			{
 				// 攻撃範囲にキャラタイプの適用
 				m_aPolygon[nCntPlayer].pAttackUiPolygon->SetCharaType(entryData.charaType);
