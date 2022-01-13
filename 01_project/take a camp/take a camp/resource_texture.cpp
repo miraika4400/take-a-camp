@@ -64,7 +64,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/stage_name.png",	      // ステージ名
 	"./data/Textures/stage_polygon_bg.png",	      // ステージ選択背景
 	"./data/Textures/00_ready.png",	          // ready
-	"./data/Textures/01_go.png",			  // go
+	"./data/Textures/01_go!!.png",			  // go
 	"./data/Textures/00_finish.png",		  // finish
 	"./data/Textures/00_nanbyou.png",		  // 残り何秒
 	"./data/Textures/lance_icon.png",         // 槍アイコン
@@ -92,12 +92,14 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/attack_area/05_archer/archer_lv1_attack.png",     // 攻撃範囲
 	"./data/Textures/attack_area/05_archer/archer_lv2_attack.png",     // 攻撃範囲
 	"./data/Textures/attack_area/05_archer/archer_lv3_attack.png",     // 攻撃範囲
-    "./data/Textures/status/00_beginner.png",
-    "./data/Textures/status/01_intermediate.png",
-    "./data/Textures/status/02_advanced.png",
-    "./data/Textures/status/03_short.png",
-    "./data/Textures/status/04_medium.png",
-    "./data/Textures/status/05_long.png",
+    "./data/Textures/status/00_beginner.png",      // 初心者
+    "./data/Textures/status/01_intermediate.png",  // 中級者
+    "./data/Textures/status/02_advanced.png",      // 上級者
+    "./data/Textures/status/03_short.png",         // 近距離
+    "./data/Textures/status/04_medium.png",        // 中距離
+    "./data/Textures/status/05_long.png",          // 遠距離
+    "./data/Textures/navi_attack_area.png", // 攻撃範囲誘導UI
+    
 };
 
 // テクスチャのパス

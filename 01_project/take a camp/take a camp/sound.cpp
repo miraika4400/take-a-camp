@@ -12,11 +12,21 @@
 
 CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX]
 {
-	{ "./data/Sounds/BGM/title.wav"      , -1 },
-	{ "./data/Sounds/BGM/tutorial.wav"      , -1 },
-    { "./data/Sounds/BGM/in_game.wav"    , -1 },
-	{ "./data/Sounds/BGM/result.wav"    , -1 },
-
+	{ "./data/Sounds/BGM/Title_bgm.wav"      , SOUND_LOOP_ON },
+	{ "./data/Sounds/BGM/Charaselect_bgm.wav"      , SOUND_LOOP_ON },
+    { "./data/Sounds/BGM/Game_bgm1.wav"    , SOUND_LOOP_ON},
+	{ "./data/Sounds/BGM/Result_bgm.wav"    , SOUND_LOOP_ON },
+	{ "./data/Sounds/SE/00_kensi_attack.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/00_kensi_hissatu.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/01_yari_attack.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/01_yari_hisattu.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/02_mahou_attack.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/02_mahou_hissatu.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/03_yumiya_attack.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/03_yumiya_hissatu.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/04_touzoku_attack.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/04_touzoku_hissatu.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/05_kijutusi_attack.wav"    , SOUND_LOOP_OFF },
 };
 
 //=============================================================================

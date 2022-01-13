@@ -387,7 +387,7 @@ void CManager::SetMode(MODE mode)
 		// NULLクリア
 		m_pTutorial = NULL;
 		// タイトルBGM停止
-		m_pSound->Stop(CSound::LABEL_BGM_TUTORIAL);
+		m_pSound->Stop(CSound::LABEL_BGM_GAME);
 		break;
 	case MODE_CHARA_SELECT:
 		m_pCharaSelectMode = NULL;
@@ -395,26 +395,26 @@ void CManager::SetMode(MODE mode)
 		break;
 	case MODE_STAGE_SELECT:
 		m_pStageSelectMode = NULL;
-
+		m_pSound->Stop(CSound::LABEL_BGM_SELECT);
 		break;
 	case MODE_GAME:
 		// NULLクリア
 		m_pGame = NULL;
 		// ゲームBGM停止
-		//m_pSound->Stop(CSound::LABEL_BGM_GAME);
+		m_pSound->Stop(CSound::LABEL_BGM_GAME);
 		break;
 
 	case MODE_RESULT:
 		// NULLクリア
 		m_pResult = NULL;
 		// リザルトBGM停止
-		m_pSound->Stop(CSound::LABEL_BGM_RESULT);
+		//m_pSound->Stop(CSound::LABEL_BGM_RESULT);
 		break;
 	case MODE_TOTAL_RESULT:
 		// NULLクリア
 		m_TotalResult = NULL;
 		// トータルリザルトBGM停止
-		//m_pSound->Stop(CSound::LABEL_BGM_RESULT);
+		m_pSound->Stop(CSound::LABEL_BGM_RESULT);
 		break;
 
 	default:

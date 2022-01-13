@@ -22,6 +22,7 @@
 #include "polygon.h"
 #include "camera_charaselect.h"
 #include "confetti.h"
+#include "sound.h"
 
 //**********************************
 // マクロ定義
@@ -85,6 +86,11 @@ HRESULT CResult::Init(void)
 	CManager::SetCamera(CCharaSelectCamera::Create());
 	CManager::GetCamera()->SetPosV(CAMERA_POS_V);
 	CManager::GetCamera()->SetPosR(CAMERA_POS_R);
+
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+	// BGM再生
+	pSound->Play(CSound::LABEL_BGM_RESULT);
 
 	return S_OK;
 }

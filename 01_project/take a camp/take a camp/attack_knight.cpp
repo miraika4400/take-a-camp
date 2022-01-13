@@ -15,7 +15,7 @@
 #include "skill_effect.h"
 #include "skill_circle.h"
 #include "color_manager.h"
-
+#include "sound.h"
 
 //=============================================================================
 // コンストラクタ
@@ -58,10 +58,26 @@ void CAttackKnight::CreateEffect(D3DXVECTOR3 pos)
 {
 	//プレイヤーのポインタ
 	CPlayer *pPlaryer = GetPlayer();
+	int nLevel = GetLevel();
+
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
 	//エフェクト生成
 	CSkill_effect::Create(pPlaryer->GetPos() + pos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
 		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() - 1),
 		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), CSkill_effect::SKILLTYPE_KNIGHT);
+
+	//if (nLevel < 3)
+	//{
+	//	// SE再生
+	//	pSound->Play(CSound::LABEL_SE_KENSI_ATTACK);
+	//}
+
+	//if (nLevel == 3)
+	//{
+	//	pSound->Play(CSound::LABEL_SE_KENSI_FINALATTACK);
+	//}
 }
 
 //
