@@ -38,6 +38,7 @@
 #include "skill_effect.h"
 #include "resource_attack.h"
 #include "tutorial.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -342,10 +343,16 @@ void CPlayer::Draw(void)
 //******************************
 void CPlayer::Death(void)
 {
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
 	if (!m_bInvincible)
 	{
 		//死亡状態に移行
 		SetState(PLAYER_STATE_DEATH);
+
+		// SE再生
+		pSound->Play(CSound::LABEL_SE_DEATH);
 
 		//当たり判定を消す
 		if (m_pCollision != NULL)

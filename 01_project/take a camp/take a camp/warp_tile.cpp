@@ -11,6 +11,7 @@
 #include "warp_tile.h"
 #include "player.h"
 #include "collision.h"
+#include "sound.h"
 #include <vector>
 #include <time.h>
 #include "resource_texture.h"
@@ -266,6 +267,9 @@ void CWarpTile::Update(void)
 //******************************
 void CWarpTile::HitPlayerAction(CPlayer * pPlayer)
 {
+	// ƒTƒEƒ“ƒhî•ñ‚ÌŽæ“¾
+	CSound *pSound = CManager::GetSound();
+
 	switch (m_WarpState[pPlayer->GetPlayerNumber()])
 	{
 	case WARP_TILE_NORMAL:	//’Êíó‘Ô
@@ -279,6 +283,9 @@ void CWarpTile::HitPlayerAction(CPlayer * pPlayer)
 				{
 					pPlayer->SetState(CPlayer::PLAYER_STATE_STOP);
 					m_WarpState[pPlayer->GetPlayerNumber()] = WARP_TILE_WARP;
+
+					// SEÄ¶
+					pSound->Play(CSound::LABEL_SE_WARP);
 				}
 			}
 			break;
