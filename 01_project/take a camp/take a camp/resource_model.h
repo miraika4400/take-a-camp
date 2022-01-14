@@ -60,8 +60,10 @@ public:
 		MODEL_NEEDLE,             // とげ
 		MODEL_ITEM_DASH,		  // ダッシュアイテム
 		MODEL_ITEM_REVERSE,       // 反転アイテム
-		MODEL_DESK,               // 机
-
+        MODEL_DESK,               // 机
+		MODEL_DESK_STAGE1,               // 机
+        MODEL_DESK_STAGE2,               // 机
+        MODEL_DESK_STAGE3,               // 机
 		MODEL_TREE,
 		MODEL_MATO,
 		MODEL_BUKITATE,

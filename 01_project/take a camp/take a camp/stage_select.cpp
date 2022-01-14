@@ -159,7 +159,6 @@ void CStageSelect::SetObject(void)
 
 	// ”wŒi‚Ì¶¬
 	CBg::Create();
-	CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), CResourceModel::MODEL_DESK, D3DXVECTOR3(0.4f, 0.4f, 0.4f))->SetPriority(OBJTYPE_MAP);
 
 	CCharaSelect::Entry_Data noneData = {};
 	CCharaSelect::Entry_Data aSaveData[MAX_PLAYER] = {};
