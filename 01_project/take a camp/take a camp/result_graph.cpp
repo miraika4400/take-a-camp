@@ -23,6 +23,7 @@
 #include "player_model.h"
 #include "motion.h"
 #include "sound.h"
+#include "fade.h"
 
 //**********************************
 // マクロ定義
@@ -43,8 +44,8 @@
 #define EXPLOSION_POS_2 D3DXVECTOR3(0.0f,SCREEN_HEIGHT,0.0f)
 #define CHARACTER_POLYGON_SIZE (DEFAULT_CHARACTER_POLYGON_SIZE*0.7f)
 #define CHARACTER_HEIGHT_DIST ((SCREEN_HEIGHT - CHARACTER_POLYGON_SIZE.y / 2.0f)-20.0f/2.0f)
-#define CHARACTER_HEIGHT_ADD 15.0f
-#define CHARACTER_CREATE_ADD_HEIGHT -202 //キャラクターを生成する位置を変える
+#define CHARACTER_HEIGHT_ADD (15.0f)
+#define CHARACTER_CREATE_ADD_HEIGHT (-202) //キャラクターを生成する位置を変える
 #define CONFETTI_TIME (120)
 
 //**********************************
@@ -256,6 +257,7 @@ void CResultGraph::ManageGraph(void)
 {
     if (!m_nActionCnt && m_nActionRank > 0)
     {
+        // SEの再生
         CManager::GetSound()->Play(CSound::LABEL_SE_GAUGE);
     }
 
@@ -266,6 +268,11 @@ void CResultGraph::ManageGraph(void)
 		m_nActionCnt = 0;
 		m_nActionRank--;
 	}
+    else if(m_nActionCnt >= RANK_ANNOUNCEMENT_COUNT*3)
+    {
+        // デバッグ用画面遷移コマンド
+        CManager::GetFade()->SetFade(CManager::MODE_TOTAL_RESULT);
+    }
 
 	if (m_nActionRank >= 0)
 	{
@@ -287,11 +294,15 @@ void CResultGraph::ManageGraph(void)
 				D3DXCOLOR iconCol = GET_COLORMANAGER->GetIconColor(m_aGauge[nPlayerNum][GAUGE_FRONT].m_nColorNum);
 				CResultExplosion::Create(EXPLOSION_POS_1, iconCol);
 				CResultExplosion::Create(EXPLOSION_POS_2, iconCol);
-
+                
+                // SEの再生
+                CManager::GetSound()->Play(CSound::LABEL_SE_RANKING);
 				if (m_nActionRank == 0)
 				{// 一位発表時
 					CConfettiFactory::Create(iconCol, CONFETTI_TIME);
 					m_bEnd = true;
+                    // SEの再生
+                    CManager::GetSound()->Play(CSound::LABEL_SE_KAMIHUBUKI);
 				}
 				bAnnouncement = true;
 

@@ -15,7 +15,7 @@
 // マクロ定義
 //=============================================================================
 #define LEVEL_CHANGE_COUNT (100)
-#define SIZE (D3DXVECTOR3(1260.0f,1944,0.0f)/5.0f)
+#define SIZE (D3DXVECTOR3(1260.0f,1944,0.0f)/5.2f)
 #define COLOR (D3DXCOLOR(1.0f,1.0f,1.0f,0.9f))
 #define TEX_ANIM_MAX_U 3                        // 順位テクスチャ分割数*縦
 
