@@ -11,8 +11,10 @@
 #include "warp_tile.h"
 #include "player.h"
 #include "collision.h"
+#include "sound.h"
 #include <vector>
 #include <time.h>
+
 //*****************************
 //マクロ定義
 //*****************************
@@ -265,6 +267,9 @@ void CWarpTile::Update(void)
 //******************************
 void CWarpTile::HitPlayerAction(CPlayer * pPlayer)
 {
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
 	switch (m_WarpState[pPlayer->GetPlayerNumber()])
 	{
 	case WARP_TILE_NORMAL:	//通常状態
@@ -278,6 +283,9 @@ void CWarpTile::HitPlayerAction(CPlayer * pPlayer)
 				{
 					pPlayer->SetState(CPlayer::PLAYER_STATE_STOP);
 					m_WarpState[pPlayer->GetPlayerNumber()] = WARP_TILE_WARP;
+
+					// SE再生
+					pSound->Play(CSound::LABEL_SE_WARP);
 				}
 			}
 			break;
