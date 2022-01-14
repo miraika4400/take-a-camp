@@ -16,6 +16,7 @@
 #include "skill_circle.h"
 #include "color_manager.h"
 #include "sound.h"
+#include "skill_effect.h"
 
 //=============================================================================
 // コンストラクタ

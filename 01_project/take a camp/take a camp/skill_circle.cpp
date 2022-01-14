@@ -34,7 +34,7 @@ CSkill_circle::CSkill_circle(int nPliority)
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_nTile = 50;
+	m_nLife = 50;
 	m_fRotAngle = 0.0f;
 	m_fFadeout = 0.0f;
 	m_bFadeoutFlag = true;
@@ -177,7 +177,7 @@ void CSkill_circle::Update(void)
 	case EFFECTTYPE_SKIIL:
 		
 	
-		m_col.a -= 0.009;
+		m_col.a -= 0.009f;
 		m_fRotAngle += 0.5f;
 		m_rot.y += 0.05f;
 		m_size.x += 0.1f;
@@ -197,7 +197,7 @@ void CSkill_circle::Update(void)
 	case EFFECTTYPE_SKIILMINI:
 		
 
-		m_col.a -= 0.009;
+		m_col.a -= 0.009f;
 		m_fRotAngle += 0.1f;
 		m_rot.y -= 0.05f;
 		m_size.x += 0.1f;
@@ -217,7 +217,7 @@ void CSkill_circle::Update(void)
 
 	case EFFECTTYPE_METEOR:
 
-		m_col.a -= 0.01;
+		m_col.a -= 0.01f;
 		m_rot.y-= 0.05f;
 		m_size.x += 0.05f;
 		m_size.z += 0.05f;
@@ -230,7 +230,7 @@ void CSkill_circle::Update(void)
 
 	case EFFECTTYPE_METEOR_CENTER:
 
-		m_col.a -= 0.009;
+		m_col.a -= 0.009f;
 		m_rot.y -= 0.05f;
 		m_size.x += 0.0001f;
 		m_size.y += 1.0f;
@@ -245,7 +245,7 @@ void CSkill_circle::Update(void)
 
 	case EFFECTTYPE_METEOR_IMPACT:
 
-		m_col.a -= 0.01;
+		m_col.a -= 0.01f;
 		m_rot.y -= 0.05f;
 		m_size.x += 0.15f;
 		m_size.z += 0.15f;
@@ -258,11 +258,11 @@ void CSkill_circle::Update(void)
 
 	case EFFECTTYPE_IMPACT:
 
-		m_col.a -= 0.03;
+		m_col.a -= 0.03f;
 		m_size.y += 0.25f;
-		m_pos.y -= 1.25;
+		m_pos.y -= 1.25f;
 
-		if (m_pos.y <= 6.0)
+		if (m_pos.y <= 6.0f)
 		{
 			m_pos.y = 6.0f;
 			m_size = GetSize();

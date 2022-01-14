@@ -44,8 +44,8 @@ public:
 		TEXTURE_PARTICLE_ARROW,		// パーティクル*矢
 		TEXTURE_PARTICLE_TRUMP,		// パーティクル*トランプ
 		TEXTURE_PARTICLE_GURUGURU,	// ぐるぐる
-
 		TEXTURE_PARTICLE_SLASH,		// 斬撃エフェクト
+
 		TEXTURE_NUMBER,				// ナンバー
 		TEXTURE_FRAME,				// 枠
 		TEXTURE_CROSS_MARK,			// ×マーク
@@ -100,7 +100,7 @@ public:
 	// テクスチャ種類
 	typedef enum
 	{
-		
+		TEXTURE_CUBE_SLY,        // キューブテクスチャ(空)
 		TEXTURE_CUBE_MAX              // テクスチャ数
 	}TEXTURE_CUBE_TYPE;
 

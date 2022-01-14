@@ -41,7 +41,6 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/guruguru.png",//ぐるぐる
 	"./data/Textures/effect/slash.png",//斬撃エフェクト
 	"./data/Textures/number.png",			// ナンバー
-
 	"./data/Textures/frame.png",            // 枠
 	"./data/Textures/cross_mark.png",       // バツマーク
 	"./data/Textures/needle_hole.png",      // とげ穴
@@ -64,9 +63,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/icon_bg.png",	          // アイコンの背景
 	"./data/Textures/sword_icon.png",	      // 剣アイコン
 	"./data/Textures/stage_name.png",	      // ステージ名
-	
 	"./data/Textures/00_ready.png",	          // ready
-	
 	"./data/Textures/01_go!!.png",			  // go
 	"./data/Textures/00_finish.png",		  // finish
 	"./data/Textures/00_nanbyou.png",		  // 残り何秒

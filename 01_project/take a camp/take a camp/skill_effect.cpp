@@ -52,7 +52,7 @@ CSkill_effect::~CSkill_effect()
 // ê∂ê¨èàóù
 //=============================================================================
 void CSkill_effect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col1, const D3DXCOLOR col2, const D3DXCOLOR col3,const int nlife, const SKILLTYPE type ,CPlayer * pPlayer)
-
+{
 	//É^ÉCÉvÇ≤Ç∆Ç…ê∂ê¨èàóù
 	switch (type)
 	{
@@ -62,7 +62,7 @@ void CSkill_effect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const 
 		break;
 
 	case SKILLTYPE_ARCHER:
-		CSkillArrowRain::Create(pos + ARCHER_CREATE_POS, col1);
+		CSkillArrowRain::Create(pos + ARCHER_CREATE_POS, col1 , pPlayer);
 		break;
 
 	case SKILLTYPE_WIZARD:
@@ -106,7 +106,7 @@ void CSkill_effect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const 
 	case SKILLTYPE_THIER:
 		
 
-				CParticle::Create(pos + SLASH_SKIIL_POSSHIFT, EXPLOSION_SKIIL_MOVE, size, nlife, col3, 0.05, CParticle::PARTICLE_SLASH);
+				CParticle::Create(pos + SLASH_SKIIL_POSSHIFT, EXPLOSION_SKIIL_MOVE, size, nlife, col3, 0.05f, CParticle::PARTICLE_SLASH);
 		
 		break;
 

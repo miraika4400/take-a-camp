@@ -88,7 +88,7 @@ private:
 	virtual void CreateEffect(D3DXVECTOR3 pos ,ATTACK_STATE state); // エフェクト生成
 	virtual void OnceEffect(D3DXVECTOR3 pos);	//	一回だけのエフェクト
     virtual void PlaySE(void) {} // エフェクト生成
-	void		Charge(void);								    // 攻撃のチャージ処理
+
 	CPlayer *		m_pPlayer;												// プレイヤークラス
 	CAttackArea *	m_apAttackArea[MAX_ATTACK_AREA_NUM];					// 攻撃範囲ポインタ
 	CResourceCharacter::CHARACTER_TYPE	m_nAttackType;						// 攻撃タイプ
