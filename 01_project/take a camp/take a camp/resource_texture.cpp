@@ -40,10 +40,11 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/effect/trump.png",		// パーティクル*トランプ
 	"./data/Textures/effect/meteor.png",	// ぐるぐる
 	"./data/Textures/number.png",			// ナンバー
-	"./data/Textures/frame.png",              // 枠
-	"./data/Textures/cross_mark.png",         // バツマーク
-	"./data/Textures/needle_hole.png",        // とげ穴
-	"./data/Textures/move_tile.png",        // 移動タイルの模様
+	"./data/Textures/frame.png",            // 枠
+	"./data/Textures/cross_mark.png",       // バツマーク
+	"./data/Textures/needle_hole.png",      // とげ穴
+	"./data/Textures/move_tile.png",		// 移動タイルのテクスチャ
+	"./data/Textures/warp_tile.png",		// ワープタイルのテクスチャ
 	"./data/Textures/shadow.png",		      // 影
 	"./data/Textures/player_number.png",      // プレイヤー番号
 	"./data/Textures/none_logo.png",	      // NONE
