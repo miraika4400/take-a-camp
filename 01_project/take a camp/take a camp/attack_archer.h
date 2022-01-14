@@ -29,6 +29,8 @@ public:
 
 	static CAttackArcher *Create(CPlayer* pPlayer);
 
+	void PlaySE(void);
+
 private:
 	void CreateEffect(D3DXVECTOR3 pos); // エフェクト生成
 	void OnceEffect(D3DXVECTOR3 pos);// 一回だけのエフェクト

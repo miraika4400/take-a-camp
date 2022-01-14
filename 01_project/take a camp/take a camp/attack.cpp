@@ -363,7 +363,9 @@ void CAttackBased::AttackSwitch(void)
 	
 		// チャージをしているプレイヤーの取得
 		CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
-
+		
+		// SEの再生
+		PlaySE();
 		while (pColorTile != NULL)
 		{
 			//チャージをしているタイル取得
@@ -413,6 +415,8 @@ void CAttackBased::AttackFinalSwitch(void)
 	{
 		//必殺技使用状態に移行
 		m_AttackState = ATTACK_STATE_FINALATTACK;
+		// SEの再生
+		PlaySE();
 	}
 }
 

@@ -25,15 +25,11 @@ CResourceTexture *CResourceTexture::m_pSingleTex = NULL; // テクスチャクラスのポ
 const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 {
 	"./data/Textures/00_title.png",     // タイトル背景
-	"./data/Textures/tutorial_0.png",   // チュートリアル
-    "./data/Textures/tutorial_1.png",   // チュートリアル
-    "./data/Textures/tutorial_2.png",   // チュートリアル
-    "./data/Textures/tutorial_3.png",   // チュートリアル
 	"./data/Textures/frame/knight_flame.png",	   // リザルト(ナイトの背景)
 	"./data/Textures/frame/lancer_flame.png",	   // リザルト(ランサーの背景)
 	"./data/Textures/frame/wizard_flame.png",	   // リザルト(ウィザードの背景)
 	"./data/Textures/frame/thief_flame.png",	   // リザルト(シーフの背景)
-	"./data/Textures/frame/magician_flame.png.png",// リザルト(奇術師の背景)
+	"./data/Textures/frame/magician_flame.png",// リザルト(奇術師の背景)
 	"./data/Textures/frame/archer_flame.png",	   // リザルト(アーチャーの背景)
 	"./data/Textures/kill.png",			// リザルトのキルUI
 	"./data/Textures/tile.png",			// リザルトのタイルUI
@@ -102,7 +98,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/status/04_medium.png",        // 中距離
     "./data/Textures/status/05_long.png",          // 遠距離
     "./data/Textures/navi_attack_area.png", // 攻撃範囲誘導UI
-    
+
 };
 
 // テクスチャのパス
@@ -205,7 +201,7 @@ void CResourceTexture::Load(void)
 	for (int nCnt = 0; nCnt < TEXTURE_MAX; nCnt++)
 	{
 		// テクスチャの生成
-		D3DXCreateTextureFromFile(pDevice, m_aTexPath[nCnt].c_str(), &m_apTexture[nCnt]);
+ 		D3DXCreateTextureFromFile(pDevice, m_aTexPath[nCnt].c_str(), &m_apTexture[nCnt]);
 	}
 
 	// テクスチャ数分ループ

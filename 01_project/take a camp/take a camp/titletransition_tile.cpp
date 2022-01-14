@@ -27,7 +27,6 @@
 //====================================================
 CTitleTransitionTile::CTitleTransitionTile()
 {
-	m_pCrossPolygon = NULL;
 	m_nPlayerCount = 0;
 }
 
@@ -74,7 +73,7 @@ HRESULT CTitleTransitionTile::Init(void)
 	}
 
 	// タイルの色のセット
-	SetColor(TILE_COLOR);
+	SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
 	return S_OK;
 }
@@ -96,27 +95,36 @@ void CTitleTransitionTile::Update(void)
 	// タイルの更新
 	CTile::Update();
 
-	// このタイルの当たり判定
-	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
-	while (pPlayer != NULL)
+	CTutorial * pTutorial = CManager::GetTutorial();
+	if (pTutorial &&
+		pTutorial->GetTutorialPhase() == CTutorial::PHASE_FINISH)
 	{
-		// このタイルに載ったら
-		if (CCollision::CollisionSphere(GetCollision(), pPlayer->GetCollision()))
-		{
-			CManager::GetFade()->SetFade(CManager::MODE_TITLE);
-		}
-		pPlayer = (CPlayer*)pPlayer->GetNext();
-	}
 
-	// チュートリアル中だったら
-	CTutorial * pTutrial = CManager::GetTutorial();
-	if (pTutrial)
-	{
-		// フェーズがすべて終了したとき
-		if (pTutrial->GetTutorialPhase() == CTutorial::PHASE_FINISH)
+		// タイルの色のセット
+		SetColor(TILE_COLOR);
+
+		// このタイルの当たり判定
+		CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+		while (pPlayer != NULL)
 		{
-			// 載れるようにする
-			SetRide(false);
+			// このタイルに載ったら
+			if (CCollision::CollisionSphere(GetCollision(), pPlayer->GetCollision()))
+			{
+				CManager::GetFade()->SetFade(CManager::MODE_TITLE);
+			}
+			pPlayer = (CPlayer*)pPlayer->GetNext();
+		}
+
+		// チュートリアル中だったら
+		CTutorial * pTutrial = CManager::GetTutorial();
+		if (pTutrial)
+		{
+			// フェーズがすべて終了したとき
+			if (pTutrial->GetTutorialPhase() == CTutorial::PHASE_FINISH)
+			{
+				// 載れるようにする
+				SetRide(false);
+			}
 		}
 	}
 }

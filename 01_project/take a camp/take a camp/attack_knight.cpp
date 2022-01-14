@@ -60,23 +60,35 @@ void CAttackKnight::CreateEffect(D3DXVECTOR3 pos)
 	CPlayer *pPlaryer = GetPlayer();
 	int nLevel = GetLevel();
 
-	// サウンド情報の取得
-	CSound *pSound = CManager::GetSound();
-
 	//エフェクト生成
 	CSkill_effect::Create(pPlaryer->GetPos() + pos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
 		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() - 1),
 		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), CSkill_effect::SKILLTYPE_KNIGHT);
+}
 
-	//if (nLevel < 3)
-	//{
-	//	// SE再生
-	//	pSound->Play(CSound::LABEL_SE_KENSI_ATTACK);
-	//}
+//=============================================================================
+// SE再生
+//=============================================================================
+void CAttackKnight::PlaySE(void)
+{
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
 
-	//if (nLevel == 3)
-	//{
-	//	pSound->Play(CSound::LABEL_SE_KENSI_FINALATTACK);
-	//}
+	// レベル情報の取得
+	int nLevel = GetLevel();
+
+	// 通常攻撃なら
+	if (nLevel < MAX_LEVEL)
+	{
+		// SE再生
+		pSound->Play(CSound::LABEL_SE_KENSI_ATTACK);
+	}
+	//　必殺なら
+	else
+	{
+		// SE再生
+		pSound->Play(CSound::LABEL_SE_KENSI_FINALATTACK);
+	}
+
 }
 

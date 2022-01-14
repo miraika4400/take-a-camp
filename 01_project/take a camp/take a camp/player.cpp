@@ -633,6 +633,7 @@ void CPlayer::Attack(void)
 			//アニメーション処理
 			GetMotion(CResourceCharacter::MOTION_ATTACK)->SetActiveMotion(true);
 
+
 		}
 	}
 }
@@ -797,7 +798,8 @@ void CPlayer::ManageState(void)
 
 		//攻撃可否フラグが立っているか
 		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
-			&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK)
+			&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK
+			&& TutorialControll(CTutorial::PHASE_PAINT))
 		{
 			// 移動処理
 			ControlMove();
@@ -810,13 +812,15 @@ void CPlayer::ManageState(void)
 				m_pAttack->CancelSwitch();
 			}
 			//攻撃をチャージしていないとき
-			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE)
+			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE
+				&& TutorialControll(CTutorial::PHASE_FINALATTACK))
 			{
 				// 必殺の処理
 				AttackFinal();
 			}
 			//必殺技を使っていないとき
-			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
+			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACKWAITING
+				&& TutorialControll(CTutorial::PHASE_ATTACK))
 			{
 				// 攻撃処理
 				Attack();

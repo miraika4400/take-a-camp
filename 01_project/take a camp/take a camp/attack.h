@@ -26,6 +26,7 @@ class CPeintCollision;
 #define MAX_ATTACK (4)	//攻撃の最大回数
 #define MAX_ATTACK_AREA_NUM (128)
 #define MAX_FINAL_PEINT	(128)
+#define MAX_LEVEL  (3)  // 最大レベル
 
 //=============================================================================
 // クラス定義
@@ -86,7 +87,7 @@ private:
 	void		Charge(void);					// 攻撃のチャージ処理
 	virtual void CreateEffect(D3DXVECTOR3 pos);	// エフェクト生成
 	virtual void OnceEffect(D3DXVECTOR3 pos);	//	一回だけのエフェクト
-
+    virtual void PlaySE(void) {} // エフェクト生成
 
 	CPlayer *		m_pPlayer;												// プレイヤークラス
 	CAttackArea *	m_apAttackArea[MAX_ATTACK_AREA_NUM];					// 攻撃範囲ポインタ
