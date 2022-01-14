@@ -123,22 +123,34 @@ void CButton_Title::Select(void)
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 	CInputJoypad * pJoypad = CManager::GetJoypad();
 
+	// 上キーを押したとき
+	if (pKey->GetKeyTrigger(DIK_UP))
+	{
+		// 現在のボタンを減算する
+		m_nButton--;
+	}
+
+	// 下キーを押したとき
+	if (pKey->GetKeyTrigger(DIK_DOWN))
+	{
+		// 現在のボタンを加算する
+		m_nButton++;
+	}
+
 	for (int nControllNum = 0; nControllNum < XUSER_MAX_COUNT; nControllNum++)
 	{
 		// スティックの座標
 		D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, nControllNum);
 
 		// 上キーを押したとき
-		if (pKey->GetKeyTrigger(DIK_UP)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, CInputJoypad::BUTTON_TRIGGER, nControllNum))
+		if (pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, CInputJoypad::BUTTON_TRIGGER, nControllNum))
 		{
 			// 現在のボタンを減算する
 			m_nButton--;
 		}
 
 		// 下キーを押したとき
-		if (pKey->GetKeyTrigger(DIK_DOWN)
-			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, CInputJoypad::BUTTON_TRIGGER, nControllNum))
+		if (pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, CInputJoypad::BUTTON_TRIGGER, nControllNum))
 		{
 			// 現在のボタンを加算する
 			m_nButton++;
