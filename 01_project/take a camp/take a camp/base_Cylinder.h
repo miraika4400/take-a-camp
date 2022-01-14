@@ -69,7 +69,7 @@ public:
 	void SetRowRot(const float rot) { m_fRowRot = rot; }
 
 	void SetAddMode(bool bBool) { m_bAddMode = bBool; }
-	void SetTextureUV(const float pos); // テクスチャのUV座標のセット
+	void SetTextureUV(const float High, const float low); // テクスチャのUV座標のセット
 private:
 	//============
 	// メンバ変数

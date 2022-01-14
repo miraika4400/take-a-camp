@@ -9,10 +9,13 @@
 //インクルードファイル
 //=============================================================================
 #include "skill_circle.h"
+#include "skill_effect.h"
 #include "base_Cylinder.h"
 #include "resource_texture.h"
 #include "manager.h"
 #include "renderer.h"
+#include "player.h"
+#include "color_manager.h"
 //=============================================================================
 //静的メンバー変数
 //=============================================================================
@@ -42,6 +45,7 @@ CSkill_circle::CSkill_circle(int nPliority)
 	m_mtxWorld = {};
 	m_bAddMode = false;
 	m_type = EFFECTTYPE_SKIIL;
+	m_bEffectTrigger = false;
 }
 
 //=============================================================================
@@ -54,7 +58,7 @@ CSkill_circle::~CSkill_circle()
 //=============================================================================
 //生成処理関数
 //=============================================================================
-CSkill_circle * CSkill_circle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col,const int nlife, const EFFECTTYPE type)
+CSkill_circle * CSkill_circle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col,const int nlife, const EFFECTTYPE type, CPlayer * pPlayer)
 {
 	//インスタンス生成
 	CSkill_circle *pSkill_circle;
@@ -62,7 +66,7 @@ CSkill_circle * CSkill_circle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 s
 
 	//タイプ代入
 	pSkill_circle->m_type = type;
-
+	pSkill_circle->SetPlayer(pPlayer);
 	//初期化処理
 	pSkill_circle->Init();
 
@@ -99,6 +103,13 @@ CSkill_circle * CSkill_circle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 s
 		pSkill_circle->SetRowRot(EXPLOSION_SKIIL_IMPACT_ROWROT);
 		break;
 
+
+	case EFFECTTYPE_IMPACT:
+		pSkill_circle->SetHighRot(EXPLOSION_SKIIL_CENTER_HIGHROT);
+		pSkill_circle->SetRowRot(EXPLOSION_SKIIL_CENTER_ROWROT);
+		pSkill_circle->SetTextureUV(EXPLOSION_SKIIL_METEOR_IMPACT_UV1, EXPLOSION_SKIIL_METEOR_IMPACT_UV2);
+		break;
+
 	default:
 		break;
 	}
@@ -114,7 +125,7 @@ CSkill_circle * CSkill_circle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 s
 	//カラー設定 
 	pSkill_circle->SetColor(col);
 	pSkill_circle->m_col = col;
-
+	pSkill_circle->m_nLife = nlife;
 
 
 	return pSkill_circle;
@@ -135,6 +146,8 @@ HRESULT CSkill_circle::Init(void)
 	m_apTexture[EFFECTTYPE_METEOR] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SKILL);
 	m_apTexture[EFFECTTYPE_METEOR_CENTER] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SKILL);
 	m_apTexture[EFFECTTYPE_METEOR_IMPACT] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SKILL);
+	m_apTexture[EFFECTTYPE_IMPACT] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_SKILL);
+	
 
 	//テクスチャ割り当て
 
@@ -155,12 +168,14 @@ void CSkill_circle::Uninit(void)
 //更新処理関数
 //=============================================================================
 void CSkill_circle::Update(void)
-{
+{	
+	
+	CPlayer *pPlaryer = GetPlayer();
 	bool bUse = true;
 
 	m_pos = GetPos();
 	m_size = GetSize();
-	
+	m_col = GetColor();
 	
 
 
@@ -169,7 +184,7 @@ void CSkill_circle::Update(void)
 	{
 	case EFFECTTYPE_SKIIL:
 		
-		m_col.a -= 0.02;
+		m_col.a -= 0.009;
 		m_fRotAngle += 0.5f;
 		m_rot.y += 0.05f;
 		m_size.x += 0.1f;
@@ -177,6 +192,8 @@ void CSkill_circle::Update(void)
 		SetPos(m_pos);
 		SetSize(m_size);
 		SetRot(m_rot);
+		SetColor(m_col);
+
 		SetAddRotValue(m_fRotAngle);
 		if (m_fRotAngle >= 5.0f)
 		{
@@ -185,15 +202,17 @@ void CSkill_circle::Update(void)
 		break;
 	case EFFECTTYPE_SKIILMINI:
 		
-		m_col.a -= 0.02;
-		m_fRotAngle += 0.075f;
+		m_col.a -= 0.009;
+		m_fRotAngle += 0.1f;
 		m_rot.y -= 0.05f;
 		m_size.x += 0.1f;
 		m_size.z += 0.1f;
 		SetPos(m_pos);
 		SetSize(m_size);
 		SetRot(m_rot);
+		SetColor(m_col);
 		SetAddRotValue(m_fRotAngle);
+		                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 		if (m_fRotAngle >= 5.0f)
 		{
 			m_fRotAngle = 5.0f;
@@ -202,46 +221,79 @@ void CSkill_circle::Update(void)
 
 	case EFFECTTYPE_METEOR:
 
-		m_nLife--;
+		m_col.a -= 0.01;
 		m_rot.y-= 0.05f;
 		m_size.x += 0.05f;
 		m_size.z += 0.05f;
+
 		SetPos(m_pos);
 		SetSize(m_size);
 		SetRot(m_rot);
-
+		SetColor(m_col);
 		break;
 
 	case EFFECTTYPE_METEOR_CENTER:
 
-		m_nLife--;
+		m_col.a -= 0.009;
 		m_rot.y -= 0.05f;
 		m_size.x += 0.0001f;
-		m_size.y += 2.0f;
+		m_size.y += 1.0f;
 		m_size.z += 0.0001f;
-		m_pos.y += 2.0f;
+		m_pos.y += 1.0f;
 		
 		SetPos(m_pos);
 		SetSize(m_size);
 		SetRot(m_rot);
-
+		SetColor(m_col);
 		break;
 
 	case EFFECTTYPE_METEOR_IMPACT:
 
-		m_nLife--;
+		m_col.a -= 0.01;
 		m_rot.y -= 0.05f;
-		m_size.x += 0.25f;
-		m_size.z += 0.25f;
+		m_size.x += 0.15f;
+		m_size.z += 0.15f;
+
 		SetPos(m_pos);
 		SetSize(m_size);
 		SetRot(m_rot);
+		SetColor(m_col);
+		break;
 
+	case EFFECTTYPE_IMPACT:
+
+		m_col.a -= 0.03;
+		m_size.y += 0.25f;
+		m_pos.y -= 1.25;
+
+		if (m_pos.y <= 6.0)
+		{
+			m_pos.y = 6.0f;
+			m_size = GetSize();
+
+			m_bEffectTrigger = true;
+			
+		}
+
+		SetPos(m_pos);
+		SetSize(m_size);
+		SetRot(m_rot);
+		SetColor(m_col);
 		break;
 
 	default:
 		break;
 	}
+
+	if (m_bEffectTrigger)
+	{
+		SetTextureUV(EXPLOSION_SKIIL_METEOR_IMPACT_UV2, EXPLOSION_SKIIL_METEOR_IMPACT_UV1);
+		CSkill_circle::Create(m_pos, WIZARD_EFFECT_SIZE + EXPLOSION_SKIIL_IMPACT_SIZE - EXPLOSION_SKIIL_IMPACT_SIZESHIFT, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 1), m_nLife, CSkill_circle::EFFECTTYPE_METEOR_IMPACT, pPlaryer);
+		CSkill_circle::Create(m_pos, WIZARD_EFFECT_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 2), m_nLife, CSkill_circle::EFFECTTYPE_METEOR, pPlaryer);
+		
+		bUse = false;
+	}
+
 	if (m_nLife <= 0 || m_col.a <= 0)
 	{
 		bUse = false;

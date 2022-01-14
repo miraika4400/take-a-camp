@@ -26,7 +26,7 @@ public:
 	static CAttackMagician *Create(CPlayer* pPlayer);
 
 private:
-	void CreateEffect(D3DXVECTOR3 pos); // エフェクト生成
+	void CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state); // エフェクト生成
 
 };
 #endif

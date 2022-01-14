@@ -45,6 +45,7 @@ public:
 		TEXTURE_PARTICLE_METEOR,	// パーティクル*爆発
 		TEXTURE_PARTICLE_METEOR_SHADOW,	// パーティクル*爆発
 		TEXTURE_PARTICLE_GURUGURU,	// ぐるぐる
+		TEXTURE_PARTICLE_SLASH,		// 斬撃エフェクト
 		TEXTURE_NUMBER,				// ナンバー
 		TEXTURE_FRAME,				// 枠
 		TEXTURE_CROSS_MARK,			// ×マーク

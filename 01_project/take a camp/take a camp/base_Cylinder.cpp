@@ -227,7 +227,7 @@ void Cbase_Cylinder::SetPos(const D3DXVECTOR3 pos)
 	{	// 頂点座標の設定
 		FLOAT theta = (2 * D3DX_PI * nCnt) / (NUM_CYL_VERTEX - 2);
 
-		pVtx[2 * nCnt + 0].pos = D3DXVECTOR3(sinf(theta) * (float)+(m_size.x / 2.0f) * (m_fHighRot + m_fRotAngle), + m_size.y , cosf(theta) * ((float)m_size.z / 2.0f)* (m_fHighRot + m_fRotAngle));
+		pVtx[2 * nCnt + 0].pos = D3DXVECTOR3(sinf(theta) * (float)+(m_size.x / 2.0f) * (m_fHighRot + m_fRotAngle), + m_size.y, cosf(theta) * ((float)m_size.z / 2.0f)* (m_fHighRot + m_fRotAngle));
 		pVtx[2 * nCnt + 1].pos = D3DXVECTOR3(sinf(theta) * (float)+(m_size.x / 2.0f) *  m_fRowRot                , - m_size.y, cosf(theta) * ((float)m_size.z / 2.0f)*  m_fRowRot);
     }
 
@@ -268,17 +268,17 @@ void Cbase_Cylinder::SetColor(const D3DXCOLOR col)
 //=============================================================================
 // 座標のセット
 //=============================================================================
-void Cbase_Cylinder::SetTextureUV(const float pos)
+void Cbase_Cylinder::SetTextureUV(const float High, const float low)
 {
 	VERTEX_3D *pVtx;// 頂点情報ポインタ
 
 	// ロック
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	for (int nCnt = 0; nCnt < NUM_CYL_VERTEX * 2; nCnt++)
+	for (int nCnt = 0; nCnt < NUM_CYL_VERTEX; nCnt++)
 	{
-		pVtx[2 * nCnt + 0].tex = D3DXVECTOR2(((FLOAT)nCnt) / (NUM_CYL_VERTEX - 1) + pos, 0.0f);
-		pVtx[2 * nCnt + 1].tex = D3DXVECTOR2(((FLOAT)nCnt) / (NUM_CYL_VERTEX - 1) + pos, 1.0f);
+		pVtx[2 * nCnt + 0].tex = D3DXVECTOR2(((FLOAT)nCnt) / (NUM_CYL_VERTEX - 1) , High);
+		pVtx[2 * nCnt + 1].tex = D3DXVECTOR2(((FLOAT)nCnt) / (NUM_CYL_VERTEX - 1) , low);
 	}
 	// アンロック
 	m_pVtxBuff->Unlock();

@@ -19,8 +19,11 @@
 //マクロ定義
 //*****************************
 #define EFFECT_DEFAULT_FADE_OUT_RATE 0.006f                               // フェードアウト割合
-
-
+#define TEXTURE_ANIMA_PATTERN (20)
+#define TEXTURE_ANIMA_LATE (1)
+#define TEXTURE_ANIMA_CREATE_POINT (8)
+#define EFFECT_NUM_MAX (10)
+#define EFFECT_MAX (8)
 
 //*****************************
 // クラス定義
@@ -42,6 +45,7 @@ public:
 		PARTICLE_METEOR, // 爆発
 		PARTICLE_METEOR_SHADOW, // 爆発の影
 		PARTICLE_GURUGURU,
+		PARTICLE_SLASH,
 		PARTICLE_MAX,     // タイプの最大数
 	}PARTICLE_TYPE;
 
@@ -72,11 +76,18 @@ private:
 	LPDIRECT3DTEXTURE9 m_apTexture[PARTICLE_MAX]; // テクスチャ
 	D3DXVECTOR3   m_move;	 	  // 移動量
 	D3DXVECTOR3   m_size;		  // 大きさ
+	D3DXVECTOR3	  m_pos;		  // 位置
+	D3DXVECTOR3	  m_posOld;		  // 初期位置
 
 	int           m_nLife;	  	  // 寿命
+	int			  m_nPattern;	  //アニメーションのパターン
+	int			  m_nEffectId;	  //エフェクトのiD
+	static int    m_nEffectIdAII; //エフェクトの総数
+	int			  m_nAnimation;   //アニメーションの時間カウント
 	float		  m_fRotAngle;	  // 回転角度
 	float		  m_fFadeout;	  // フェードアウト　
-	bool		  m_bFadeoutFlag; // フェードアウトの7フラグ
+	bool		  m_bFadeoutFlag; // フェードアウトのフラグ
+	bool          m_bAnimation;	  // アニメーションしていいか
 	D3DXCOLOR	  m_col;		  // 色
 	PARTICLE_TYPE m_type;		  // パーティクルの種類
 };

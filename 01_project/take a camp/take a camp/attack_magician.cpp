@@ -52,12 +52,14 @@ CAttackMagician * CAttackMagician::Create(CPlayer* pPlayer)
 //=============================================================================
 // エフェクト生成
 //=============================================================================
-void CAttackMagician::CreateEffect(D3DXVECTOR3 pos)
+void CAttackMagician::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
 {
 	//プレイヤーのポインタ
 	CPlayer *pPlaryer = GetPlayer();
 	//エフェクト生成
-	CSkill_effect::Create(pPlaryer->GetPos() + pos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
+	CSkill_effect::Create(pPlaryer->GetPos() + pos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, 
+	GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
 	GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() - 1),
-	GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), MAGICIAN_EFFECT_LIFE, CSkill_effect::SKILLTYPE_ARCHER);
+	GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), 
+	MAGICIAN_EFFECT_LIFE, CSkill_effect::SKILLTYPE_ARCHER, GetPlayer());
 }

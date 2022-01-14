@@ -276,10 +276,10 @@ void CBillboard::SetTextureManualUV(const int nPattern, const int nNum)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// テクスチャUV座標の設定
-	pVtx[0].tex = D3DXVECTOR2(0.0f + ((1.0f / nPattern) * nNum), 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(0.1f + ((1.0f / nPattern) * nNum), 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f + ((1.0f / nPattern) * nNum), 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(0.1f + ((1.0f / nPattern) * nNum), 1.0f);
+	pVtx[0].tex = D3DXVECTOR2(((1.0f / nPattern) * nNum), 0.0f);
+	pVtx[1].tex = D3DXVECTOR2(((1.0f / nPattern) * (nNum + 1)), 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(((1.0f / nPattern) * nNum), 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(((1.0f / nPattern) * (nNum + 1)), 1.0f);
 
 	m_pVtxBuff->Unlock();
 }

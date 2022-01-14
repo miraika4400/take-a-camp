@@ -17,16 +17,19 @@
 #include "main.h"
 #include "scene.h"
 #include "base_Cylinder.h"
+#include "skill_circle.h"
 //*****************************
 //マクロ定義
 //*****************************
 
+#define THIEF_EFFECT_POS D3DXVECTOR3(0.0f, 6.0f, 0.0f)
+#define THIEF_EFFECT_SIZE D3DXVECTOR3(15.0f, 15.0f, 0.0f)
 
-#define WIZARD_EFFECT_POS D3DXVECTOR3(0.0f, 0.0f, 0.0f)
+#define WIZARD_EFFECT_POS D3DXVECTOR3(0.0f, 6.0f, 0.0f)
 #define WIZARD_EFFECT_SIZE D3DXVECTOR3(7.5f, 4.5f, 7.5f)
 
-#define KNIGHT_EFFECT_POS D3DXVECTOR3(0.0f, 0.0f, 0.0f)
-#define KNIGHT_EFFECT_SIZE D3DXVECTOR3(8.5f,6.5f,8.5f)
+#define KNIGHT_EFFECT_POS D3DXVECTOR3(0.0f, 6.0f, 0.0f)
+#define KNIGHT_EFFECT_SIZE D3DXVECTOR3(4.5f,4.5f,4.5f)
 
 #define KNIGHT_EFFECT_LIFE (50)
 #define ARCHER_EFFECT_LIFE (50)
@@ -34,6 +37,11 @@
 #define LANCER_EFFECT_LIFE (50)
 #define MAGICIAN_EFFECT_LIFE (50)
 #define THIER_EFFECT_LIFE (50)
+
+//*****************************
+// 前方宣言
+//*****************************
+class CPlayer;
 
 //=============================================================================
 // クラス定義
@@ -59,6 +67,7 @@ public:
 		SKILLTYPE_KNIGHT = 0,
 		SKILLTYPE_ARCHER,
 		SKILLTYPE_WIZARD,
+		SKILLTYPE_WIZARD_FINALATTACK,
 		SKILLTYPE_LANCER,
 		SKILLTYPE_MAGICIAN,
 		SKILLTYPE_THIER,
@@ -66,9 +75,8 @@ public:
 	}SKILLTYPE;
 
 	// static
-	static void Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col1 ,const D3DXCOLOR col2 ,const D3DXCOLOR col3,const int nlife, const SKILLTYPE type); // クラス生成
+	static void Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col1 ,const D3DXCOLOR col2 ,const D3DXCOLOR col3,const int nlife, const SKILLTYPE type, CPlayer * pPlayer); // クラス生成
 
-	HRESULT Init(void); // 初期化
 
 private:
 	//============

@@ -54,14 +54,14 @@ CAttackKnight * CAttackKnight::Create(CPlayer* pPlayer)
 //=============================================================================
 // エフェクト生成
 //=============================================================================
-void CAttackKnight::CreateEffect(D3DXVECTOR3 pos)
+void CAttackKnight::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
 {
 	//プレイヤーのポインタ
 	CPlayer *pPlaryer = GetPlayer();
 	//エフェクト生成
-	CSkill_effect::Create(pPlaryer->GetPos() + pos + KNIGHT_EFFECT_POS, KNIGHT_EFFECT_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
-	GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() - 1),
-	GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), KNIGHT_EFFECT_LIFE, CSkill_effect::SKILLTYPE_KNIGHT);
+	CSkill_effect::Create(pPlaryer->GetPos() + pos + KNIGHT_EFFECT_POS, KNIGHT_EFFECT_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 0),
+	GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 1),
+	GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 2), KNIGHT_EFFECT_LIFE, CSkill_effect::SKILLTYPE_KNIGHT, GetPlayer());
 }
 
 //

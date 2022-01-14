@@ -82,7 +82,7 @@ public:
 	// 攻撃タイプ
 	void		SetType(CResourceCharacter::CHARACTER_TYPE type) { m_nAttackType = type; }
 private:
-	virtual void CreateEffect(D3DXVECTOR3 pos); // エフェクト生成
+	virtual void CreateEffect(D3DXVECTOR3 pos ,ATTACK_STATE state); // エフェクト生成
 	void		Charge(void);								    // 攻撃のチャージ処理
 
 	CPlayer *		m_pPlayer;												// プレイヤークラス
@@ -101,6 +101,9 @@ private:
 	int				m_nCancelCount;						// キャンセルカウント
 	int				m_nAttackCount;		//攻撃までのカウント
 	int				m_nType;			//攻撃の間隔用のタイプ
+	int				m_nEffectCount;		//エフェクト出すまでのカウント
+
+	
 
 };
 

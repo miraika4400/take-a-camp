@@ -304,7 +304,7 @@ void CAttackBased::ChargeFlag(void)
 //=============================================================================
 // エフェクト生成
 //=============================================================================
-void CAttackBased::CreateEffect(D3DXVECTOR3)
+void CAttackBased::CreateEffect(D3DXVECTOR3 , ATTACK_STATE)
 {
 }
 
@@ -462,16 +462,33 @@ void CAttackBased::AttackCreate(void)
 			{
 				for (int nCnt = 0; nCnt < m_AttackSquare[m_nLevel].nMaxHitRange; nCnt++)
 				{
-					if (GetAttackSquare().SquareData[nCnt].RangeType == m_nType + 2)
+					if (GetState() == ATTACK_STATE_FINALATTACK)
 					{
-						//行列計算
-						D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-						D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nCnt].AttackPos * TILE_ONE_SIDE;
-						CreatePos.x = ((cosf(pPlaryer->GetRotDest().y)*AttackPos.x) + (sinf(pPlaryer->GetRotDest().y)*AttackPos.z));
-						CreatePos.y = 1 * AttackPos.y;
-						CreatePos.z = ((-sinf(pPlaryer->GetRotDest().y)*AttackPos.x) + (cosf(pPlaryer->GetRotDest().y)*AttackPos.z));
+						if (GetAttackSquare().SquareData[nCnt].RangeType == m_nType + 2)
+						{
+							//行列計算
+							D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+							D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nCnt].AttackPos * TILE_ONE_SIDE;
+							CreatePos.x = ((cosf(pPlaryer->GetRotDest().y)*AttackPos.x) + (sinf(pPlaryer->GetRotDest().y)*AttackPos.z));
+							CreatePos.y = 1 * AttackPos.y;
+							CreatePos.z = ((-sinf(pPlaryer->GetRotDest().y)*AttackPos.x) + (cosf(pPlaryer->GetRotDest().y)*AttackPos.z));
 
-						CreateEffect(CreatePos);
+							CreateEffect(CreatePos, GetState());
+						}
+					}
+					else
+					{
+						if (GetAttackSquare().SquareData[nCnt].RangeType == m_nType + 2)
+						{
+							//行列計算
+							D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+							D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nCnt].AttackPos * TILE_ONE_SIDE;
+							CreatePos.x = ((cosf(pPlaryer->GetRotDest().y)*AttackPos.x) + (sinf(pPlaryer->GetRotDest().y)*AttackPos.z));
+							CreatePos.y = 1 * AttackPos.y;
+							CreatePos.z = ((-sinf(pPlaryer->GetRotDest().y)*AttackPos.x) + (cosf(pPlaryer->GetRotDest().y)*AttackPos.z));
+
+							CreateEffect(CreatePos, GetState());
+						}
 					}
 				}
 			}
@@ -488,7 +505,7 @@ void CAttackBased::AttackCreate(void)
 						CreatePos.y = 1 * AttackPos.y;
 						CreatePos.z = ((-sinf(pPlaryer->GetRotDest().y)*AttackPos.x) + (cosf(pPlaryer->GetRotDest().y)*AttackPos.z));
 
-						CreateEffect(CreatePos);
+						CreateEffect(CreatePos,GetState());
 					}
 				}
 

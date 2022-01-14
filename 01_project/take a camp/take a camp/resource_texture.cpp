@@ -42,6 +42,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/effect/meteor.png",			// パーティクル*爆発
 	"./data/Textures/effect/meteor_shadow.png",			// パーティクル*爆発
 	"./data/Textures/guruguru.png",			//ぐるぐる
+	"./data/Textures/effect/slash.png",	//斬撃エフェクト
 	"./data/Textures/number.png",			// ナンバー
 	"./data/Textures/frame.png",              // 枠
 	"./data/Textures/cross_mark.png",         // バツマーク
