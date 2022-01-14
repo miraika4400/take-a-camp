@@ -43,7 +43,7 @@ public:
 	//============
 	CSkillgauge();
 	~CSkillgauge();
-	static CSkillgauge* AllCreate(const int nPlayerNum);
+	static CSkillgauge *Create(const D3DXVECTOR3 size, const D3DXCOLOR col, const int nPlayerNum, const SKILLGAUGE_TYPE SkillGaugeType); // クラス生成
 
 	HRESULT Init(void); // 初期化
 	void Uninit(void);	// 終了
@@ -56,7 +56,6 @@ private:
 	//============
 	// メンバ関数
 	//============
-	static CSkillgauge *Create(const D3DXVECTOR3 size, const D3DXCOLOR col, const int nPlayerNum, const SKILLGAUGE_TYPE SkillGaugeType); // クラス生成
 	CPlayer *GetPlayerinfo(int nPlayerNum);
 	void UpdateStencil(void); // ステンシルの更新処理
 	void SetPolygonPos(void); // ステンシルを表示する座標

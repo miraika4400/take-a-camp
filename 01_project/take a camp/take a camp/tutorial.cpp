@@ -30,6 +30,7 @@
 #include "resource_text.h"
 #include "paintnum.h"
 #include "skill_gauge.h"
+#include "all_skill_gauge.h"
 #include "map.h"
 #include "resource_map.h"
 #include "dummy.h"
@@ -471,7 +472,7 @@ void CTutorial::Max_Playergauge(void)
 	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
 	while (pPlayer)
 	{
-		pPlayer->GetSkillgauge()->SkillGauge_Max();
+		pPlayer->GetAllSkillgauge()->GetSkillgaugeStencil()->SkillGauge_Max();
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
 }

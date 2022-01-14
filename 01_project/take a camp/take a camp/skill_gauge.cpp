@@ -24,8 +24,6 @@
 // マクロ定義
 //==================================
 #define SKILLGAUGE_ADDPOS (D3DXVECTOR3(0.0f, 35.0f, 0.0f)) // スキルゲージの座標
-#define SKILLGAUGE_SIZE (D3DXVECTOR3(20.0f, 20.0f, 0.0f))  // スキルゲージの大きさ
-#define DEFAULT_COLOR (D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f))  // 色の初期値
 #define SKILLGAUGE_FLAME (60.0f)                           // フレーム数
 #define REPAINT_RATE (5.0f)                                // 塗替えした際の倍率
 #define MINORADJUSSTMENT_POS (D3DXVECTOR3(0.5f,1.0f,0.0f)) // 微調整用の座標
@@ -49,19 +47,6 @@ CSkillgauge::CSkillgauge()
 //==================================
 CSkillgauge::~CSkillgauge()
 {
-}
-
-//==================================
-// スキルゲージすべてのクリエイト
-// nPlayerNum：プレイヤーの番号
-//==================================
-CSkillgauge* CSkillgauge::AllCreate(const int nPlayerNum)
-{
-	// アイコンとステンシル
-	CSkillgauge::Create(SKILLGAUGE_SIZE, DEFAULT_COLOR, nPlayerNum, CSkillgauge::SKILLGAUGE_ICON);
-	CSkillgauge * pSkillgauge = CSkillgauge::Create(SKILLGAUGE_SIZE, GET_COLORMANAGER->GetIconColor(nPlayerNum), nPlayerNum, CSkillgauge::SKILLGAUGE_STENCIL);
-
-	return pSkillgauge;
 }
 
 //======================================
