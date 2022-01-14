@@ -22,6 +22,7 @@
 #include "kill_count.h"
 #include "player_model.h"
 #include "motion.h"
+#include "sound.h"
 
 //**********************************
 // マクロ定義
@@ -225,7 +226,6 @@ void CResultGraph::CreatePolygon(void)
 			m_aGauge[nCntPlayer][nCntGauge].pGauge = CGauge::Create(D3DXVECTOR3(posX, GAUGE_POS_Y, 0.0f), fWight, fHeight, m_fMaxNum, col);
 			// 目標値の設定
 			m_aGauge[nCntPlayer][nCntGauge].pGauge->SetValueDist(CColorTile::GetTileNum(m_aGauge[nCntPlayer][nCntGauge].m_nColorNum) + MIN_POINT);
-
 		}
 
 		// キャラクターポリゴンの生成
@@ -254,7 +254,13 @@ void CResultGraph::CreatePolygon(void)
 //==================================
 void CResultGraph::ManageGraph(void)
 {
+    if (!m_nActionCnt && m_nActionRank > 0)
+    {
+        CManager::GetSound()->Play(CSound::LABEL_SE_GAUGE);
+    }
+
 	m_nActionCnt++;
+
 	if (m_nActionCnt >= RANK_ANNOUNCEMENT_COUNT && (int)m_aRankData.size() == m_nActionRank)
 	{
 		m_nActionCnt = 0;
