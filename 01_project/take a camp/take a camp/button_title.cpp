@@ -14,6 +14,7 @@
 #include "manager.h"
 #include "fade.h"
 #include "resource_texture.h"
+#include "sound.h"
 
 //=============================================================================
 // マクロ定義
@@ -122,6 +123,8 @@ void CButton_Title::Select(void)
 	// キーボードとジョイパッドの取得
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 	CInputJoypad * pJoypad = CManager::GetJoypad();
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
 
 	// 上キーを押したとき
 	if (pKey->GetKeyTrigger(DIK_UP))
@@ -186,6 +189,10 @@ void CButton_Title::Select(void)
 				CManager::GetFade()->SetFade(CManager::MODE_CHARA_SELECT);
 				CManager::SetDecMode(CManager::MODE_TUTORIAL);
 			}
+
+			// SE再生
+			pSound->Play(CSound::LABEL_SE_BUTTON);
+
 		}
 	}
 }

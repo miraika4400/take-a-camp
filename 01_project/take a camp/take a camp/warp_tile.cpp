@@ -11,8 +11,12 @@
 #include "warp_tile.h"
 #include "player.h"
 #include "collision.h"
+#include "sound.h"
 #include <vector>
 #include <time.h>
+#include "resource_texture.h"
+#include "scene3d.h"
+
 //*****************************
 //マクロ定義
 //*****************************
@@ -32,6 +36,7 @@ CWarpTile::CWarpTile()
 	m_nLyncTile = 0;
 	memset(&m_WarpState, WARP_TILE_NORMAL, sizeof(m_WarpState));
 	m_WarpType = WARP_TILE_TYPE_NONE;
+	m_Texture = nullptr;
 }
 
 //******************************
@@ -184,43 +189,37 @@ HRESULT CWarpTile::Init(void)
 	switch (m_WarpType)
 	{
 	case WARP_TILE_TYPE_1:
-		//テクスチャの設定
-
 		//カラーの設定
-		SetColor(D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f));
+		SetColor(D3DCOLOR_XRGB(0,0,139));
 		break;
 	case WARP_TILE_TYPE_2:
-		//テクスチャの設定
-
 		//カラーの設定
-		SetColor(D3DXCOLOR(1.0f,0.0f,1.0f,1.0f));
+		SetColor(D3DCOLOR_XRGB(127, 255, 212));
 		break;
 	case WARP_TILE_TYPE_3:
-		//テクスチャの設定
-
 		//カラーの設定
-		SetColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+		SetColor(D3DCOLOR_XRGB(255, 105, 180));
 		break;
 	case WARP_TILE_TYPE_4:
-		//テクスチャの設定
-
 		//カラーの設定
-		SetColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+		SetColor(D3DCOLOR_XRGB(0, 255, 255));
 		break;
 	case WARP_TILE_TYPE_5:
-		//テクスチャの設定
-
 		//カラーの設定
-		SetColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+		SetColor(D3DCOLOR_XRGB(255, 165, 0));
 		break;
 	case WARP_TILE_TYPE_6:
-		//テクスチャの設定
-
 		//カラーの設定
-		SetColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+		SetColor(D3DCOLOR_XRGB(148, 0, 211));
 		break;
 
 	}
+	//テクスチャの設定
+	m_Texture = CScene3d::Create(GetPos(), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
+	m_Texture->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_WARP));
+	m_Texture->SetColor(TILE_DEFAULT_COLOR);
+	m_Texture->SetPriority(OBJTYPE_MAP);
+
 	return S_OK;
 }
 
@@ -255,9 +254,12 @@ void CWarpTile::Uninit(void)
 //******************************
 void CWarpTile::Update(void)
 {
-
 	// タイル更新処理
 	CTile::Update();
+	//テクスチャの位置
+	D3DXVECTOR3 effectPos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z);
+	m_Texture->SetPos(effectPos);
+
 }
 
 //******************************
@@ -265,6 +267,9 @@ void CWarpTile::Update(void)
 //******************************
 void CWarpTile::HitPlayerAction(CPlayer * pPlayer)
 {
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
 	switch (m_WarpState[pPlayer->GetPlayerNumber()])
 	{
 	case WARP_TILE_NORMAL:	//通常状態
@@ -278,6 +283,9 @@ void CWarpTile::HitPlayerAction(CPlayer * pPlayer)
 				{
 					pPlayer->SetState(CPlayer::PLAYER_STATE_STOP);
 					m_WarpState[pPlayer->GetPlayerNumber()] = WARP_TILE_WARP;
+
+					// SE再生
+					pSound->Play(CSound::LABEL_SE_WARP);
 				}
 			}
 			break;
