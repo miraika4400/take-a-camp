@@ -15,8 +15,13 @@
 #include "skill_effect.h"
 #include "skill_circle.h"
 #include "color_manager.h"
+#include "sound.h"
 
-
+//*****************************
+//マクロ定義
+//*****************************
+#define TRUMP_EFFECT_POS (D3DXVECTOR3(0.0f,5.0f,0.0f))	// スキル位置
+#define TRUMP_EFFECT_SIZE (D3DXVECTOR3(4.0f,3.0f,0.0f))	// スキルサイズ
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -57,7 +62,20 @@ void CAttackMagician::CreateEffect(D3DXVECTOR3 pos)
 	//プレイヤーのポインタ
 	CPlayer *pPlaryer = GetPlayer();
 	//エフェクト生成
-	CSkill_effect::Create(pPlaryer->GetPos() + pos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
+	CSkill_effect::Create(pPlaryer->GetPos() + pos + TRUMP_EFFECT_POS, TRUMP_EFFECT_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
 		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() - 1),
-		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), CSkill_effect::SKILLTYPE_KNIGHT);
+		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), CSkill_effect::SKILLTYPE_MAGICIAN);
 }
+
+//=============================================================================
+// SE再生
+//=============================================================================
+void CAttackMagician::PlaySE(void)
+{
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
+	// SE再生
+	pSound->Play(CSound::LABEL_SE_KIJUTUSI_ATTACK);
+}
+

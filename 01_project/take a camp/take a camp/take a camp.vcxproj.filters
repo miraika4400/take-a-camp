@@ -130,6 +130,12 @@
     <Filter Include="ソース ファイル\07_GameModel\Item">
       <UniqueIdentifier>{337f0e6e-4961-41ef-a225-d843ca384f01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\09_Effect\Attack">
+      <UniqueIdentifier>{5c15c56b-8c8e-4cdc-be31-987aad75e89f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\09_Effect\Attack">
+      <UniqueIdentifier>{2fa3299d-6644-4c9b-98c0-2ae081634d46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene.cpp">
@@ -402,15 +408,6 @@
     <ClCompile Include="stage_select_polygon.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
-    <ClCompile Include="base_Cylinder.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="skill_circle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="skill_effect.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="attack_thief.cpp">
       <Filter>ソース ファイル\07_GameModel\Attack</Filter>
     </ClCompile>
@@ -452,6 +449,27 @@
     </ClCompile>
     <ClCompile Include="ingame_text.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_circle.cpp">
+      <Filter>ソース ファイル\09_Effect\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_effect.cpp">
+      <Filter>ソース ファイル\09_Effect\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="base_Cylinder.cpp">
+      <Filter>ソース ファイル\09_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_trump.cpp">
+      <Filter>ソース ファイル\09_Effect\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_arrow.cpp">
+      <Filter>ソース ファイル\09_Effect\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_arrow_rain.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_aroow_line.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="attack_area_ui.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
@@ -740,23 +758,11 @@
     <ClInclude Include="stage_select_polygon.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
-    <ClInclude Include="base_Cylinder.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="skill_circle.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="skill_effect.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="attack_thief.h">
       <Filter>ヘッダー ファイル\07_GameModel\Attack</Filter>
     </ClInclude>
     <ClInclude Include="attack_magician.h">
       <Filter>ヘッダー ファイル\07_GameModel\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="attack_archer.h">
-      <Filter>ヘッダー ファイル\07_GameModel</Filter>
     </ClInclude>
     <ClInclude Include="building.h">
       <Filter>ヘッダー ファイル\07_GameModel</Filter>
@@ -791,6 +797,27 @@
     <ClInclude Include="ingame_text.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
+    <ClInclude Include="skill_circle.h">
+      <Filter>ヘッダー ファイル\09_Effect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_effect.h">
+      <Filter>ヘッダー ファイル\09_Effect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="base_Cylinder.h">
+      <Filter>ヘッダー ファイル\09_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_trump.h">
+      <Filter>ヘッダー ファイル\09_Effect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_arrow.h">
+      <Filter>ヘッダー ファイル\09_Effect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_arrow_rain.h">
+      <Filter>ヘッダー ファイル\09_Effect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_aroow_line.h">
+      <Filter>ヘッダー ファイル\09_Effect\Attack</Filter>
+    </ClInclude>
     <ClInclude Include="attack_area_ui.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
@@ -799,6 +826,9 @@
     </ClInclude>
     <ClInclude Include="jobchange_tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_archer.h">
+      <Filter>ヘッダー ファイル\07_GameModel\Attack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

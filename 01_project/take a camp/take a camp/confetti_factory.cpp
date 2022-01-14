@@ -21,7 +21,7 @@
 //=============================
 CConfettiFactory::CConfettiFactory() : CScene(OBJTYPE_SYSTEM)
 {
-	m_nLife = 0;
+	m_nTile = 0;
 	m_nCntConfetti = 0;
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
@@ -42,7 +42,7 @@ CConfettiFactory * CConfettiFactory::Create(D3DXCOLOR col, int nLife)
 	CConfettiFactory *pConfettiFactory = new CConfettiFactory;
 	// ‰Šú‰»
 	pConfettiFactory->Init();
-	pConfettiFactory->m_nLife = nLife;
+	pConfettiFactory->m_nTile = nLife;
 	pConfettiFactory->m_col = col;
 
 	return pConfettiFactory;
@@ -81,10 +81,10 @@ void CConfettiFactory::Update(void)
 		CConfetti::Create(D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f), m_col, D3DXToRadian(-60 - 60));
 	}
 
-	if (m_nLife >= 0)
+	if (m_nTile >= 0)
 	{
-		m_nLife--;
-		if (m_nLife < 0)
+		m_nTile--;
+		if (m_nTile < 0)
 		{
 			Uninit();
 		}

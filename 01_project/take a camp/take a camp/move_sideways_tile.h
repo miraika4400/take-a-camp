@@ -18,7 +18,7 @@
 //前方宣言
 //*****************************
 class CModel;
-
+class CScene3d;
 //*****************************
 //マクロ定義
 //*****************************
@@ -35,9 +35,13 @@ public:
 	~CSidewaysTile();
 
 	static void	Create(D3DXVECTOR3 pos, D3DXCOLOR col = TILE_DEFAULT_COLOR);
+	HRESULT		Init(void);
+	void		Update(void);
+
 	void		MoveRot(bool bReversal);
 	void		TileCheck(void);
 private:
+	CScene3d*	m_Texture;
 };
 
 #endif

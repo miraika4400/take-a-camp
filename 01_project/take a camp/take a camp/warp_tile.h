@@ -48,6 +48,10 @@ public:
 		WARP_TILE_TYPE_NONE = -1,//なし
 		WARP_TILE_TYPE_1,		//タイプ1
 		WARP_TILE_TYPE_2,		//タイプ2
+		WARP_TILE_TYPE_3,		//タイプ3
+		WARP_TILE_TYPE_4,		//タイプ4
+		WARP_TILE_TYPE_5,		//タイプ5
+		WARP_TILE_TYPE_6,		//タイプ6
 		WARP_TILE_TYPE_MAX
 	}WARP_TILE_TYPE;
 
@@ -59,6 +63,10 @@ public:
 
 	static void Create_1(D3DXVECTOR3 pos, D3DXCOLOR col);	//生成処理（識別番号1）
 	static void Create_2(D3DXVECTOR3 pos, D3DXCOLOR col);	//生成処理（識別番号2）
+	static void Create_3(D3DXVECTOR3 pos, D3DXCOLOR col);	//生成処理（識別番号3）
+	static void Create_4(D3DXVECTOR3 pos, D3DXCOLOR col);	//生成処理（識別番号4）
+	static void Create_5(D3DXVECTOR3 pos, D3DXCOLOR col);	//生成処理（識別番号5）
+	static void Create_6(D3DXVECTOR3 pos, D3DXCOLOR col);	//生成処理（識別番号6）
 
 	HRESULT Init(void);
 	void Uninit(void);

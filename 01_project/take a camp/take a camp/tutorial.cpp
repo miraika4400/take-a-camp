@@ -51,8 +51,10 @@ CTutorial::CTutorial()
 {
 	m_pMap = nullptr;
 	m_pTextWindow = nullptr;
+	ZeroMemory(&m_pTaskTex, sizeof(m_pTaskTex));
+	ZeroMemory(&m_pCheckTex, sizeof(m_pCheckTex));
 	m_pText = nullptr;
-	m_bTask = nullptr;
+	m_bTask = false;
 	m_Tutorialphase = PHASE_PAINT;
 	m_nTextNum = 0;
 	m_bNextText = false;

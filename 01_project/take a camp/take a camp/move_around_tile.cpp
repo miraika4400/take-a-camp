@@ -9,13 +9,15 @@
 // インクルード
 //******************************
 #include "move_around_tile.h"
+#include "scene3d.h"
+#include "resource_texture.h"
 
 //******************************
 // コンストラクタ
 //******************************
 CAroundTile::CAroundTile()
 {
-
+	m_Texture = nullptr;
 }
 
 //******************************
@@ -45,6 +47,36 @@ void CAroundTile::Create(D3DXVECTOR3 pos, D3DXCOLOR col)
 		pTile->SetMove(pos);				// 移動量
 		pTile->SetPriority(OBJTYPE_TILE); 	// オブジェクトタイプ
 	}
+}
+
+//******************************
+// 初期化処理
+//******************************
+HRESULT CAroundTile::Init(void)
+{
+	//初期化処理
+	CMoveTile::Init();
+
+	//テクスチャ用ポリゴン
+	m_Texture = CScene3d::Create(GetPos(), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
+	m_Texture->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_MOVE_TILE));
+	m_Texture->SetColor(TILE_DEFAULT_COLOR);
+	m_Texture->SetPriority(OBJTYPE_MAP);
+
+	return S_OK;
+}
+
+//******************************
+// 更新処理
+//******************************
+void CAroundTile::Update(void)
+{
+	//移動床の処理
+	CMoveTile::Update();
+
+	//テクスチャの位置
+	D3DXVECTOR3 effectPos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z);
+	m_Texture->SetPos(effectPos);
 }
 
 //******************************
