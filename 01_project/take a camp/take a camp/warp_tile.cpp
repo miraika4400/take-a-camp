@@ -180,44 +180,34 @@ HRESULT CWarpTile::Init(void)
 {
 	//タイル初期化処理
 	CTile::Init();
+	//テクスチャの設定
+
 	//タイプごとの見た目変化
 	switch (m_WarpType)
 	{
 	case WARP_TILE_TYPE_1:
-		//テクスチャの設定
-
 		//カラーの設定
-		SetColor(D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f));
+		SetColor(D3DCOLOR_XRGB(0,0,139));
 		break;
 	case WARP_TILE_TYPE_2:
-		//テクスチャの設定
-
 		//カラーの設定
-		SetColor(D3DXCOLOR(1.0f,0.0f,1.0f,1.0f));
+		SetColor(D3DCOLOR_XRGB(127, 255, 212));
 		break;
 	case WARP_TILE_TYPE_3:
-		//テクスチャの設定
-
 		//カラーの設定
-		SetColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+		SetColor(D3DCOLOR_XRGB(255, 105, 180));
 		break;
 	case WARP_TILE_TYPE_4:
-		//テクスチャの設定
-
 		//カラーの設定
-		SetColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+		SetColor(D3DCOLOR_XRGB(0, 255, 255));
 		break;
 	case WARP_TILE_TYPE_5:
-		//テクスチャの設定
-
 		//カラーの設定
-		SetColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+		SetColor(D3DCOLOR_XRGB(255, 165, 0));
 		break;
 	case WARP_TILE_TYPE_6:
-		//テクスチャの設定
-
 		//カラーの設定
-		SetColor(D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+		SetColor(D3DCOLOR_XRGB(148, 0, 211));
 		break;
 
 	}
