@@ -36,13 +36,15 @@ public:
 		TEXTURE_RESULT_KILL,		// リザルトのキルUI
 		TEXTURE_RESULT_TILE,		// リザルトのタイルUI
 		TEXTURE_PARTICLE_SQUARE,    // パーティクル*ダイヤ
-		TEXTURE_PARTICLE_CIRCLE,	// パーティクル*円		TEXTURE_PARTICLE_SKILL,		// パーティクル*波紋
+		TEXTURE_PARTICLE_CIRCLE,	// パーティクル*円		
+		TEXTURE_PARTICLE_SKILL,		// パーティクル*波紋
 		TEXTURE_PARTICLE_SHOOT,		// パーティクル*弓軌道
 		TEXTURE_PARTICLE_METEOR,	// パーティクル*爆発
 		TEXTURE_PARTICLE_METEOR_SHADOW,	// パーティクル*爆発
 		TEXTURE_PARTICLE_ARROW,		// パーティクル*矢
 		TEXTURE_PARTICLE_TRUMP,		// パーティクル*トランプ
 		TEXTURE_PARTICLE_GURUGURU,	// ぐるぐる
+
 		TEXTURE_PARTICLE_SLASH,		// 斬撃エフェクト
 		TEXTURE_NUMBER,				// ナンバー
 		TEXTURE_FRAME,				// 枠

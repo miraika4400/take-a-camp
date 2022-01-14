@@ -264,7 +264,7 @@ void CAttackBased::Attack(int AttackType)
 				OnceEffect(CreatePos);
 			}
 
-			CreateEffect(CreatePos);
+			CreateEffect(CreatePos, GetState());
 
 			// •KŽE‹Z‚Ì‘Å‚Ä‚éƒŒƒxƒ‹‚È‚ç
 			if (m_nLevel == LEVEL_MAX - 1)

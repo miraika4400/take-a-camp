@@ -112,7 +112,7 @@ void CSkillArrowRain::PosChange(void)
 	if (pos.y <= 0.0f)
 	{
 		//ÕŒ‚”g‚ðo‚·
-		CSkill_circle::Create(D3DXVECTOR3(pos.x, ARROW_CIRCLE.y, pos.z), ARROW_CIRCLE, m_col, CSkill_circle::EFFECTTYPE_SKIIL);
+		CSkill_circle::Create(D3DXVECTOR3(pos.x, ARROW_CIRCLE.y, pos.z), ARROW_CIRCLE, m_col, CSkill_circle::EFFECTTYPE_SKIIL, );
 		//Ž€–Sƒtƒ‰ƒO‚ð—§‚Ä‚é
 		m_pSkillArrow->SetDeath();
 		//Ž€–Sƒtƒ‰ƒO‚ð—§‚Ä‚é

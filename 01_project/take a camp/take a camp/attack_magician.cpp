@@ -64,7 +64,7 @@ void CAttackMagician::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
 	//エフェクト生成
 	CSkill_effect::Create(pPlaryer->GetPos() + pos + TRUMP_EFFECT_POS, TRUMP_EFFECT_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
 		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() - 1),
-		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), CSkill_effect::SKILLTYPE_MAGICIAN,GetPlayer());
+		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), MAGICIAN_EFFECT_LIFE, CSkill_effect::SKILLTYPE_MAGICIAN, GetPlayer());
 }
 
 //=============================================================================
