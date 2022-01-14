@@ -13,6 +13,9 @@
 #include "collision.h"
 #include <vector>
 #include <time.h>
+#include "resource_texture.h"
+#include "scene3d.h"
+
 //*****************************
 //マクロ定義
 //*****************************
@@ -32,6 +35,7 @@ CWarpTile::CWarpTile()
 	m_nLyncTile = 0;
 	memset(&m_WarpState, WARP_TILE_NORMAL, sizeof(m_WarpState));
 	m_WarpType = WARP_TILE_TYPE_NONE;
+	m_Texture = nullptr;
 }
 
 //******************************
@@ -180,8 +184,6 @@ HRESULT CWarpTile::Init(void)
 {
 	//タイル初期化処理
 	CTile::Init();
-	//テクスチャの設定
-
 	//タイプごとの見た目変化
 	switch (m_WarpType)
 	{
@@ -211,6 +213,12 @@ HRESULT CWarpTile::Init(void)
 		break;
 
 	}
+	//テクスチャの設定
+	m_Texture = CScene3d::Create(GetPos(), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
+	m_Texture->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_WARP));
+	m_Texture->SetColor(TILE_DEFAULT_COLOR);
+	m_Texture->SetPriority(OBJTYPE_MAP);
+
 	return S_OK;
 }
 
@@ -245,9 +253,12 @@ void CWarpTile::Uninit(void)
 //******************************
 void CWarpTile::Update(void)
 {
-
 	// タイル更新処理
 	CTile::Update();
+	//テクスチャの位置
+	D3DXVECTOR3 effectPos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z);
+	m_Texture->SetPos(effectPos);
+
 }
 
 //******************************

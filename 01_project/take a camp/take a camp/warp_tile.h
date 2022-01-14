@@ -20,7 +20,7 @@
 //*****************************
 class CModel;
 class CPlayer;
-
+class CScene3d;
 //*****************************
 //マクロ定義
 //*****************************
@@ -85,6 +85,8 @@ private:
 	WARP_TILE_TYPE	m_WarpType;									// ワープ床の識別用変数
 	static std::vector<std::vector<CWarpTile*>> m_pWarpTile;	// ワープ床のポインタ動的配列
 	static int m_nTotalWarpTile;								// 総数
+	CScene3d*	m_Texture;										// テクスチャ用のポリゴン
+
 };
 
 #endif
