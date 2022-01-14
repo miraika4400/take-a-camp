@@ -86,7 +86,7 @@ private:
 	void		Charge(void);					// 攻撃のチャージ処理
 	virtual void CreateEffect(D3DXVECTOR3 pos);	// エフェクト生成
 	virtual void OnceEffect(D3DXVECTOR3 pos);	//	一回だけのエフェクト
-	void		Charge(void);					// 攻撃のチャージ処理
+
 
 	CPlayer *		m_pPlayer;												// プレイヤークラス
 	CAttackArea *	m_apAttackArea[MAX_ATTACK_AREA_NUM];					// 攻撃範囲ポインタ

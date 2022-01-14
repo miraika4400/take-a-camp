@@ -394,7 +394,7 @@ void CPlayer::Move(void)
 			if (MoveData.m_nMoveCount<MoveData.m_nMoveCountData
 				&&m_ItemState != ITEM_STATE_DASH)
 			{
-				MoveData.m_nMoveFrame += (MoveData.m_nMoveFrameData - MoveData.m_nMoveFrame) / (float)(MoveData.m_nMoveCountData - MoveData.m_nMoveCount);
+				MoveData.m_nMoveFrame += (MoveData.m_nMoveFrameData - MoveData.m_nMoveFrame) / (MoveData.m_nMoveCountData - MoveData.m_nMoveCount);
 				MoveData.m_nMoveCount++;
 			}
 			//ƒJƒEƒ“ƒg‰Šú‰»
