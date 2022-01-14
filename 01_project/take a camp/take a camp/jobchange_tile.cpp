@@ -17,6 +17,7 @@
 #include "chara_select.h"
 #include "fade.h"
 #include "chara_select.h"
+#include "skill_gauge.h"
 
 //====================================================
 // マクロ定義
@@ -87,7 +88,7 @@ void CJobchangeTile::Create(D3DXVECTOR3 pos, CResourceTexture::TEXTURE_TYPE type
 
 	// ×マークの生成
 	pTile->m_pCrossPolygon = CScene3d::Create(D3DXVECTOR3(pos.x, pos.y + (TILE_SIZE_Y / 2) + 1.0f, pos.z), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
-	pTile->m_pCrossPolygon->SetColor(TILE_COLOR);
+	pTile->m_pCrossPolygon->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 	pTile->m_pCrossPolygon->BindTexture(CResourceTexture::GetTexture(type));
 	pTile->m_pCrossPolygon->SetPriority(OBJTYPE_MAP);
 }
@@ -104,7 +105,7 @@ HRESULT CJobchangeTile::Init(void)
 	}
 
 	// タイルの色のセット
-	SetColor(TILE_COLOR);
+	SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
 
 	return S_OK;
 }
@@ -126,40 +127,80 @@ void CJobchangeTile::Update(void)
 	// タイルの更新
 	CTile::Update();
 
-	// プレイヤーのナンバー
-	int nPlayerNum = 0;
-
-	// このタイルの当たり判定
-	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
-	while (pPlayer != NULL)
+	CTutorial * pTutorial = CManager::GetTutorial();
+	if (pTutorial &&
+		pTutorial->GetTutorialPhase() == CTutorial::PHASE_FINISH)
 	{
-		// このタイルに載ったら指定の職種に変える
-		if (CCollision::CollisionSphere(GetCollision(), pPlayer->GetCollision()))
+		// タイルの色のセット
+		SetColor(TILE_COLOR);
+		m_pCrossPolygon->SetColor(TILE_COLOR);
+
+		// プレイヤーのナンバー
+		int nPlayerNum = 0;
+
+		// このタイルの当たり判定
+		CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+		while (pPlayer != NULL)
 		{
-			// タイルに保持しているキャラタイプにセット
-			pPlayer->SetCharacterType(m_CharacterType);
+			// このタイルに載ったら指定の職種に変える
+			if (CCollision::CollisionSphere(GetCollision(), pPlayer->GetCollision()))
+			{
+				// タイルに保持しているキャラタイプにセット
+				pPlayer->SetCharacterType(m_CharacterType);
 
-			// 攻撃範囲を変えるためキャラセレクトのキャラタイプを変える
-			CCharaSelect::Entry_Data EntryData = CCharaSelect::GetEntryData(nPlayerNum);
-			EntryData.charaType = m_CharacterType;
-			CCharaSelect::SetEntryData(nPlayerNum, EntryData);
+				// 攻撃範囲を変えるためキャラセレクトのキャラタイプを変える
+				CCharaSelect::Entry_Data EntryData = CCharaSelect::GetEntryData(nPlayerNum);
+				EntryData.charaType = m_CharacterType;
+				CCharaSelect::SetEntryData(nPlayerNum, EntryData);
 
-			// 攻撃の初期化
-			pPlayer->InitCharacterData();
+				// 攻撃の初期化
+				pPlayer->InitCharacterData();
+
+				// キャラクターのタイプごとにテクスチャを変える
+				switch (m_CharacterType)
+				{
+				case CResourceCharacter::CHARACTER_TYPE::CHARACTER_KNIGHT:
+					pPlayer->GetSkillgauge()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+					break;
+
+				case CResourceCharacter::CHARACTER_TYPE::CHARACTER_LANCER:
+					pPlayer->GetSkillgauge()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_LANCE_ICON));
+					break;
+
+				case CResourceCharacter::CHARACTER_TYPE::CHARACTER_WIZARD:
+					pPlayer->GetSkillgauge()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_MAGICSTICK_ICON));
+					break;
+
+				case CResourceCharacter::CHARACTER_TYPE::CHARACTER_THIEF:
+					pPlayer->GetSkillgauge()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_KNIFE_ICON));
+					break;
+
+				case CResourceCharacter::CHARACTER_TYPE::CHARACTER_MAGICIAN:
+					pPlayer->GetSkillgauge()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_STICK_ICON));
+					break;
+
+				case CResourceCharacter::CHARACTER_TYPE::CHARACTER_ARCHER:
+					pPlayer->GetSkillgauge()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ARROW_ICON));
+					break;
+
+				default:
+					break;
+				}
+			}
+			pPlayer = (CPlayer*)pPlayer->GetNext();
+			nPlayerNum++;
 		}
-		pPlayer = (CPlayer*)pPlayer->GetNext();
-		nPlayerNum++;
-	}
 
-	// チュートリアル中だったら
-	CTutorial * pTutrial = CManager::GetTutorial();
-	if (pTutrial)
-	{
-		// フェーズがすべて終了したとき
-		if (pTutrial->GetTutorialPhase() == CTutorial::PHASE_FINISH)
+		// チュートリアル中だったら
+		CTutorial * pTutrial = CManager::GetTutorial();
+		if (pTutrial)
 		{
-			// 載れるようにする
-			SetRide(false);
+			// フェーズがすべて終了したとき
+			if (pTutrial->GetTutorialPhase() == CTutorial::PHASE_FINISH)
+			{
+				// 載れるようにする
+				SetRide(false);
+			}
 		}
 	}
 }

@@ -38,6 +38,7 @@
 #include "skill_effect.h"
 #include "resource_attack.h"
 #include "tutorial.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -342,10 +343,16 @@ void CPlayer::Draw(void)
 //******************************
 void CPlayer::Death(void)
 {
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
 	if (!m_bInvincible)
 	{
 		//死亡状態に移行
 		SetState(PLAYER_STATE_DEATH);
+
+		// SE再生
+		pSound->Play(CSound::LABEL_SE_DEATH);
 
 		//当たり判定を消す
 		if (m_pCollision != NULL)
@@ -394,7 +401,7 @@ void CPlayer::Move(void)
 			if (MoveData.m_nMoveCount<MoveData.m_nMoveCountData
 				&&m_ItemState != ITEM_STATE_DASH)
 			{
-				MoveData.m_nMoveFrame += (MoveData.m_nMoveFrameData - MoveData.m_nMoveFrame) / (float)(MoveData.m_nMoveCountData - MoveData.m_nMoveCount);
+				MoveData.m_nMoveFrame += (MoveData.m_nMoveFrameData - MoveData.m_nMoveFrame) / (MoveData.m_nMoveCountData - MoveData.m_nMoveCount);
 				MoveData.m_nMoveCount++;
 			}
 			//カウント初期化
@@ -798,7 +805,8 @@ void CPlayer::ManageState(void)
 
 		//攻撃可否フラグが立っているか
 		if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_ATTACK
-			&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK)
+			&& m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK
+			&& TutorialControll(CTutorial::PHASE_PAINT))
 		{
 			// 移動処理
 			ControlMove();
@@ -811,13 +819,15 @@ void CPlayer::ManageState(void)
 				m_pAttack->CancelSwitch();
 			}
 			//攻撃をチャージしていないとき
-			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE)
+			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_CHARGE
+				&& TutorialControll(CTutorial::PHASE_FINALATTACK))
 			{
 				// 必殺の処理
 				AttackFinal();
 			}
 			//必殺技を使っていないとき
-			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACKWAITING)
+			if (m_pAttack->GetState() != CAttackBased::ATTACK_STATE_FINALATTACKWAITING
+				&& TutorialControll(CTutorial::PHASE_ATTACK))
 			{
 				// 攻撃処理
 				Attack();
