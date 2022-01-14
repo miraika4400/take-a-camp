@@ -50,7 +50,7 @@ private:
 	CResourceCharacter::CHARACTER_TYPE m_nCharaType;
 	bool m_bDraw;
 	int m_nCntLevel;
-	LPDIRECT3DTEXTURE9 m_apTex[CResourceCharacter::CHARACTER_MAX][MAX_ATTACK_LEVEL ];
+	LPDIRECT3DTEXTURE9 m_apTex[CResourceCharacter::CHARACTER_MAX][MAX_ATTACK_LEVEL -1];
 
 };
 #endif

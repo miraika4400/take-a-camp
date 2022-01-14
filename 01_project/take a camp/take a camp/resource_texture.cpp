@@ -99,7 +99,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/status/04_medium.png",        // 中距離
     "./data/Textures/status/05_long.png",          // 遠距離
     "./data/Textures/navi_attack_area.png", // 攻撃範囲誘導UI
-    
+
 };
 
 // テクスチャのパス
@@ -202,7 +202,7 @@ void CResourceTexture::Load(void)
 	for (int nCnt = 0; nCnt < TEXTURE_MAX; nCnt++)
 	{
 		// テクスチャの生成
-		D3DXCreateTextureFromFile(pDevice, m_aTexPath[nCnt].c_str(), &m_apTexture[nCnt]);
+ 		D3DXCreateTextureFromFile(pDevice, m_aTexPath[nCnt].c_str(), &m_apTexture[nCnt]);
 	}
 
 	// テクスチャ数分ループ
