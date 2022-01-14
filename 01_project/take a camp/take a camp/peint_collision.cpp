@@ -25,7 +25,7 @@ CPeintCollision::CPeintCollision()
 	m_nColorNumber  = 0;
 	m_bDeath		= false;
 	m_pCollision	= NULL;
-	m_nLife			= 0;
+	m_nTile			= 0;
 }
 
 //=============================================================================
@@ -58,7 +58,7 @@ CPeintCollision * CPeintCollision::Create(D3DXVECTOR3 pos, int nPlayerNum)
 		//カラー番号取得(ナンバーを取得後にする)
 		pPeintCollision->ColorLoad();
 		//ライフ
-		pPeintCollision->m_nLife = MAX_LIFE;
+		pPeintCollision->m_nTile = MAX_LIFE;
 
 		// オブジェクトタイプ
 		pPeintCollision->SetPriority(OBJTYPE_PEINT);
@@ -115,14 +115,14 @@ void CPeintCollision::Update(void)
 	}
 
 	//ライフDOWN
-	m_nLife--;
+	m_nTile--;
 	//ライフがゼロ以下になると
-	if (m_nLife<=0)
+	if (m_nTile<=0)
 	{
 		//死亡フラグ
 		Death();
 
-		m_nLife = 0;
+		m_nTile = 0;
 	}
 
 	//死亡フラグ

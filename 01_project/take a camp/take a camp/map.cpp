@@ -8,22 +8,20 @@
 // ヘッダファイルのインクルード
 //=============================================================================
 #include "map.h"
-#include "tile.h"
-#include "color_tile.h"
 #include "player.h"
-#include "spawn_tile.h"
-#include "color_manager.h"
 #include "needle_tile.h"
 #include "item.h"
 #include <time.h>
 #include "chara_select.h"
 #include "tile_factory.h"
+#include "warp_tile.h"
+#include "resource_map.h"
 
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define COLOR_TILE_PLUS_HEIGHT 0.0f				// カラータイル生成時ひとつ生成するたびに生成位置を高くする
-#define COLOR_TILE_INIT_HEIGHT -TILE_SIZE_Y/2	// カラータイル初めの高さ
+#define COLOR_TILE_PLUS_HEIGHT (0.0f)				// カラータイル生成時ひとつ生成するたびに生成位置を高くする
+#define COLOR_TILE_INIT_HEIGHT (-TILE_SIZE_Y/2)	// カラータイル初めの高さ
 //#define COLOR_TILE_PLUS_HEIGHT 50.0f // カラータイル生成時ひとつ生成するたびに生成位置を高くする
 //#define COLOR_TILE_INIT_HEIGHT 500.0f // カラータイル初めの高さ
 #define MAX_ITEM_SPAWN_COUNT (60*10)	// アイテムスポーンの最大カウント
@@ -40,6 +38,7 @@ CMap::CMap() :CScene(OBJTYPE_SYSTEM)
 {
 	m_nItemSpawnCount = 0;
 	memset(&m_MapData, 0, sizeof(m_MapData));
+    m_MapType = CMapManager::MAP_TYPE_NONE;
 }
 
 //=============================================================================
@@ -57,8 +56,10 @@ CMap * CMap::Create(CMapManager::MAP_TYPE MapType)
 	// メモリの確保
 	CMap *pMap;
 	pMap = new CMap;
-	if (pMap != NULL)
-	{
+    if (pMap != NULL)
+    {
+  
+        pMap->m_MapType = MapType;
 		//マップ情報取得
 		pMap->SetMapData(CMapManager::GetMapData(MapType));
 		//初期化処理
@@ -92,7 +93,12 @@ void CMap::Uninit(void)
 //=============================================================================
 void CMap::Update(void)
 {
-	ItemSpawn();
+	// チュートリアルだけアイテムを出さないようにする
+	if (CManager::GetMode() != CManager::MODE_TUTORIAL)
+	{
+		// アイテムの生成
+		ItemSpawn();
+	}
 }
 
 //=============================================================================
@@ -109,6 +115,10 @@ void CMap::MapCreate(void)
 {
 	// タイルリストのリセット
 	CTile::ResetTileList();
+    
+    // 床生成
+    CModel::Create(D3DXVECTOR3(0.0f, -14.0f, 0.0f), CResourceModel::MODEL_DESK, D3DXVECTOR3(0.6f, 0.6f, 0.6f))->SetPriority(OBJTYPE_MAP);
+    CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), (CResourceModel::MODEL_TYPE)(CResourceModel::MODEL_DESK_STAGE1 + m_MapType), D3DXVECTOR3(0.4f, 0.4f, 0.4f))->SetPriority(OBJTYPE_MAP);
 
 	//マップデータがあるか
 	if (&m_MapData != NULL)
@@ -267,9 +277,9 @@ void CMap::ItemSpawn(void)
 				}
 			}
 			//アイテム生成
-			CItem::Create(ItemPos, (CItem::ITEM_EFFECT)(rand() % CItem::ITEM_EFFECT_MAX));
+			CItem::Create(ItemPos, CItem::ITEM_EFFECT_DASH);
 		}
-	
+
 		//カウント初期化
 		m_nItemSpawnCount = 0;
 	}

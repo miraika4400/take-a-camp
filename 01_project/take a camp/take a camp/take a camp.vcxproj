@@ -158,6 +158,7 @@
     <ClCompile Include="act_range.cpp" />
     <ClCompile Include="attack.cpp" />
     <ClCompile Include="attack_archer.cpp" />
+    <ClCompile Include="attack_area_ui.cpp" />
     <ClCompile Include="attack_knight.cpp" />
     <ClCompile Include="attack_area.cpp" />
     <ClCompile Include="attack_lancer.cpp" />
@@ -171,10 +172,17 @@
     <ClCompile Include="chara_select.cpp" />
     <ClCompile Include="chara_select_ui.cpp" />
     <ClCompile Include="button_title.cpp" />
+    <ClCompile Include="confetti.cpp" />
+    <ClCompile Include="confetti_factory.cpp" />
     <ClCompile Include="dash_item.cpp" />
+    <ClCompile Include="dummy.cpp" />
+    <ClCompile Include="dummy_tile.cpp" />
     <ClCompile Include="dynamic_texture.cpp" />
+    <ClCompile Include="game_finish.cpp" />
     <ClCompile Include="game_start.cpp" />
+    <ClCompile Include="ingame_text.cpp" />
     <ClCompile Include="item.cpp" />
+    <ClCompile Include="jobchange_tile.cpp" />
     <ClCompile Include="kill_count.cpp" />
     <ClCompile Include="max_color_effect.cpp" />
     <ClCompile Include="move_around_tile.cpp" />
@@ -221,7 +229,9 @@
     <ClCompile Include="resource_model.cpp" />
     <ClCompile Include="resource_model_hierarchy.cpp" />
     <ClCompile Include="resource_shader.cpp" />
+    <ClCompile Include="resource_text.cpp" />
     <ClCompile Include="result.cpp" />
+    <ClCompile Include="effect_result_explosion.cpp" />
     <ClCompile Include="result_graph.cpp" />
     <ClCompile Include="reverse_item.cpp" />
     <ClCompile Include="scene.cpp" />
@@ -230,7 +240,11 @@
     <ClCompile Include="score.cpp" />
     <ClCompile Include="shadow.cpp" />
     <ClCompile Include="base_Cylinder.cpp" />
+    <ClCompile Include="skill_aroow_line.cpp" />
+    <ClCompile Include="skill_arrow.cpp" />
+    <ClCompile Include="skill_arrow_rain.cpp" />
     <ClCompile Include="skill_circle.cpp" />
+    <ClCompile Include="skill_trump.cpp" />
     <ClCompile Include="skill_effect.cpp" />
     <ClCompile Include="skill_gauge.cpp" />
     <ClCompile Include="sound.cpp" />
@@ -239,13 +253,16 @@
     <ClCompile Include="spawn_tile.cpp" />
     <ClCompile Include="stage_name_ui.cpp" />
     <ClCompile Include="stage_select.cpp" />
+    <ClCompile Include="text.cpp" />
     <ClCompile Include="stage_select_polygon.cpp" />
+    <ClCompile Include="stage_texture.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="tile_effect.cpp" />
     <ClCompile Include="tile_effect_charge.cpp" />
     <ClCompile Include="tile_factory.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
+    <ClCompile Include="titletransition_tile.cpp" />
     <ClCompile Include="total_result.cpp" />
     <ClCompile Include="total_score.cpp" />
     <ClCompile Include="tutorial.cpp" />
@@ -255,6 +272,7 @@
     <ClInclude Include="act_range.h" />
     <ClInclude Include="attack.h" />
     <ClInclude Include="attack_archer.h" />
+    <ClInclude Include="attack_area_ui.h" />
     <ClInclude Include="attack_knight.h" />
     <ClInclude Include="attack_area.h" />
     <ClInclude Include="attack_lancer.h" />
@@ -269,10 +287,18 @@
     <ClInclude Include="button.h" />
     <ClInclude Include="button_title.h" />
     <ClInclude Include="color_tile.h" />
+    <ClInclude Include="confetti.h" />
+    <ClInclude Include="confetti_factory.h" />
     <ClInclude Include="dash_item.h" />
+    <ClInclude Include="dummy.h" />
+    <ClInclude Include="dummy_tile.h" />
     <ClInclude Include="dynamic_texture.h" />
+    <ClInclude Include="effect_result_explosion.h" />
+    <ClInclude Include="game_finish.h" />
     <ClInclude Include="game_start.h" />
+    <ClInclude Include="ingame_text.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="jobchange_tile.h" />
     <ClInclude Include="kill_count.h" />
     <ClInclude Include="max_color_effect.h" />
     <ClInclude Include="move_sideways_tile.h" />
@@ -318,6 +344,7 @@
     <ClInclude Include="resource_model.h" />
     <ClInclude Include="resource_model_hierarchy.h" />
     <ClInclude Include="resource_shader.h" />
+    <ClInclude Include="resource_text.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="result_graph.h" />
     <ClInclude Include="reverse_item.h" />
@@ -327,7 +354,11 @@
     <ClInclude Include="score.h" />
     <ClInclude Include="shadow.h" />
     <ClInclude Include="base_Cylinder.h" />
+    <ClInclude Include="skill_aroow_line.h" />
+    <ClInclude Include="skill_arrow.h" />
+    <ClInclude Include="skill_arrow_rain.h" />
     <ClInclude Include="skill_circle.h" />
+    <ClInclude Include="skill_trump.h" />
     <ClInclude Include="skill_effect.h" />
     <ClInclude Include="skill_gauge.h" />
     <ClInclude Include="sound.h" />
@@ -336,13 +367,16 @@
     <ClInclude Include="spawn_tile.h" />
     <ClInclude Include="stage_name_ui.h" />
     <ClInclude Include="stage_select.h" />
+    <ClInclude Include="text.h" />
     <ClInclude Include="stage_select_polygon.h" />
+    <ClInclude Include="stage_texture.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="tile_effect.h" />
     <ClInclude Include="tile_effect_charge.h" />
     <ClInclude Include="tile_factory.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
+    <ClInclude Include="titletransition_tile.h" />
     <ClInclude Include="total_result.h" />
     <ClInclude Include="total_score.h" />
     <ClInclude Include="tutorial.h" />
@@ -352,6 +386,7 @@
     <FxCompile Include="data\HLSL\BlurShader.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="data\HLSL\PlayerShader.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

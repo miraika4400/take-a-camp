@@ -153,7 +153,10 @@ void CAttackBased::Update(void)
 		{
 			m_nLevel = 0;
 			m_nChargeCount = 0;
+			m_nAttackCount = 0;
+			m_nType = 0;
 		}
+		
 		//攻撃範囲のリセット
 		ResetAttackArea();
 		//チャージタイルフラグが立っている際
@@ -255,6 +258,13 @@ void CAttackBased::Attack(int AttackType)
 			CreatePos.z = ((-sinf(rot.y)*AttackPos.x) + (cosf(rot.y)*AttackPos.z));
 			//当たり判定生成
 			CBullet::Create(CreatePos + pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_pPlayer->GetPlayerNumber());
+			
+			if (nAttack == m_AttackSquare[m_nLevel].nMaxHitRange-1)
+			{
+				OnceEffect(CreatePos);
+			}
+
+			CreateEffect(CreatePos);
 
 			// 必殺技の打てるレベルなら
 			if (m_nLevel == LEVEL_MAX - 1)
@@ -309,6 +319,13 @@ void CAttackBased::CreateEffect(D3DXVECTOR3 , ATTACK_STATE)
 }
 
 //=============================================================================
+// エフェクト(一回)生成
+//=============================================================================
+void CAttackBased::OnceEffect(D3DXVECTOR3 pos)
+{
+}
+
+//=============================================================================
 // チャージ処理関数
 // Akuthor: 吉田 悠人、増澤未来
 //=============================================================================
@@ -347,7 +364,9 @@ void CAttackBased::AttackSwitch(void)
 	
 		// チャージをしているプレイヤーの取得
 		CColorTile * pColorTile = (CColorTile*)GetTop(OBJTYPE_COLOR_TILE);
-
+		
+		// SEの再生
+		PlaySE();
 		while (pColorTile != NULL)
 		{
 			//チャージをしているタイル取得
@@ -397,6 +416,8 @@ void CAttackBased::AttackFinalSwitch(void)
 	{
 		//必殺技使用状態に移行
 		m_AttackState = ATTACK_STATE_FINALATTACK;
+		// SEの再生
+		PlaySE();
 	}
 }
 
@@ -508,7 +529,6 @@ void CAttackBased::AttackCreate(void)
 						CreateEffect(CreatePos,GetState());
 					}
 				}
-
 			}
 			//タイプが一定になったら
 			if (m_nType == MAX_HIT_TYPE)

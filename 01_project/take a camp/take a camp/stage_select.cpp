@@ -159,7 +159,6 @@ void CStageSelect::SetObject(void)
 
 	// 背景の生成
 	CBg::Create();
-	CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), CResourceModel::MODEL_DESK, D3DXVECTOR3(0.4f, 0.4f, 0.4f))->SetPriority(OBJTYPE_MAP);
 
 	CCharaSelect::Entry_Data noneData = {};
 	CCharaSelect::Entry_Data aSaveData[MAX_PLAYER] = {};
@@ -206,7 +205,7 @@ void CStageSelect::SelectStageType(void)
 	// キャラの選択処理
 	if (!entryData.bController && pKey->GetKeyPress(CPlayer::GetPlayerControllKey(entryData.nControllNum, CPlayer::KEY_LEFT))
 		|| entryData.bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-			|| pJoy->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoy->BUTTON_PRESS, entryData.nControllNum)))
+			|| pJoy->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, CInputJoypad::BUTTON_PRESS, entryData.nControllNum)))
 	{// 進む
 		nStageType--;
 		if (nStageType < 0) nStageType = SELECT_STAGE_NUM - 1;
@@ -219,7 +218,7 @@ void CStageSelect::SelectStageType(void)
 	}
 	if (!entryData.bController && pKey->GetKeyPress(CPlayer::GetPlayerControllKey(entryData.nControllNum, CPlayer::KEY_RIGHT))
 		|| entryData.bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-			|| pJoy->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoy->BUTTON_PRESS, entryData.nControllNum)))
+			|| pJoy->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, CInputJoypad::BUTTON_PRESS, entryData.nControllNum)))
 	{// 戻り
 
 		nStageType++;
@@ -234,4 +233,12 @@ void CStageSelect::SelectStageType(void)
 	}
 
 	m_nWaitCnt = 0;
+
+	// 決定キー
+	if (!entryData.bController && pKey->GetKeyTrigger(CPlayer::GetPlayerControllKey(entryData.nControllNum, CPlayer::KEY_RECESSION))
+		|| entryData.bController && pJoy->GetButtonState(XINPUT_GAMEPAD_A, CInputJoypad::BUTTON_TRIGGER, entryData.nControllNum))
+	{
+		CGame::SetMapType(m_selectStageType);
+		CManager::GetFade()->SetFade(CManager::MODE_GAME);
+	}
 }

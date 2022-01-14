@@ -43,14 +43,16 @@ std::vector<CTile*> CTile::m_aTileList = {};
 CTile::CTile() :CModel(OBJTYPE_TILE)
 {                       
 	m_color = TILE_DEFAULT_COLOR;
+	memset(&m_pHitPlayerOld, NULL, sizeof(m_pHitPlayerOld));
 	m_pCollison = NULL;
 	m_fDistPosY = TILE_POS_Y;			// 座標Yの目標値
 	m_fDistPosYRate = POS_Y_RATE_BASE;	// 座標Yの変更時の係数
-	m_bHitOld = false;
+	//m_bHitOld = false;
 	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
 	m_bHitBullet = false;        // 弾が当たっているフラグ
 	m_bRide		 = false;		 // 乗れるかフラグ
 	m_aTileList.push_back(this);
+	memset(&m_abHitOld, false, sizeof(m_abHitOld));
 }
 
 //******************************
@@ -128,12 +130,12 @@ HRESULT CTile::Init(void)
 	SetSize(TILE_SIZE);
 
 	// 変数の初期化
-	m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f); // 色
-	m_fDistPosY = TILE_POS_Y;        // 座標Yの目標値
-	m_fDistPosYRate = POS_Y_RATE_BASE;    // 座標Yの変更時の係数
-	m_bHitOld = false;                           // 一個前のフレームで当たっていたか保存するよう 
-	m_bHitPlayer = false;        // プレイヤーが当たっているフラグ
-	m_bHitBullet = false;        // 弾が当たっているフラグ
+	m_color			= D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f); // 色
+	m_fDistPosY		= TILE_POS_Y;						 // 座標Yの目標値
+	m_fDistPosYRate = POS_Y_RATE_BASE;					 // 座標Yの変更時の係数
+	//m_bHitOld		= false;							 // 一個前のフレームで当たっていたか保存するよう 
+	m_bHitPlayer	= false;							 // プレイヤーが当たっているフラグ
+	m_bHitBullet	= false;							 // 弾が当たっているフラグ
 
 	if (m_pCollison == NULL)
 	{
@@ -174,7 +176,7 @@ void CTile::Update(void)
 
 	// 弾との当たり判定
 	m_bHitBullet = CollisionBullet();
-	
+
 	//塗り判定との当たり判定
 	CollisionPeint();
 }
@@ -303,32 +305,46 @@ void CTile::SetShaderVariable(LPD3DXEFFECT pEffect, CResourceModel::Model * pMod
 //******************************
 bool CTile::CollisionPlayer(void)
 {
+	//プレイヤー
 	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+	
+	//プレイヤーが一人でも当たっているか
+	bool bCollisionPlayer = false;
 
 	while (pPlayer != NULL)
 	{
 		if (CCollision::CollisionSphere(m_pCollison, pPlayer->GetCollision()))
 		{
-			if (!m_bHitOld)
+			if (!m_abHitOld[pPlayer->GetPlayerNumber()])
 			{
 				HitPlayerActionTrigger(pPlayer);
 			}
 			HitPlayerAction(pPlayer);
+
+			//最後に触れたプレイヤー取得
+			m_pHitPlayerOld[pPlayer->GetPlayerNumber()] = pPlayer;
 			// ヒットフラグの保存*当たってる
-			m_bHitOld = true;
-			return true;
+			m_abHitOld[pPlayer->GetPlayerNumber()] = true;
+			bCollisionPlayer = true;
 		}
+		else
+		{
+			m_abHitOld[pPlayer->GetPlayerNumber()] = false;
+		}
+
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}
-	
-	if (m_bHitOld)
+
+	for (int nPlayer = 0; nPlayer<MAX_PLAYER; nPlayer++)
 	{
-		HitPlayerActionRelease();
+		if (!m_abHitOld[nPlayer] && m_pHitPlayerOld[nPlayer] != nullptr)
+		{
+			HitPlayerActionRelease(m_pHitPlayerOld[nPlayer]);
+			m_pHitPlayerOld[nPlayer] = nullptr;
+		}
 	}
 
-	// ヒットフラグの保存*当たってない
-	m_bHitOld = false;
-	return false;
+	return bCollisionPlayer;
 }
 
 //******************************
@@ -348,7 +364,7 @@ void CTile::HitPlayerActionTrigger(CPlayer * pPlayer)
 //******************************
 // プレイヤーと当たったときのアクション*リリース
 //******************************
-void CTile::HitPlayerActionRelease(void)
+void CTile::HitPlayerActionRelease(CPlayer * pPlayer)
 {
 }
 

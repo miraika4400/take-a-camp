@@ -10,9 +10,11 @@
 //=============================================================================
 #include "button_title.h"
 #include "keyboard.h"
+#include "joypad.h"
 #include "manager.h"
 #include "fade.h"
 #include "resource_texture.h"
+#include "sound.h"
 
 //=============================================================================
 // マクロ定義
@@ -118,8 +120,11 @@ void CButton_Title::Update(void)
 //=============================================================================
 void CButton_Title::Select(void)
 {
-	// キーボード情報の取得
+	// キーボードとジョイパッドの取得
 	CInputKeyboard * pKey = CManager::GetKeyboard();
+	CInputJoypad * pJoypad = CManager::GetJoypad();
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
 
 	// 上キーを押したとき
 	if (pKey->GetKeyTrigger(DIK_UP))
@@ -135,32 +140,59 @@ void CButton_Title::Select(void)
 		m_nButton++;
 	}
 
-	// ０より下にいったら
-	if (m_nButton <= -1)
+	for (int nControllNum = 0; nControllNum < XUSER_MAX_COUNT; nControllNum++)
 	{
-		m_nButton = BUTTON_TUTORIAL;
-	}
+		// スティックの座標
+		D3DXVECTOR2 StickPos = pJoypad->GetStickState(pJoypad->PAD_LEFT_STICK, nControllNum);
 
-	// 最大値より上にいったら初期値に戻す
-	if (m_nButton >= BUTTON_MAX)
-	{
-		m_nButton = 0;
-	}
-
-	// エンターを押したとき
-	if (pKey->GetKeyTrigger(DIK_RETURN))
-	{
-		// ボタンの種類がスタートだった場合
-		if (m_nButton == BUTTON_START)
+		// 上キーを押したとき
+		if (pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_UP, CInputJoypad::BUTTON_TRIGGER, nControllNum))
 		{
-			// ゲーム画面に遷移
-			CManager::GetFade()->SetFade(CManager::MODE_CHARA_SELECT);
+			// 現在のボタンを減算する
+			m_nButton--;
 		}
-		// ボタンの種類がチュートリアルだった場合
-		if (m_nButton == BUTTON_TUTORIAL)
+
+		// 下キーを押したとき
+		if (pJoypad->GetButtonState(XINPUT_GAMEPAD_DPAD_DOWN, CInputJoypad::BUTTON_TRIGGER, nControllNum))
 		{
-			// チュートリアル画面に遷移
-			CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
+			// 現在のボタンを加算する
+			m_nButton++;
+		}
+
+		// ０より下にいったら
+		if (m_nButton <= -1)
+		{
+			m_nButton = BUTTON_TUTORIAL;
+		}
+
+		// 最大値より上にいったら初期値に戻す
+		if (m_nButton >= BUTTON_MAX)
+		{
+			m_nButton = 0;
+		}
+
+		// エンターを押したとき
+		if (pKey->GetKeyTrigger(DIK_RETURN)
+			|| pJoypad->GetButtonState(XINPUT_GAMEPAD_A, CInputJoypad::BUTTON_TRIGGER, nControllNum))
+		{
+			// ボタンの種類がスタートだった場合
+			if (m_nButton == BUTTON_START)
+			{
+				// ゲーム画面に遷移
+				CManager::GetFade()->SetFade(CManager::MODE_CHARA_SELECT);
+				CManager::SetDecMode(CManager::MODE_GAME);
+			}
+			// ボタンの種類がチュートリアルだった場合
+			if (m_nButton == BUTTON_TUTORIAL)
+			{
+				// チュートリアル画面に遷移
+				CManager::GetFade()->SetFade(CManager::MODE_CHARA_SELECT);
+				CManager::SetDecMode(CManager::MODE_TUTORIAL);
+			}
+
+			// SE再生
+			pSound->Play(CSound::LABEL_SE_BUTTON);
+
 		}
 	}
 }

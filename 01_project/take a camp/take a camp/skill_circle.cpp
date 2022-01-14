@@ -24,9 +24,6 @@
 // マクロ定義
 //=============================================================================
 
-
-
-
 //=============================================================================
 //コンストラクタ
 //=============================================================================
@@ -37,7 +34,7 @@ CSkill_circle::CSkill_circle(int nPliority)
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_nLife = 50;
+	m_nTile = 50;
 	m_fRotAngle = 0.0f;
 	m_fFadeout = 0.0f;
 	m_bFadeoutFlag = true;
@@ -72,15 +69,14 @@ CSkill_circle * CSkill_circle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 s
 
 	switch (type)
 	{
-	case EFFECTTYPE_SKIIL:
 
+	case EFFECTTYPE_SKIIL:
 		pSkill_circle->SetAddMode(false);
 		pSkill_circle->SetHighRot(NORMAL_SKIIL_HIGHROT);
 		pSkill_circle->SetRowRot(NORMAL_SKIIL_ROWROT);
 		break;
 
 	case EFFECTTYPE_SKIILMINI:
-
 		pSkill_circle->SetAddMode(false);
 		pSkill_circle->SetHighRot(NORMAL_SKIIL_HIGHROT);
 		pSkill_circle->SetRowRot(NORMAL_SKIIL_ROWROT);
@@ -150,7 +146,6 @@ HRESULT CSkill_circle::Init(void)
 	
 
 	//テクスチャ割り当て
-
 	BindTexture(m_apTexture[m_type]);
 	
 	return S_OK;
@@ -176,19 +171,18 @@ void CSkill_circle::Update(void)
 	m_pos = GetPos();
 	m_size = GetSize();
 	m_col = GetColor();
-	
-
-
 
 	switch (m_type)
 	{
 	case EFFECTTYPE_SKIIL:
 		
+	
 		m_col.a -= 0.009;
 		m_fRotAngle += 0.5f;
 		m_rot.y += 0.05f;
 		m_size.x += 0.1f;
 		m_size.z += 0.1f;
+	
 		SetPos(m_pos);
 		SetSize(m_size);
 		SetRot(m_rot);
@@ -202,11 +196,13 @@ void CSkill_circle::Update(void)
 		break;
 	case EFFECTTYPE_SKIILMINI:
 		
+
 		m_col.a -= 0.009;
 		m_fRotAngle += 0.1f;
 		m_rot.y -= 0.05f;
 		m_size.x += 0.1f;
 		m_size.z += 0.1f;
+	
 		SetPos(m_pos);
 		SetSize(m_size);
 		SetRot(m_rot);
@@ -284,6 +280,7 @@ void CSkill_circle::Update(void)
 	default:
 		break;
 	}
+	
 
 	if (m_bEffectTrigger)
 	{

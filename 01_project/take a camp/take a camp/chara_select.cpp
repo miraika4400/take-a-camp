@@ -19,6 +19,7 @@
 #include "camera_charaselect.h"
 #include "bg.h"
 #include "light.h"
+#include "sound.h"
 
 //=============================
 // マクロ定義
@@ -86,6 +87,11 @@ HRESULT CCharaSelect::Init(void)
 	// ライトの向きの設定
 	CManager::GetLight()->SetDir(LIGHT_DIR_CHARA_FRONT);
 
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+	// BGM再生
+	pSound->Play(CSound::LABEL_BGM_SELECT);
+
 	return S_OK;
 }
 
@@ -127,7 +133,19 @@ void CCharaSelect::Update(void)
 
 	if(CManager::GetKeyboard()->GetKeyTrigger(DIK_F1)|| CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
 	{
-		CManager::GetFade()->SetFade(CManager::MODE_STAGE_SELECT);
+		switch (CManager::GetDecMode())
+		{
+		case CManager::MODE_TUTORIAL:
+			CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
+			break;
+
+		case CManager::MODE_GAME:
+			CManager::GetFade()->SetFade(CManager::MODE_STAGE_SELECT);
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	CountEntryPlayerNum();
@@ -203,6 +221,8 @@ void CCharaSelect::EntryPlayer(void)
 		m_aEntryData[nCntData].nControllNum = nCntJoy;
 		// キャラタイプ
 		m_aEntryData[nCntData].charaType = CResourceCharacter::CHARACTER_KNIGHT;
+		// レディ状態の初期化
+		m_aEntryData[nCntData].bReady = false;
 		// コントローラーを使用状態に
 		if (bController) m_abUseJoy[nCntJoy] = true;
 		// キーボードを使用状態に
@@ -303,7 +323,7 @@ void CCharaSelect::CharacterSelect(int nCntData)
 	{
 		// 決定キー
 		if (!m_aEntryData[nCntData].bController && pKey->GetKeyTrigger(CPlayer::GetPlayerControllKey(m_aEntryData[nCntData].nControllNum, CPlayer::KEY_RECESSION))
-			|| m_aEntryData[nCntData].bController && pJoy->GetButtonState(XINPUT_GAMEPAD_A, pJoy->BUTTON_TRIGGER, m_aEntryData[nCntData].nControllNum))
+			|| m_aEntryData[nCntData].bController && pJoy->GetButtonState(XINPUT_GAMEPAD_A, CInputJoypad::BUTTON_TRIGGER, m_aEntryData[nCntData].nControllNum))
 		{
 			m_aEntryData[nCntData].bReady = false;
 		}
@@ -314,7 +334,7 @@ void CCharaSelect::CharacterSelect(int nCntData)
 	// キャラの選択処理
 	if (!m_aEntryData[nCntData].bController && pKey->GetKeyPress(CPlayer::GetPlayerControllKey(m_aEntryData[nCntData].nControllNum, CPlayer::KEY_LEFT))
 		|| m_aEntryData[nCntData].bController && ((StickPos.x < 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-			|| pJoy->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, pJoy->BUTTON_PRESS, m_aEntryData[nCntData].nControllNum)))
+			|| pJoy->GetButtonState(XINPUT_GAMEPAD_DPAD_LEFT, CInputJoypad::BUTTON_PRESS, m_aEntryData[nCntData].nControllNum)))
 	{
 		
 		// 進む
@@ -330,7 +350,7 @@ void CCharaSelect::CharacterSelect(int nCntData)
 	}
 	if (!m_aEntryData[nCntData].bController && pKey->GetKeyPress(CPlayer::GetPlayerControllKey(m_aEntryData[nCntData].nControllNum, CPlayer::KEY_RIGHT))
 		|| m_aEntryData[nCntData].bController && ((StickPos.x > 0.0f && StickPos.y < STICK_DECISION_RANGE && StickPos.y > -STICK_DECISION_RANGE)
-			|| pJoy->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, pJoy->BUTTON_PRESS, m_aEntryData[nCntData].nControllNum)))
+			|| pJoy->GetButtonState(XINPUT_GAMEPAD_DPAD_RIGHT, CInputJoypad::BUTTON_PRESS, m_aEntryData[nCntData].nControllNum)))
 	{
 		// 戻る
 		nType++;
@@ -345,7 +365,7 @@ void CCharaSelect::CharacterSelect(int nCntData)
 
 	// 決定キー
 	if (!m_aEntryData[nCntData].bController && pKey->GetKeyTrigger(CPlayer::GetPlayerControllKey(m_aEntryData[nCntData].nControllNum, CPlayer::KEY_RECESSION))
-		|| m_aEntryData[nCntData].bController && pJoy->GetButtonState(XINPUT_GAMEPAD_A, pJoy->BUTTON_TRIGGER, m_aEntryData[nCntData].nControllNum))
+		|| m_aEntryData[nCntData].bController && pJoy->GetButtonState(XINPUT_GAMEPAD_A, CInputJoypad::BUTTON_TRIGGER, m_aEntryData[nCntData].nControllNum))
 	{
 		m_aEntryData[nCntData].bReady = true;
 	}

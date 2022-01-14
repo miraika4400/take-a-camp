@@ -15,6 +15,7 @@
 #include "skill_effect.h"
 #include "skill_circle.h"
 #include "color_manager.h"
+#include "sound.h"
 
 //=============================================================================
 // コンストラクタ
@@ -54,8 +55,10 @@ CAttackWizard * CAttackWizard::Create(CPlayer* pPlayer)
 //=============================================================================
 // エフェクト生成
 //=============================================================================
+
 void CAttackWizard::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
 {
+
 	if (state == CAttackBased::ATTACK_STATE_FINALATTACK)
 	{
 		CPlayer *pPlaryer = GetPlayer();
@@ -74,6 +77,31 @@ void CAttackWizard::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
 	}
 
 }
+//=============================================================================
+// SE再生
+//=============================================================================
+void CAttackWizard::PlaySE(void)
+{
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
+	// レベル情報の取得
+	int nLevel = GetLevel();
+
+	// 通常攻撃なら
+	if (nLevel < MAX_LEVEL)
+	{
+		// SE再生
+		pSound->Play(CSound::LABEL_SE_MAHOU_ATTACK);
+	}
+	//　必殺なら
+	else
+	{
+		// SE再生
+		pSound->Play(CSound::LABEL_SE_MAHOU_FINALATTACK);
+	}
+}
+
 ////=============================================================================
 //// 攻撃生成関数
 ////=============================================================================

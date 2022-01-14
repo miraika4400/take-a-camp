@@ -25,6 +25,8 @@ public:
 
 	static CAttackKnight *Create(CPlayer* pPlayer);
 
+	void PlaySE(void);
+
 private:
 	void CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state); // エフェクト生成
 	//void	AttackCreate(void);	//攻撃生成処理

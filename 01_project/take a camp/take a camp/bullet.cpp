@@ -14,6 +14,7 @@
 #include "collision.h"
 #include "peint_collision.h"
 #include "kill_count.h"
+#include "dummy.h"
 
 //=============================================================================
 // マクロ定義
@@ -45,7 +46,7 @@ CBullet::CBullet() :CModel(OBJTYPE_BULLET)
 {
 	m_move = VEC3_ZERO;		// 移動量
 	m_size = VEC3_ZERO;		// サイズ
-	m_nLife = 0;			// ライフ
+	m_nTile = 0;			// ライフ
 	m_fSpeed = 0.0f;		// 速さ
 	m_pCollision = NULL;	// 当たり判定
 	memset(&m_pPeintCollision, 0, sizeof(m_pPeintCollision));
@@ -102,7 +103,7 @@ HRESULT CBullet::Init(void)
 	BindModel(CResourceModel::GetModel(CResourceModel::MODEL_BULLET01));
 	
 	// ライフ
-	m_nLife = BULLET_LIFE;
+	m_nTile = BULLET_LIFE;
 
 	return S_OK;
 }
@@ -139,20 +140,28 @@ void CBullet::Update()
 	{
 		m_pCollision->SetPos(D3DXVECTOR3(BulletPos.x, BulletPos.y + BULLET_ONE_SIDE / 2, BulletPos.z));
 	}
-	// プレイヤーとの当たり判定
-	CollisionPlayer();
+
+	// チュートリアルだけプレイヤーの判定をしないようにする
+	if (CManager::GetMode() != CManager::MODE_TUTORIAL)
+	{
+		// プレイヤーとの当たり判定
+		CollisionPlayer();
+	}
+
+	// ダミーとの当たり判定
+	CollisionDummy();
 
 	// 位置に移動量を加算する
 	BulletPos += m_move;
 
 	// ライフを毎フレームごと減らしていく
-	m_nLife--;
+	m_nTile--;
 
 	// 位置の設定
 	SetPos(BulletPos);
 
 	// ライフが０になったら
-	if (m_nLife == 0)
+	if (m_nTile == 0)
 	{
 		// 終了処理
 		Uninit();
@@ -204,6 +213,36 @@ void CBullet::CollisionPlayer(void)
 			}
 		}
 			pPlayer = (CPlayer*)pPlayer->GetNext();
+	}
+}
+
+//=============================================================================
+// 当たり判定の処理
+//=============================================================================
+void CBullet::CollisionDummy(void)
+{
+	CDummy * pDummy = (CDummy*)GetTop(OBJTYPE_DUMMY);
+
+	while (pDummy != NULL)
+	{
+		//当たり判定処理
+		if (CCollision::CollisionSphere(m_pCollision, pDummy->GetCollision()))
+		{
+			// 死亡状態にする
+			pDummy->Death();
+
+			//キル時のカウント
+			KillCount();
+
+			//タイルを塗る用の当たり判定生成
+			for (int nPeint = 0; nPeint < MAX_PEINT; nPeint++)
+			{
+				m_pPeintCollision[nPeint] = CPeintCollision::Create(m_PeintPos[nPeint] + GetPos(), m_nPlayerNum);
+			}
+
+			return;
+		}
+		pDummy = (CDummy*)pDummy->GetNext();
 	}
 }
 

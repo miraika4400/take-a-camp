@@ -16,7 +16,7 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define WINDOW_NAME      "" // ウインドウのキャプション名
+#define WINDOW_NAME      "color" // ウインドウのキャプション名
 #define IS_WINDOW_SCREEN true    // ウィンドウかフルスクリーンか
 
 //*****************************************************************************
@@ -112,6 +112,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
+
 			if (msg.message == WM_QUIT)
 			{// PostQuitMessage()が呼ばれたらループ終了
 				break;

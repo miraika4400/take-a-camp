@@ -1,6 +1,7 @@
 //=============================================================================
 //
-// スキルサークル処理 [skill_effect.cpp]
+
+// スキルエフェクト定義 [skill_effect.cpp]
 // Author : 齋藤大行
 //
 //=============================================================================
@@ -14,12 +15,16 @@
 #include "resource_texture.h"
 #include "manager.h"
 #include "renderer.h"
+#include "skill_trump.h"
+#include "skill_arrow_rain.h"
 #include "particle.h"
 
 //=============================================================================
 // マクロ定義
 //=============================================================================
 
+#define KNIGHT_POSSHIFT (D3DXVECTOR3(3.0f, 0.0f, 3.0f))
+#define ARCHER_CREATE_POS (D3DXVECTOR3(0.0f, 25.0f, 0.0f))	//弓兵のエフェクト生成位置
 
 
 //=============================================================================
@@ -27,27 +32,37 @@
 //=============================================================================
 
 
+
+//=============================================================================
+// コンストラクタ
+//=============================================================================
 CSkill_effect::CSkill_effect()
 {
 	m_type = SKILLTYPE_KNIGHT;
 }
 
+//=============================================================================
+// デストラクタ
+//=============================================================================
 CSkill_effect::~CSkill_effect()
 {
 }
 
+//=============================================================================
+// 生成処理
+//=============================================================================
 void CSkill_effect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col1, const D3DXCOLOR col2, const D3DXCOLOR col3,const int nlife, const SKILLTYPE type ,CPlayer * pPlayer)
-{	
 
+	//タイプごとに生成処理
 	switch (type)
 	{
 	case SKILLTYPE_KNIGHT:
-
 		CSkill_circle::Create(pos, size+ NORMAL_SKIIL_SIZESHIFT, col1, nlife, CSkill_circle::EFFECTTYPE_SKIIL, pPlayer);
 		CSkill_circle::Create(pos, size , col3, nlife, CSkill_circle::EFFECTTYPE_SKIILMINI, pPlayer);
 		break;
 
 	case SKILLTYPE_ARCHER:
+		CSkillArrowRain::Create(pos + ARCHER_CREATE_POS, col1);
 		break;
 
 	case SKILLTYPE_WIZARD:
@@ -70,6 +85,21 @@ void CSkill_effect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const 
 		break;
 
 	case SKILLTYPE_MAGICIAN:
+		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(-45), D3DXToRadian(60)), col1);
+		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(-45), D3DXToRadian(50)), col1);
+		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(-45), D3DXToRadian(40)), col1);
+		
+		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(45), D3DXToRadian(60)), col1);
+		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(45), D3DXToRadian(50)), col1);
+		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(45), D3DXToRadian(40)), col1);
+
+		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(135), D3DXToRadian(60)), col1);
+		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(135), D3DXToRadian(50)), col1);
+		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(135), D3DXToRadian(40)), col1);
+		
+		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(-135), D3DXToRadian(60)), col1);
+		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(-135), D3DXToRadian(50)), col1);
+		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(-135), D3DXToRadian(40)), col1);
 
 		break;
 

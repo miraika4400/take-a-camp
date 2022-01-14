@@ -41,7 +41,7 @@ CButton_Title* CTitle::m_pButton = NULL; // ボタンクラスのポインタ
 //=============================
 // コンストラクタ
 //=============================
-CTitle::CTitle()
+CTitle::CTitle() :CScene(OBJTYPE_SYSTEM)
 {
 	m_pPolygon = NULL;
 }
@@ -73,7 +73,7 @@ HRESULT CTitle::Init(void)
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	m_pPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 200.0f, 0.0f),
+	m_pPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 150.0f, 0.0f),
 		D3DXVECTOR3(1200.0f, 318.0f, 0.0f),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
@@ -84,17 +84,21 @@ HRESULT CTitle::Init(void)
 
 	// 背景の設定
 	CBg::Create();
-	CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), CResourceModel::MODEL_DESK, D3DXVECTOR3(0.4f, 0.4f, 0.4f));
 
 	// エントリー人数の初期化
 	CCharaSelect::ResetEntryPlayer();
 	
 	// ステージ生成
-	m_pMap = CMap::Create(m_MapType);
+	m_pMap = CMap::Create((CMapManager::MAP_TYPE)(rand()%(CMapManager::MAP_TYPE_MAX -1)));
 
 	// ボタンの生成
 	m_pButton = CButton_Title::Create(D3DXVECTOR3(SCREEN_WIDTH/2, 500.0f, 0.0f), CButton_Title::BUTTON_START);
 	m_pButton = CButton_Title::Create(D3DXVECTOR3(SCREEN_WIDTH/2, 630.0f, 0.0f), CButton_Title::BUTTON_TUTORIAL);
+
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+	// BGM再生
+	pSound->Play(CSound::LABEL_BGM_TITLE);
 
 	return S_OK;
 }

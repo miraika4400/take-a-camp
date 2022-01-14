@@ -32,11 +32,14 @@
 #include "tile_factory.h"
 #include "resource_character.h"
 #include "stage_select.h"
+#include "stage_texture.h"
+#include "resource_text.h"
 
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CManager::MODE   CManager::m_mode = MODE_TITLE;       // ゲームモード
+CManager::MODE   CManager::m_mode = MODE_TITLE;      // ゲームモード
+CManager::MODE   CManager::m_Decmode = MODE_TITLE;   // 判定用モード
 CRenderer       *CManager::m_pRenderer = NULL;       // レンダラーポインタ
 CInputKeyboard  *CManager::m_pInputKeyboard = NULL;  // キーボード
 CInputJoypad    *CManager::m_pJoypad = NULL;         // ジョイパッド
@@ -156,6 +159,12 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	// タイルファクトリーの生成
 	CTileFactory::Create();
 
+	//　ステージテクスチャクラス
+	CStageTexture::Create(D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+	// チュートリアルに使うテキストの読み込み
+	CResourceText::Create();
+
 	// ポーズ状態の時
 	return S_OK;
 }
@@ -186,6 +195,10 @@ void CManager::Uninit(void)
 	CColorManager::Release();
 	// タイルファクトリーの破棄
 	CTileFactory::Release();
+	// ステージテクスチャの
+	CStageTexture::Release();
+	// チュートリアルに使うテキストの破棄
+	CResourceText::Release();
 
 	// テクスチャのアンロード
 	CPause::Unload();    // ポーズ
@@ -374,7 +387,7 @@ void CManager::SetMode(MODE mode)
 		// NULLクリア
 		m_pTutorial = NULL;
 		// タイトルBGM停止
-		m_pSound->Stop(CSound::LABEL_BGM_TUTORIAL);
+		m_pSound->Stop(CSound::LABEL_BGM_GAME);
 		break;
 	case MODE_CHARA_SELECT:
 		m_pCharaSelectMode = NULL;
@@ -382,26 +395,26 @@ void CManager::SetMode(MODE mode)
 		break;
 	case MODE_STAGE_SELECT:
 		m_pStageSelectMode = NULL;
-
+		m_pSound->Stop(CSound::LABEL_BGM_SELECT);
 		break;
 	case MODE_GAME:
 		// NULLクリア
 		m_pGame = NULL;
 		// ゲームBGM停止
-		//m_pSound->Stop(CSound::LABEL_BGM_GAME);
+		m_pSound->Stop(CSound::LABEL_BGM_GAME);
 		break;
 
 	case MODE_RESULT:
 		// NULLクリア
 		m_pResult = NULL;
 		// リザルトBGM停止
-		m_pSound->Stop(CSound::LABEL_BGM_RESULT);
+		//m_pSound->Stop(CSound::LABEL_BGM_RESULT);
 		break;
 	case MODE_TOTAL_RESULT:
 		// NULLクリア
 		m_TotalResult = NULL;
 		// トータルリザルトBGM停止
-		//m_pSound->Stop(CSound::LABEL_BGM_RESULT);
+		m_pSound->Stop(CSound::LABEL_BGM_RESULT);
 		break;
 
 	default:
@@ -454,6 +467,14 @@ void CManager::SetMode(MODE mode)
 	default:
 		break;
 	}
+}
+
+//=============================
+// 判定用モードセット
+//=============================
+void CManager::SetDecMode(MODE mode)
+{
+	m_Decmode = mode;
 }
 
 //=============================

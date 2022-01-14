@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// べーすの円柱定義 [base_Cylinder.h]
+// ベースの円柱定義 [base_Cylinder.h]
 // Author : 齋藤大行
 //
 //=============================================================================
@@ -81,7 +81,7 @@ private:
 	D3DXVECTOR3			    m_rot;	 	    // 向き
 	D3DXVECTOR3	            m_size;		    // 大きさ
 	
-	int                     m_nLife;	    // 寿命
+	int                     m_nTile;	    // 寿命
 	float					m_fHighRot;		// 上辺角度
 	float					m_fRowRot;		// 下辺角度
 	float		            m_fRotAngle;    // 回転角度

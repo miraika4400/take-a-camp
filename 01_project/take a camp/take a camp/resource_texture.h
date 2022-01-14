@@ -27,10 +27,6 @@ public:
 	typedef enum
 	{
 		TEXTURE_TITLE = 0,			// タイトル
-		TEXTURE_TUTORIAL,			// チュートリアル
-		TEXTURE_TUTORIAL_FLAG,		// チュートリアル(はたあげ)
-		TEXTURE_TUTORIAL_FRY,		// チュートリアル(連打)
-		TEXTURE_TUTORIAL_REMEMBER,	// チュートリアル(記憶)
 		TEXTURE_RESULT_KNIGHT,		// リザルト(ナイトの背景)
 		TEXTURE_RESULT_LANCER,		// リザルト(ランサーの背景)
 		TEXTURE_RESULT_WIZARD,		// リザルト(ウィザードの背景)
@@ -40,19 +36,24 @@ public:
 		TEXTURE_RESULT_KILL,		// リザルトのキルUI
 		TEXTURE_RESULT_TILE,		// リザルトのタイルUI
 		TEXTURE_PARTICLE_SQUARE,    // パーティクル*ダイヤ
-		TEXTURE_PARTICLE_SKILL,		// パーティクル*波紋
+		TEXTURE_PARTICLE_CIRCLE,	// パーティクル*円		TEXTURE_PARTICLE_SKILL,		// パーティクル*波紋
 		TEXTURE_PARTICLE_SHOOT,		// パーティクル*弓軌道
 		TEXTURE_PARTICLE_METEOR,	// パーティクル*爆発
 		TEXTURE_PARTICLE_METEOR_SHADOW,	// パーティクル*爆発
+		TEXTURE_PARTICLE_ARROW,		// パーティクル*矢
+		TEXTURE_PARTICLE_TRUMP,		// パーティクル*トランプ
 		TEXTURE_PARTICLE_GURUGURU,	// ぐるぐる
 		TEXTURE_PARTICLE_SLASH,		// 斬撃エフェクト
 		TEXTURE_NUMBER,				// ナンバー
 		TEXTURE_FRAME,				// 枠
 		TEXTURE_CROSS_MARK,			// ×マーク
 		TEXTURE_NEEDLE,				// とげ穴
+		TEXTURE_MOVE_TILE,			// 移動タイルのテクスチャ
+		TEXTURE_WARP,				// ワープタイルのテクスチャ
 		TEXTURE_SHADOW,				// 影
 		TEXTURE_PLAYERNUMBER,		// プレイヤー番号
-		TEXTURE_NONE_UI,				// NONE
+
+		TEXTURE_NONE_UI,			// NONE
 		TEXTURE_CONTROLLER,			// コントローラーアイコン
 		TEXTURE_KEYBOARD,			// キーボードアイコン
 		TEXTURE_CHARASELECT_BACK,	// キャラ選択背景
@@ -70,12 +71,34 @@ public:
 		TEXTURE_STAGE_SELECT_BG,
 		TEXTURE_READEY,				// ready
 		TEXTURE_GO,					// go
+		TEXTURE_FINISH,				// finish
+		TEXTURE_SECONDS,			// 残り何秒
+		TEXTURE_LANCE_ICON,		 	// 槍アイコン
+		TEXTURE_ARROW_ICON,		 	// 矢アイコン
+		TEXTURE_MAGICSTICK_ICON,	// 魔法杖アイコン
+		TEXTURE_KNIFE_ICON,		 	// ナイフアイコン
+		TEXTURE_STICK_ICON,		 	// 杖アイコン
+		TEXTURE_RESULT_EXPLOSION,   // リザルト*エクスプロ―ジョン
+		TEXTURE_COLOR_GAUGE,		// 色のゲージの枠
+        TEXTURE_ATTACK_AREA_KNIGHT,      // 攻撃範囲
+        TEXTURE_ATTACK_AREA_LANCER,      // 攻撃範囲
+        TEXTURE_ATTACK_AREA_WIZARD,      // 攻撃範囲
+        TEXTURE_ATTACK_AREA_THIEF,	     // 攻撃範囲
+        TEXTURE_ATTACK_AREA_MAGICIAN,    // 攻撃範囲
+        TEXTURE_ATTACK_AREA_ARCHER,      // 攻撃範囲
+        TEXTURE_DIFFECULT_BEGINNER,    // 初心者
+        TEXTURE_DIFFECULT_INTERMEDIATE,// 中級者
+        TEXTURE_DIFFECULT_ADVANCED,    // 上級者
+        TEXTURE_RANGE_SHORT,           // 近距離
+        TEXTURE_RANGE_MEDIAM,          // 中距離
+        TEXTURE_RANGE_LONG,            // 遠距離
+        TEXTURE_NAVI_ATTACK_AREA,      // 攻撃範囲表示誘導UI
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類
 	typedef enum
 	{
-		TECTURE_CUBE_SLY,        // キューブテクスチャ(空)
+		
 		TEXTURE_CUBE_MAX              // テクスチャ数
 	}TEXTURE_CUBE_TYPE;
 

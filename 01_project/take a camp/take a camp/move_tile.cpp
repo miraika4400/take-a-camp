@@ -43,7 +43,6 @@ CMoveTile::~CMoveTile()
 //******************************
 HRESULT CMoveTile::Init(void)
 {
-
 	//タイルの初期化処理
 	CTile::Init();
 	//色の設定
@@ -68,7 +67,6 @@ void CMoveTile::Update(void)
 		Move();
 		//当たり判定
 		HitTile();
-		
 		break;
 	case MOVE_STATE_STOP:
 		
@@ -109,13 +107,22 @@ void CMoveTile::HitPlayerAction(CPlayer * pPlayer)
 			&&pPlayer->GetState() != CPlayer::PLAYER_STATE_DEATH)
 		{
 			//プレイヤーが動いてないときにステートを停止状態に変更
-			if (pPlayer->GetMoveFlag())pPlayer->SetState(CPlayer::PLAYER_STATE_STOP);
+			if (pPlayer->GetMoveFlag())
+			{
+				pPlayer->SetState(CPlayer::PLAYER_STATE_STOP);
+			}
 		}
 		//プレイヤーがストップ状態の時
 		else if (pPlayer->GetState() == CPlayer::PLAYER_STATE_STOP)
 		{
 			//現在位置
 			D3DXVECTOR3 pos = GetPos();
+			//プレイヤーの無敵確認
+			if (!pPlayer->GetInvincible())
+			{
+				//無敵にする
+				pPlayer->SetInvincible(true);
+			}
 			//プレイヤーを移動させる処理
 			pPlayer->SetPos(D3DXVECTOR3(pos.x, pPlayer->GetPos().y, pos.z));
 		}
@@ -124,6 +131,9 @@ void CMoveTile::HitPlayerAction(CPlayer * pPlayer)
 	case MOVE_STATE_STOP:
 		//プレイヤーのステートを停止状態に変更
 		pPlayer->SetState(CPlayer::PLAYER_STATE_NORMAL);
+
+		//プレイヤーの無敵を解除
+		pPlayer->SetInvincible(false);
 		break;
 
 	default:
@@ -137,7 +147,7 @@ void CMoveTile::HitPlayerAction(CPlayer * pPlayer)
 //******************************
 // プレイヤーが降りた処理
 //******************************
-void CMoveTile::HitPlayerActionRelease(void)
+void CMoveTile::HitPlayerActionRelease(CPlayer*pPlayer)
 {
 	if (m_MoveState == MOVE_STATE_STOP)
 	{

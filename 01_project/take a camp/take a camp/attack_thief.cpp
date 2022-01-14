@@ -15,7 +15,7 @@
 #include "skill_effect.h"
 #include "skill_circle.h"
 #include "color_manager.h"
-
+#include "sound.h"
 
 //=============================================================================
 // コンストラクタ
@@ -62,4 +62,29 @@ void CAttackThief::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
 	CSkill_effect::Create(pPlaryer->GetPos() + pos + THIEF_EFFECT_POS, THIEF_EFFECT_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 0),
 		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(),1),
 		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(),2), THIER_EFFECT_LIFE, CSkill_effect::SKILLTYPE_THIER, GetPlayer());
+}
+
+//=============================================================================
+// SE再生
+//=============================================================================
+void CAttackThief::PlaySE(void)
+{
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
+	// レベル情報の取得
+	int nLevel = GetLevel();
+
+	// 通常攻撃なら
+	if (nLevel < MAX_LEVEL)
+	{
+		// SE再生
+		pSound->Play(CSound::LABEL_SE_TOZOKU_ATTACK);
+	}
+	//　必殺なら
+	else
+	{
+		// SE再生
+		pSound->Play(CSound::LABEL_SE_TOZOKU_FINALATTACK);
+	}
 }

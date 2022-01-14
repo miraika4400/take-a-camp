@@ -42,6 +42,7 @@ public:
 	void Draw(void);		// 描画処理
 
 	void CollisionPlayer(void);	// 当たり判定
+	void CollisionDummy(void);	// 当たり判定
 	void KillCount(void);
 
 	CCollision* GetCollision(void) { return m_pCollision; }
@@ -52,7 +53,7 @@ private:
 	D3DXVECTOR3 m_move;			// 移動量
 	D3DXVECTOR3 m_size;			// 大きさ
 	D3DXCOLOR	m_color;		// 色
-	int m_nLife;				// ライフ
+	int m_nTile;				// ライフ
 	float m_fSpeed;				// 速さ
 	CCollision * m_pCollision;	// 当たり判定
 	CPeintCollision* m_pPeintCollision[MAX_PEINT];	//マス目の当たり判定

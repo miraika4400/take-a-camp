@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// ゲーム開始の処理 [game_start.h]
+// ゲーム開始の処理 [game_start.cpp]
 // Author : 佐藤颯紀
 //
 //=============================================================================
@@ -17,17 +17,16 @@
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define SIZE_X		(325.0f)
-#define SIZE_Y_UP	(100.0f)
-#define SIZE_Y_DOWN (300.0f)
+#define SIZE_X		(360.0f)
+#define SIZE_Y		(180.0f)
 #define COUNT		(60)
 //=============================================================================
 // コンストラクタ
 //=============================================================================
-CGameStart::CGameStart()
+CGameStart::CGameStart() :CScene2d(OBJTYPE_UI_2)
 {
-	m_pPolygon = NULL;							// ポリゴン情報
 	m_pos = VEC3_ZERO;							// 位置情報
+	m_size = VEC3_ZERO;
 	m_col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);	// 色情報
 	m_nCount = 0;								// カウンター
 	m_type = START_TYPE_READEY;					// タイプ
@@ -55,13 +54,20 @@ CGameStart * CGameStart::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 	// NULLチェック
 	if (pStart != NULL)
 	{
-		// 位置設定
-		pStart->m_pos = pos;
-		// サイズ設定
-		pStart->m_size = size;
 		// 初期化処理呼び出し
 		pStart->Init();
+		// 位置設定
+		pStart->SetPos(pos);
+		// サイズ設定
+		pStart->SetSize(size);
 
+		pStart->SetColor(pStart->m_col);
+
+		// readyなら
+		if (pStart->m_type == START_TYPE_READEY)
+		{
+			pStart->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_READEY));
+		}
 		// オブジェクトタイプ
 		pStart->SetPriority(OBJTYPE_UI_2);
 	}
@@ -74,20 +80,11 @@ CGameStart * CGameStart::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 //=============================================================================
 HRESULT CGameStart::Init(void)
 {
+	// 初期化処理
+	CScene2d::Init();
+
+	// 色設定
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
-	// ポリゴンの生成
-	m_pPolygon = CPolygon::Create(
-		m_pos,
-		m_size,
-		m_col);
-
-	// readyなら
-	if (m_type == START_TYPE_READEY)
-	{
-		// テクスチャーの設定
-		m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_READEY));
-	}
 
 	return S_OK;
 }
@@ -97,18 +94,8 @@ HRESULT CGameStart::Init(void)
 //=============================================================================
 void CGameStart::Uninit(void)
 {
-	if (m_pPolygon != NULL)
-	{
-		// ポリゴンの終了処理
-		m_pPolygon->Uninit();
-
-		// メモリの解放
-		delete m_pPolygon;
-		m_pPolygon = NULL;
-	}
-
-	// 開放処理
-	Release();
+	// 終了処理
+	CScene2d::Uninit();
 }
 
 //=============================================================================
@@ -116,8 +103,41 @@ void CGameStart::Uninit(void)
 //=============================================================================
 void CGameStart::Update(void)
 {
-	// ポリゴンの更新処理
-	m_pPolygon->Update();
+	// 更新処理
+	CScene2d::Update();
+
+	// サイズ情報の取得
+	D3DXVECTOR3 size = GetSize();
+	D3DXCOLOR col = GetColor();
+
+	// readyの間の動き
+	if (m_type == START_TYPE_READEY)
+	{
+		size.x += -10;
+		size.y += 0.25 * -10;
+
+		col.a += -0.01;
+	}
+
+	// goのサイズを
+	if (m_type == START_TYPE_GO)
+	{
+		// サイズ変更
+		size.x = 360.0f;
+		size.y = 180.0f;
+
+		col.a = 1.0f;
+	}
+
+	// goを動かす
+	if (m_type == START_TYPE_PLAY)
+	{
+		// サイズの大きさを毎フレームごとに変える
+		size.x += 30;
+		size.y += 0.5 * 30;
+
+		col.a += -0.05;
+	}
 
 	// 毎フレームごとにカウントを増やしていく
 	m_nCount++;
@@ -134,13 +154,23 @@ void CGameStart::Update(void)
 		break;
 
 	case START_TYPE_PLAY:
+		//col.a = 1.0f;
 		// プレイ状態にはいったら
-		Uninit();
-		return;
+		if (m_nCount == 15)
+		{
+			Uninit();
+			return;
+		}
 		break;
 	default:
 		break;
 	}
+
+	// サイズ設定
+	SetSize(size);
+
+	// カラー設定
+	SetColor(col);
 }
 
 //=============================================================================
@@ -148,8 +178,8 @@ void CGameStart::Update(void)
 //=============================================================================
 void CGameStart::Draw(void)
 {
-	// ポリゴンの描画処理
-	m_pPolygon->Draw();
+	// 描画処理
+	CScene2d::Draw();
 }
 
 //=============================================================================
@@ -157,24 +187,17 @@ void CGameStart::Draw(void)
 //=============================================================================
 void CGameStart::GoChange(void)
 {
+	// サイズ情報の取得
+	D3DXVECTOR3 size = GetSize();
+
 	// カウントが一定値になったら
-	if (m_nCount == COUNT)
+	if (size.x <= 0)
 	{
 		// goへ
 		m_type = START_TYPE_GO;
+
 		// テクスチャー変更
-		m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_GO));
-
-		// 頂点座標の設定
-		D3DXVECTOR3 vtxPos[NUM_VERTEX];
-
-		vtxPos[0] = D3DXVECTOR3(SCREEN_WIDTH / 2.0f - SIZE_X, SIZE_Y_UP, 0.0f);
-		vtxPos[1] = D3DXVECTOR3(SCREEN_WIDTH / 2.0f + SIZE_X, SIZE_Y_UP, 0.0f);
-		vtxPos[2] = D3DXVECTOR3(SCREEN_WIDTH / 2.0f - SIZE_X, SIZE_Y_DOWN, 0.0f);
-		vtxPos[3] = D3DXVECTOR3(SCREEN_WIDTH / 2.0f + SIZE_X, SIZE_Y_DOWN, 0.0f);
-
-		// 頂点座標の設定
-		m_pPolygon->SetVertexPos(vtxPos);
+		BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_GO));
 
 		// タイムを使用状態にする
 		CTime::Create();
@@ -182,6 +205,9 @@ void CGameStart::GoChange(void)
 		// カウントの初期化
 		m_nCount = 0;
 	}
+
+	// サイズ設定
+	SetSize(size);
 }
 
 //=============================================================================
@@ -189,18 +215,30 @@ void CGameStart::GoChange(void)
 //=============================================================================
 void CGameStart::PlayChange(void)
 {
+	// サイズ情報の取得
+	D3DXVECTOR3 size = GetSize();
+	D3DXCOLOR col = GetColor();
+
 	// カウントが一定値になったら
-	if (m_nCount == COUNT)
+	if (m_nCount == 5)
 	{
 		// プレイヤーの状態を通常状態に
 		StartPlayer();
+
 		// プレイタイプへ
 		m_type = START_TYPE_PLAY;
+
+		m_nCount = 0;
 	}
+
+	// サイズ設定
+	SetSize(size);
+	// カラー設定
+	SetColor(col);
 }
 
 //=============================================================================
-// プレイヤーをS動けるようにする
+// プレイヤーを動けるようにする
 //=============================================================================
 void CGameStart::StartPlayer(void)
 {

@@ -28,7 +28,6 @@
 #define DEFAULT_COLOR (D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f))  // 色の初期値
 #define SKILLGAUGE_FLAME (60.0f)                           // フレーム数
 #define REPAINT_RATE (5.0f)                                // 塗替えした際の倍率
-//#define REPAINT_RATE (0.5f)                              // 塗替えした際の倍率
 #define MINORADJUSSTMENT_POS (D3DXVECTOR3(0.5f,1.0f,0.0f)) // 微調整用の座標
 #define DEFAULT_ANGLE (D3DXToRadian(-40.0f))               // ポリゴンを回転させる角度
 
@@ -65,13 +64,13 @@ CSkillgauge* CSkillgauge::AllCreate(const int nPlayerNum)
 	return pSkillgauge;
 }
 
-//==================================
+//======================================
 // クリエイト
 // size：スキルゲージの大きさ
 // col：スキルゲージの色
 // nPlayerNum：プレイヤーの番号
 // SkillGaugeType：スキルゲージのタイプ
-//==================================
+//======================================
 CSkillgauge * CSkillgauge::Create(const D3DXVECTOR3 size, const D3DXCOLOR col, const int nPlayerNum, const SKILLGAUGE_TYPE SkillGaugeType)
 {
 	// メモリの確保
@@ -116,16 +115,30 @@ HRESULT CSkillgauge::Init()
 		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_KNIGHT:
 			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
 			break;
-		//case CResourceCharacter::CHARACTER_TYPE::CHARACTER_LANCER:
-		//	BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
-		//	break;
-		//case CResourceCharacter::CHARACTER_TYPE::CHARACTER_WIZARD:
-		//	BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_LANCER:
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_LANCE_ICON));
 			break;
+
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_WIZARD:
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_MAGICSTICK_ICON));
+			break;
+
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_THIEF:
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_KNIFE_ICON));
+			break;
+
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_MAGICIAN:
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_STICK_ICON));
+			break;
+
+		case CResourceCharacter::CHARACTER_TYPE::CHARACTER_ARCHER:
+			BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ARROW_ICON));
+			break;
+
 		default:
 			break;
 		}
-
 		break;
 
 	default:
@@ -154,7 +167,10 @@ void CSkillgauge::Update(void)
 
 	// プレイヤーの座標を取得
 	CPlayer * pPlayer = GetPlayerinfo(m_nPlayerNum);
-	m_pos = pPlayer->GetPos();
+	if (pPlayer)
+	{
+		m_pos = pPlayer->GetPos();
+	}
 
 	// 座標のセット
 	SetPos(m_pos + SKILLGAUGE_ADDPOS);
@@ -271,7 +287,7 @@ void CSkillgauge::UpdateStencil(void)
 	CInputKeyboard * pKey = CManager::GetKeyboard();
 	if (pKey->GetKeyTrigger(DIK_F4))
 	{
-		m_fGauge = m_size.y;
+		SkillGauge_Max();
 	}
 #endif // _DEBUG
 
@@ -322,11 +338,22 @@ void CSkillgauge::SetPolygonPos(void)
 	SetVertexPos(Pos);
 }
 
-//==================================
-// 塗替えしたときゲージを加算する処理
-//==================================
+//======================================
+// 必殺技ゲージを加算させる処理
+//======================================
 void CSkillgauge::Repaint_AddSkillGauge(void)
 {
-	// 倍率によって加算値を変える
-	m_fGauge += REPAINT_RATE * (m_size.y / SKILLGAUGE_FLAME);
+	if (GetPlayerinfo(m_nPlayerNum)->GetAttack()->GetState() != CAttackBased::ATTACK_STATE_FINALATTACK)
+	{
+		// 倍率によって加算値を変える
+		m_fGauge += REPAINT_RATE * (m_size.y / SKILLGAUGE_FLAME);
+	}
+}
+
+//==================================
+// 必殺技ゲージを満タンにする処理
+//==================================
+void CSkillgauge::SkillGauge_Max(void)
+{
+	m_fGauge = m_size.y;
 }

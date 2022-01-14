@@ -1,6 +1,7 @@
 //=============================================================================
 //
-// スキルエフェクト定義 [skill_circle.h]
+
+// スキルサークル [skill_circle.h]
 // Author : 齋藤大行
 //
 //=============================================================================
@@ -21,9 +22,10 @@
 //*****************************
 #define NORMAL_SKIIL_HIGHROT (1.0f)
 #define NORMAL_SKIIL_ROWROT (1.7f)
-#define NORMAL_SKIIL_SIZE D3DXVECTOR3(8.5f,6.5f,8.5f)
-#define NORMAL_SKIIL_POS D3DXVECTOR3(0.0f,0.0f,0.0f)
-#define NORMAL_SKIIL_COL D3DXCOLOR(0.0f,0.0f,0.0f)
+
+#define NORMAL_SKIIL_SIZE (D3DXVECTOR3(8.5f,6.5f,8.5f))
+#define NORMAL_SKIIL_POS (D3DXVECTOR3(0.0f,0.0f,0.0f))
+#define NORMAL_SKIIL_COL (D3DXCOLOR(0.0f,0.0f,0.0f))
 #define NORMAL_SKIIL_SIZESHIFT D3DXVECTOR3(1.5f, 0.0f, 1.5f)
 
 #define EXPLOSION_SKIIL_POSSHIFT D3DXVECTOR3(0.0f, 6.0f, 0.0f)
@@ -89,13 +91,15 @@ public:
 	}EFFECTTYPE;
 
 	// static
+
 	static CSkill_circle *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col , const int nlife ,const EFFECTTYPE type, CPlayer * pPlayer); // クラス生成
 
 	virtual HRESULT Init(void); // 初期化
 	virtual void Uninit(void);  // 終了
 	virtual void Update(void);  // 更新
 	virtual	void Draw(void);    // 描画
-	LPDIRECT3DTEXTURE9 GetTexture(void) { return m_apTexture[EFFECTTYPE_MAX]; }
+	
+	LPDIRECT3DTEXTURE9 GetTexture(int nIndex) { return m_apTexture[nIndex]; }
 	bool GetEffectTrigger(void) {return m_bEffectTrigger;}
 	void		SetPlayer(CPlayer* pPlayer) { m_pPlayer = pPlayer; }
 	CPlayer*	GetPlayer(void) { return m_pPlayer; }
@@ -109,7 +113,7 @@ private:
 	D3DXVECTOR3			    m_move;	 	    // 移動量
 	D3DXVECTOR3			    m_rot;	 	    // 向き
 	D3DXVECTOR3	            m_size;		    // 大きさ
-	int                     m_nLife;	    // 寿命
+	int                     m_nTile;	    // 寿命
 	float		            m_fRotAngle;    // 回転角度
 	float		            m_fFadeout;	    // フェードアウト　
 	bool		            m_bFadeoutFlag; // フェードアウトのフラグ

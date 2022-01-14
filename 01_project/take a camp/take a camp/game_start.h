@@ -10,7 +10,7 @@
 //=============================================================================
 // インクルードファイル
 //=============================================================================
-#include "scene.h"
+#include "scene2d.h"
 
 //=============================================================================
 // 前方宣言
@@ -21,14 +21,13 @@ class CTime;
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define START_UI_SIZE_X (750.0f)
-#define START_UI_SIZE_Y	(200.0f)
-#define START_UI_POS_Y	(200.0f)
+#define START_UI_SIZE D3DXVECTOR3(480.0f,120.0f,0.0f)
+#define START_UI_POS_Y	(360.0f)
 
 //=============================================================================
 // クラス宣言
 //=============================================================================
-class CGameStart :public CScene
+class CGameStart :public CScene2d
 {
 public:
 	// UIの種類
@@ -50,21 +49,22 @@ public:
 	void Update(void);					// 更新処理
 	void Draw(void);					// 描画処理	
 
+	// タイプの取得
 	void SetStartType(START_TYPE type) { m_type = type; }
 	START_TYPE GetType(void) { return m_type; }
 
 private:
-	void GoChange(void);
-	void PlayChange(void);
-	void StartPlayer(void);
+	// メンバ関数
+	void GoChange(void);		// Goのときの処理
+	void PlayChange(void);		// Playのときの処理
+	void StartPlayer(void);		// sutartしたときの処理
 
 	// メンバ変数
-	CPolygon*   m_pPolygon;		// ライフ描画用のポリゴン
 	D3DXVECTOR3 m_pos;			// 位置
 	D3DXVECTOR3 m_size;			// サイズ
 	D3DXCOLOR   m_col;			// カラー
 	int			m_nCount;		// カウント
 	START_TYPE  m_type;			// UIのタイプ
-	bool m_bStart;
+	bool m_bStart;				// スタートしたかしてないか
 };
 #endif // !_GAME_START_H_

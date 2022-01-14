@@ -94,6 +94,7 @@
     <Filter Include="hlslファイル">
       <UniqueIdentifier>{bfc01b98-9db7-440f-9869-a456c8baf8f9}</UniqueIdentifier>
     </Filter>
+
     <Filter Include="ヘッダー ファイル\10_Ui\Button">
       <UniqueIdentifier>{1288eef2-ed2a-442b-ae45-5783bfebf3f0}</UniqueIdentifier>
     </Filter>
@@ -123,6 +124,12 @@
     </Filter>
     <Filter Include="ソース ファイル\07_GameModel\Item">
       <UniqueIdentifier>{337f0e6e-4961-41ef-a225-d843ca384f01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\09_Effect\Attack">
+      <UniqueIdentifier>{5c15c56b-8c8e-4cdc-be31-987aad75e89f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\09_Effect\Attack">
+      <UniqueIdentifier>{2fa3299d-6644-4c9b-98c0-2ae081634d46}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\10_Ui">
       <UniqueIdentifier>{1d71ec2f-55c1-4788-81a4-2e83ccb026e1}</UniqueIdentifier>
@@ -297,14 +304,8 @@
     <ClCompile Include="button.cpp">
       <Filter>ソース ファイル\10_Ui\Button</Filter>
     </ClCompile>
-    <ClCompile Include="tile_factory.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="max_color_effect.cpp">
       <Filter>ソース ファイル\09_Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="attack_area.cpp">
-      <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="total_result.cpp">
       <Filter>ソース ファイル\06_GameScene</Filter>
@@ -366,6 +367,9 @@
     <ClCompile Include="camera_charaselect.cpp">
       <Filter>ソース ファイル\02_Camera</Filter>
     </ClCompile>
+    <ClCompile Include="text.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
     <ClCompile Include="dynamic_texture.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
@@ -396,20 +400,14 @@
     <ClCompile Include="warp_tile.cpp">
       <Filter>ソース ファイル\08_Map\Tile</Filter>
     </ClCompile>
+    <ClCompile Include="tile_factory.cpp">
+      <Filter>ソース ファイル\03_Resource</Filter>
+    </ClCompile>
     <ClCompile Include="stage_name_ui.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
     <ClCompile Include="stage_select_polygon.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
-    </ClCompile>
-    <ClCompile Include="base_Cylinder.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="skill_circle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="skill_effect.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="attack_thief.cpp">
       <Filter>ソース ファイル\07_GameModel\Attack</Filter>
@@ -423,8 +421,68 @@
     <ClCompile Include="building.cpp">
       <Filter>ソース ファイル\07_GameModel</Filter>
     </ClCompile>
+    <ClCompile Include="resource_text.cpp">
+      <Filter>ソース ファイル\03_Resource</Filter>
+    </ClCompile>
     <ClCompile Include="game_start.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="game_finish.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="effect_result_explosion.cpp">
+      <Filter>ソース ファイル\09_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="stage_texture.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="confetti.cpp">
+      <Filter>ソース ファイル\09_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="confetti_factory.cpp">
+      <Filter>ソース ファイル\09_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="dummy_tile.cpp">
+      <Filter>ソース ファイル\08_Map\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="dummy.cpp">
+      <Filter>ソース ファイル\07_GameModel</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame_text.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_circle.cpp">
+      <Filter>ソース ファイル\09_Effect\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_effect.cpp">
+      <Filter>ソース ファイル\09_Effect\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="base_Cylinder.cpp">
+      <Filter>ソース ファイル\09_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_trump.cpp">
+      <Filter>ソース ファイル\09_Effect\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_arrow.cpp">
+      <Filter>ソース ファイル\09_Effect\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_arrow_rain.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_aroow_line.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_area_ui.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_area.cpp">
+      <Filter>ソース ファイル\09_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="titletransition_tile.cpp">
+      <Filter>ソース ファイル\08_Map\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="jobchange_tile.cpp">
+      <Filter>ソース ファイル\08_Map\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -599,9 +657,6 @@
     <ClInclude Include="button.h">
       <Filter>ヘッダー ファイル\10_Ui\Button</Filter>
     </ClInclude>
-    <ClInclude Include="tile_factory.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="max_color_effect.h">
       <Filter>ヘッダー ファイル\09_Effect</Filter>
     </ClInclude>
@@ -671,6 +726,9 @@
     <ClInclude Include="stage_select.h">
       <Filter>ヘッダー ファイル\06_GameScene</Filter>
     </ClInclude>
+    <ClInclude Include="text.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
     <ClInclude Include="item.h">
       <Filter>ヘッダー ファイル\07_GameModel\Item</Filter>
     </ClInclude>
@@ -692,20 +750,14 @@
     <ClInclude Include="warp_tile.h">
       <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
+    <ClInclude Include="tile_factory.h">
+      <Filter>ヘッダー ファイル\03_Resource</Filter>
+    </ClInclude>
     <ClInclude Include="stage_name_ui.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
     <ClInclude Include="stage_select_polygon.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
-    </ClInclude>
-    <ClInclude Include="base_Cylinder.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="skill_circle.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="skill_effect.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="attack_thief.h">
       <Filter>ヘッダー ファイル\07_GameModel\Attack</Filter>
@@ -716,8 +768,65 @@
     <ClInclude Include="building.h">
       <Filter>ヘッダー ファイル\07_GameModel</Filter>
     </ClInclude>
+    <ClInclude Include="resource_text.h">
+      <Filter>ヘッダー ファイル\03_Resource</Filter>
+    </ClInclude>
     <ClInclude Include="game_start.h">
       <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="game_finish.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="effect_result_explosion.h">
+      <Filter>ヘッダー ファイル\09_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="stage_texture.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="confetti.h">
+      <Filter>ヘッダー ファイル\09_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="confetti_factory.h">
+      <Filter>ヘッダー ファイル\09_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="dummy_tile.h">
+      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="dummy.h">
+      <Filter>ヘッダー ファイル\07_GameModel</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame_text.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_circle.h">
+      <Filter>ヘッダー ファイル\09_Effect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_effect.h">
+      <Filter>ヘッダー ファイル\09_Effect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="base_Cylinder.h">
+      <Filter>ヘッダー ファイル\09_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_trump.h">
+      <Filter>ヘッダー ファイル\09_Effect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_arrow.h">
+      <Filter>ヘッダー ファイル\09_Effect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_arrow_rain.h">
+      <Filter>ヘッダー ファイル\09_Effect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="skill_aroow_line.h">
+      <Filter>ヘッダー ファイル\09_Effect\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="attack_area_ui.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="titletransition_tile.h">
+      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="jobchange_tile.h">
+      <Filter>ヘッダー ファイル\08_Map\Tile</Filter>
     </ClInclude>
     <ClInclude Include="attack_archer.h">
       <Filter>ヘッダー ファイル\07_GameModel\Attack</Filter>

@@ -60,7 +60,7 @@ HRESULT CPaintTime::Init(void)
 	// ‰Šú‰»
 	for (int nCntPolygon = 0; nCntPolygon < PAINT_TIME_POLYGON_NUM; nCntPolygon++)
 	{
-		m_apPolygon[nCntPolygon] = CScene3d::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(TILE_ONE_SIDE-5.0f, 0.0, TILE_ONE_SIDE - 5.0f));
+		m_apPolygon[nCntPolygon] = CScene3d::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(TILE_ONE_SIDE - 5.0f, 0.0f, TILE_ONE_SIDE - 5.0f));
 		m_apPolygon[nCntPolygon]->SetColor(COLOR);
 		m_apPolygon[nCntPolygon]->OutList();
 	}
