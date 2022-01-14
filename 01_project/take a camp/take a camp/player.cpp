@@ -240,7 +240,7 @@ void CPlayer::InitCharacterData(void)
 		delete m_pAttack;
 		m_pAttack = NULL;
 	}
-	//UŒ‚—pƒNƒ‰ƒX¶¬(¡ŒãE‹Æ‚²‚Æ‚Écreate‚·‚éUŒ‚ˆ—‚ð•Ï‚¦‚é)
+	//UŒ‚—pƒNƒ‰ƒX¶¬(¡ŒãE‹Æ‚²‚Æ‚ÉUŒ‚ƒ^ƒCƒv‚ð•Ï‚¦‚é)
 	m_pAttack = CAttackBased::Create(this, CCharaSelect::GetEntryData(m_nPlayerNumber).charaType);
 }
 
@@ -632,6 +632,7 @@ void CPlayer::Attack(void)
 			m_pAttack->AttackSwitch();
 			//ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
 			GetMotion(CResourceCharacter::MOTION_ATTACK)->SetActiveMotion(true);
+
 
 		}
 	}

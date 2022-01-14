@@ -24,6 +24,8 @@ public:
 	~CAttackWizard();
 	static CAttackWizard *Create(CPlayer* pPlayer);
 
+	void PlaySE(void);
+
 private:
 	void CreateEffect(D3DXVECTOR3 pos);
 	//void	AttackCreate(void);	//UŒ‚¶¬ˆ—

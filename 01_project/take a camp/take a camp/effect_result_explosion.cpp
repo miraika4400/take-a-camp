@@ -15,11 +15,11 @@
 //=============================
 // マクロ定義
 //=============================
-#define TEX_ANIM_MAX_X 7           // テクスチャ分割数*横
-#define TEX_ANIM_MAX_Y 1           // テクスチャ分割数*縦
-#define ANIMATION_INTERVAL 3       // アニメーション間隔
-#define RECREATE_ANIM_NUM 3 
-#define RECREATE_SIZE_RATE 0.8f
+#define TEX_ANIM_MAX_X (7)           // テクスチャ分割数*横
+#define TEX_ANIM_MAX_Y (1)           // テクスチャ分割数*縦
+#define ANIMATION_INTERVAL (3)       // アニメーション間隔
+#define RECREATE_ANIM_NUM (3) 
+#define RECREATE_SIZE_RATE (0.8f)
 
 //=============================
 // コンストラクタ

@@ -59,7 +59,6 @@ public:
 	// static
 	static void Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col1 ,const D3DXCOLOR col2 ,const D3DXCOLOR col3, const SKILLTYPE type); // クラス生成
 
-	HRESULT Init(void); // 初期化
 
 private:
 	//============
@@ -69,7 +68,7 @@ private:
 	D3DXVECTOR3			    m_move;	 	    // 移動量
 	D3DXVECTOR3			    m_rot;	 	    // 向き
 	D3DXVECTOR3	            m_size;		    // 大きさ
-	int                     m_nLife;	    // 寿命
+	int                     m_nTile;	    // 寿命
 	float		            m_fRotAngle;    // 回転角度
 	float		            m_fFadeout;	    // フェードアウト　
 	bool		            m_bFadeoutFlag; // フェードアウトのフラグ
