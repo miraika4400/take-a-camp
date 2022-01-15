@@ -45,7 +45,6 @@ public:
 		TEXTURE_PARTICLE_TRUMP,		// パーティクル*トランプ
 		TEXTURE_PARTICLE_GURUGURU,	// ぐるぐる
 		TEXTURE_PARTICLE_SLASH,		// 斬撃エフェクト
-
 		TEXTURE_NUMBER,				// ナンバー
 		TEXTURE_FRAME,				// 枠
 		TEXTURE_CROSS_MARK,			// ×マーク
@@ -54,7 +53,6 @@ public:
 		TEXTURE_WARP,				// ワープタイルのテクスチャ
 		TEXTURE_SHADOW,				// 影
 		TEXTURE_PLAYERNUMBER,		// プレイヤー番号
-
 		TEXTURE_NONE_UI,			// NONE
 		TEXTURE_CONTROLLER,			// コントローラーアイコン
 		TEXTURE_KEYBOARD,			// キーボードアイコン

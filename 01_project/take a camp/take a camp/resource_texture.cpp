@@ -33,11 +33,14 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/frame/archer_flame.png",	   // リザルト(アーチャーの背景)
 	"./data/Textures/kill.png",			// リザルトのキルUI
 	"./data/Textures/tile.png",			// リザルトのタイルUI
-	"./data/Textures/effect/kirakira.png",	// パーティクル*四角
+	"./data/Textures/effect/kirakira.png",	// パーティクル*ダイヤ
 	"./data/Textures/effect/00_wave.png",	// パーティクル*波紋
+	"./data/Textures/effect/shoot.png",		// パーティクル*円
 	"./data/Textures/effect/shoot.png",		// パーティクル*弓軌道
 	"./data/Textures/effect/meteor.png",	// パーティクル*爆発
 	"./data/Textures/effect/meteor_shadow.png",// パーティクル*爆発
+	"./data/Textures/effect/arrow.png",		// パーティクル*矢
+	"./data/Textures/effect/trump.png",		// パーティクル*トランプ
 	"./data/Textures/guruguru.png",//ぐるぐる
 	"./data/Textures/effect/slash.png",//斬撃エフェクト
 	"./data/Textures/number.png",			// ナンバー
