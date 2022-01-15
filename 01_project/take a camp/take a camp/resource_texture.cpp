@@ -24,64 +24,64 @@ CResourceTexture *CResourceTexture::m_pSingleTex = NULL; // テクスチャクラスのポ
 // テクスチャのパス
 const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 {
-	"./data/Textures/00_title.png",     // タイトル背景
-	"./data/Textures/frame/knight_flame.png",	   // リザルト(ナイトの背景)
-	"./data/Textures/frame/lancer_flame.png",	   // リザルト(ランサーの背景)
-	"./data/Textures/frame/wizard_flame.png",	   // リザルト(ウィザードの背景)
-	"./data/Textures/frame/thief_flame.png",	   // リザルト(シーフの背景)
-	"./data/Textures/frame/magician_flame.png",// リザルト(奇術師の背景)
-	"./data/Textures/frame/archer_flame.png",	   // リザルト(アーチャーの背景)
-	"./data/Textures/kill.png",			// リザルトのキルUI
-	"./data/Textures/tile.png",			// リザルトのタイルUI
-	"./data/Textures/effect/kirakira.png",	// パーティクル*ダイヤ
-	"./data/Textures/effect/00_wave.png",	// パーティクル*波紋
-	"./data/Textures/effect/shoot.png",		// パーティクル*円
-	"./data/Textures/effect/shoot.png",		// パーティクル*弓軌道
-	"./data/Textures/effect/meteor.png",	// パーティクル*爆発
-	"./data/Textures/effect/meteor_shadow.png",// パーティクル*爆発
-	"./data/Textures/effect/arrow.png",		// パーティクル*矢
-	"./data/Textures/effect/trump.png",		// パーティクル*トランプ
-	"./data/Textures/guruguru.png",//ぐるぐる
-	"./data/Textures/effect/slash.png",//斬撃エフェクト
-	"./data/Textures/number.png",			// ナンバー
-	"./data/Textures/frame.png",            // 枠
-	"./data/Textures/cross_mark.png",       // バツマーク
-	"./data/Textures/needle_hole.png",      // とげ穴
-	"./data/Textures/move_tile.png",		// 移動タイルのテクスチャ
-	"./data/Textures/warp_tile.png",		// ワープタイルのテクスチャ
-	"./data/Textures/shadow.png",		      // 影
-	"./data/Textures/player_number.png",      // プレイヤー番号
-	"./data/Textures/none_logo.png",	      // NONE
-	"./data/Textures/joypad.png",		      // コントローラーアイコン
-	"./data/Textures/keyboars.png",		      // キーボードアイコン
-	"./data/Textures/chara_select_frame.png", // キャラ選択背景
-	"./data/Textures/00_gamestart.png",		  // タイトルのボタン(スタート)
-	"./data/Textures/00_tutorial.png",		  // タイトルのボタン(チュートリアル)
-	"./data/Textures/tile_effect_00.png",	  // 最大塗段階時のエフェクト
-	"./data/Textures/attack_area.png",	      // 攻撃範囲
-	"./data/Textures/clock_frame.png",	      // 時計の枠
-	"./data/Textures/clock_hands.png",	      // 時計の針
-	"./data/Textures/Toon_Shadow.png",	      // トゥーンシャドウ
-	"./data/Textures/tile_effect_charge.png", // タイルのチャージ
-	"./data/Textures/icon_bg.png",	          // アイコンの背景
-	"./data/Textures/sword_icon.png",	      // 剣アイコン
-	"./data/Textures/stage_name.png",	      // ステージ名
-	"./data/Textures/00_ready.png",	          // ready
-	"./data/Textures/01_go!!.png",			  // go
-	"./data/Textures/00_finish.png",		  // finish
-	"./data/Textures/00_nanbyou.png",		  // 残り何秒
-	"./data/Textures/lance_icon.png",         // 槍アイコン
-	"./data/Textures/arrow_icon.png",         // 矢アイコン
-	"./data/Textures/magicstick_icon.png",    // 魔法杖アイコン
-	"./data/Textures/knife_icon.png",         // ナイフアイコン
-	"./data/Textures/stick_icon.png",         // 杖アイコン
-	"./data/Textures/effect_explosion.png",   // リザルトエクスプロージョン
-	"./data/Textures/color_gauge_ui.png",	  // 色のゲージの枠
+	"./data/Textures/00_title.png",					 // タイトル背景
+	"./data/Textures/frame/knight_flame.png",		 // リザルト(ナイトの背景)
+	"./data/Textures/frame/lancer_flame.png",	     // リザルト(ランサーの背景)
+	"./data/Textures/frame/wizard_flame.png",		 // リザルト(ウィザードの背景)
+	"./data/Textures/frame/thief_flame.png",		 // リザルト(シーフの背景)
+	"./data/Textures/frame/magician_flame.png",		 // リザルト(奇術師の背景)
+	"./data/Textures/frame/archer_flame.png",	     // リザルト(アーチャーの背景)
+	"./data/Textures/kill.png",						 // リザルトのキルUI
+	"./data/Textures/tile.png",						 // リザルトのタイルUI
+	"./data/Textures/effect/kirakira.png",		  	 // パーティクル*ダイヤ
+	"./data/Textures/effect/00_wave.png",			 // パーティクル*波紋
+	"./data/Textures/effect/shoot.png",				 // パーティクル*円
+	"./data/Textures/effect/shoot.png",				 // パーティクル*弓軌道
+	"./data/Textures/effect/meteor.png",			 // パーティクル*爆発
+	"./data/Textures/effect/meteor_shadow.png",		 // パーティクル*爆発
+	"./data/Textures/effect/arrow.png",				 // パーティクル*矢
+	"./data/Textures/effect/trump.png",				 // パーティクル*トランプ
+	"./data/Textures/guruguru.png",					 //ぐるぐる
+	"./data/Textures/effect/slash.png",				 //斬撃エフェクト
+	"./data/Textures/number.png",					 // ナンバー
+	"./data/Textures/frame.png",					 // 枠
+	"./data/Textures/cross_mark.png",				 // バツマーク
+	"./data/Textures/needle_hole.png",				 // とげ穴
+	"./data/Textures/move_tile.png",				 // 移動タイルのテクスチャ
+	"./data/Textures/warp_tile.png",				 // ワープタイルのテクスチャ
+	"./data/Textures/shadow.png",					 // 影
+	"./data/Textures/player_number.png",			 // プレイヤー番号
+	"./data/Textures/none_logo.png",				 // NONE
+	"./data/Textures/joypad.png",					 // コントローラーアイコン
+	"./data/Textures/keyboars.png",					 // キーボードアイコン
+	"./data/Textures/chara_select_frame.png",		 // キャラ選択背景
+	"./data/Textures/00_gamestart.png",				 // タイトルのボタン(スタート)
+	"./data/Textures/00_tutorial.png",				 // タイトルのボタン(チュートリアル)
+	"./data/Textures/tile_effect_00.png",			 // 最大塗段階時のエフェクト
+	"./data/Textures/attack_area.png",				 // 攻撃範囲
+	"./data/Textures/clock_frame.png",		         // 時計の枠
+	"./data/Textures/clock_hands.png",				 // 時計の針
+	"./data/Textures/Toon_Shadow.png",				 // トゥーンシャドウ
+	"./data/Textures/tile_effect_charge.png",		 // タイルのチャージ
+	"./data/Textures/icon_bg.png",					 // アイコンの背景
+	"./data/Textures/sword_icon.png",				 // 剣アイコン
+	"./data/Textures/stage_name.png",				 // ステージ名
+	"./data/Textures/00_ready.png",					 // ready
+	"./data/Textures/01_go!!.png",					 // go
+	"./data/Textures/00_finish.png",				 // finish
+	"./data/Textures/00_nanbyou.png",				 // 残り何秒
+	"./data/Textures/lance_icon.png",				 // 槍アイコン
+	"./data/Textures/arrow_icon.png",				 // 矢アイコン
+	"./data/Textures/magicstick_icon.png",			 // 魔法杖アイコン
+	"./data/Textures/knife_icon.png",				 // ナイフアイコン
+	"./data/Textures/stick_icon.png",				 // 杖アイコン
+	"./data/Textures/effect_explosion.png",			 // リザルトエクスプロージョン
+	"./data/Textures/color_gauge_ui.png",			 // 色のゲージの枠
     "./data/Textures/attack_area/00_knight_attack.png",     // 攻撃範囲
     "./data/Textures/attack_area/01_lancer_attack.png",     // 攻撃範囲
     "./data/Textures/attack_area/02_wizard_attack.png",     // 攻撃範囲
-    "./data/Textures/attack_area/03_thief_attack.png",       // 攻撃範囲
-    "./data/Textures/attack_area/04_magician_attack.png", // 攻撃範囲
+    "./data/Textures/attack_area/03_thief_attack.png",      // 攻撃範囲
+    "./data/Textures/attack_area/04_magician_attack.png",	// 攻撃範囲
     "./data/Textures/attack_area/05_archer_attack.png",     // 攻撃範囲
     "./data/Textures/status/00_beginner.png",      // 初心者
     "./data/Textures/status/01_intermediate.png",  // 中級者
@@ -89,7 +89,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/status/03_short.png",         // 近距離
     "./data/Textures/status/04_medium.png",        // 中距離
     "./data/Textures/status/05_long.png",          // 遠距離
-    "./data/Textures/navi_attack_area.png", // 攻撃範囲誘導UI
+    "./data/Textures/navi_attack_area.png",		   // 攻撃範囲誘導UI
 };
 
 // テクスチャのパス
