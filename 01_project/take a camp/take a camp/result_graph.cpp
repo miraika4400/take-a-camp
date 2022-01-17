@@ -45,7 +45,7 @@
 #define CHARACTER_POLYGON_SIZE (DEFAULT_CHARACTER_POLYGON_SIZE*0.7f)
 #define CHARACTER_HEIGHT_DIST ((SCREEN_HEIGHT - CHARACTER_POLYGON_SIZE.y / 2.0f)-20.0f/2.0f)
 #define CHARACTER_HEIGHT_ADD (15.0f)
-#define CHARACTER_CREATE_ADD_HEIGHT (-202) //キャラクターを生成する位置を変える
+#define CHARACTER_CREATE_ADD_HEIGHT (-202.0f) //キャラクターを生成する位置を変える
 #define CONFETTI_TIME (120)
 
 //**********************************
@@ -261,11 +261,13 @@ void CResultGraph::ManageGraph(void)
         CManager::GetSound()->Play(CSound::LABEL_SE_GAUGE);
     }
 
+    // カウントを進める
 	m_nActionCnt++;
 
 	if (m_nActionCnt >= RANK_ANNOUNCEMENT_COUNT && (int)m_aRankData.size() == m_nActionRank)
 	{
 		m_nActionCnt = 0;
+        // 次アクションを起こす順位
 		m_nActionRank--;
 	}
     else if(m_nActionCnt >= RANK_ANNOUNCEMENT_COUNT*3)

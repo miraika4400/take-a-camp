@@ -15,10 +15,11 @@
 // マクロ定義
 //=============================================================================
 #define LEVEL_CHANGE_COUNT (100)
-#define SIZE (D3DXVECTOR3(1260.0f,1944,0.0f)/5.2f)
+#define SIZE (D3DXVECTOR3(1260.0f,1944,0.0f)/5.5f)
 #define COLOR (D3DXCOLOR(1.0f,1.0f,1.0f,0.9f))
-#define TEX_ANIM_MAX_U 3                        // 順位テクスチャ分割数*縦
-
+#define TEX_ANIM_MAX_U (3)                        // 順位テクスチャ分割数*縦
+#define FADE_MINUS_VALUE (0.03f) // フェード時減算値
+#define FADE_ADD_VALUE (FADE_MINUS_VALUE/2.0f) // フェード時減算値
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -29,6 +30,7 @@ CAttackAreaUi::CAttackAreaUi() :CScene2d(OBJTYPE_UI_2)
 	m_bDraw = false;
 	m_nCntLevel = 0;
 	ZeroMemory(&m_apTex, sizeof(m_apTex));
+    m_FadeMode = FADE_NONE;
 }
 
 //=============================================================================
@@ -95,6 +97,8 @@ HRESULT CAttackAreaUi::Init(void)
 
 	SetSize(SIZE);
 	SetColor(COLOR);
+
+    m_FadeMode = FADE_NONE;
 	return S_OK;
 }
 
@@ -103,31 +107,26 @@ HRESULT CAttackAreaUi::Init(void)
 //=============================================================================
 void CAttackAreaUi::Update(void)
 {
-	// カウントを進める
-	m_nCntLevel++;
-	if (m_nCntLevel > LEVEL_CHANGE_COUNT)
-	{
-		// カウントの初期化
-		m_nCntLevel = 0;
-		// レベルを進める
-		m_nLevel++;
-		if (m_nLevel >= (MAX_ATTACK_LEVEL - 1))
-		{
-			m_nLevel = 0;
-		}
+    if (m_FadeMode == FADE_NONE)
+    {
+        // カウントを進める
+        m_nCntLevel++;
+        if (m_nCntLevel > LEVEL_CHANGE_COUNT)
+        {
+            // カウントの初期化
+            m_nCntLevel = 0;
 
-        // テクスチャアニメーション
-        float fU = 1.0f / TEX_ANIM_MAX_U;
-        D3DXVECTOR2 uv[NUM_VERTEX];
-        uv[0] = D3DXVECTOR2(fU*m_nLevel, 0.0f);
-        uv[1] = D3DXVECTOR2(fU*m_nLevel + fU, 0.0f);
-        uv[2] = D3DXVECTOR2(fU*m_nLevel, 1.0f);
-        uv[3] = D3DXVECTOR2(fU*m_nLevel + fU, 1.0f);
-        SetTextureUV(uv);
+            m_FadeMode = FADE_OUT;
+           
 
-        if (m_nCharaType == CResourceCharacter::CHARACTER_NONE) return;
-
-	}
+            if (m_nCharaType == CResourceCharacter::CHARACTER_NONE) return;
+        }
+    }
+    else
+    {
+        // フェードインアウトの処理
+        Fade();
+    }
 }
 
 //=============================================================================
@@ -146,6 +145,65 @@ void CAttackAreaUi::Reset(void)
 {
 	// カウントの初期化
 	m_nLevel = 0;
+    m_nCntLevel = 0;
+
+    SetColor(COLOR);
+    m_FadeMode = FADE_NONE;
+
     // テクスチャの切り替え
     BindTexture(m_apTex[m_nCharaType]);
+
+    // テクスチャアニメーション
+    float fU = 1.0f / TEX_ANIM_MAX_U;
+    D3DXVECTOR2 uv[NUM_VERTEX];
+    uv[0] = D3DXVECTOR2(fU*m_nLevel, 0.0f);
+    uv[1] = D3DXVECTOR2(fU*m_nLevel + fU, 0.0f);
+    uv[2] = D3DXVECTOR2(fU*m_nLevel, 1.0f);
+    uv[3] = D3DXVECTOR2(fU*m_nLevel + fU, 1.0f);
+    SetTextureUV(uv);
+}
+
+void CAttackAreaUi::Fade(void)
+{
+    if (m_FadeMode == FADE_OUT)
+    {
+        // アルファ地の減算
+        D3DXCOLOR col = GetColor();
+        col.a -= FADE_MINUS_VALUE;
+        SetColor(col);
+
+        if (col.a < 0.0f)
+        {
+            // レベルを進める
+            m_nLevel++;
+            if (m_nLevel >= (MAX_ATTACK_LEVEL - 1))
+            {
+                m_nLevel = 0;
+            }
+
+            // テクスチャアニメーション
+            float fU = 1.0f / TEX_ANIM_MAX_U;
+            D3DXVECTOR2 uv[NUM_VERTEX];
+            uv[0] = D3DXVECTOR2(fU*m_nLevel, 0.0f);
+            uv[1] = D3DXVECTOR2(fU*m_nLevel + fU, 0.0f);
+            uv[2] = D3DXVECTOR2(fU*m_nLevel, 1.0f);
+            uv[3] = D3DXVECTOR2(fU*m_nLevel + fU, 1.0f);
+            SetTextureUV(uv);
+
+            m_FadeMode = FADE_IN;
+        }
+    }
+    else if (m_FadeMode == FADE_IN)
+    {
+        // アルファ地の減算
+        D3DXCOLOR col = GetColor();
+        col.a += FADE_ADD_VALUE;
+        SetColor(col);
+
+        if (col.a > COLOR.a)
+        {
+            SetColor(COLOR);
+            m_FadeMode = FADE_NONE;
+        }
+    }
 }

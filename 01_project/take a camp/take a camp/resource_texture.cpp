@@ -198,7 +198,6 @@ void CResourceTexture::Load(void)
 		// テクスチャの生成
 		D3DXCreateCubeTextureFromFile(pDevice, m_aCubeTexPath[nCnt].c_str(), &m_apCubeTexture[nCnt]);
 	}
-	int n = 0;
 }
 
 //===================================
