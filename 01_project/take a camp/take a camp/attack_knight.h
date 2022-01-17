@@ -28,7 +28,7 @@ public:
 	void PlaySE(void);
 
 private:
-	void CreateEffect(D3DXVECTOR3 pos); // エフェクト生成
+	void CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state); // エフェクト生成
 	//void	AttackCreate(void);	//攻撃生成処理
 
 	//int		m_nAttackCount;		//攻撃までのカウント

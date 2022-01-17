@@ -25,7 +25,7 @@
 //==================================
 #define SKILLGAUGE_ADDPOS (D3DXVECTOR3(0.0f, 35.0f, 0.0f)) // スキルゲージの座標
 #define SKILLGAUGE_FLAME (60.0f)                           // フレーム数
-#define REPAINT_RATE (5.0f)                                // 塗替えした際の倍率
+#define REPAINT_RATE (2.0f)                                // 塗替えした際の倍率
 #define MINORADJUSSTMENT_POS (D3DXVECTOR3(0.5f,1.0f,0.0f)) // 微調整用の座標
 #define DEFAULT_ANGLE (D3DXToRadian(-40.0f))               // ポリゴンを回転させる角度
 

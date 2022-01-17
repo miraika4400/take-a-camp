@@ -38,6 +38,7 @@ CAttackWizard::~CAttackWizard()
 //=============================================================================
 CAttackWizard * CAttackWizard::Create(CPlayer* pPlayer)
 {
+
 	//メモリ確保
 	CAttackWizard* pAttackWizard = NULL;
 	pAttackWizard = new CAttackWizard;
@@ -54,15 +55,28 @@ CAttackWizard * CAttackWizard::Create(CPlayer* pPlayer)
 //=============================================================================
 // エフェクト生成
 //=============================================================================
-void CAttackWizard::CreateEffect(D3DXVECTOR3 pos)
-{
-	CPlayer *pPlaryer = GetPlayer();
-	//エフェクト生成
-	CSkill_effect::Create(pPlaryer->GetPos() + pos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
-		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() - 1),
-		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), CSkill_effect::SKILLTYPE_KNIGHT);
-}
 
+void CAttackWizard::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
+{
+
+	if (state == CAttackBased::ATTACK_STATE_FINALATTACK)
+	{
+		CPlayer *pPlaryer = GetPlayer();
+		//エフェクト生成
+		CSkill_effect::Create(pPlaryer->GetPos() + pos + WIZARD_EFFECT_POS, WIZARD_EFFECT_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 0),
+			GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 1),
+			GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 2), WIZARD_EFFECT_LIFE, CSkill_effect::SKILLTYPE_WIZARD_FINALATTACK, GetPlayer());
+	}
+	if (state == CAttackBased::ATTACK_STATE_ATTACK)
+	{
+		CPlayer *pPlaryer = GetPlayer();
+		//エフェクト生成
+		CSkill_effect::Create(pPlaryer->GetPos() + pos + WIZARD_EFFECT_POS, WIZARD_EFFECT_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 0),
+			GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 1),
+			GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 2), WIZARD_EFFECT_LIFE, CSkill_effect::SKILLTYPE_WIZARD, GetPlayer());
+	}
+
+}
 //=============================================================================
 // SE再生
 //=============================================================================
@@ -93,6 +107,7 @@ void CAttackWizard::PlaySE(void)
 ////=============================================================================
 //void CAttackWizard::AttackCreate(void)
 //{
+
 //	//プレイヤーのポインタ
 //	CPlayer *pPlaryer = GetPlayer();
 //
