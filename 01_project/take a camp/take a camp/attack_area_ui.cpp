@@ -15,8 +15,9 @@
 // マクロ定義
 //=============================================================================
 #define LEVEL_CHANGE_COUNT (100)
-#define SIZE (D3DXVECTOR3(1260.0f,1944,0.0f)/5.0f)
+#define SIZE (D3DXVECTOR3(1260.0f,1944,0.0f)/5.2f)
 #define COLOR (D3DXCOLOR(1.0f,1.0f,1.0f,0.9f))
+#define TEX_ANIM_MAX_U 3                        // 順位テクスチャ分割数*縦
 
 //=============================================================================
 // コンストラクタ
@@ -70,29 +71,27 @@ HRESULT CAttackAreaUi::Init(void)
 	m_nCntLevel = 0;
 
 	// 騎士
-    m_apTex[CResourceCharacter::CHARACTER_KNIGHT][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_KNIGHT1);
-	m_apTex[CResourceCharacter::CHARACTER_KNIGHT][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_KNIGHT2);
-	m_apTex[CResourceCharacter::CHARACTER_KNIGHT][2] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_KNIGHT3);
+    m_apTex[CResourceCharacter::CHARACTER_KNIGHT] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_KNIGHT);
 	// 槍
-    m_apTex[CResourceCharacter::CHARACTER_LANCER][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_LANCER1);
-    m_apTex[CResourceCharacter::CHARACTER_LANCER][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_LANCER2);
-    m_apTex[CResourceCharacter::CHARACTER_LANCER][2] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_LANCER3);
+    m_apTex[CResourceCharacter::CHARACTER_LANCER] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_LANCER);
 	// 魔法
-    m_apTex[CResourceCharacter::CHARACTER_WIZARD][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_WIZARD1);
-    m_apTex[CResourceCharacter::CHARACTER_WIZARD][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_WIZARD2);
-    m_apTex[CResourceCharacter::CHARACTER_WIZARD][2] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_WIZARD3);
+    m_apTex[CResourceCharacter::CHARACTER_WIZARD] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_WIZARD);
 	// 盗賊
-    m_apTex[CResourceCharacter::CHARACTER_THIEF][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_THIEF1);
-    m_apTex[CResourceCharacter::CHARACTER_THIEF][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_THIEF2);
-    m_apTex[CResourceCharacter::CHARACTER_THIEF][2] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_THIEF3);
+    m_apTex[CResourceCharacter::CHARACTER_THIEF] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_THIEF);
 	// 奇術師
-    m_apTex[CResourceCharacter::CHARACTER_MAGICIAN][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_MAGICIAN1);
-    m_apTex[CResourceCharacter::CHARACTER_MAGICIAN][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_MAGICIAN2);
-    m_apTex[CResourceCharacter::CHARACTER_MAGICIAN][2] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_MAGICIAN3);
+    m_apTex[CResourceCharacter::CHARACTER_MAGICIAN] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_MAGICIAN);
 	// 弓
-    m_apTex[CResourceCharacter::CHARACTER_ARCHER][0] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_ARCHER1);
-    m_apTex[CResourceCharacter::CHARACTER_ARCHER][1] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_ARCHER2);
-    m_apTex[CResourceCharacter::CHARACTER_ARCHER][2] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_ARCHER3);
+    m_apTex[CResourceCharacter::CHARACTER_ARCHER] = CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACK_AREA_ARCHER);
+
+    float fU = 1.0f / TEX_ANIM_MAX_U;
+
+    D3DXVECTOR2 uv[NUM_VERTEX];
+    uv[0] = D3DXVECTOR2(fU*0.0f, 0.0f);
+    uv[1] = D3DXVECTOR2(fU*0.0f + fU, 0.0f);
+    uv[2] = D3DXVECTOR2(fU*0.0f, 1.0f);
+    uv[3] = D3DXVECTOR2(fU*0.0f + fU, 1.0f);
+
+    SetTextureUV(uv);
 
 	SetSize(SIZE);
 	SetColor(COLOR);
@@ -117,9 +116,17 @@ void CAttackAreaUi::Update(void)
 			m_nLevel = 0;
 		}
 
+        // テクスチャアニメーション
+        float fU = 1.0f / TEX_ANIM_MAX_U;
+        D3DXVECTOR2 uv[NUM_VERTEX];
+        uv[0] = D3DXVECTOR2(fU*m_nLevel, 0.0f);
+        uv[1] = D3DXVECTOR2(fU*m_nLevel + fU, 0.0f);
+        uv[2] = D3DXVECTOR2(fU*m_nLevel, 1.0f);
+        uv[3] = D3DXVECTOR2(fU*m_nLevel + fU, 1.0f);
+        SetTextureUV(uv);
+
         if (m_nCharaType == CResourceCharacter::CHARACTER_NONE) return;
-		// テクスチャの切り替え
-		BindTexture(m_apTex[m_nCharaType][m_nLevel]);
+
 	}
 }
 
@@ -140,5 +147,5 @@ void CAttackAreaUi::Reset(void)
 	// カウントの初期化
 	m_nLevel = 0;
     // テクスチャの切り替え
-    BindTexture(m_apTex[m_nCharaType][m_nLevel]);
+    BindTexture(m_apTex[m_nCharaType]);
 }

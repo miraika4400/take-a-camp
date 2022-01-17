@@ -27,7 +27,7 @@ public:
 	void PlaySE(void);
 
 private:
-	void CreateEffect(D3DXVECTOR3 pos);
+	void CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state);
 	//void	AttackCreate(void);	//UŒ‚¶¬ˆ—
 
 	//int		m_nAttackCount;		//UŒ‚‚Ü‚Å‚ÌƒJƒEƒ“ƒg

@@ -38,7 +38,7 @@ CSkillArrow::~CSkillArrow()
 //===================================
 // ê∂ê¨èàóùä÷êî
 //===================================
-CSkillArrow * CSkillArrow::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, const float fAngle, int nTile, const D3DXCOLOR col)
+CSkillArrow * CSkillArrow::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, const float fAngle, int nTile, const D3DXCOLOR col )
 {
 	CSkillArrow* pSkillArrow = nullptr;
 	pSkillArrow = new CSkillArrow;

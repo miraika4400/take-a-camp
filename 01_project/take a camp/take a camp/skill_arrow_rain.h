@@ -19,6 +19,7 @@
 // 前方宣言
 //*****************************
 class CSkillArrow;
+class CPlayer;
 //*****************************
 //マクロ定義
 //*****************************
@@ -35,7 +36,7 @@ public:
 	//============
 	CSkillArrowRain(int nPliority = OBJTYPE_PARTICLE);
 	~CSkillArrowRain();
-	static CSkillArrowRain *Create(const D3DXVECTOR3 pos, const D3DXCOLOR col); // クラス生成
+	static CSkillArrowRain *Create(const D3DXVECTOR3 pos, const D3DXCOLOR col ,CPlayer* pPlayer); // クラス生成
 	HRESULT Init(void);		// 初期化
 	void	Uninit(void);	// 終了
 	void	Update(void);	// 更新
@@ -48,6 +49,7 @@ private:
 	// メンバ変数
 	//============
 	CSkillArrow*	m_pSkillArrow;
+	CPlayer *		m_pPlayer;
 	D3DXVECTOR3		m_pos;			// 位置
 	D3DXCOLOR		m_col;			// 色
 	bool			m_bDeath;		// 死亡フラグ
