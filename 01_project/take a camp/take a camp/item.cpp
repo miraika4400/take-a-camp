@@ -196,22 +196,19 @@ void CItem::CollisionItem(void)
 
 	while (pPlayer != NULL)
 	{
-		if (pPlayer->GetPlayerNumber() != m_nPlayerNum)
+		if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 		{
-			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+			//消滅フラグ
+			m_bDeath = true;
+			//アイテム効果処理
+			ItemEffect(pPlayer);
+			//影の終了処理
+			if (m_pShadow != NULL)
 			{
-				//消滅フラグ
-				m_bDeath = true;
-				//アイテム効果処理
-				ItemEffect(pPlayer);
-				//影の終了処理
-				if (m_pShadow != NULL)
-				{
-					m_pShadow->Uninit();
-					m_pShadow = NULL;
-				}
-				return;
+				m_pShadow->Uninit();
+				m_pShadow = NULL;
 			}
+			return;
 		}
 		pPlayer = (CPlayer*)pPlayer->GetNext();
 	}

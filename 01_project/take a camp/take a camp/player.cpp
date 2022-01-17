@@ -59,6 +59,7 @@
 #define DASH_FRAME				(60*5)							// ダッシュ時有効フレーム数
 #define ATTCK_ROT_INPUT			(15)							// 攻撃方向受付するフレーム数
 #define SKILL_ROT_INPUT			(35)							// 必殺技の方向受付フレーム数
+#define FALL_OVER				(60*1)							// 倒れるフレーム数
 
 //*****************************
 // 静的メンバ変数宣言
@@ -99,6 +100,7 @@ CPlayer::CPlayer()
 	m_bUpdate = false;
 	m_pKillCount = NULL;
 	m_nChargeTilelevel = 0;
+	m_nFallOverCout = 0;
 }
 
 //******************************
@@ -367,10 +369,11 @@ void CPlayer::Death(void)
 		m_pActRange->SetDeath(true);
 		//攻撃状態の初期化
 		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
-		//透明にする
-		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
-		//位置セット
-		SetPos(m_RespawnPos);
+
+		////透明にする
+		//m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+		////位置セット
+		//SetPos(m_RespawnPos);
 	}
 
 }
@@ -735,7 +738,7 @@ void CPlayer::SetInvincible(bool bInvincible)
 void CPlayer::Respawn(void)
 {
 	//プレイヤーステートが死亡状態の時
-	if (m_PlayerState == PLAYER_STATE_DEATH)
+	if (m_PlayerState == PLAYER_STATE_RESPAWN)
 	{
 		//カウントアップ
 		m_nRespawnCount++;
@@ -868,9 +871,31 @@ void CPlayer::ManageState(void)
 		}
 		break;
 	case PLAYER_STATE_DEATH:	//死亡状態
-		//リスポーン処理
-		Respawn();
+	{
+
+		m_rotDest.z += (D3DXToRadian(90)- m_rotDest.z)/ (FALL_OVER - m_nFallOverCout);
+		
+		m_nFallOverCout++;
+
+		if (m_nFallOverCout >= FALL_OVER)
+		{
+			m_nFallOverCout = 0;
+
+			m_rotDest.z = 0;
+			//透明にする
+			m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+			//位置セット
+			SetPos(m_RespawnPos);
+			//リスポーン待機状態に移行
+			SetState(PLAYER_STATE_RESPAWN);
+		}
+
+	}
 		break;
+	case PLAYER_STATE_RESPAWN:	//リスポーン待機状態
+		Respawn();//リスポーン処理
+		break;
+
 	}
 }
 
