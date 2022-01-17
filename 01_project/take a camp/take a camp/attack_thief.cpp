@@ -29,6 +29,8 @@ CAttackThief::CAttackThief()
 //=============================================================================
 CAttackThief::~CAttackThief()
 {
+	
+	
 }
 
 //=============================================================================
@@ -52,14 +54,14 @@ CAttackThief * CAttackThief::Create(CPlayer* pPlayer)
 //=============================================================================
 // エフェクト生成
 //=============================================================================
-void CAttackThief::CreateEffect(D3DXVECTOR3 pos)
+void CAttackThief::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
 {
 	//プレイヤーのポインタ
 	CPlayer *pPlaryer = GetPlayer();
 	//エフェクト生成
-	CSkill_effect::Create(pPlaryer->GetPos() + pos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
-		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() - 1),
-		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), CSkill_effect::SKILLTYPE_KNIGHT);
+	CSkill_effect::Create(pPlaryer->GetPos() + pos + THIEF_EFFECT_POS, THIEF_EFFECT_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 0),
+		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(),1),
+		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(),2), THIER_EFFECT_LIFE, CSkill_effect::SKILLTYPE_THIER, GetPlayer());
 }
 
 //=============================================================================

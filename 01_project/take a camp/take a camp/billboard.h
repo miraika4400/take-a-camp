@@ -58,6 +58,7 @@ private:
 	LPDIRECT3DTEXTURE9		m_pTexture;	 // テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	 // 頂点バッファへのポインタ
 	D3DXVECTOR3	m_pos;                   // ポリゴンの位置
+	D3DXVECTOR3	m_rot;					 // ポリゴンの向き
 	D3DXVECTOR3 m_size;                  // ポリゴンのサイズ
 	float m_fAngle;                      // ポリゴンの回転角度
 	D3DXCOLOR m_col;                     // 色
