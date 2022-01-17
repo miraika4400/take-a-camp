@@ -310,6 +310,9 @@ void CCharaSelect::CountEntryPlayerNum(void)
 //=============================
 void CCharaSelect::CharacterSelect(int nCntData)
 {
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
 	if (m_anWaitCnt[nCntData] > 0) return;
 
 	// キーボード・ゲームパッドの情報の取得
@@ -368,6 +371,8 @@ void CCharaSelect::CharacterSelect(int nCntData)
 		|| m_aEntryData[nCntData].bController && pJoy->GetButtonState(XINPUT_GAMEPAD_A, CInputJoypad::BUTTON_TRIGGER, m_aEntryData[nCntData].nControllNum))
 	{
 		m_aEntryData[nCntData].bReady = true;
+		// SE再生
+		pSound->Play(CSound::LABEL_SE_ENTRY);
 	}
 
 	// カウントの初期化

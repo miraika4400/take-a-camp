@@ -33,10 +33,11 @@ CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX]
 	// ゲーム本編のSE
 	{ "./data/Sounds/SE/button_se.wav"    , SOUND_LOOP_OFF },
 	{ "./data/Sounds/SE/wa-pu.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/entry_se.wav"    , SOUND_LOOP_OFF },
 	// リザルトのSE
 	{ "./data/Sounds/SE/gauge.wav"    , SOUND_LOOP_OFF },
-	{ "./data/Sounds/SE/Result_se.wav"    , SOUND_LOOP_OFF },
-	{ "./data/Sounds/SE/Result_se_last.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/result_se.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/result_se_last.wav"    , SOUND_LOOP_OFF },
 };
 
 //=============================================================================
