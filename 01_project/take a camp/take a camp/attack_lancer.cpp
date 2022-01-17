@@ -22,8 +22,8 @@
 //=============================================================================
 CAttackLancer::CAttackLancer()
 {
-	/*m_nAttackCount = 0;
-	m_nType = 0;*/
+    /*m_nAttackCount = 0;
+    m_nType = 0;*/
 }
 
 //=============================================================================
@@ -38,29 +38,29 @@ CAttackLancer::~CAttackLancer()
 //=============================================================================
 CAttackLancer * CAttackLancer::Create(CPlayer* pPlayer)
 {
-	//メモリ確保
-	CAttackLancer* pAttackLancer = NULL;
-	pAttackLancer = new CAttackLancer;
+    //メモリ確保
+    CAttackLancer* pAttackLancer = NULL;
+    pAttackLancer = new CAttackLancer;
 
-	if (pAttackLancer != NULL)
-	{
-		pAttackLancer->SetType(CResourceCharacter::CHARACTER_LANCER);
-		pAttackLancer->SetPlayer(pPlayer);	// プレイヤークラス取得
-		pAttackLancer->Init();				// 初期化処理
-	}
-	return pAttackLancer;
+    if (pAttackLancer != NULL)
+    {
+        pAttackLancer->SetType(CResourceCharacter::CHARACTER_LANCER);
+        pAttackLancer->SetPlayer(pPlayer);	// プレイヤークラス取得
+        pAttackLancer->Init();				// 初期化処理
+    }
+    return pAttackLancer;
 }
 
 //=============================================================================
 // エフェクト生成
 //=============================================================================
-void CAttackLancer::CreateEffect(D3DXVECTOR3 pos)
+void CAttackLancer::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
 {
-	CPlayer *pPlaryer = GetPlayer();
-	//エフェクト生成
-	CSkill_effect::Create(pPlaryer->GetPos() + pos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
-		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() - 1),
-		GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), CSkill_effect::SKILLTYPE_KNIGHT);
+    CPlayer *pPlaryer = GetPlayer();
+    //エフェクト生成
+    CSkill_effect::Create(pPlaryer->GetPos() + pos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(),0),
+ 	GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 1),
+	GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 2), LANCER_EFFECT_LIFE, CSkill_effect::SKILLTYPE_KNIGHT, GetPlayer());
 }
 
 //=============================================================================
@@ -68,24 +68,24 @@ void CAttackLancer::CreateEffect(D3DXVECTOR3 pos)
 //=============================================================================
 void CAttackLancer::PlaySE(void)
 {
-	// サウンド情報の取得
-	CSound *pSound = CManager::GetSound();
+    // サウンド情報の取得
+    CSound *pSound = CManager::GetSound();
 
-	// レベル情報の取得
-	int nLevel = GetLevel();
+    // レベル情報の取得
+    int nLevel = GetLevel();
 
-	// 通常攻撃なら
-	if (nLevel < MAX_LEVEL)
-	{
-		// SE再生
-		pSound->Play(CSound::LABEL_SE_YARI_ATTACK);
-	}
-	//　必殺なら
-	else
-	{
-		// SE再生
-		pSound->Play(CSound::LABEL_SE_YARI_FINALATTACK);
-	}
+    // 通常攻撃なら
+    if (nLevel < MAX_LEVEL)
+    {
+        // SE再生
+        pSound->Play(CSound::LABEL_SE_YARI_ATTACK);
+    }
+    //　必殺なら
+    else
+    {
+        // SE再生
+        pSound->Play(CSound::LABEL_SE_YARI_FINALATTACK);
+    }
 }
 
 ////=============================================================================
