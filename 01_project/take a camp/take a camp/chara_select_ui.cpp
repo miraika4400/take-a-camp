@@ -41,7 +41,7 @@
 #define NAVI_SIZE (D3DXVECTOR3(732.0f,150.0f,0.0f)*0.2f)     // 
 #define NAVI_POS_Y (670.0f)                                  // 
 #define NAVI_POS_X_OFFSET (50.0f)                            // 
-#define CHARANAME_SIZE (D3DXVECTOR3(1042.0f,184.0f,0.0f)*0.28f) // 
+#define CHARANAME_SIZE (D3DXVECTOR3(1042.0f,184.0f,0.0f)*0.29f) // 
 #define CHARANAME_POS_Y (130.0f)                                //
 
 //=============================
@@ -137,7 +137,7 @@ HRESULT CCharaSelectUi::Init(void)
         m_aPolygon[nCntPlayer].pCharaName->SetColor(OFF_COLOR);
         m_aPolygon[nCntPlayer].pCharaName->SetPriority(OBJTYPE_UI_2);
         m_aPolygon[nCntPlayer].pCharaName->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CHARACTER_NAME_KNIGHT));
-		
+
         // ƒ‚ƒfƒ‹ƒ|ƒŠƒSƒ“‚Ì¶¬
 		m_aPolygon[nCntPlayer].pCharaPolygon = CCharacterPolygon::Create(D3DXVECTOR3(boardPos.x, CHARACTER_MODEL_POS_Y, boardPos.z),CCharacterPolygon::MODE_ROTATION);
 
