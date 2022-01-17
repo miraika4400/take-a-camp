@@ -474,6 +474,12 @@
     <ClCompile Include="jobchange_tile.cpp">
       <Filter>ソース ファイル\08_Map\Tile</Filter>
     </ClCompile>
+    <ClCompile Include="skill_aroow_line.cpp">
+      <Filter>ソース ファイル\09_Effect\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="skill_arrow_rain.cpp">
+      <Filter>ソース ファイル\09_Effect\Attack</Filter>
+    </ClCompile>
     <ClCompile Include="attack_knight.cpp">
       <Filter>ソース ファイル\09_Effect\Attack</Filter>
     </ClCompile>
