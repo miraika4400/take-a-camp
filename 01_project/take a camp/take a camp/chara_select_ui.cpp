@@ -41,6 +41,8 @@
 #define NAVI_SIZE (D3DXVECTOR3(732.0f,150.0f,0.0f)*0.2f)     // 
 #define NAVI_POS_Y (670.0f)                                  // 
 #define NAVI_POS_X_OFFSET (50.0f)                            // 
+#define CHARANAME_SIZE (D3DXVECTOR3(1042.0f,184.0f,0.0f)*0.28f) // 
+#define CHARANAME_POS_Y (130.0f)                                //
 
 //=============================
 // 静的メンバ変数宣言
@@ -112,7 +114,7 @@ HRESULT CCharaSelectUi::Init(void)
 		m_aPolygon[nCntPlayer].pBack->SetColor(BACK_DEFAULT_COLOR);
 		m_aPolygon[nCntPlayer].pBack->SetPriority(OBJTYPE_UI_2);
 		m_aPolygon[nCntPlayer].pBack->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CHARASELECT_BACK));
-
+        
 		// アイコンの生成
 		m_aPolygon[nCntPlayer].pControllIcon = CScene2d::Create();
 		m_aPolygon[nCntPlayer].pControllIcon->SetSize(CONTOROll_ICON_SIZE);
@@ -127,8 +129,16 @@ HRESULT CCharaSelectUi::Init(void)
 		m_aPolygon[nCntPlayer].pPlayerNumber->SetPriority(OBJTYPE_UI_2);
 		m_aPolygon[nCntPlayer].pPlayerNumber->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_NONE_UI));
 		m_aPolygon[nCntPlayer].pPlayerNumber->SetTextureUV(uv);
-
-		// モデルポリゴンの生成
+        
+        // キャラクター名の生成
+        m_aPolygon[nCntPlayer].pCharaName = CScene2d::Create();
+        m_aPolygon[nCntPlayer].pCharaName->SetSize(CHARANAME_SIZE);
+        m_aPolygon[nCntPlayer].pCharaName->SetPos(D3DXVECTOR3(boardPos.x, CHARANAME_POS_Y, boardPos.z));
+        m_aPolygon[nCntPlayer].pCharaName->SetColor(OFF_COLOR);
+        m_aPolygon[nCntPlayer].pCharaName->SetPriority(OBJTYPE_UI_2);
+        m_aPolygon[nCntPlayer].pCharaName->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CHARACTER_NAME_KNIGHT));
+		
+        // モデルポリゴンの生成
 		m_aPolygon[nCntPlayer].pCharaPolygon = CCharacterPolygon::Create(D3DXVECTOR3(boardPos.x, CHARACTER_MODEL_POS_Y, boardPos.z),CCharacterPolygon::MODE_ROTATION);
 
 		// アイコンの生成
@@ -212,6 +222,7 @@ void CCharaSelectUi::Update(void)
 			m_aPolygon[nCntPlayer].pCharaPolygon->SetRimColor(GET_COLORMANAGER->GetStepColor(entryData.nColorNum,1));
 			m_aPolygon[nCntPlayer].pCharaPolygon->SetTexColor(GET_COLORMANAGER->GetIconColor(entryData.nColorNum));
 			m_aPolygon[nCntPlayer].pControllIcon->SetColor(ON_COLOR);
+            m_aPolygon[nCntPlayer].pCharaName->SetColor(ON_COLOR);
 
             // レディカラー
 			if (entryData.bReady) m_aPolygon[nCntPlayer].pReadyIcon->SetColor(ON_COLOR);
@@ -266,6 +277,7 @@ void CCharaSelectUi::Update(void)
 			m_aPolygon[nCntPlayer].pPlayerNumber->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_NONE_UI));
 			m_aPolygon[nCntPlayer].pAttackUiPolygon->SetDrawFlag(false);
             m_aPolygon[nCntPlayer].pNaviAttackArea->SetColor(OFF_COLOR);
+            m_aPolygon[nCntPlayer].pCharaName->SetColor(OFF_COLOR);
 		}
 
 		if (m_aPolygon[nCntPlayer].pCharaPolygon->GetCharaType() != entryData.charaType)

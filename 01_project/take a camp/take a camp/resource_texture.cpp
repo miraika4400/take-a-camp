@@ -91,6 +91,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/status/04_medium.png",        // ’†‹——£
     "./data/Textures/status/05_long.png",          // ‰“‹——£
     "./data/Textures/navi_attack_area.png",		   // UŒ‚”ÍˆÍ—U“±UI
+    "./data/Textures/character_name/00_kisi.png",   // UŒ‚”ÍˆÍ—U“±UI
 };
 
 // ƒeƒNƒXƒ`ƒƒ‚ÌƒpƒX
