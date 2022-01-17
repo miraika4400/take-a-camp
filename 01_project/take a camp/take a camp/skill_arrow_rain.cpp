@@ -12,6 +12,8 @@
 #include "skill_circle.h"
 #include "skill_arrow.h"
 #include "resource_texture.h"
+#include "player.h" 
+#include "skill_effect.h"
 
 //*****************************
 //マクロ定義
@@ -39,7 +41,7 @@ CSkillArrowRain::~CSkillArrowRain()
 //===================================
 // 生成処理関数
 //===================================
-CSkillArrowRain * CSkillArrowRain::Create(const D3DXVECTOR3 pos, const D3DXCOLOR col)
+CSkillArrowRain * CSkillArrowRain::Create(const D3DXVECTOR3 pos, const D3DXCOLOR col, CPlayer* pPlayer)
 {
 	//メモリ確保
 	CSkillArrowRain* pSkillArrowRain = nullptr;
@@ -52,6 +54,7 @@ CSkillArrowRain * CSkillArrowRain::Create(const D3DXVECTOR3 pos, const D3DXCOLOR
 		pSkillArrowRain->m_pos = pos;
 		//カラー設定
 		pSkillArrowRain->m_col = col;
+		pSkillArrowRain->m_pPlayer = pPlayer;
 		//初期化処理
 		pSkillArrowRain->Init();
 
@@ -108,11 +111,12 @@ void CSkillArrowRain::PosChange(void)
 {
 	D3DXVECTOR3 pos = m_pSkillArrow->GetPos();
 
+
 	//一定の位置に来ると
 	if (pos.y <= 0.0f)
 	{
 		//衝撃波を出す
-		CSkill_circle::Create(D3DXVECTOR3(pos.x, ARROW_CIRCLE.y, pos.z), ARROW_CIRCLE, m_col, CSkill_circle::EFFECTTYPE_SKIIL);
+		CSkill_circle::Create(D3DXVECTOR3(pos.x, ARROW_CIRCLE.y, pos.z), ARROW_CIRCLE, m_col, ARCHER_EFFECT_LIFE, CSkill_circle::EFFECTTYPE_SKIIL,m_pPlayer);
 		//死亡フラグを立てる
 		m_pSkillArrow->SetDeath();
 		//死亡フラグを立てる

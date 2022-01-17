@@ -45,7 +45,7 @@ public:
 		LABEL_SE_WARP,					// ワープ時のSE
 		LABEL_SE_ENTRY,					// エントリー時のSE
 		// リザルトSE
-		LABEL_SE_GAGE,					// ゲージ上昇音
+		LABEL_SE_GAUGE,					// ゲージ上昇音
 		LABEL_SE_RANKING,				// 順位決定音
 		LABEL_SE_KAMIHUBUKI,			// 最後の紙吹雪SE
 		SOUND_LABEL_MAX,				// サウンド最大数

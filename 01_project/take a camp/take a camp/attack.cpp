@@ -23,6 +23,7 @@
 #include "color_tile.h"
 #include "peint_collision.h"
 
+
 //=============================================================================
 // マクロ定義
 //=============================================================================
@@ -263,7 +264,7 @@ void CAttackBased::Attack(int AttackType)
 				OnceEffect(CreatePos);
 			}
 
-			CreateEffect(CreatePos);
+			CreateEffect(CreatePos, GetState());
 
 			// 必殺技の打てるレベルなら
 			if (m_nLevel == LEVEL_MAX - 1)
@@ -313,7 +314,7 @@ void CAttackBased::ChargeFlag(void)
 //=============================================================================
 // エフェクト生成
 //=============================================================================
-void CAttackBased::CreateEffect(D3DXVECTOR3 pos)
+void CAttackBased::CreateEffect(D3DXVECTOR3 , ATTACK_STATE)
 {
 }
 
@@ -477,21 +478,58 @@ void CAttackBased::AttackCreate(void)
 		{
 			//攻撃処理
 			Attack(m_nType);
-			//for (int nCnt = 0; nCnt < m_AttackSquare[m_nLevel].nMaxHitRange; nCnt++)
-			//{
-			//	if (GetAttackSquare().SquareData[nCnt].RangeType == m_nType + 2)
-			//	{
-			//		//行列計算
-			//		D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-			//		D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nCnt].AttackPos * TILE_ONE_SIDE;
-			//		CreatePos.x = ((cosf(pPlaryer->GetRotDest().y)*AttackPos.x) + (sinf(pPlaryer->GetRotDest().y)*AttackPos.z));
-			//		CreatePos.y = 1 * AttackPos.y;
-			//		CreatePos.z = ((-sinf(pPlaryer->GetRotDest().y)*AttackPos.x) + (cosf(pPlaryer->GetRotDest().y)*AttackPos.z));
-			//		//CreateEffect(CreatePos);
-			//	}
-			//}
-					
-				
+
+			if (m_nAttackType == CResourceCharacter::CHARACTER_WIZARD)
+			{
+				for (int nCnt = 0; nCnt < m_AttackSquare[m_nLevel].nMaxHitRange; nCnt++)
+				{
+					if (GetState() == ATTACK_STATE_FINALATTACK)
+					{
+						if (GetAttackSquare().SquareData[nCnt].RangeType == m_nType + 2)
+						{
+							//行列計算
+							D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+							D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nCnt].AttackPos * TILE_ONE_SIDE;
+							CreatePos.x = ((cosf(pPlaryer->GetRotDest().y)*AttackPos.x) + (sinf(pPlaryer->GetRotDest().y)*AttackPos.z));
+							CreatePos.y = 1 * AttackPos.y;
+							CreatePos.z = ((-sinf(pPlaryer->GetRotDest().y)*AttackPos.x) + (cosf(pPlaryer->GetRotDest().y)*AttackPos.z));
+
+							CreateEffect(CreatePos, GetState());
+						}
+					}
+					else
+					{
+						if (GetAttackSquare().SquareData[nCnt].RangeType == m_nType + 2)
+						{
+							//行列計算
+							D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+							D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nCnt].AttackPos * TILE_ONE_SIDE;
+							CreatePos.x = ((cosf(pPlaryer->GetRotDest().y)*AttackPos.x) + (sinf(pPlaryer->GetRotDest().y)*AttackPos.z));
+							CreatePos.y = 1 * AttackPos.y;
+							CreatePos.z = ((-sinf(pPlaryer->GetRotDest().y)*AttackPos.x) + (cosf(pPlaryer->GetRotDest().y)*AttackPos.z));
+
+							CreateEffect(CreatePos, GetState());
+						}
+					}
+				}
+			}
+			else
+			{
+				for (int nCnt = 0; nCnt < m_AttackSquare[m_nLevel].nMaxHitRange; nCnt++)
+				{
+					if (GetAttackSquare().SquareData[nCnt].RangeType == m_nType + 2)
+					{
+						//行列計算
+						D3DXVECTOR3 CreatePos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+						D3DXVECTOR3 AttackPos = GetAttackSquare().SquareData[nCnt].AttackPos * TILE_ONE_SIDE;
+						CreatePos.x = ((cosf(pPlaryer->GetRotDest().y)*AttackPos.x) + (sinf(pPlaryer->GetRotDest().y)*AttackPos.z));
+						CreatePos.y = 1 * AttackPos.y;
+						CreatePos.z = ((-sinf(pPlaryer->GetRotDest().y)*AttackPos.x) + (cosf(pPlaryer->GetRotDest().y)*AttackPos.z));
+
+						CreateEffect(CreatePos,GetState());
+					}
+				}
+			}
 			//タイプが一定になったら
 			if (m_nType == MAX_HIT_TYPE)
 			{

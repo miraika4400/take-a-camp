@@ -25,6 +25,16 @@ class CAttackAreaUi : public CScene2d
 {
 public:
 
+    //===============================================
+    // 列挙
+    //===============================================
+    enum FadeMode
+    {
+        FADE_NONE = -1,
+        FADE_IN,
+        FADE_OUT,
+    };
+
 	//===============================================
 	// メンバ関数
 	//===============================================
@@ -43,6 +53,9 @@ public:
 
 	void Reset(void);
 private:
+    // フェードインアウトの処理
+    void Fade(void);
+
 	//===============================================
 	// メンバ変数宣言
 	//===============================================
@@ -50,7 +63,8 @@ private:
 	CResourceCharacter::CHARACTER_TYPE m_nCharaType;
 	bool m_bDraw;
 	int m_nCntLevel;
-	LPDIRECT3DTEXTURE9 m_apTex[CResourceCharacter::CHARACTER_MAX][MAX_ATTACK_LEVEL -1];
+	LPDIRECT3DTEXTURE9 m_apTex[CResourceCharacter::CHARACTER_MAX];
+    FadeMode m_FadeMode;
 
 };
 #endif

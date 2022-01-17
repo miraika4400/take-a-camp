@@ -32,7 +32,7 @@ public:
 	void PlaySE(void);
 
 private:
-	void CreateEffect(D3DXVECTOR3 pos); // エフェクト生成
+	void CreateEffect(D3DXVECTOR3 pos,ATTACK_STATE state); // エフェクト生成
 	void OnceEffect(D3DXVECTOR3 pos);// 一回だけのエフェクト
 
 	CSkillArrow*	m_pSkillArrow;
