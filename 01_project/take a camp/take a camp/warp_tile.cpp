@@ -259,16 +259,13 @@ void CWarpTile::Update(void)
 	//テクスチャの位置
 	D3DXVECTOR3 effectPos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z);
 	m_Texture->SetPos(effectPos);
-	//テクスチャの動き
+	//テクスチャの回転
 	D3DXVECTOR3 rot = m_Texture->GetRot();
-
 	rot.y += D3DXToRadian(1);
-
 	if (rot.y >= D3DXToRadian(360))
 	{
 		rot.y = 0;
 	}
-
 	m_Texture->SetRot(rot);
 }
 
