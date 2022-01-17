@@ -67,7 +67,6 @@ private:
 	CCollision *m_pCollision;	//コリジョンのポインタ
 	CPlayer *m_pPlayer;			//プレイヤーのポインタ
 	CShadow *m_pShadow;			//影のポインタ
-	int m_nPlayerNum;			//プレイヤーナンバー
 	int m_nItemCnt;				//取得後のタイマー
 
 	bool m_bUp;				//上限判定

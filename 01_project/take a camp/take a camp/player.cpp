@@ -47,7 +47,7 @@
 #define COLLISION_RADIUS		(18.0f)							// 当たり判定の大きさ
 #define MODL_COLOR				(D3DXCOLOR(0.3f,0.3f,0.3f,1.0f))// モデルカラー
 #define MODEL_SIZE				(D3DXVECTOR3(1.4f,1.4f,1.4f))	// モデルサイズ
-#define RESPAWN_MAX_COUNT		(60*5)							// リスポーンまでの最大カウント
+#define RESPAWN_MAX_COUNT		(60*2)							// リスポーンまでの最大カウント
 #define INVINCIBLE_COUNT		(60*2)							// 無敵時間
 #define ROTDEST_PREVIOUS		(0.0f)							// 前方向き
 #define ROTDEST_AFTER 			(180.0f)						// 後方向き
@@ -59,6 +59,8 @@
 #define DASH_FRAME				(60*5)							// ダッシュ時有効フレーム数
 #define ATTCK_ROT_INPUT			(15)							// 攻撃方向受付するフレーム数
 #define SKILL_ROT_INPUT			(35)							// 必殺技の方向受付フレーム数
+#define FALL_OVER				(60*0.2)						// 倒れるフレーム数
+#define FALL_OVER_KEEP			(FALL_OVER+60*2)				// 倒れた後にどれだけ維持するか
 
 //*****************************
 // 静的メンバ変数宣言
@@ -99,6 +101,7 @@ CPlayer::CPlayer()
 	m_bUpdate = false;
 	m_pKillCount = NULL;
 	m_nChargeTilelevel = 0;
+	m_nFallOverCout = 0;
 }
 
 //******************************
@@ -375,10 +378,11 @@ void CPlayer::Death(void)
 		m_pActRange->SetDeath(true);
 		//攻撃状態の初期化
 		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
-		//透明にする
-		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
-		//位置セット
-		SetPos(m_RespawnPos);
+
+		////透明にする
+		//m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+		////位置セット
+		//SetPos(m_RespawnPos);
 	}
 
 }
@@ -600,6 +604,7 @@ void CPlayer::ManageRot(void)
 	SetRot(rot);
 }
 
+
 //******************************
 // 攻撃処理
 //******************************
@@ -761,12 +766,62 @@ void CPlayer::SetInvincible(bool bInvincible)
 }
 
 //******************************
+// 死亡時の倒れる処理
+//******************************
+void CPlayer::DeathFallOver(void)
+{
+	//フレームカウント
+	m_nFallOverCout++;
+
+	//フレームが一定の数値に達していなければ
+	if (m_nFallOverCout < FALL_OVER)
+	{
+		//プレイヤーを倒れさす
+		m_rotDest.z += (D3DXToRadian(80) - m_rotDest.z) / (FALL_OVER - m_nFallOverCout);
+	}
+	else
+	{
+		//5の倍数でカラーを変更（点滅するように）
+		if ((m_nFallOverCout % 5) == 0)
+		{
+			//点滅
+			if (m_color.a <= 0.0f)
+			{
+				m_color.a = 1.0f;
+			}
+			else
+			{
+				m_color.a = 0.0f;
+			}
+		}
+	}
+
+
+	//フレームが一定に達したていたら
+	if (m_nFallOverCout >= FALL_OVER_KEEP)
+	{
+		//カウントの初期化
+		m_nFallOverCout = 0;
+		//角度を戻す
+		m_rotDest.z = 0;
+		//透明にする
+		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+		//位置セット
+		SetPos(m_RespawnPos);
+		//リスポーン待機状態に移行
+		SetState(PLAYER_STATE_RESPAWN);
+	}
+
+
+}
+
+//******************************
 // リスポーン処理
 //******************************
 void CPlayer::Respawn(void)
 {
 	//プレイヤーステートが死亡状態の時
-	if (m_PlayerState == PLAYER_STATE_DEATH)
+	if (m_PlayerState == PLAYER_STATE_RESPAWN)
 	{
 		//カウントアップ
 		m_nRespawnCount++;
@@ -899,9 +954,12 @@ void CPlayer::ManageState(void)
 		}
 		break;
 	case PLAYER_STATE_DEATH:	//死亡状態
-		//リスポーン処理
-		Respawn();
+		DeathFallOver();	//倒れこむ処理
 		break;
+	case PLAYER_STATE_RESPAWN:	//リスポーン待機状態
+		Respawn();			//リスポーン処理
+		break;
+
 	}
 }
 

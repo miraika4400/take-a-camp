@@ -81,7 +81,8 @@ public:
 	{
 		PLAYER_STATE_NORMAL = 0,	//通常状態
 		PLAYER_STATE_STOP,			//停止状態
-		PLAYER_STATE_DEATH			//死亡状態
+		PLAYER_STATE_DEATH,			//死亡状態
+		PLAYER_STATE_RESPAWN,		//リスポーン待機状態
 	}PLAYER_STATE;
 
 	// アイテムステート
@@ -157,12 +158,12 @@ private:
 	void AttackRot(void);		// 攻撃時の向き処理
 	void ControlMove(void);		// コントロール処理
 	void ManageRot(void);		// 向きの管理
+	void DeathFallOver(void);	// 死んだ際の倒れる処理
 	void Respawn(void);			// リスポーン処理
 	void Invincible(void);		// 無敵処理
 	void ManageState(void);     // ステート管理
 	void ManageItemState(void); // アイテムステートの管理
 	bool TutorialControll(int nTutorialphase);	// チュートリアルの操作処理
-	void Flip(void);				// はじく処理
 
 	//*****************************
 	// メンバ変数
@@ -194,7 +195,7 @@ private:
 	D3DXVECTOR3  m_RespawnPos;			// リスポーン位置
 	CAllskillgauge * m_pAllSkillgauge;	// 必殺技ゲージ
 	int m_nChargeTilelevel;				// チャージ開始タイルの塗り段階
-
+	int	m_nFallOverCout;			// 倒れるまでのカウント
 	// モーション用変数
 	CMotion *m_apMotion[CResourceCharacter::MOTION_MAX];  // アニメーションポインタ
 

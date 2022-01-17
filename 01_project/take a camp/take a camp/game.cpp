@@ -95,7 +95,6 @@ HRESULT CGame::Init(void)
 	// プレイヤーごとの色の割合の表示
 	CPaintnum::Create(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 40.0f, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, 50.0f, 0.0f) - SUBTRACT_GAUGE_SIZE);
 	// 制限時間クラス
-	//CTime::Create();
 	CBuilding::Load();
 	// ライトの向きの設定
 	CManager::GetLight()->SetDir(LIGHT_DIR_BASE);
@@ -137,6 +136,8 @@ void CGame::Update(void)
 	{
 		pCamera->Update();
 	}
+	CKillCount::AddTotalKill();
+	CColorTile::CountColorTile();
 
 #ifdef _DEBUG
 	// デバッグ用画面遷移コマンド
@@ -153,8 +154,6 @@ void CGame::Update(void)
 		CManager::SetCamera(CCamera::Create());
 	}
 
-	CKillCount::AddTotalKill();
-	CColorTile::CountColorTile();
 
 	CDebugLog::Init();
 	CDebugLog::Print("1P:Kill:%d\n", CKillCount::GetTotalKill(0));
