@@ -38,12 +38,18 @@
 //=============================
 // マクロ定義
 //=============================
-#define TARGET_PAINT (15)			// 塗る枚数
-#define TARGET_OVERPAINT (15)		// 重ね塗りする枚数
+#define TARGET_PAINT (10)			// 塗る枚数
+#define TARGET_OVERPAINT (10)		// 重ね塗りする枚数
 #define TARGET_KILL (5)				// スキルで倒す人数
 #define ADD_TEXTWINDOWRANGE (10.0f)	// テキストウィンドウの範囲を加算する値
 #define TEXTWINDOW_COLOR (D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.2f))	// テキストウィンドウの色
 #define TEXTSHOWTIME (90)			// テキストを表示する時間
+#define TEXTTEXTURE_SIZE (D3DXVECTOR3(640.0f, 60.0f, 0.0f))
+#define TEXT_POS (D3DXVECTOR3(TEXTTEXTURE_SIZE.x / 4.0f, 100.0f, 0.0f))
+#define TEXT_ADD_POS (D3DXVECTOR3(0.0f, TEXTTEXTURE_SIZE.y / 2.0f, 0.0f))
+#define CHECKTEXTURE_SIZE (D3DXVECTOR3(158.0f, 122.0f, 0.0f))
+#define CHECK_POS (D3DXVECTOR3(TEXTTEXTURE_SIZE.x / 2.0f - 17.0f, 100.0f, 0.0f))
+#define CHECK_ADD_POS (D3DXVECTOR3(0.0f, 7.0f, 0.0f))
 
 //=============================
 // コンストラクタ
@@ -70,6 +76,30 @@ CTutorial::CTutorial()
 //=============================
 CTutorial::~CTutorial()
 {
+	if (m_pTextWindow)
+	{
+		// ポリゴンの終了処理
+		m_pTextWindow->Uninit();
+
+		// メモリの解放
+		delete m_pTextWindow;
+		m_pTextWindow = NULL;
+	}
+
+	for (int nCount = 0; nCount < (int)PHASE_FINISH; nCount++)
+	{
+		// ポリゴンの終了処理
+		m_pTaskTex[nCount]->Uninit();
+
+		// メモリの解放
+		delete m_pTaskTex[nCount];
+		m_pTaskTex[nCount] = NULL;
+
+
+		m_pCheckTex[nCount]->Uninit();
+		delete m_pCheckTex[nCount];
+		m_pCheckTex[nCount] = NULL;
+	}
 }
 
 //=============================
@@ -126,7 +156,23 @@ HRESULT CTutorial::Init()
 	// BGM再生
 	pSound->Play(CSound::LABEL_BGM_GAME);
 
+	for (int nCount = 0; nCount < (int)PHASE_FINISH; nCount++)
+	{
+		// タスクのテキスト生成
+		m_pTaskTex[nCount] = CPolygon::Create(TEXT_POS + TEXT_ADD_POS * (float)nCount, TEXTTEXTURE_SIZE / 2.0f, D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+		m_pTaskTex[nCount]->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_TUTRIAL_TEXT));
 
+		D3DXVECTOR2 uv[NUM_VERTEX];
+		uv[1] = D3DXVECTOR2(1.0f, nCount * 0.25f);
+		uv[0] = D3DXVECTOR2(0.0f, nCount * 0.25f);
+		uv[2] = D3DXVECTOR2(0.0f, 0.25f + nCount * 0.25f);
+		uv[3] = D3DXVECTOR2(1.0f, 0.25f + nCount * 0.25f);
+		m_pTaskTex[nCount]->SetTextureUV(uv);
+
+		// チェックマークの生成
+		m_pCheckTex[nCount] = CPolygon::Create(CHECK_POS - CHECK_ADD_POS + TEXT_ADD_POS * (float)nCount, CHECKTEXTURE_SIZE / 5.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+		m_pCheckTex[nCount]->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CHECK));
+	}
 	return S_OK;
 }
 
@@ -135,16 +181,6 @@ HRESULT CTutorial::Init()
 //=============================
 void CTutorial::Uninit()
 {
-	if (m_pTextWindow)
-	{
-		// ポリゴンの終了処理
-		m_pTextWindow->Uninit();
-
-		// メモリの解放
-		delete m_pTextWindow;
-		m_pTextWindow = NULL;
-	}
-
 	// カメラクラスの解放処理
 	CCamera * pCamera = CManager::GetCamera();
 	if (pCamera)
@@ -175,7 +211,7 @@ void CTutorial::Update()
 	// テキスト表示が終わったら
 	if (m_bTextEnd)
 	{
-		// プレイヤーの更新出来るようにする
+		// プレイヤーが動けるようにする
 		StartPlayer(true);
 
 		// テキストウィンドウの色を無色に
@@ -189,6 +225,7 @@ void CTutorial::Update()
 			{
 				CheckTaskClear(CColorTile::GetTileNum(nCount, 1), TARGET_PAINT * CCharaSelect::GetEntryPlayerNum(), nCount);
 			}
+			m_pTaskTex[PHASE_PAINT]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 			break;
 
 		case PHASE_OVERPAINT: // 重ね塗りするフェーズ
@@ -196,6 +233,10 @@ void CTutorial::Update()
 			{
 				CheckTaskClear(CColorTile::GetTileNum(nCount, 3), TARGET_OVERPAINT * CCharaSelect::GetEntryPlayerNum(), nCount);
 			}
+			m_pTaskTex[PHASE_OVERPAINT]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+			// 前のタスクのテキストとチェックマークを少し透明に
+			SetTexInvisible(PHASE_OVERPAINT);
 			break;
 
 		case PHASE_ATTACK: // かかしを攻撃するフェーズ
@@ -203,6 +244,10 @@ void CTutorial::Update()
 			{
 				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL * CCharaSelect::GetEntryPlayerNum(), nCount);
 			}
+			m_pTaskTex[PHASE_ATTACK]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+			// 前のタスクのテキストとチェックマークを少し透明に
+			SetTexInvisible(PHASE_ATTACK);
 			break;
 
 		case PHASE_FINALATTACK: // かかしを必殺技で攻撃するフェーズ
@@ -210,9 +255,18 @@ void CTutorial::Update()
 			{
 				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL * CCharaSelect::GetEntryPlayerNum(), nCount);
 			}
+			m_pTaskTex[PHASE_FINALATTACK]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+			// 前のタスクのテキストとチェックマークを少し透明に
+			SetTexInvisible(PHASE_FINALATTACK);
 
 			// 必殺技フェーズはゲージを常時最大に
 			Max_Playergauge();
+			break;
+
+		case PHASE_FINISH: // 自由フェーズ
+			// 前のタスクのテキストとチェックマークを少し透明に
+			SetTexInvisible(PHASE_FINISH);
 			break;
 
 		default:
@@ -232,6 +286,9 @@ void CTutorial::Update()
 
 		// 表示する時間の設定
 		m_nTextShowTime = TEXTSHOWTIME;
+
+		// プレイヤーを行動不能にする
+		StartPlayer(false);
 	}
 	// 一文表示終えたら
 	else if (m_pText->GetAllShowText() && !m_bTextEnd)
@@ -298,6 +355,19 @@ void CTutorial::Draw()
 		// ポリゴンの描画処理
 		m_pTextWindow->Draw();
 	}
+
+	for (int nCount = 0; nCount < (int)PHASE_FINISH; nCount++)
+	{
+		if (m_pTaskTex[nCount] != NULL)
+		{
+			m_pTaskTex[nCount]->Draw();
+		}
+
+		if (m_pCheckTex[nCount] != NULL)
+		{
+			m_pCheckTex[nCount]->Draw();
+		}
+	}
 }
 
 //=============================
@@ -330,6 +400,12 @@ void CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, cons
 	// タスクを完了した数が一致してたら
 	if (m_bTask)
 	{
+		// チェックマークの表示
+		if (m_pCheckTex[m_Tutorialphase])
+		{
+			m_pCheckTex[m_Tutorialphase]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		}
+
 		// 次のテキストを表示する
 		m_bNextText = false;
 
@@ -528,4 +604,13 @@ void CTutorial::SetTextWindow(void)
 		// 頂点ごとの情報をセット
 		m_pTextWindow->SetVertexPos(Pos);
 	}
+}
+
+//======================================================
+// 前のタスクのテキストとチェックマークを少し透明に
+//======================================================
+void CTutorial::SetTexInvisible(TUTORIALPHASE TutorialPhaze)
+{
+	m_pTaskTex[TutorialPhaze - 1]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f));
+	m_pCheckTex[TutorialPhaze - 1]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f));
 }
