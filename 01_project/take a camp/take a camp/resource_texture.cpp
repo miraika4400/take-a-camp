@@ -36,13 +36,13 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/effect/kirakira.png",		  	 // パーティクル*ダイヤ
 	"./data/Textures/effect/00_wave.png",			 // パーティクル*波紋
 	"./data/Textures/effect/shoot.png",				 // パーティクル*円
+	"./data/Textures/effect/arrow.png",				 // パーティクル*矢
+	"./data/Textures/effect/trump.png",				 // パーティクル*トランプ
 	"./data/Textures/effect/shoot.png",				 // パーティクル*弓軌道
 	"./data/Textures/effect/meteor.png",			 // パーティクル*爆発
 	"./data/Textures/effect/meteor_shadow.png",		 // パーティクル*爆発
-	"./data/Textures/effect/arrow.png",				 // パーティクル*矢
-	"./data/Textures/effect/trump.png",				 // パーティクル*トランプ
-	"./data/Textures/guruguru.png",					 //ぐるぐる
-	"./data/Textures/effect/slash.png",				 //斬撃エフェクト
+	"./data/Textures/effect/slash.png",				 // 斬撃エフェクト
+	"./data/Textures/guruguru.png",					 // ぐるぐる
 	"./data/Textures/number.png",					 // ナンバー
 	"./data/Textures/frame.png",					 // 枠
 	"./data/Textures/cross_mark.png",				 // バツマーク
@@ -66,6 +66,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/icon_bg.png",					 // アイコンの背景
 	"./data/Textures/sword_icon.png",				 // 剣アイコン
 	"./data/Textures/stage_name.png",				 // ステージ名
+	"./data/Textures/stage_polygon_bg.png",			 // ステージ選択背景
 	"./data/Textures/00_ready.png",					 // ready
 	"./data/Textures/01_go!!.png",					 // go
 	"./data/Textures/00_finish.png",				 // finish
@@ -134,7 +135,7 @@ CResourceTexture * CResourceTexture::Create(void)
 			return NULL;
 		}
 	}
-	
+
 	return m_pSingleTex;
 }
 
@@ -192,7 +193,7 @@ void CResourceTexture::Load(void)
 	for (int nCnt = 0; nCnt < TEXTURE_MAX; nCnt++)
 	{
 		// テクスチャの生成
- 		
+		D3DXCreateTextureFromFile(pDevice, m_aTexPath[nCnt].c_str(), &m_apTexture[nCnt]);
 	}
 
 	// テクスチャ数分ループ

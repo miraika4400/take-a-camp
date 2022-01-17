@@ -58,9 +58,9 @@ void CAttackLancer::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
 {
     CPlayer *pPlaryer = GetPlayer();
     //エフェクト生成
-    CSkill_effect::Create(pPlaryer->GetPos() + pos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()),
- 	GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() - 1),
-	GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel() + 1), LANCER_EFFECT_LIFE, CSkill_effect::SKILLTYPE_KNIGHT, GetPlayer());
+    CSkill_effect::Create(pPlaryer->GetPos() + pos + NORMAL_SKIIL_POS, NORMAL_SKIIL_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(),0),
+ 	GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 1),
+	GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 2), LANCER_EFFECT_LIFE, CSkill_effect::SKILLTYPE_KNIGHT, GetPlayer());
 }
 
 //=============================================================================
