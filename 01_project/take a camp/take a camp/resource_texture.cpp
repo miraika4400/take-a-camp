@@ -93,7 +93,12 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/navi_attack_area.png",		   // 攻撃範囲誘導UI
 	"./data/Textures/alltext.png",			// チュートリアルで表示するテキスト
 	"./data/Textures/check.png",			// チェック
-    "./data/Textures/character_name/00_kisi.png",   // 攻撃範囲誘導UI
+    "./data/Textures/character_name/00_kisi.png",      // 
+    "./data/Textures/character_name/01_yari.png",      // 
+    "./data/Textures/character_name/02_mahou.png",     // 
+    "./data/Textures/character_name/03_touzoku.png",   // 
+    "./data/Textures/character_name/04_kijutusi.png",  // 
+    "./data/Textures/character_name/05_kariudo.png",   // 
 };
 
 // テクスチャのパス

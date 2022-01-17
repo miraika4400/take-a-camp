@@ -41,7 +41,7 @@
 #define NAVI_SIZE (D3DXVECTOR3(732.0f,150.0f,0.0f)*0.2f)     // 
 #define NAVI_POS_Y (670.0f)                                  // 
 #define NAVI_POS_X_OFFSET (50.0f)                            // 
-#define CHARANAME_SIZE (D3DXVECTOR3(1042.0f,184.0f,0.0f)*0.29f) // 
+#define CHARANAME_SIZE (D3DXVECTOR3(1042.0f,184.0f,0.0f)*0.286f) // 
 #define CHARANAME_POS_Y (130.0f)                                //
 
 //=============================
@@ -289,6 +289,7 @@ void CCharaSelectUi::Update(void)
 			m_aPolygon[nCntPlayer].pCharaPolygon->SetCharaType(entryData.charaType);
 
             if (entryData.charaType == -1) continue;
+            m_aPolygon[nCntPlayer].pCharaName->BindTexture(CResourceTexture::GetTexture((CResourceTexture::TEXTURE_TYPE)(CResourceTexture::TEXTURE_CHARACTER_NAME_KNIGHT+ entryData.charaType)));
             m_aPolygon[nCntPlayer].apStatus[0]->BindTexture(CResourceTexture::GetTexture(m_aStatusTexNum[entryData.charaType].nDifficult));
             m_aPolygon[nCntPlayer].apStatus[1]->BindTexture(CResourceTexture::GetTexture(m_aStatusTexNum[entryData.charaType].nRange));
 		}
