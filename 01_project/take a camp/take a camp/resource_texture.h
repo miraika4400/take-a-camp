@@ -93,6 +93,8 @@ public:
         TEXTURE_RANGE_MEDIAM,          // 中距離
         TEXTURE_RANGE_LONG,            // 遠距離
         TEXTURE_NAVI_ATTACK_AREA,      // 攻撃範囲表示誘導UI
+		TEXTURE_TUTRIAL_TEXT,          // チュートリアルで表示するテキスト
+		TEXTURE_CHECK,				   // チェック
         TEXTURE_CHARACTER_NAME_KNIGHT, // キャラクターネーム*騎士
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;

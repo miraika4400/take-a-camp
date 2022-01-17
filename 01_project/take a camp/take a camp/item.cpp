@@ -15,6 +15,7 @@
 #include "player.h"
 #include "collision.h"
 #include "shadow.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -193,6 +194,8 @@ void CItem::RotUpdate(void)
 void CItem::CollisionItem(void)
 {
 	CPlayer * pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
 
 	while (pPlayer != NULL)
 	{
@@ -204,6 +207,9 @@ void CItem::CollisionItem(void)
 				m_bDeath = true;
 				//アイテム効果処理
 				ItemEffect(pPlayer);
+				// SE再生
+				pSound->Play(CSound::LABEL_SE_ITEM);
+
 				//影の終了処理
 				if (m_pShadow != NULL)
 				{
