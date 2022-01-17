@@ -292,7 +292,7 @@ void CPlayer::Update(void)
 	m_bOldMove = m_bMove;
 
 	//死亡している以外の時移動計算処理
-	if (m_PlayerState != PLAYER_STATE_DEATH) Move();
+	if (m_PlayerState != PLAYER_STATE_DEATH&&m_PlayerState != PLAYER_STATE_RESPAWN) Move();
 	//当たり判定の位置更新処理
 	if (m_pCollision != NULL) m_pCollision->SetPos(D3DXVECTOR3(GetPos().x, GetPos().y + COLLISION_RADIUS / 2, GetPos().z));
 	//無敵処理
@@ -779,7 +779,7 @@ void CPlayer::DeathFallOver(void)
 		//プレイヤーを倒れさす
 		m_rotDest.z += (D3DXToRadian(80) - m_rotDest.z) / (FALL_OVER - m_nFallOverCout);
 	}
-	else
+	else if(m_nFallOverCout > FALL_OVER+60)
 	{
 		//5の倍数でカラーを変更（点滅するように）
 		if ((m_nFallOverCout % 5) == 0)
@@ -806,8 +806,6 @@ void CPlayer::DeathFallOver(void)
 		m_rotDest.z = 0;
 		//透明にする
 		m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
-		//位置セット
-		SetPos(m_RespawnPos);
 		//リスポーン待機状態に移行
 		SetState(PLAYER_STATE_RESPAWN);
 	}
