@@ -157,6 +157,7 @@ private:
 	void AttackRot(void);		// 攻撃時の向き処理
 	void ControlMove(void);		// コントロール処理
 	void ManageRot(void);		// 向きの管理
+	void DeathFallOver(void);	// 死んだ際の倒れる処理
 	void Respawn(void);			// リスポーン処理
 	void Invincible(void);		// 無敵処理
 	void ManageState(void);     // ステート管理
