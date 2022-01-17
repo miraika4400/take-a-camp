@@ -198,10 +198,24 @@ void CCharaSelect::FadeGameScene(void)
 	// プレイヤー数のカウント
 	CountEntryPlayerNum();
 
-	if (m_nEntryPlayerNum >= MIN_PLAYER_NUM&&nReadyPlayerNum == m_nEntryPlayerNum)
-	{// エントリー数がMIN_PLAYER_NUM以上且つエントリー数と準備完了数が一緒の時
+	switch (CManager::GetDecMode())
+	{
+	case CManager::MODE_TUTORIAL:
+		if (m_nEntryPlayerNum >= MIN_PLAYER_NUM - 1 && nReadyPlayerNum == m_nEntryPlayerNum)
+		{// エントリー数がMIN_PLAYER_NUM以上且つエントリー数と準備完了数が一緒の時
+			CManager::GetFade()->SetFade(CManager::MODE_TUTORIAL);
+		}
+		break;
 
-		CManager::GetFade()->SetFade(CManager::MODE_STAGE_SELECT);
+	case CManager::MODE_GAME:
+		if (m_nEntryPlayerNum >= MIN_PLAYER_NUM && nReadyPlayerNum == m_nEntryPlayerNum)
+		{// エントリー数がMIN_PLAYER_NUM以上且つエントリー数と準備完了数が一緒の時
+			CManager::GetFade()->SetFade(CManager::MODE_STAGE_SELECT);
+		}
+		break;
+
+	default:
+		break;
 	}
 }
 
