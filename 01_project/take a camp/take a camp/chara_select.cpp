@@ -210,6 +210,9 @@ void CCharaSelect::FadeGameScene(void)
 //=============================
 void CCharaSelect::EntryPlayer(void)
 {
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
 	// エントリー
 	auto EntryPlayer = [this](int nCntData, int nCntJoy, bool bController)
 	{
@@ -274,6 +277,8 @@ void CCharaSelect::EntryPlayer(void)
 				{// コントローラーでエントリー
 					EntryPlayer(nCntData, nCntJoy, true);
 					pJoy->EnableVibration(1.0f, 1.0f, 10.0f, nCntJoy);
+					// SE再生
+					pSound->Play(CSound::LABEL_SE_PLAYERENTRY);
 					break;
 				}
 
@@ -282,6 +287,8 @@ void CCharaSelect::EntryPlayer(void)
 				if (!m_abUseKey[nCntJoy] && pKey->GetKeyTrigger(CPlayer::GetPlayerControllKey(nCntJoy, CPlayer::KEY_PROGRESS)))
 				{// キーボードでエントリー
 					EntryPlayer(nCntData, nCntJoy, false);
+					// SE再生
+					pSound->Play(CSound::LABEL_SE_PLAYERENTRY);
 					break;
 				}
 				m_aEntryData[nCntData].charaType = CResourceCharacter::CHARACTER_NONE;
