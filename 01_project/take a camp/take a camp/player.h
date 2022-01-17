@@ -24,7 +24,7 @@ class CActRange;
 class CAttackBased;
 class CMotion;
 class CKillCount;
-class CSkillgauge;
+class CAllskillgauge;
 class CTutorial;
 
 //*****************************
@@ -148,7 +148,8 @@ public:
 	//プレイヤー
 	static int GetPlayerControllKey(int nPlayerNum, CONTROLL_KEY keyEnum) { return m_anControllKey[nPlayerNum][keyEnum]; }
 	// 必殺技ゲージポインタ
-	CSkillgauge *GetSkillgauge(void) { return m_pSkillgauge; }	// タイルの塗り段階所得
+	CAllskillgauge *GetAllSkillgauge(void) { return m_pAllSkillgauge; }	
+	// タイルの塗り段階所得
 	int GetChargeTilelevel(void) { return m_nChargeTilelevel; }
 	//プレイヤーの色 
 	void SetColor(D3DXCOLOR color) { m_color = color; }
@@ -169,31 +170,31 @@ private:
 	//*****************************
 	static int m_anControllKey[MAX_PLAYER][KEY_MAX];
 
-	PLAYER_STATE m_PlayerState;		// プレイヤーステータス
-	CKillCount * m_pKillCount;		// プレイヤーのキルカウントポインタ
-	int m_nPlayerNumber;			// プレイヤー番号
-	D3DXCOLOR m_color;				// 色
-	int m_nColor;					// 色ナンバー
-	int m_nControllNum;				// コントロール番号
-	bool m_bController;				// コントローラー操作かキーボード操作か
-	CAttackBased* m_pAttack;		// 攻撃用クラス
-	ATTACK_DATA m_AttackData;		// 攻撃用データ
-	bool m_bInvincible;				// 無敵フラグ
-	bool m_bUpdate;					// 更新フラグ
-	int m_nInvincibleCount;			// 無敵時間のカウント
-	int	m_nRespawnCount;			// リスポーンまでのカウント
-	bool m_bMove;					// 移動可否フラグ
-	bool m_bOldMove;				// 前回の移動可否フラグの状態
-	MOVE_DATA MoveData;				// 移動データ
-	ITEM_STATE m_ItemState;			// アイテムステータス
-	int	m_ReverseCount;				// アイテム効果 操作反転カウント
-	int m_nDashCnt;					// アイテム効果 速度アップカウント
-	CCollision * m_pCollision;		// 当たり判定
-	CActRange *	 m_pActRange;		// 行動判定
-	D3DXVECTOR3  m_rotDest;			// 回転(目標の値)
-	D3DXVECTOR3  m_RespawnPos;		// リスポーン位置
-	CSkillgauge * m_pSkillgauge;	// 必殺技ゲージ
-	int m_nChargeTilelevel;			// チャージ開始タイルの塗り段階
+	PLAYER_STATE m_PlayerState;			// プレイヤーステータス
+	CKillCount * m_pKillCount;			// プレイヤーのキルカウントポインタ
+	int m_nPlayerNumber;				// プレイヤー番号
+	D3DXCOLOR m_color;					// 色
+	int m_nColor;						// 色ナンバー
+	int m_nControllNum;					// コントロール番号
+	bool m_bController;					// コントローラー操作かキーボード操作か
+	CAttackBased* m_pAttack;			// 攻撃用クラス
+	ATTACK_DATA m_AttackData;			// 攻撃用データ
+	bool m_bInvincible;					// 無敵フラグ
+	bool m_bUpdate;						// 更新フラグ
+	int m_nInvincibleCount;				// 無敵時間のカウント
+	int	m_nRespawnCount;				// リスポーンまでのカウント
+	bool m_bMove;						// 移動可否フラグ
+	bool m_bOldMove;					// 前回の移動可否フラグの状態
+	MOVE_DATA MoveData;					// 移動データ
+	ITEM_STATE m_ItemState;				// アイテムステータス
+	int	m_ReverseCount;					// アイテム効果 操作反転カウント
+	int m_nDashCnt;						// アイテム効果 速度アップカウント
+	CCollision * m_pCollision;			// 当たり判定
+	CActRange *	 m_pActRange;			// 行動判定
+	D3DXVECTOR3  m_rotDest;				// 回転(目標の値)
+	D3DXVECTOR3  m_RespawnPos;			// リスポーン位置
+	CAllskillgauge * m_pAllSkillgauge;	// 必殺技ゲージ
+	int m_nChargeTilelevel;				// チャージ開始タイルの塗り段階
 	int	m_nFallOverCout;			// 倒れるまでのカウント
 	// モーション用変数
 	CMotion *m_apMotion[CResourceCharacter::MOTION_MAX];  // アニメーションポインタ

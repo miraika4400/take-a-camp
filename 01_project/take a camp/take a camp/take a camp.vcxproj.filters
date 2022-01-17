@@ -489,6 +489,9 @@
     <ClCompile Include="skill_aroow_line.cpp">
       <Filter>ソース ファイル\09_Effect\Attack</Filter>
     </ClCompile>
+    <ClCompile Include="all_skill_gauge.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.h">
@@ -835,6 +838,9 @@
     </ClInclude>
     <ClInclude Include="attack_archer.h">
       <Filter>ヘッダー ファイル\07_GameModel\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="all_skill_gauge.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

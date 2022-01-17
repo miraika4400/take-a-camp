@@ -63,14 +63,15 @@ private:
 	void Max_Playergauge(void);
 	void DummyCreate(void);
 	void SetTextWindow(void);
+	void SetTexInvisible(TUTORIALPHASE TutorialPhaze);
 
 	//============
 	// メンバ変数
 	//===========
 	CMap *m_pMap;										// マップのポインタ
 	CPolygon *m_pTextWindow;							// テキストウィンドウのポリゴンのポインタ
-	CPolygon *m_pTaskTex[4];							// テスクのテクスチャのポリゴンのポインタ
-	CPolygon *m_pCheckTex[4];							// チェックのテクスチャのポリゴンのポインタ
+	CPolygon *m_pTaskTex[(int)PHASE_FINISH];			// テスクのテクスチャのポリゴンのポインタ
+	CPolygon *m_pCheckTex[(int)PHASE_FINISH];			// チェックのテクスチャのポリゴンのポインタ
 	CText *m_pText;										// テキストのポインタ
 	TUTORIALPHASE m_Tutorialphase;						// チュートリアルの状態
 	bool m_bTask;										// プレイヤーがタスクを完了したか

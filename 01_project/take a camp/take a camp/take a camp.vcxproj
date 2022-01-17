@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="act_range.cpp" />
+    <ClCompile Include="all_skill_gauge.cpp" />
     <ClCompile Include="attack.cpp" />
     <ClCompile Include="attack_archer.cpp" />
     <ClCompile Include="attack_area_ui.cpp" />
@@ -270,6 +271,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="act_range.h" />
+    <ClInclude Include="all_skill_gauge.h" />
     <ClInclude Include="attack.h" />
     <ClInclude Include="attack_archer.h" />
     <ClInclude Include="attack_area_ui.h" />

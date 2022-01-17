@@ -91,6 +91,8 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/status/04_medium.png",        // 中距離
     "./data/Textures/status/05_long.png",          // 遠距離
     "./data/Textures/navi_attack_area.png",		   // 攻撃範囲誘導UI
+	"./data/Textures/alltext.png",			// チュートリアルで表示するテキスト
+	"./data/Textures/check.png",			// チェック
 };
 
 // テクスチャのパス
@@ -202,7 +204,6 @@ void CResourceTexture::Load(void)
 		// テクスチャの生成
 		D3DXCreateCubeTextureFromFile(pDevice, m_aCubeTexPath[nCnt].c_str(), &m_apCubeTexture[nCnt]);
 	}
-	int n = 0;
 }
 
 //===================================

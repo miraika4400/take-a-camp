@@ -32,7 +32,7 @@
 #include "kill_count.h"
 #include "particle.h"
 #include "resource_model_hierarchy.h"
-#include "skill_gauge.h"
+#include "all_skill_gauge.h"
 #include "base_Cylinder.h"
 #include "skill_circle.h"
 #include "skill_effect.h"
@@ -204,8 +204,8 @@ HRESULT CPlayer::Init(void)
 	SetTexColor(GET_COLORMANAGER->GetIconColor(m_nColor));
 	// キルカウント用のクラス
 	m_pKillCount = CKillCount::Create(m_nPlayerNumber);
-	// スキルゲージの生成(後々ここに職種入れてアイコン変える)
-	m_pSkillgauge = CSkillgauge::AllCreate(m_nColor);
+	// スキルゲージの生成
+	m_pAllSkillgauge = CAllskillgauge::Create(m_nColor);
 
 	//// プレイヤーの頭上に出すスコア生成
 	//CNumberArray::Create(0, GetPos(), D3DXVECTOR3(10.0f, 10.0f, 0.0f), GET_COLORMANAGER->GetIconColor(m_nColor), m_nColor);
@@ -264,6 +264,13 @@ void CPlayer::Uninit(void)
 	}
 
 	CPlayerModel::Uninit();
+
+	// スキルゲージの終了処理
+	if (m_pAllSkillgauge)
+	{
+		delete m_pAllSkillgauge;
+		m_pAllSkillgauge = nullptr;
+	}
 }
 
 //******************************
