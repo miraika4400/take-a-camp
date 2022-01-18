@@ -26,6 +26,7 @@ public:
 		LABEL_BGM_TITLE = 0,			// タイトルBGM
 		LABEL_BGM_SELECT,				// キャラクターセレクトBGM
 		LABEL_BGM_GAME,					// ゲームのBGM
+		LABEL_BGM_GAME_LIMIT,			// ゲームの残り時間が少ないときのBGM
 		LABEL_BGM_RESULT,				// リザルトのBGM
 		// キャラのSE
 		LABEL_SE_KENSI_ATTACK,			// 剣士の攻撃SE
@@ -46,6 +47,7 @@ public:
 		LABEL_SE_PLAYERENTRY,			// プレイヤーエントリーSE
 		LABEL_SE_ENTRY,					// エントリー時のSE
 		LABEL_SE_ITEM,					// アイテム取得時のSE
+		LABEL_SE_LIMIT,					// 残り時間表示時のSE
 		// リザルトSE
 		LABEL_SE_GAUGE,					// ゲージ上昇音
 		LABEL_SE_RANKING,				// 順位決定音

@@ -16,6 +16,7 @@ CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX]
 	{ "./data/Sounds/BGM/Title_bgm.wav"      , SOUND_LOOP_ON },
 	{ "./data/Sounds/BGM/Charaselect_bgm.wav"      , SOUND_LOOP_ON },
     { "./data/Sounds/BGM/Game_bgm1.wav"    , SOUND_LOOP_ON},
+	{ "./data/Sounds/BGM/Timelimit_bgm.wav"    , SOUND_LOOP_ON },
 	{ "./data/Sounds/BGM/Result_bgm.wav"    , SOUND_LOOP_ON },
 	// ƒLƒƒƒ‰‚ÌSE
 	{ "./data/Sounds/SE/Character/00_kensi_attack.wav"    , SOUND_LOOP_OFF },
@@ -36,6 +37,7 @@ CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX]
 	{ "./data/Sounds/SE/player_entry.wav"    , SOUND_LOOP_OFF },
 	{ "./data/Sounds/SE/entry_se.wav"    , SOUND_LOOP_OFF },
 	{ "./data/Sounds/SE/item.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/Timelimit_se.wav"    , SOUND_LOOP_OFF },
 	// ƒŠƒUƒ‹ƒg‚ÌSE
 	{ "./data/Sounds/SE/gauge.wav"    , SOUND_LOOP_OFF },
 	{ "./data/Sounds/SE/result_se.wav"    , SOUND_LOOP_OFF },
