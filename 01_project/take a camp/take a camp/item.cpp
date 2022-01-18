@@ -205,6 +205,7 @@ void CItem::CollisionItem(void)
 			m_bDeath = true;
 			//アイテム効果処理
 			ItemEffect(pPlayer);
+			pSound->Play(CSound::LABEL_SE_ITEM);
 			//影の終了処理
 			if (m_pShadow != NULL)
 			{

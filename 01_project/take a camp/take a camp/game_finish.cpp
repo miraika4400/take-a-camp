@@ -14,6 +14,7 @@
 #include "polygon.h"
 #include "resource_texture.h"
 #include "player.h"
+#include "sound.h"
 
 //=============================================================================
 // マクロ定義
@@ -71,6 +72,9 @@ CGameFinish * CGameFinish::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 //=============================================================================
 HRESULT CGameFinish::Init(void)
 {
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
 	// 色設定
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -81,6 +85,9 @@ HRESULT CGameFinish::Init(void)
 		m_col);
 
 	m_pPolygon->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_FINISH));
+
+	// SE再生
+	pSound->Play(CSound::LABEL_SE_FINISH);
 
 	return S_OK;
 }

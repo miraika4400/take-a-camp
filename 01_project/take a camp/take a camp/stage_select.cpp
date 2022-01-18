@@ -22,6 +22,7 @@
 #include "map.h"
 #include "resource_map.h"
 #include "stage_select_polygon.h"
+#include "sound.h"
 
 //=============================
 // マクロ定義
@@ -181,6 +182,9 @@ void CStageSelect::SetObject(void)
 //=============================
 void CStageSelect::SelectStageType(void)
 {
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
 	if (m_nWaitCnt > 0) return;
 
 	CCharaSelect::Entry_Data entryData = {};
@@ -238,6 +242,8 @@ void CStageSelect::SelectStageType(void)
 	if (!entryData.bController && pKey->GetKeyTrigger(CPlayer::GetPlayerControllKey(entryData.nControllNum, CPlayer::KEY_RECESSION))
 		|| entryData.bController && pJoy->GetButtonState(XINPUT_GAMEPAD_A, CInputJoypad::BUTTON_TRIGGER, entryData.nControllNum))
 	{
+		// SE再生
+		pSound->Play(CSound::LABEL_SE_BUTTON);
 		CGame::SetMapType(m_selectStageType);
 		CManager::GetFade()->SetFade(CManager::MODE_GAME);
 	}
