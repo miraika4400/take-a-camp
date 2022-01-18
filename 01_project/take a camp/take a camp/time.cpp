@@ -164,7 +164,7 @@ void CTime::FinishPlayer(void)
 void CTime::TimeUp(void)
 {
 	// 0‚É‚È‚Á‚½‚ç
-	if (m_nTime <= 0)
+	if (m_nTime == 0 && m_nA % 60 <= 0)
 	{
 		// ƒJƒEƒ“ƒg‚ðŽ~‚ß‚é
 		m_nA = 0;

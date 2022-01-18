@@ -48,6 +48,7 @@ public:
 		LABEL_SE_ENTRY,					// エントリー時のSE
 		LABEL_SE_ITEM,					// アイテム取得時のSE
 		LABEL_SE_LIMIT,					// 残り時間表示時のSE
+		LABEL_SE_FINISH,				// 終了時のSE
 		// リザルトSE
 		LABEL_SE_GAUGE,					// ゲージ上昇音
 		LABEL_SE_RANKING,				// 順位決定音
