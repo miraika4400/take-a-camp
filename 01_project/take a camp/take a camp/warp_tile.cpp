@@ -185,40 +185,41 @@ HRESULT CWarpTile::Init(void)
 {
 	//タイル初期化処理
 	CTile::Init();
-	//タイプごとの見た目変化
-	switch (m_WarpType)
-	{
-	case WARP_TILE_TYPE_1:
-		//カラーの設定
-		SetColor(D3DCOLOR_XRGB(0,0,139));
-		break;
-	case WARP_TILE_TYPE_2:
-		//カラーの設定
-		SetColor(D3DCOLOR_XRGB(127, 255, 212));
-		break;
-	case WARP_TILE_TYPE_3:
-		//カラーの設定
-		SetColor(D3DCOLOR_XRGB(255, 105, 180));
-		break;
-	case WARP_TILE_TYPE_4:
-		//カラーの設定
-		SetColor(D3DCOLOR_XRGB(0, 255, 255));
-		break;
-	case WARP_TILE_TYPE_5:
-		//カラーの設定
-		SetColor(D3DCOLOR_XRGB(255, 165, 0));
-		break;
-	case WARP_TILE_TYPE_6:
-		//カラーの設定
-		SetColor(D3DCOLOR_XRGB(148, 0, 211));
-		break;
-
-	}
 	//テクスチャの設定
 	m_Texture = CScene3d::Create(GetPos(), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
 	m_Texture->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_WARP));
 	m_Texture->SetColor(TILE_DEFAULT_COLOR);
 	m_Texture->SetPriority(OBJTYPE_MAP);
+
+	//タイプごとの見た目変化
+	switch (m_WarpType)
+	{
+	case WARP_TILE_TYPE_1:
+		//カラーの設定
+		m_Texture->SetColor(D3DCOLOR_XRGB(0,0,139));
+		break;
+	case WARP_TILE_TYPE_2:
+		//カラーの設定
+		m_Texture->SetColor(D3DCOLOR_XRGB(127, 255, 212));
+		break;
+	case WARP_TILE_TYPE_3:
+		//カラーの設定
+		m_Texture->SetColor(D3DCOLOR_XRGB(255, 105, 180));
+		break;
+	case WARP_TILE_TYPE_4:
+		//カラーの設定
+		m_Texture->SetColor(D3DCOLOR_XRGB(0, 255, 255));
+		break;
+	case WARP_TILE_TYPE_5:
+		//カラーの設定
+		m_Texture->SetColor(D3DCOLOR_XRGB(255, 165, 0));
+		break;
+	case WARP_TILE_TYPE_6:
+		//カラーの設定
+		m_Texture->SetColor(D3DCOLOR_XRGB(148, 0, 211));
+		break;
+
+	}
 
 	return S_OK;
 }
