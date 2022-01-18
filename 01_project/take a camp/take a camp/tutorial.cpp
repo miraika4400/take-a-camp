@@ -38,18 +38,18 @@
 //=============================
 // マクロ定義
 //=============================
-#define TARGET_PAINT (10)			// 塗る枚数
-#define TARGET_OVERPAINT (10)		// 重ね塗りする枚数
-#define TARGET_KILL (5)				// スキルで倒す人数
-#define ADD_TEXTWINDOWRANGE (10.0f)	// テキストウィンドウの範囲を加算する値
-#define TEXTWINDOW_COLOR (D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.2f))	// テキストウィンドウの色
-#define TEXTSHOWTIME (90)			// テキストを表示する時間
-#define TEXTTEXTURE_SIZE (D3DXVECTOR3(640.0f, 60.0f, 0.0f))
-#define TEXT_POS (D3DXVECTOR3(TEXTTEXTURE_SIZE.x / 4.0f, 100.0f, 0.0f))
-#define TEXT_ADD_POS (D3DXVECTOR3(0.0f, TEXTTEXTURE_SIZE.y / 2.0f, 0.0f))
-#define CHECKTEXTURE_SIZE (D3DXVECTOR3(158.0f, 122.0f, 0.0f))
-#define CHECK_POS (D3DXVECTOR3(TEXTTEXTURE_SIZE.x / 2.0f - 17.0f, 100.0f, 0.0f))
-#define CHECK_ADD_POS (D3DXVECTOR3(0.0f, 7.0f, 0.0f))
+#define TARGET_PAINT (10)															// 塗る枚数
+#define TARGET_OVERPAINT (10)														// 重ね塗りする枚数
+#define TARGET_KILL (3)																// スキルで倒す人数
+#define ADD_TEXTWINDOWRANGE (10.0f)													// テキストウィンドウの範囲を加算する値
+#define TEXTWINDOW_COLOR (D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.2f))						// テキストウィンドウの色
+#define TEXTSHOWTIME (90)															// テキストを表示する時間
+#define TEXTTEXTURE_SIZE (D3DXVECTOR3(640.0f, 60.0f, 0.0f))							// テキストのテクスチャのサイズ
+#define TEXT_POS (D3DXVECTOR3(TEXTTEXTURE_SIZE.x / 4.0f, 100.0f, 0.0f))				// テキストのテクスチャの座標
+#define TEXT_ADD_POS (D3DXVECTOR3(0.0f, TEXTTEXTURE_SIZE.y / 2.0f, 0.0f))			// テキストのテクスチャの加算する座標
+#define CHECKTEXTURE_SIZE (D3DXVECTOR3(158.0f, 122.0f, 0.0f))						// チェックマークのサイズ
+#define CHECK_POS (D3DXVECTOR3(TEXTTEXTURE_SIZE.x / 2.0f - 17.0f, 100.0f, 0.0f))	// チェックマークの座標
+#define CHECK_ADD_POS (D3DXVECTOR3(0.0f, 7.0f, 0.0f))								// チェックマークのの加算する値
 
 //=============================
 // コンストラクタ
@@ -223,7 +223,7 @@ void CTutorial::Update()
 		case PHASE_PAINT: // 塗るフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
-				CheckTaskClear(CColorTile::GetTileNum(nCount, 1), TARGET_PAINT * CCharaSelect::GetEntryPlayerNum(), nCount);
+				CheckTaskClear(CColorTile::GetTileNum(nCount, 1), TARGET_PAINT, nCount);
 			}
 			m_pTaskTex[PHASE_PAINT]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 			break;
@@ -231,7 +231,7 @@ void CTutorial::Update()
 		case PHASE_OVERPAINT: // 重ね塗りするフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
-				CheckTaskClear(CColorTile::GetTileNum(nCount, 3), TARGET_OVERPAINT * CCharaSelect::GetEntryPlayerNum(), nCount);
+				CheckTaskClear(CColorTile::GetTileNum(nCount, 3), TARGET_OVERPAINT, nCount);
 			}
 			m_pTaskTex[PHASE_OVERPAINT]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
@@ -242,7 +242,7 @@ void CTutorial::Update()
 		case PHASE_ATTACK: // かかしを攻撃するフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
-				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL * CCharaSelect::GetEntryPlayerNum(), nCount);
+				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount);
 			}
 			m_pTaskTex[PHASE_ATTACK]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
@@ -253,7 +253,7 @@ void CTutorial::Update()
 		case PHASE_FINALATTACK: // かかしを必殺技で攻撃するフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
-				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL * CCharaSelect::GetEntryPlayerNum(), nCount);
+				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount);
 			}
 			m_pTaskTex[PHASE_FINALATTACK]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
