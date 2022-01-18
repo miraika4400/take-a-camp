@@ -56,7 +56,7 @@ private:
 	//============
 	// ƒƒ“ƒoŠÖ”
 	//===========
-	void CheckTaskClear(const int nCurTaskNum, const int nTargetNum, const int nPlayernum);
+	bool CheckTaskClear(const int nCurTaskNum, const int nTargetNum, const int nPlayernum);
 	void UpdateText(void);
 	void NextPhase(void);
 	void StartPlayer(bool bUpdate);
