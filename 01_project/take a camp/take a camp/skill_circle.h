@@ -47,6 +47,9 @@
 #define SLASH_SKIIL_POSSHIFT D3DXVECTOR3(0.0f, 6.0f, 0.0f)
 #define SLASH_SKIIL_MOVE D3DXVECTOR3(0.0f, 0.0f, 0.0f)
 
+#define THUKI_SKIIL_POSSHIFT D3DXVECTOR3(0.0f, 6.0f, 0.0f)
+#define THUKI_SKIIL_MOVE D3DXVECTOR3(0.0f, 0.0f, 0.0f)
+
 #define EXPLOSION_SKIIL_HIGHROT (3.5f)
 #define EXPLOSION_SKIIL_ROWROT (0.5f)
 #define EXPLOSION_SKIIL_CENTER_HIGHROT (1.0f)
@@ -113,7 +116,7 @@ private:
 	D3DXVECTOR3			    m_move;	 	    // 移動量
 	D3DXVECTOR3			    m_rot;	 	    // 向き
 	D3DXVECTOR3	            m_size;		    // 大きさ
-	int                     m_fLife;	    // 寿命
+	int                     m_nLife;	    // 寿命
 	float		            m_fRotAngle;    // 回転角度
 	float		            m_fFadeout;	    // フェードアウト　
 	bool		            m_bFadeoutFlag; // フェードアウトのフラグ

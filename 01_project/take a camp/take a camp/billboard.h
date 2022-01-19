@@ -43,6 +43,9 @@ public:
 	// サイズのセット、取得
 	void SetSize(const D3DXVECTOR3 size);
 	D3DXVECTOR3 GetSize(void) { return m_size; }
+	// 向きのセット、取得
+	void SetRot(const D3DXVECTOR3 rot) { m_rot = rot;}
+	D3DXVECTOR3 GetRot(void) { return m_rot; }
 	// カラーのセット、取得
 	void SetColor(const D3DXCOLOR col);
 	D3DXCOLOR GetColor(void) { return m_col; }
