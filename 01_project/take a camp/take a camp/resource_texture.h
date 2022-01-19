@@ -45,6 +45,7 @@ public:
 		TEXTURE_PARTICLE_METEOR_SHADOW,	// パーティクル*爆発
 		TEXTURE_PARTICLE_SLASH,		// 斬撃エフェクト
 		TEXTURE_PARTICLE_THUKI,
+		TEXTURE_PARTICLE_GLITTER,	// キラキラエフェクト
 		TEXTURE_PARTICLE_GURUGURU,	// ぐるぐる
 		TEXTURE_NUMBER,				// ナンバー
 		TEXTURE_FRAME,				// 枠
@@ -94,6 +95,14 @@ public:
         TEXTURE_RANGE_MEDIAM,          // 中距離
         TEXTURE_RANGE_LONG,            // 遠距離
         TEXTURE_NAVI_ATTACK_AREA,      // 攻撃範囲表示誘導UI
+		TEXTURE_TUTRIAL_TEXT,          // チュートリアルで表示するテキスト
+		TEXTURE_CHECK,				   // チェック
+        TEXTURE_CHARACTER_NAME_KNIGHT,   // キャラクターネーム*騎士
+        TEXTURE_CHARACTER_NAME_LANCER,   // キャラクターネーム*槍
+        TEXTURE_CHARACTER_NAME_WIZARD,   // キャラクターネーム*魔法
+        TEXTURE_CHARACTER_NAME_THIEF,    // キャラクターネーム*盗賊
+        TEXTURE_CHARACTER_NAME_MAGICIAN, // キャラクターネーム*奇術
+        TEXTURE_CHARACTER_NAME_ARCHER,   // キャラクターネーム*弓
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類

@@ -20,6 +20,7 @@
 #include "paint_time.h"
 #include "tile_effect_charge.h"
 #include "skill_gauge.h"
+#include "all_skill_gauge.h"
 
 #ifdef _DEBUG
 #include "manager.h"
@@ -158,7 +159,7 @@ HRESULT CColorTile::Init(void)
 	}
 
 	// ƒAƒCƒRƒ“
-	m_pFrame = CScene3d::Create(GetPos(), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
+	m_pFrame = CScene3d::Create(GetPos(), D3DXVECTOR3(TILE_ONE_SIDE - 2.0f, 0.0f, TILE_ONE_SIDE - 2.0f));
 	m_pFrame->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_FRAME));
 	m_pFrame->SetColor(TILE_DEFAULT_COLOR);
 	m_pFrame->SetPriority(OBJTYPE_MAP);
@@ -446,7 +447,7 @@ void CColorTile::Peint(int nColorNumber, int nPlayerNum)
 				CPlayer*pPlayer = CPlayer::GetPlayerByPlayerNumber(nPlayerNum);
 
 				// •KŽE‹ZƒQ[ƒW‰ÁŽZˆ—
-				pPlayer->GetSkillgauge()->Repaint_AddSkillGauge();
+				pPlayer->GetAllSkillgauge()->GetSkillgaugeStencil()->Repaint_AddSkillGauge();
 
 				if (m_nStep == 1)
 				{// ’iŠK‚ªˆê‚ÌŽž

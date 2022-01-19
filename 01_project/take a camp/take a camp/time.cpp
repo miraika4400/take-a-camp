@@ -66,7 +66,7 @@ HRESULT CTime::Init(void)
 	for (int nCntDigit = 0; nCntDigit < MAX_TIME_DIGIT; nCntDigit++)
 	{
 		m_apNumber[nCntDigit] = CNumber::Create(0,
-			D3DXVECTOR3((float)(1000 + nCntDigit * 40), 50.0f, 0.0f),
+			D3DXVECTOR3((float)(600 + nCntDigit * 40), 70.0f, 0.0f),
 			D3DXVECTOR3(20, 20, 0),
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
@@ -164,7 +164,7 @@ void CTime::FinishPlayer(void)
 void CTime::TimeUp(void)
 {
 	// 0‚É‚È‚Á‚½‚ç
-	if (m_nTime <= 0)
+	if (m_nTime == 0 && m_nA % 60 <= 0)
 	{
 		// ƒJƒEƒ“ƒg‚ðŽ~‚ß‚é
 		m_nA = 0;

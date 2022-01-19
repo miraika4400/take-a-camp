@@ -16,6 +16,7 @@
 #include <time.h>
 #include "resource_texture.h"
 #include "scene3d.h"
+#include "warp_effect.h"
 
 //*****************************
 //マクロ定義
@@ -185,40 +186,41 @@ HRESULT CWarpTile::Init(void)
 {
 	//タイル初期化処理
 	CTile::Init();
-	//タイプごとの見た目変化
-	switch (m_WarpType)
-	{
-	case WARP_TILE_TYPE_1:
-		//カラーの設定
-		SetColor(D3DCOLOR_XRGB(0,0,139));
-		break;
-	case WARP_TILE_TYPE_2:
-		//カラーの設定
-		SetColor(D3DCOLOR_XRGB(127, 255, 212));
-		break;
-	case WARP_TILE_TYPE_3:
-		//カラーの設定
-		SetColor(D3DCOLOR_XRGB(255, 105, 180));
-		break;
-	case WARP_TILE_TYPE_4:
-		//カラーの設定
-		SetColor(D3DCOLOR_XRGB(0, 255, 255));
-		break;
-	case WARP_TILE_TYPE_5:
-		//カラーの設定
-		SetColor(D3DCOLOR_XRGB(255, 165, 0));
-		break;
-	case WARP_TILE_TYPE_6:
-		//カラーの設定
-		SetColor(D3DCOLOR_XRGB(148, 0, 211));
-		break;
-
-	}
 	//テクスチャの設定
 	m_Texture = CScene3d::Create(GetPos(), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
 	m_Texture->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_WARP));
 	m_Texture->SetColor(TILE_DEFAULT_COLOR);
 	m_Texture->SetPriority(OBJTYPE_MAP);
+
+	//タイプごとの見た目変化
+	switch (m_WarpType)
+	{
+	case WARP_TILE_TYPE_1:
+		//カラーの設定
+		m_Texture->SetColor(D3DCOLOR_XRGB(0,0,139));
+		break;
+	case WARP_TILE_TYPE_2:
+		//カラーの設定
+		m_Texture->SetColor(D3DCOLOR_XRGB(153, 255, 50));
+		break;
+	case WARP_TILE_TYPE_3:
+		//カラーの設定
+		m_Texture->SetColor(D3DCOLOR_XRGB(255, 105, 180));
+		break;
+	case WARP_TILE_TYPE_4:
+		//カラーの設定
+		m_Texture->SetColor(D3DCOLOR_XRGB(0, 255, 255));
+		break;
+	case WARP_TILE_TYPE_5:
+		//カラーの設定
+		m_Texture->SetColor(D3DCOLOR_XRGB(255, 165, 0));
+		break;
+	case WARP_TILE_TYPE_6:
+		//カラーの設定
+		m_Texture->SetColor(D3DCOLOR_XRGB(148, 0, 211));
+		break;
+
+	}
 
 	return S_OK;
 }
@@ -259,7 +261,14 @@ void CWarpTile::Update(void)
 	//テクスチャの位置
 	D3DXVECTOR3 effectPos = D3DXVECTOR3(GetPos().x, GetPos().y + (TILE_SIZE_Y / 2) + 0.1f, GetPos().z);
 	m_Texture->SetPos(effectPos);
-
+	//テクスチャの回転
+	D3DXVECTOR3 rot = m_Texture->GetRot();
+	rot.y += D3DXToRadian(1);
+	if (rot.y >= D3DXToRadian(360))
+	{
+		rot.y = 0;
+	}
+	m_Texture->SetRot(rot);
 }
 
 //******************************
@@ -296,7 +305,9 @@ void CWarpTile::HitPlayerAction(CPlayer * pPlayer)
 			D3DXVECTOR3 Tile = RandTileSelect();
 			//プレイヤーの位置設定
 			pPlayer->SetPos(D3DXVECTOR3(Tile.x, pPlayer->GetPos().y, Tile.z));
-			
+			//エフェクト生成
+			CWarpEffect::Create(GetPos(), Tile, m_Texture->GetColor());
+
 			m_pWarpTile.at(m_WarpType).at(m_nLyncTile)->m_WarpState[pPlayer->GetPlayerNumber()] = WARP_TILE_WARP_AFTER;
 			break;
 		}

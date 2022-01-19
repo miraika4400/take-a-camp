@@ -48,6 +48,7 @@ public:
 	{
 		CScene2d * pBack;                   // 背景
 		CScene2d * pPlayerNumber;           // プレイヤー番号
+        CScene2d * pCharaName;              // キャラクター名
 		CScene2d * pControllIcon;           // コントローラータイプアイコン
 		CScene2d * pReadyIcon;              // レディアイコン
         CScene2d * pNaviAttackArea;         // 攻撃範囲表示誘導

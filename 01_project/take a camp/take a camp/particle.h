@@ -92,6 +92,7 @@ private:
 	D3DXVECTOR3	  m_rot;		  // 位置
 	D3DXVECTOR3	  m_posOld;		  // 初期位置
 
+
 	CPlayer*	  m_pPlayer;		  // プレイヤーのポインタ
 	int           m_nLife;        //寿命
 	int			  m_nPattern;	  //アニメーションのパターン

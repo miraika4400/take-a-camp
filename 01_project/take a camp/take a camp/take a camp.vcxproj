@@ -126,7 +126,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(SolutionDir)/flipparty/flag_raicing_game_rule;$(SolutionDir)/flipparty/fly_game;$(SolutionDir)/flipparty;$(SolutionDir)/flipparty/remember_game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="act_range.cpp" />
+    <ClCompile Include="all_skill_gauge.cpp" />
     <ClCompile Include="attack.cpp" />
     <ClCompile Include="attack_archer.cpp" />
     <ClCompile Include="attack_area_ui.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="dynamic_texture.cpp" />
     <ClCompile Include="game_finish.cpp" />
     <ClCompile Include="game_start.cpp" />
+    <ClCompile Include="glitter_effect.cpp" />
     <ClCompile Include="ingame_text.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="jobchange_tile.cpp" />
@@ -266,10 +268,12 @@
     <ClCompile Include="total_result.cpp" />
     <ClCompile Include="total_score.cpp" />
     <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="warp_effect.cpp" />
     <ClCompile Include="warp_tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="act_range.h" />
+    <ClInclude Include="all_skill_gauge.h" />
     <ClInclude Include="attack.h" />
     <ClInclude Include="attack_archer.h" />
     <ClInclude Include="attack_area_ui.h" />
@@ -296,6 +300,7 @@
     <ClInclude Include="effect_result_explosion.h" />
     <ClInclude Include="game_finish.h" />
     <ClInclude Include="game_start.h" />
+    <ClInclude Include="glitter_effect.h" />
     <ClInclude Include="ingame_text.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="jobchange_tile.h" />
@@ -380,6 +385,7 @@
     <ClInclude Include="total_result.h" />
     <ClInclude Include="total_score.h" />
     <ClInclude Include="tutorial.h" />
+    <ClInclude Include="warp_effect.h" />
     <ClInclude Include="warp_tile.h" />
   </ItemGroup>
   <ItemGroup>

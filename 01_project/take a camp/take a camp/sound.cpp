@@ -16,6 +16,7 @@ CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX]
 	{ "./data/Sounds/BGM/Title_bgm.wav"      , SOUND_LOOP_ON },
 	{ "./data/Sounds/BGM/Charaselect_bgm.wav"      , SOUND_LOOP_ON },
     { "./data/Sounds/BGM/Game_bgm1.wav"    , SOUND_LOOP_ON},
+	{ "./data/Sounds/BGM/Timelimit_bgm.wav"    , SOUND_LOOP_ON },
 	{ "./data/Sounds/BGM/Result_bgm.wav"    , SOUND_LOOP_ON },
 	// キャラのSE
 	{ "./data/Sounds/SE/Character/00_kensi_attack.wav"    , SOUND_LOOP_OFF },
@@ -33,10 +34,15 @@ CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX]
 	// ゲーム本編のSE
 	{ "./data/Sounds/SE/button_se.wav"    , SOUND_LOOP_OFF },
 	{ "./data/Sounds/SE/wa-pu.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/player_entry.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/entry_se.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/item.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/Timelimit_se.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/Finish_se.wav"    , SOUND_LOOP_OFF },
 	// リザルトのSE
 	{ "./data/Sounds/SE/gauge.wav"    , SOUND_LOOP_OFF },
-	{ "./data/Sounds/SE/Result_se.wav"    , SOUND_LOOP_OFF },
-	{ "./data/Sounds/SE/Result_se_last.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/result_se.wav"    , SOUND_LOOP_OFF },
+	{ "./data/Sounds/SE/result_se_last.wav"    , SOUND_LOOP_OFF },
 };
 
 //=============================================================================

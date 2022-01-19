@@ -47,7 +47,7 @@ public:
 		OBJTYPE_PEINT,		   // 塗り判定用
 		OBJTYPE_ITEM,          // アイテム
 		OBJTYPE_MAP,           // マップ
-		OBJTYPE_BULDING,       // マップ
+		OBJTYPE_BULDING,       // 
 		OBJTYPE_EFFECT,        // エフェクト
 		OBJTYPE_PARTICLE,      // パーティクル
 		OBJTYPE_MOTION,        // モーション

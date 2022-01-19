@@ -34,7 +34,7 @@ CSkill_circle::CSkill_circle(int nPliority)
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_nLife = 50;
+	m_fLife = 50;
 	m_fRotAngle = 0.0f;
 	m_fFadeout = 0.0f;
 	m_bFadeoutFlag = true;
@@ -122,7 +122,7 @@ CSkill_circle * CSkill_circle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 s
 	//ƒJƒ‰[Ý’è 
 	pSkill_circle->SetColor(col);
 	pSkill_circle->m_col = col;
-	pSkill_circle->m_nLife = nlife;
+	pSkill_circle->m_fLife = nlife;
 
 
 	return pSkill_circle;
@@ -292,7 +292,7 @@ void CSkill_circle::Update(void)
 		bUse = false;
 	}
 
-	if (m_nLife <= 0 || m_col.a <= 0)
+	if (m_fLife <= 0 || m_col.a <= 0)
 	{
 		bUse = false;
 	}

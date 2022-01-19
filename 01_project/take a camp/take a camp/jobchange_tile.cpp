@@ -18,6 +18,8 @@
 #include "fade.h"
 #include "chara_select.h"
 #include "skill_gauge.h"
+#include "all_skill_gauge.h"
+#include "attack.h"
 
 //====================================================
 // マクロ定義
@@ -145,6 +147,9 @@ void CJobchangeTile::Update(void)
 			// このタイルに載ったら指定の職種に変える
 			if (CCollision::CollisionSphere(GetCollision(), pPlayer->GetCollision()))
 			{
+				// チャージしているタイルのキャンセル
+				pPlayer->GetAttack()->CancelSwitch();
+
 				// タイルに保持しているキャラタイプにセット
 				pPlayer->SetCharacterType(m_CharacterType);
 
@@ -160,27 +165,27 @@ void CJobchangeTile::Update(void)
 				switch (m_CharacterType)
 				{
 				case CResourceCharacter::CHARACTER_TYPE::CHARACTER_KNIGHT:
-					pPlayer->GetSkillgauge()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
+					pPlayer->GetAllSkillgauge()->GetSkillgaugeIcon()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_SWORD_ICON));
 					break;
 
 				case CResourceCharacter::CHARACTER_TYPE::CHARACTER_LANCER:
-					pPlayer->GetSkillgauge()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_LANCE_ICON));
+					pPlayer->GetAllSkillgauge()->GetSkillgaugeIcon()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_LANCE_ICON));
 					break;
 
 				case CResourceCharacter::CHARACTER_TYPE::CHARACTER_WIZARD:
-					pPlayer->GetSkillgauge()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_MAGICSTICK_ICON));
+					pPlayer->GetAllSkillgauge()->GetSkillgaugeIcon()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_MAGICSTICK_ICON));
 					break;
 
 				case CResourceCharacter::CHARACTER_TYPE::CHARACTER_THIEF:
-					pPlayer->GetSkillgauge()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_KNIFE_ICON));
+					pPlayer->GetAllSkillgauge()->GetSkillgaugeIcon()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_KNIFE_ICON));
 					break;
 
 				case CResourceCharacter::CHARACTER_TYPE::CHARACTER_MAGICIAN:
-					pPlayer->GetSkillgauge()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_STICK_ICON));
+					pPlayer->GetAllSkillgauge()->GetSkillgaugeIcon()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_STICK_ICON));
 					break;
 
 				case CResourceCharacter::CHARACTER_TYPE::CHARACTER_ARCHER:
-					pPlayer->GetSkillgauge()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ARROW_ICON));
+					pPlayer->GetAllSkillgauge()->GetSkillgaugeIcon()->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ARROW_ICON));
 					break;
 
 				default:
