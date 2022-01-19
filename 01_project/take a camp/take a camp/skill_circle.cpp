@@ -43,6 +43,7 @@ CSkill_circle::CSkill_circle(int nPliority)
 	m_bAddMode = false;
 	m_type = EFFECTTYPE_SKIIL;
 	m_bEffectTrigger = false;
+	m_pPlayer = NULL;
 }
 
 //=============================================================================
@@ -165,7 +166,7 @@ void CSkill_circle::Uninit(void)
 void CSkill_circle::Update(void)
 {	
 	
-	CPlayer *pPlaryer = GetPlayer();
+	CPlayer *pPlayer = GetPlayer();
 	bool bUse = true;
 
 	m_pos = GetPos();
@@ -285,8 +286,8 @@ void CSkill_circle::Update(void)
 	if (m_bEffectTrigger)
 	{
 		SetTextureUV(EXPLOSION_SKIIL_METEOR_IMPACT_UV2, EXPLOSION_SKIIL_METEOR_IMPACT_UV1);
-		CSkill_circle::Create(m_pos, WIZARD_EFFECT_SIZE + EXPLOSION_SKIIL_IMPACT_SIZE - EXPLOSION_SKIIL_IMPACT_SIZESHIFT, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 1), m_nLife, CSkill_circle::EFFECTTYPE_METEOR_IMPACT, pPlaryer);
-		CSkill_circle::Create(m_pos, WIZARD_EFFECT_SIZE, GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), 2), m_nLife, CSkill_circle::EFFECTTYPE_METEOR, pPlaryer);
+		CSkill_circle::Create(m_pos, WIZARD_EFFECT_SIZE + EXPLOSION_SKIIL_IMPACT_SIZE - EXPLOSION_SKIIL_IMPACT_SIZESHIFT, GET_COLORMANAGER->GetStepColor(pPlayer->GetColorNumber(), 1), m_nLife, CSkill_circle::EFFECTTYPE_METEOR_IMPACT, pPlayer);
+		CSkill_circle::Create(m_pos, WIZARD_EFFECT_SIZE, GET_COLORMANAGER->GetStepColor(pPlayer->GetColorNumber(), 2), m_nLife, CSkill_circle::EFFECTTYPE_METEOR, pPlayer);
 		
 		bUse = false;
 	}

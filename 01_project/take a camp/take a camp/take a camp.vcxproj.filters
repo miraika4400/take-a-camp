@@ -213,9 +213,6 @@
     <ClCompile Include="motion.cpp">
       <Filter>ソース ファイル\04_ModelBase\Model</Filter>
     </ClCompile>
-    <ClCompile Include="mouse.cpp">
-      <Filter>ソース ファイル\05_Input</Filter>
-    </ClCompile>
     <ClCompile Include="light.cpp">
       <Filter>ソース ファイル\02_Camera</Filter>
     </ClCompile>
@@ -482,6 +479,9 @@
     </ClCompile>
     <ClCompile Include="skill_aroow_line.cpp">
       <Filter>ソース ファイル\09_Effect\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="mouse.cpp">
+      <Filter>ソース ファイル\06_GameScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
