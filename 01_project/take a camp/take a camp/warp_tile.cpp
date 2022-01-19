@@ -201,7 +201,7 @@ HRESULT CWarpTile::Init(void)
 		break;
 	case WARP_TILE_TYPE_2:
 		//カラーの設定
-		m_Texture->SetColor(D3DCOLOR_XRGB(127, 255, 212));
+		m_Texture->SetColor(D3DCOLOR_XRGB(153, 255, 50));
 		break;
 	case WARP_TILE_TYPE_3:
 		//カラーの設定

@@ -223,7 +223,10 @@ void CTutorial::Update()
 		case PHASE_PAINT: // 塗るフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
-				CheckTaskClear(CColorTile::GetTileNum(nCount, 1), TARGET_PAINT, nCount);
+				if (CheckTaskClear(CColorTile::GetTileNum(nCount, 1), TARGET_PAINT, nCount))
+				{
+					return;
+				}
 			}
 			m_pTaskTex[PHASE_PAINT]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 			break;
@@ -231,7 +234,10 @@ void CTutorial::Update()
 		case PHASE_OVERPAINT: // 重ね塗りするフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
-				CheckTaskClear(CColorTile::GetTileNum(nCount, 3), TARGET_OVERPAINT, nCount);
+				if (CheckTaskClear(CColorTile::GetTileNum(nCount, 3), TARGET_OVERPAINT, nCount))
+				{
+					return;
+				}
 			}
 			m_pTaskTex[PHASE_OVERPAINT]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
@@ -242,7 +248,10 @@ void CTutorial::Update()
 		case PHASE_ATTACK: // かかしを攻撃するフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
-				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount);
+				if (CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount))
+				{
+					return;
+				}
 			}
 			m_pTaskTex[PHASE_ATTACK]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
@@ -253,7 +262,10 @@ void CTutorial::Update()
 		case PHASE_FINALATTACK: // かかしを必殺技で攻撃するフェーズ
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
-				CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount);
+				if (CheckTaskClear(CKillCount::GetTotalKill(nCount), TARGET_KILL, nCount))
+				{
+					return;
+				}
 			}
 			m_pTaskTex[PHASE_FINALATTACK]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
@@ -373,7 +385,7 @@ void CTutorial::Draw()
 //=============================
 // タスクを完了したのかチェックする処理
 //=============================
-void CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, const int nPlayernum)
+bool CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, const int nPlayernum)
 {
 	// 現在のタスクごとの数と1フレーム前の数を比べる
 	if (nCurTaskNum > m_nOldCurTaskNum[nPlayernum])
@@ -413,7 +425,7 @@ void CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, cons
 		NextPhase();
 
 		// タスクの初期化
-		m_bTask = nullptr;
+		m_bTask = false;
 		ZeroMemory(&m_nCurTaskNum, sizeof(m_nCurTaskNum));
 
 		// 倒した数が必殺技と攻撃で同期しているので
@@ -422,7 +434,11 @@ void CTutorial::CheckTaskClear(const int nCurTaskNum, const int nTargetNum, cons
 		{
 			ZeroMemory(&m_nOldCurTaskNum, sizeof(m_nOldCurTaskNum));
 		}
+
+		return true;
 	}
+
+	return false;
 }
 
 //============================================

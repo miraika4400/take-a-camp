@@ -19,6 +19,7 @@
 #include "chara_select.h"
 #include "skill_gauge.h"
 #include "all_skill_gauge.h"
+#include "attack.h"
 
 //====================================================
 // マクロ定義
@@ -146,6 +147,9 @@ void CJobchangeTile::Update(void)
 			// このタイルに載ったら指定の職種に変える
 			if (CCollision::CollisionSphere(GetCollision(), pPlayer->GetCollision()))
 			{
+				// チャージしているタイルのキャンセル
+				pPlayer->GetAttack()->CancelSwitch();
+
 				// タイルに保持しているキャラタイプにセット
 				pPlayer->SetCharacterType(m_CharacterType);
 
