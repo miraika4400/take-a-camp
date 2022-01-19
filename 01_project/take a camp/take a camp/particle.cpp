@@ -32,7 +32,7 @@ CParticle::CParticle()
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_col = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
-	m_fLife = 0;
+	m_nLife = 0;
 	m_type = PARTICLE_SQUARE;
 	m_bFadeoutFlag = true;
 	m_fRotAngle = 0.0f;
@@ -78,7 +78,7 @@ CParticle * CParticle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, con
 	pParticle->m_size = size;				 // サイズ代入
 	pParticle->m_rot = pParticle->m_pPlayer->GetRotDest();
 	pParticle->SetSize(size);                // サイズ
-	pParticle->m_fLife = nLife;				 // 寿命
+	pParticle->m_nLife = nLife;				 // 寿命
 	pParticle->m_col = col;					 // 代入
 	pParticle->m_fFadeout = fadeout;		 // フェードアウト
 	pParticle->m_fRotAngle = 0.0f;           // 回転角度
