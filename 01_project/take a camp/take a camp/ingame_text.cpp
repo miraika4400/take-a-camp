@@ -13,6 +13,8 @@
 #include "polygon.h"
 #include "resource_texture.h"
 #include "number.h"
+#include "sound.h"
+
 //=============================================================================
 // マクロ定義
 //=============================================================================
@@ -80,6 +82,9 @@ HRESULT CInGameText::Init(void)
 	// 初期化処理
 	CScene2d::Init();
 
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
+
 	// 色設定
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -88,6 +93,12 @@ HRESULT CInGameText::Init(void)
 
 	// 移動量
 	m_move = TEXT_MOVE_BASIC;
+
+	// SE再生
+	pSound->Play(CSound::LABEL_SE_LIMIT);
+
+	// 現在流してるBGMの停止
+	pSound->Stop(CSound::LABEL_BGM_GAME);
 
 	return S_OK;
 }
@@ -121,9 +132,14 @@ void CInGameText::Update(void)
 {
 	// 更新処理
 	CScene2d::Update();
+	// サウンド情報の取得
+	CSound *pSound = CManager::GetSound();
 
 	// 位置情報の取得
 	D3DXVECTOR3 TextPos = GetPos();
+
+	// BGM再生
+	pSound->Play(CSound::LABEL_BGM_GAME_LIMIT);
 
 	// 桁分回す
 	for (int nCntDigit = 0; nCntDigit < MAX_DIGIT; nCntDigit++)
