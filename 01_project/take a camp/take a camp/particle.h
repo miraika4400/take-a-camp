@@ -79,7 +79,7 @@ private:
 	D3DXVECTOR3	  m_pos;		  // 位置
 	D3DXVECTOR3	  m_posOld;		  // 初期位置
 
-	int           m_nLife;         //寿命
+	int           m_fLife;         //寿命
 	int			  m_nPattern;	  //アニメーションのパターン
 	int			  m_nEffectId;	  //エフェクトのiD
 	static int    m_nEffectIdAII; //エフェクトの総数
