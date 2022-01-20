@@ -13,7 +13,6 @@
 #include "renderer.h"
 #include "polygon.h"
 #include "keyboard.h"
-#include "mouse.h"
 #include "joypad.h"
 #include "fade.h"
 #include "resource_texture.h"
@@ -34,6 +33,7 @@
 #include "map.h"
 #include "resource_map.h"
 #include "dummy.h"
+#include "titleback_ui.h"
 
 //=============================
 // マクロ定義
@@ -165,6 +165,9 @@ HRESULT CTutorial::Init()
 	pSound->Stop(CSound::LABEL_BGM_SELECT);
 	// BGM再生
 	pSound->Play(CSound::LABEL_BGM_GAME);
+
+	// タイトル戻る用のテクスチャの生成
+	CTitlebackui::Create();
 
 	for (int nCount = 0; nCount < (int)PHASE_FINISH; nCount++)
 	{

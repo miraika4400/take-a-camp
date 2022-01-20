@@ -268,6 +268,7 @@
     <ClCompile Include="total_result.cpp" />
     <ClCompile Include="total_score.cpp" />
     <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="titleback_ui.cpp" />
     <ClCompile Include="warp_effect.cpp" />
     <ClCompile Include="warp_tile.cpp" />
   </ItemGroup>
@@ -385,6 +386,7 @@
     <ClInclude Include="total_result.h" />
     <ClInclude Include="total_score.h" />
     <ClInclude Include="tutorial.h" />
+    <ClInclude Include="titleback_ui.h" />
     <ClInclude Include="warp_effect.h" />
     <ClInclude Include="warp_tile.h" />
   </ItemGroup>
