@@ -349,7 +349,7 @@ void CManager::Update(void)
 #ifdef _DEBUG
 	if (m_pInputKeyboard != NULL)
 	{
-		if (m_pInputKeyboard->GetKeyTrigger(DIK_NUMPAD0))
+		if (m_pInputKeyboard->GetKeyTrigger(DIK_0))
 		{
 			CCollision::SetDrawFlag(true^ CCollision::GetDrawFlag());
 		}
