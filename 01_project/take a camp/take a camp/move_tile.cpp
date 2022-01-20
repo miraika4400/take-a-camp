@@ -73,9 +73,7 @@ void CMoveTile::Update(void)
 		if (!GetHitPlayerFlag())
 		{
 			//タイルのステートを変化
-			m_MoveState = MOVE_STATE_NORMAL;
-			//タイルに乗れるフラグを立てる
-			SetRide(false);
+			m_MoveState = MOVE_STATE_REVERSE;
 		}
 		break;
 	case MOVE_STATE_REVERSE:

@@ -106,6 +106,7 @@ public:
 		TEXTURE_PAINTGUIDE,				 // 塗り説明用
 		TEXTURE_ATTACKGUIDE,			 // 攻撃説明用
 		TEXTURE_FINALATTACKGUIDE,		 // 必殺技説明用
+		TEXTURE_TITLEBACK,				 // タイトル戻る用
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類

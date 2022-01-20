@@ -13,7 +13,6 @@
 #include "renderer.h"
 #include "polygon.h"
 #include "keyboard.h"
-#include "mouse.h"
 #include "joypad.h"
 #include "fade.h"
 #include "resource_texture.h"
@@ -34,6 +33,7 @@
 #include "map.h"
 #include "resource_map.h"
 #include "dummy.h"
+#include "titleback_ui.h"
 
 //=============================
 // マクロ定義
@@ -165,6 +165,9 @@ HRESULT CTutorial::Init()
 	pSound->Stop(CSound::LABEL_BGM_SELECT);
 	// BGM再生
 	pSound->Play(CSound::LABEL_BGM_GAME);
+
+	// タイトル戻る用のテクスチャの生成
+	CTitlebackui::Create();
 
 	for (int nCount = 0; nCount < (int)PHASE_FINISH; nCount++)
 	{
@@ -356,6 +359,18 @@ void CTutorial::Update()
 			// テキストのクリアと次のテキスト表示
 			m_pText->ClearText();
 			m_bNextText = false;
+		}
+
+		// ジョイパッドの取得
+		CInputJoypad* pJoypad = CManager::GetJoypad();
+		for (int nCount = 0; nCount < XUSER_MAX_COUNT; nCount++)
+		{
+			if (pJoypad->GetButtonState(XINPUT_GAMEPAD_A, CInputJoypad::BUTTON_TRIGGER, nCount))
+			{
+				// テキストのクリアと次のテキスト表示
+				m_pText->ClearText();
+				m_bNextText = false;
+			}
 		}
 	}
 
