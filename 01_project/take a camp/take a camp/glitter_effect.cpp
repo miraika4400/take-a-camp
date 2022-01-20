@@ -9,12 +9,13 @@
 // インクルード
 //*****************************
 #include "glitter_effect.h"
+#include "resource_texture.h"
 
 //*****************************
 //マクロ定義
 //*****************************
-#define LIFE_DOWN	(60)							// ライフが何フレームで下がるか
-#define MAX_SIZE	(D3DXVECTOR3(10.0f,10.0f,0.0f))	// 最大サイズ
+#define LIFE_DOWN	(10)							// ライフが何フレームで下がるか
+#define MAX_SIZE	(D3DXVECTOR3(20.0f,20.0f,0.0f))	// 最大サイズ
 #define MIN_SIZE	(D3DXVECTOR3(0.0f,0.0f,0.0f))	// 最小サイズ
 
 //******************************
@@ -22,10 +23,9 @@
 //******************************
 CGlitter::CGlitter()
 {
-	m_nLife = 0;
-	m_nLifeCunt = 0;
+	m_fLife = 0.0f;
 	m_bDeath = false;
-	m_nMidpoint = 0;
+	m_fMidpoint = 0.0f;
 	m_nSizeFps = 0;
 }
 
@@ -54,8 +54,8 @@ void CGlitter::Create(D3DXVECTOR3 pos,int nLife, D3DXCOLOR col)
 		//位置設定
 		pGlitter->SetPos(pos);
 		//ライフ設定
-		pGlitter->m_nLife = nLife;
-		pGlitter->m_nMidpoint = nLife / 2;
+		pGlitter->m_fLife = (float)nLife;
+		pGlitter->m_fMidpoint = (float)nLife / 2.0f;
 		//カラー設定
 		pGlitter->SetColor(col);
 	}
@@ -69,8 +69,8 @@ HRESULT CGlitter::Init(void)
 	//ビルボード初期化処理
 	CBillboard::Init();
 	//テクスチャ設定
-
-	return E_NOTIMPL;
+	BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PARTICLE_GLITTER));
+	return S_OK;
 }
 
 //******************************
@@ -102,17 +102,15 @@ void CGlitter::SizeChange(void)
 
 	m_nSizeFps++;
 	
-	if (m_nLifeCunt>m_nMidpoint)
+	if (m_fLife>m_fMidpoint)
 	{
-		size += MAX_SIZE / ((m_nMidpoint * LIFE_DOWN) - m_nSizeFps);
-		m_nSizeFps = 0;
+		size += (MAX_SIZE - size) / ((m_fMidpoint) - (float)m_nSizeFps);
 	}
-	else
+	else 
 	{
-		size += MIN_SIZE / ((m_nMidpoint * LIFE_DOWN) - m_nSizeFps);
-		m_nSizeFps = 0;
+		size += (MIN_SIZE - size) / ((m_fMidpoint) - (float)m_nSizeFps);
 	}
-	
+	SetSize(size);
 }
 
 //*****************************
@@ -121,22 +119,20 @@ void CGlitter::SizeChange(void)
 //*****************************
 void CGlitter::LifeDown(void)
 {
-	//カウントを進める
-	m_nLifeCunt++;
+	//ライフを減らす
+	m_fLife--;
 
-	//一定の数値に達したら
-	if (m_nLifeCunt >= LIFE_DOWN)
+	//ライフが半分になったら
+	if (m_fLife <= m_fMidpoint + 1.0f
+		&&m_fLife >= m_fMidpoint - 1.0f)
 	{
-		//初期化
-		m_nLifeCunt = 0;
-		//ライフダウン
-		m_nLife--;
+		m_nSizeFps = 0;
+	}
 
-		//ライフが0以下になったら
-		if (m_nLife <= 0)
-		{
-			//死亡フラグを立てる
-			m_bDeath = true;
-		}
+	//ライフが0以下になったら
+	if (m_fLife <= 0.0f)
+	{
+		//死亡フラグを立てる
+		m_bDeath = true;
 	}
 }

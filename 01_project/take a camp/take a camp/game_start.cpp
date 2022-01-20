@@ -113,10 +113,10 @@ void CGameStart::Update(void)
 	// readyの間の動き
 	if (m_type == START_TYPE_READEY)
 	{
-		size.x += -10;
-		size.y += 0.25 * -10;
+		size.x += -10.0f;
+		size.y += 0.25f * -10.0f;
 
-		col.a += -0.01;
+		col.a += -0.01f;
 	}
 
 	// goのサイズを
@@ -133,10 +133,10 @@ void CGameStart::Update(void)
 	if (m_type == START_TYPE_PLAY)
 	{
 		// サイズの大きさを毎フレームごとに変える
-		size.x += 30;
-		size.y += 0.5 * 30;
+		size.x += 30.0f;
+		size.y += 0.5f * 30.0f;
 
-		col.a += -0.05;
+		col.a += -0.05f;
 	}
 
 	// 毎フレームごとにカウントを増やしていく

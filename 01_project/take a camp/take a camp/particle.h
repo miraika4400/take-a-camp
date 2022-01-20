@@ -20,10 +20,19 @@
 //*****************************
 #define EFFECT_DEFAULT_FADE_OUT_RATE 0.006f                               // フェードアウト割合
 #define TEXTURE_ANIMA_PATTERN (20)
+
 #define TEXTURE_ANIMA_LATE (1)
+#define TEXTURE_ANIMA_THUKI_LATE (5)
 #define TEXTURE_ANIMA_CREATE_POINT (8)
 #define EFFECT_NUM_MAX (10)
 #define EFFECT_MAX (8)
+
+
+//*****************************
+// 前方宣言
+//*****************************
+class CPlayer;
+
 
 //*****************************
 // クラス定義
@@ -46,6 +55,7 @@ public:
 		PARTICLE_METEOR_SHADOW, // 爆発の影
 		PARTICLE_GURUGURU,
 		PARTICLE_SLASH,
+		PARTICLE_THUKI,
 		PARTICLE_MAX,     // タイプの最大数
 	}PARTICLE_TYPE;
 
@@ -57,7 +67,7 @@ public:
 
 	// static
 	static CParticle *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, const D3DXVECTOR3 size, const int nLife,
-		const D3DXCOLOR col,const float fadeout, const PARTICLE_TYPE type = PARTICLE_SQUARE); // クラス生成
+		const D3DXCOLOR col,const float fadeout,  CPlayer * pPlayer, const PARTICLE_TYPE type = PARTICLE_SQUARE); // クラス生成
 
 	HRESULT Init(void); // 初期化
 	void Uninit(void);  // 終了
@@ -67,8 +77,10 @@ public:
 	// 移動量の取得・セット
 	D3DXVECTOR3 GetMove(void) { return m_move; }
 	void SetMove(D3DXVECTOR3 move) { m_move = move; }
-
 	void SetAddRotValue(float fAdd) { m_fRotAngle = fAdd; }
+	//プレイヤーのポインタ所得・セット
+	void		SetPlayer(CPlayer* pPlayer) { m_pPlayer = pPlayer; }
+	CPlayer*	GetPlayer(void) { return m_pPlayer; }
 private:
 	//============
 	// メンバ変数
@@ -77,9 +89,12 @@ private:
 	D3DXVECTOR3   m_move;	 	  // 移動量
 	D3DXVECTOR3   m_size;		  // 大きさ
 	D3DXVECTOR3	  m_pos;		  // 位置
+	D3DXVECTOR3	  m_rot;		  // 位置
 	D3DXVECTOR3	  m_posOld;		  // 初期位置
 
-	int           m_nLife;         //寿命
+
+	CPlayer*	  m_pPlayer;		  // プレイヤーのポインタ
+	int           m_nLife;        //寿命
 	int			  m_nPattern;	  //アニメーションのパターン
 	int			  m_nEffectId;	  //エフェクトのiD
 	static int    m_nEffectIdAII; //エフェクトの総数

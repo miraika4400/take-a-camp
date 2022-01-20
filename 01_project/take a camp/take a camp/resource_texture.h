@@ -44,6 +44,8 @@ public:
 		TEXTURE_PARTICLE_METEOR,	// パーティクル*爆発
 		TEXTURE_PARTICLE_METEOR_SHADOW,	// パーティクル*爆発
 		TEXTURE_PARTICLE_SLASH,		// 斬撃エフェクト
+		TEXTURE_PARTICLE_THUKI,
+		TEXTURE_PARTICLE_GLITTER,	// キラキラエフェクト
 		TEXTURE_PARTICLE_GURUGURU,	// ぐるぐる
 		TEXTURE_NUMBER,				// ナンバー
 		TEXTURE_FRAME,				// 枠
@@ -101,6 +103,9 @@ public:
         TEXTURE_CHARACTER_NAME_THIEF,    // キャラクターネーム*盗賊
         TEXTURE_CHARACTER_NAME_MAGICIAN, // キャラクターネーム*奇術
         TEXTURE_CHARACTER_NAME_ARCHER,   // キャラクターネーム*弓
+		TEXTURE_PAINTGUIDE,				 // 塗り説明用
+		TEXTURE_ATTACKGUIDE,			 // 攻撃説明用
+		TEXTURE_FINALATTACKGUIDE,		 // 必殺技説明用
 		TEXTURE_MAX					// テクスチャ数
 	}TEXTURE_TYPE;
 	// テクスチャ種類

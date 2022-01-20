@@ -16,6 +16,7 @@
 #include <time.h>
 #include "resource_texture.h"
 #include "scene3d.h"
+#include "warp_effect.h"
 
 //*****************************
 //マクロ定義
@@ -304,7 +305,9 @@ void CWarpTile::HitPlayerAction(CPlayer * pPlayer)
 			D3DXVECTOR3 Tile = RandTileSelect();
 			//プレイヤーの位置設定
 			pPlayer->SetPos(D3DXVECTOR3(Tile.x, pPlayer->GetPos().y, Tile.z));
-			
+			//エフェクト生成
+			CWarpEffect::Create(GetPos(), Tile, m_Texture->GetColor());
+
 			m_pWarpTile.at(m_WarpType).at(m_nLyncTile)->m_WarpState[pPlayer->GetPlayerNumber()] = WARP_TILE_WARP_AFTER;
 			break;
 		}

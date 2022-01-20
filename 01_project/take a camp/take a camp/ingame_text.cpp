@@ -153,7 +153,7 @@ void CInGameText::Update(void)
 				NUMBER_SIZE,
 				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 			// ナンバーの配置
-			m_apNumber[nCntDigit]->SetNumber((int)((m_nTime % (int)(powf(10.0f, (MAX_DIGIT - nCntDigit)))) / (float)(powf(10, (MAX_DIGIT - nCntDigit - 1)))));
+			m_apNumber[nCntDigit]->SetNumber((int)((m_nTime % (int)(powf(10.0f, (float)(MAX_DIGIT - nCntDigit)))) / (float)(powf((float)10, (float)(MAX_DIGIT - nCntDigit - 1)))));
 		}
 
 	}

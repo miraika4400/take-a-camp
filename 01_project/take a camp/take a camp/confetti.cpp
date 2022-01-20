@@ -16,7 +16,7 @@
 #define MIN_SIZE (10.0f)                // 最小サイズ
 #define RAND_SIZE_AMPLITUDE (20)       // 乱数のふり幅*サイズ
 #define ADJUST_RAND (100.0f)           // 乱数生成時調整値*小数点を出すため
-#define MIN_LIFE (100.0f)               // 最小ライフ
+#define MIN_LIFE (100)               // 最小ライフ
 #define RAND_LIFE_AMPLITUDE (20)       // 乱数のふり幅*寿命
 #define RAND_MOVE_ANGLE_AMPLITUDE (45) // 乱数のふり幅*紙吹雪を飛ばす角度
 #define MIN_SPEED (8.0f)               // 最小スピード

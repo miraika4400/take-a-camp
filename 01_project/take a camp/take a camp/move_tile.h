@@ -36,6 +36,7 @@ public:
 		MOVE_STATE_NORMAL = 0,	//’Êíó‘Ô
 		MOVE_STATE_MOVE,		//ˆÚ“®ó‘Ô
 		MOVE_STATE_STOP,		//’âŽ~ó‘Ô
+		MOVE_STATE_REVERSE,		//‹tˆÚ“®ó‘Ô
 	}MOVE_STATE;
 
 	//ƒƒ“ƒoŠÖ”

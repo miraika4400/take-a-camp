@@ -69,7 +69,6 @@ void CMoveTile::Update(void)
 		HitTile();
 		break;
 	case MOVE_STATE_STOP:
-		
 		//プレイヤーが何らかの攻撃で死んでいる時
 		if (!GetHitPlayerFlag())
 		{
@@ -79,6 +78,13 @@ void CMoveTile::Update(void)
 			SetRide(false);
 		}
 		break;
+	case MOVE_STATE_REVERSE:
+		//移動処理
+		Move();
+		//当たり判定
+		HitTile();
+		break;
+
 	default:
 		
 		break;
@@ -100,7 +106,6 @@ void CMoveTile::HitPlayerAction(CPlayer * pPlayer)
 		//タイルに乗れなくなるフラグを立てる
 		SetRide(true);
 		break;
-
 	case MOVE_STATE_MOVE:
 		//プレイヤーの状況確認
 		if (pPlayer->GetState() != CPlayer::PLAYER_STATE_STOP
@@ -135,7 +140,9 @@ void CMoveTile::HitPlayerAction(CPlayer * pPlayer)
 		//プレイヤーの無敵を解除
 		pPlayer->SetInvincible(false);
 		break;
-
+	case MOVE_STATE_REVERSE:
+	
+		break;
 	default:
 		//タイルのステートを変化
 		m_MoveState = MOVE_STATE_NORMAL;
@@ -152,9 +159,8 @@ void CMoveTile::HitPlayerActionRelease(CPlayer*pPlayer)
 	if (m_MoveState == MOVE_STATE_STOP)
 	{
 		//タイルのステートを変化
-		m_MoveState = MOVE_STATE_NORMAL;
-		//タイルに乗れるフラグを立てる
-		SetRide(false);
+		//m_MoveState = MOVE_STATE_NORMAL;
+		m_MoveState = MOVE_STATE_REVERSE;
 	}
 }
 
@@ -204,7 +210,18 @@ void CMoveTile::HitTile(void)
 		// 反転しているか
 		MoveRot(m_bReversal);
 		//ステートを通常状態に変更
-		m_MoveState = MOVE_STATE_STOP;
+		if (m_MoveState == MOVE_STATE_MOVE)
+		{
+			m_MoveState = MOVE_STATE_STOP;
+		}
+		else if (m_MoveState == MOVE_STATE_REVERSE)
+		{
+			m_MoveState = MOVE_STATE_NORMAL;
+
+			//タイルに乗れるフラグを立てる
+			SetRide(false);
+
+		}
 	}
 }
 

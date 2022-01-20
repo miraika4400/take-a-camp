@@ -777,7 +777,7 @@ void CPlayer::DeathFallOver(void)
 	if (m_nFallOverCout < FALL_OVER)
 	{
 		//ƒvƒŒƒCƒ„[‚ð“|‚ê‚³‚·
-		m_rotDest.z += (D3DXToRadian(80) - m_rotDest.z) / (FALL_OVER - m_nFallOverCout);
+		m_rotDest.z += (D3DXToRadian(80) - m_rotDest.z) / (float)(FALL_OVER - m_nFallOverCout);
 	}
 	else if(m_nFallOverCout > FALL_OVER+60)
 	{
@@ -1001,7 +1001,7 @@ void CPlayer::ManageItemState(void)
 		{
 			D3DXVECTOR3 pos = GetPos();
 			pos.y += 10.0f;
-			CParticle::Create(pos, D3DXVECTOR3((float)(rand() % 16 - 8) / 100.0f, 0.25f, (float)(rand() % 16 - 8) / 100.0f), D3DXVECTOR3(7.0f, 7.0f, 7.0f), 500, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, CParticle::PARTICLE_GURUGURU)->SetAddRotValue(1.2f);
+			CParticle::Create(pos, D3DXVECTOR3((float)(rand() % 16 - 8) / 100.0f, 0.25f, (float)(rand() % 16 - 8) / 100.0f), D3DXVECTOR3(7.0f, 7.0f, 7.0f), 500, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), EFFECT_DEFAULT_FADE_OUT_RATE, this,CParticle::PARTICLE_GURUGURU)->SetAddRotValue(1.2f);
 		}
 		break;
 	}

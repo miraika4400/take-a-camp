@@ -45,10 +45,9 @@ private:
 	//*****************************
 	// メンバ変数
 	//*****************************
-	int  m_nLife;		// ライフ
-	int  m_nMidpoint;	// サイズが変わるまでのフレーム数 
+	float  m_fLife;		// ライフ
+	float  m_fMidpoint;	// サイズが変わるまでのフレーム数 
 	int	 m_nSizeFps;	// サイズのフレームカウント
-	int  m_nLifeCunt;	// ライフが減るまでのカウント
 	bool m_bDeath;		// 死亡フラグ
 };
 #endif
