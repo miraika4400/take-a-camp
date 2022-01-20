@@ -64,7 +64,6 @@ void CAttackLancer::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
 		if ((int)fAngle / 90 % 2 == 0)
 		{
 			CParticle::Create(pPlayer->GetPos() + pos + LANCER_EFFECT_POS, THUKI_SKIIL_MOVE, LANCER_EFFECT_SIZE, LANCER_EFFECT_LIFE, GET_COLORMANAGER->GetStepColor(pPlayer->GetColorNumber(), 1), 0.05f, D3DXToDegree(rot.y), pPlayer, CParticle::PARTICLE_THUKI);
-
 		}
 		else if ((int)fAngle / 90 % 2 == 1 || (int)fAngle / 90 % 2 == -1)
 		{
@@ -73,7 +72,6 @@ void CAttackLancer::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
 		else
 		{
 			CParticle::Create(pPlayer->GetPos() + pos + LANCER_EFFECT_POS, THUKI_SKIIL_MOVE, LANCER_EFFECT_SIZE, LANCER_EFFECT_LIFE, GET_COLORMANAGER->GetStepColor(pPlayer->GetColorNumber(), 1), 0.05f, D3DXToDegree(rot.y), pPlayer, CParticle::PARTICLE_THUKI);
-
 		}
 	}
 	if (state == CAttackBased::ATTACK_STATE_ATTACK)

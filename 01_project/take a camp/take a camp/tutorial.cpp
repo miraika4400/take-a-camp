@@ -360,6 +360,18 @@ void CTutorial::Update()
 			m_pText->ClearText();
 			m_bNextText = false;
 		}
+
+		// ジョイパッドの取得
+		CInputJoypad* pJoypad = CManager::GetJoypad();
+		for (int nCount = 0; nCount < XUSER_MAX_COUNT; nCount++)
+		{
+			if (pJoypad->GetButtonState(XINPUT_GAMEPAD_A, CInputJoypad::BUTTON_TRIGGER, nCount))
+			{
+				// テキストのクリアと次のテキスト表示
+				m_pText->ClearText();
+				m_bNextText = false;
+			}
+		}
 	}
 
 	// タイルの色のカウント
