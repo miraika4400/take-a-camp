@@ -72,7 +72,6 @@ public:
 	HRESULT Init(void); // 初期化
 	void Uninit(void);  // 終了
 	void Update(void);  // 更新
-	void Draw(void);    // 描画
 
 	// 移動量の取得・セット
 	D3DXVECTOR3 GetMove(void) { return m_move; }
@@ -87,8 +86,7 @@ private:
 	//============
 	LPDIRECT3DTEXTURE9 m_apTexture[PARTICLE_MAX]; // テクスチャ
 	D3DXVECTOR3   m_move;	 	  // 移動量
-	D3DXVECTOR3   m_size;		  // 大きさ
-	D3DXVECTOR3	  m_rot;		  // 位置
+	D3DXVECTOR3	  m_rot;		  // 向き
 	D3DXVECTOR3	  m_posOld;		  // 初期位置
 
 
@@ -103,7 +101,6 @@ private:
 	float		  m_fFadeout;	  // フェードアウト　
 	bool		  m_bFadeoutFlag; // フェードアウトのフラグ
 	bool          m_bAnimation;	  // アニメーションしていいか
-	D3DXCOLOR	  m_col;		  // 色
 	PARTICLE_TYPE m_type;		  // パーティクルの種類
 };
 
