@@ -1,7 +1,7 @@
 //====================================================
 //
 // tutorialの処理[tutorial.cpp]
-// Author:伊藤　陽梧
+// Author:伊藤陽梧
 //
 //====================================================
 
@@ -50,6 +50,10 @@
 #define CHECKTEXTURE_SIZE (D3DXVECTOR3(158.0f, 122.0f, 0.0f))						// チェックマークのサイズ
 #define CHECK_POS (D3DXVECTOR3(TEXTTEXTURE_SIZE.x / 2.0f - 17.0f, 100.0f, 0.0f))	// チェックマークの座標
 #define CHECK_ADD_POS (D3DXVECTOR3(0.0f, 7.0f, 0.0f))								// チェックマークのの加算する値
+#define GUIDE_POS (D3DXVECTOR3(1060.0f, 300.0f, 0.0f))							// 塗り説明用のテクスチャのサイズ
+#define PAINTGUIDE_SIZE (D3DXVECTOR3(732.0f, 708.0f, 0.0f))							// 塗り説明用のテクスチャのサイズ
+#define ATTACKGUIDE_SIZE (D3DXVECTOR3(680.0f / 4.0f, 246.0f, 0.0f))						// 塗り説明用のテクスチャのサイズ
+#define FAINALATTACKGUIDE_SIZE (D3DXVECTOR3(867.0f / 3.0f, 368.0f, 0.0f))					// 塗り説明用のテクスチャのサイズ
 
 //=============================
 // コンストラクタ
@@ -60,6 +64,9 @@ CTutorial::CTutorial()
 	m_pTextWindow = nullptr;
 	ZeroMemory(&m_pTaskTex, sizeof(m_pTaskTex));
 	ZeroMemory(&m_pCheckTex, sizeof(m_pCheckTex));
+	m_pPaintGuideTex = nullptr;
+	m_pAttackGuideTex = nullptr;
+	m_pFinalAttackGuideTex = nullptr;
 	m_pText = nullptr;
 	m_bTask = false;
 	m_Tutorialphase = PHASE_PAINT;
@@ -69,6 +76,9 @@ CTutorial::CTutorial()
 	ZeroMemory(&m_nCurTaskNum, sizeof(m_nCurTaskNum));
 	ZeroMemory(&m_nOldCurTaskNum, sizeof(m_nOldCurTaskNum));
 	m_nTextShowTime = 0;
+	m_nCounterAnim = 0;
+	m_nPatternAnim = 0;
+	m_nTexSpeed = 0;
 }
 
 //=============================
@@ -83,7 +93,7 @@ CTutorial::~CTutorial()
 
 		// メモリの解放
 		delete m_pTextWindow;
-		m_pTextWindow = NULL;
+		m_pTextWindow = nullptr;
 	}
 
 	for (int nCount = 0; nCount < (int)PHASE_FINISH; nCount++)
@@ -93,12 +103,12 @@ CTutorial::~CTutorial()
 
 		// メモリの解放
 		delete m_pTaskTex[nCount];
-		m_pTaskTex[nCount] = NULL;
+		m_pTaskTex[nCount] = nullptr;
 
 
 		m_pCheckTex[nCount]->Uninit();
 		delete m_pCheckTex[nCount];
-		m_pCheckTex[nCount] = NULL;
+		m_pCheckTex[nCount] = nullptr;
 	}
 }
 
@@ -163,8 +173,8 @@ HRESULT CTutorial::Init()
 		m_pTaskTex[nCount]->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_TUTRIAL_TEXT));
 
 		D3DXVECTOR2 uv[NUM_VERTEX];
-		uv[1] = D3DXVECTOR2(1.0f, nCount * 0.25f);
 		uv[0] = D3DXVECTOR2(0.0f, nCount * 0.25f);
+		uv[1] = D3DXVECTOR2(1.0f, nCount * 0.25f);
 		uv[2] = D3DXVECTOR2(0.0f, 0.25f + nCount * 0.25f);
 		uv[3] = D3DXVECTOR2(1.0f, 0.25f + nCount * 0.25f);
 		m_pTaskTex[nCount]->SetTextureUV(uv);
@@ -173,6 +183,19 @@ HRESULT CTutorial::Init()
 		m_pCheckTex[nCount] = CPolygon::Create(CHECK_POS - CHECK_ADD_POS + TEXT_ADD_POS * (float)nCount, CHECKTEXTURE_SIZE / 5.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 		m_pCheckTex[nCount]->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_CHECK));
 	}
+
+	m_pPaintGuideTex = CPolygon::Create(GUIDE_POS, PAINTGUIDE_SIZE / 4.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+	m_pPaintGuideTex->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_PAINTGUIDE));
+	SetTexAnimation(m_pPaintGuideTex, 4, 4, 3, 3);
+
+	m_pAttackGuideTex = CPolygon::Create(GUIDE_POS, ATTACKGUIDE_SIZE, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+	m_pAttackGuideTex->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_ATTACKGUIDE));
+	SetTexAnimation(m_pAttackGuideTex, 4, 1, 4, 0);
+
+	m_pFinalAttackGuideTex = CPolygon::Create(GUIDE_POS, FAINALATTACKGUIDE_SIZE, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+	m_pFinalAttackGuideTex->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_FINALATTACKGUIDE));
+	SetTexAnimation(m_pFinalAttackGuideTex, 3, 1, 3, 0);
+
 	return S_OK;
 }
 
@@ -229,6 +252,9 @@ void CTutorial::Update()
 				}
 			}
 			m_pTaskTex[PHASE_PAINT]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			m_pPaintGuideTex->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			SetTexAnimation(m_pPaintGuideTex, 4, 4, 3, 1);
+
 			break;
 
 		case PHASE_OVERPAINT: // 重ね塗りするフェーズ
@@ -240,6 +266,8 @@ void CTutorial::Update()
 				}
 			}
 			m_pTaskTex[PHASE_OVERPAINT]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			m_pPaintGuideTex->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			SetTexAnimation(m_pPaintGuideTex, 4, 4, 3, 3);
 
 			// 前のタスクのテキストとチェックマークを少し透明に
 			SetTexInvisible(PHASE_OVERPAINT);
@@ -254,6 +282,8 @@ void CTutorial::Update()
 				}
 			}
 			m_pTaskTex[PHASE_ATTACK]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			m_pAttackGuideTex->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			SetTexAnimation(m_pAttackGuideTex, 4, 1, 4, 1);
 
 			// 前のタスクのテキストとチェックマークを少し透明に
 			SetTexInvisible(PHASE_ATTACK);
@@ -268,6 +298,8 @@ void CTutorial::Update()
 				}
 			}
 			m_pTaskTex[PHASE_FINALATTACK]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			m_pFinalAttackGuideTex->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			SetTexAnimation(m_pFinalAttackGuideTex, 3, 1, 3, 0);
 
 			// 前のタスクのテキストとチェックマークを少し透明に
 			SetTexInvisible(PHASE_FINALATTACK);
@@ -301,6 +333,16 @@ void CTutorial::Update()
 
 		// プレイヤーを行動不能にする
 		StartPlayer(false);
+
+
+		// ガイドの透明化とアニメーションの初期化
+		m_pPaintGuideTex->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+		m_pAttackGuideTex->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+		m_pFinalAttackGuideTex->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+
+		m_nCounterAnim = 0;
+		m_nPatternAnim = 0;
+		m_nTexSpeed = 0;
 	}
 	// 一文表示終えたら
 	else if (m_pText->GetAllShowText() && !m_bTextEnd)
@@ -362,7 +404,7 @@ void CTutorial::Draw()
 		pCamera->SetCamera();
 	}
 
-	if (m_pTextWindow != NULL)
+	if (m_pTextWindow)
 	{
 		// ポリゴンの描画処理
 		m_pTextWindow->Draw();
@@ -370,15 +412,33 @@ void CTutorial::Draw()
 
 	for (int nCount = 0; nCount < (int)PHASE_FINISH; nCount++)
 	{
-		if (m_pTaskTex[nCount] != NULL)
+		if (m_pTaskTex[nCount])
 		{
 			m_pTaskTex[nCount]->Draw();
 		}
 
-		if (m_pCheckTex[nCount] != NULL)
+		if (m_pCheckTex[nCount])
 		{
 			m_pCheckTex[nCount]->Draw();
 		}
+	}
+
+	// 塗りガイドの描画
+	if (m_pPaintGuideTex)
+	{
+		m_pPaintGuideTex->Draw();
+	}
+
+	// 攻撃ガイドの描画
+	if (m_pAttackGuideTex)
+	{
+		m_pAttackGuideTex->Draw();
+	}
+
+	// 必殺技ガイドの描画
+	if (m_pFinalAttackGuideTex)
+	{
+		m_pFinalAttackGuideTex->Draw();
 	}
 }
 
@@ -549,7 +609,7 @@ void CTutorial::StartPlayer(bool bUpdate)
 {
 	CPlayer*pPlayer = (CPlayer*)GetTop(OBJTYPE_PLAYER);
 
-	while (pPlayer != NULL)
+	while (pPlayer)
 	{
 		pPlayer->SetUpdateFlag(bUpdate);
 		pPlayer = (CPlayer*)pPlayer->GetNext();
@@ -577,7 +637,7 @@ void CTutorial::DummyCreate(void)
 	CMapManager::MAP_DATA MapData = m_pMap->GetMapData();
 
 	//マップデータがあるか
-	if (&MapData != NULL)
+	if (&MapData)
 	{
 		for (int nBlockY = 0; nBlockY < MapData.nStageSizeY; nBlockY++)
 		{
@@ -629,4 +689,36 @@ void CTutorial::SetTexInvisible(TUTORIALPHASE TutorialPhaze)
 {
 	m_pTaskTex[TutorialPhaze - 1]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f));
 	m_pCheckTex[TutorialPhaze - 1]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f));
+}
+
+void CTutorial::SetTexAnimation(CPolygon * pPolygon, int nCounterAnim, int nPatternAnim, int nMaxCounter, int nMaxPattern)
+{
+	m_nTexSpeed++;
+	if (m_nTexSpeed >= 60)
+	{
+		m_nTexSpeed = 0;
+		m_nCounterAnim++;
+
+		if (m_nCounterAnim >= nCounterAnim || m_nCounterAnim >= nMaxCounter)
+		{
+			m_nCounterAnim = 0;
+			m_nPatternAnim++;
+
+			if (m_nPatternAnim >= nPatternAnim || m_nPatternAnim >= nMaxPattern)
+			{
+				m_nPatternAnim = 0;
+			}
+		}
+	}
+
+	D3DXVECTOR2 uv[NUM_VERTEX];
+	uv[0] = D3DXVECTOR2((float)(1.0f / nCounterAnim)* m_nCounterAnim, (float)(1.0f / nPatternAnim)* m_nPatternAnim);
+	uv[1] = D3DXVECTOR2((float)(1.0f / nCounterAnim)* (m_nCounterAnim + 1), (float)(1.0f / nPatternAnim)* m_nPatternAnim);
+	uv[2] = D3DXVECTOR2((float)(1.0f / nCounterAnim)* m_nCounterAnim, (float)(1.0f / nPatternAnim)* (m_nPatternAnim + 1));
+	uv[3] = D3DXVECTOR2((float)(1.0f / nCounterAnim)* (m_nCounterAnim + 1), (float)(1.0f / nPatternAnim)* (m_nPatternAnim + 1));
+
+	if (pPolygon)
+	{
+		pPolygon->SetTextureUV(uv);
+	}
 }

@@ -101,6 +101,9 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
     "./data/Textures/character_name/03_touzoku.png",   // 
     "./data/Textures/character_name/04_kijutusi.png",  // 
     "./data/Textures/character_name/05_kariudo.png",   // 
+	"./data/Textures/tutorial_paint.png",			   // 塗り説明用
+	"./data/Textures/tutorial_attack.png",			   // 攻撃説明用
+	"./data/Textures/tutorial_finalattack.png",		   // 必殺技説明用
 };
 
 // テクスチャのパス
