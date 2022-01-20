@@ -22,7 +22,7 @@
 #include "attack_area.h"
 #include "color_tile.h"
 #include "peint_collision.h"
-
+#include "joypad.h"
 
 //=============================================================================
 // マクロ定義
@@ -334,7 +334,7 @@ void CAttackBased::Charge(void)
 	//カウントアップ
 	m_nChargeCount++;
 
-	for (int nCntLevel = 0; nCntLevel < MAX_ATTACK_LEVEL; nCntLevel++)
+	for (int nCntLevel = m_nLevel; nCntLevel < MAX_ATTACK_LEVEL; nCntLevel++)
 	{
 		// 最大レベルの判定
 		if (nCntLevel > m_nMaxLevel)
@@ -344,7 +344,12 @@ void CAttackBased::Charge(void)
 		// チャージ時間に応じたレベルにする
 		if (m_nChargeCount > m_anChargeValue[nCntLevel])
 		{
+            if (m_nLevel == nCntLevel) continue;
+
 			m_nLevel = nCntLevel;
+
+            // コントローラーの振動
+            if (GetPlayer()->GetControllFlag()) CManager::GetJoypad()->EnableVibration(1.0f*nCntLevel, 1.0f*nCntLevel, 15.0f, GetPlayer()->GetControllNum());
 		}
 	}
 }
