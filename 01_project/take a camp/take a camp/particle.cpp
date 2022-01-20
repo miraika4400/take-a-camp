@@ -242,7 +242,7 @@ void CParticle::Update(void)
 				{
 
 			
-					CParticle * pPar = CParticle::Create(m_pos, SLASH_SKIIL_MOVE, m_size, m_nLife, m_col, 0.05, pPlayer, CParticle::PARTICLE_SLASH);
+					CParticle * pPar = CParticle::Create(m_pos, SLASH_SKIIL_MOVE, m_size, m_nLife, m_col, 0.05f, pPlayer, CParticle::PARTICLE_SLASH);
 					pPar->m_nEffectId = m_nEffectId + 1;
 					SetPos(D3DXVECTOR3(m_pos.x + (float)(rand() % 14 - 7), m_pos.y, m_pos.z + (float)(rand() % 14 - 7)));
 

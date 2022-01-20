@@ -65,12 +65,10 @@ void CMoveTile::Update(void)
 	case MOVE_STATE_MOVE:
 		//移動処理
 		Move();
-
 		//当たり判定
 		HitTile();
 		break;
 	case MOVE_STATE_STOP:
-		
 		//プレイヤーが何らかの攻撃で死んでいる時
 		if (!GetHitPlayerFlag())
 		{
@@ -108,7 +106,6 @@ void CMoveTile::HitPlayerAction(CPlayer * pPlayer)
 		//タイルに乗れなくなるフラグを立てる
 		SetRide(true);
 		break;
-
 	case MOVE_STATE_MOVE:
 		//プレイヤーの状況確認
 		if (pPlayer->GetState() != CPlayer::PLAYER_STATE_STOP

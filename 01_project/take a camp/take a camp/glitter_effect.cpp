@@ -54,8 +54,8 @@ void CGlitter::Create(D3DXVECTOR3 pos,int nLife, D3DXCOLOR col)
 		//位置設定
 		pGlitter->SetPos(pos);
 		//ライフ設定
-		pGlitter->m_fLife = nLife;
-		pGlitter->m_fMidpoint = nLife / 2.0f;
+		pGlitter->m_fLife = (float)nLife;
+		pGlitter->m_fMidpoint = (float)nLife / 2.0f;
 		//カラー設定
 		pGlitter->SetColor(col);
 	}

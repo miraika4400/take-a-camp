@@ -777,7 +777,7 @@ void CPlayer::DeathFallOver(void)
 	if (m_nFallOverCout < FALL_OVER)
 	{
 		//ƒvƒŒƒCƒ„[‚ð“|‚ê‚³‚·
-		m_rotDest.z += (D3DXToRadian(80) - m_rotDest.z) / (FALL_OVER - m_nFallOverCout);
+		m_rotDest.z += (D3DXToRadian(80) - m_rotDest.z) / (float)(FALL_OVER - m_nFallOverCout);
 	}
 	else if(m_nFallOverCout > FALL_OVER+60)
 	{

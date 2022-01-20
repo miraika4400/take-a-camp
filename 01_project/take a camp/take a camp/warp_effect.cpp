@@ -128,8 +128,8 @@ void CWarpEffect::CreateEffect(void)
 	{
 
 		int nXpos, nZpos;
-		nXpos = (rand() % (int)(EFFECT_RANGE.x*2.0f))-EFFECT_RANGE.x;
-		nZpos = (rand() % (int)(EFFECT_RANGE.z*2.0f))-EFFECT_RANGE.z;
+		nXpos = (rand() % (int)(EFFECT_RANGE.x*2.0f))-(int)EFFECT_RANGE.x;
+		nZpos = (rand() % (int)(EFFECT_RANGE.z*2.0f))-(int)EFFECT_RANGE.z;
 
 		CGlitter::Create(D3DXVECTOR3(m_pos.x + nXpos, m_pos.y+15.0f, m_pos.z + nZpos), 40, m_col);
 
