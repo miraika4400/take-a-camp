@@ -85,6 +85,7 @@ void CAttackArcher::OnceEffect(D3DXVECTOR3 pos)
 	if (GetState() == ATTACK_STATE_ATTACK)
 	{
 		D3DXVECTOR3 rot = pPlaryer->GetRotDest();
+		float fAngle = D3DXToDegree(rot.y);
 		//矢のエフェクト生成
 		CSkillArrow::Create(pPlaryer->GetPos() + D3DXVECTOR3(0.0f, 10.0f, 0.0f), D3DXVECTOR3(cosf(rot.y + D3DXToRadian(90))*3.0f, 0.0f, -sinf(rot.y + D3DXToRadian(90))*3.0f), D3DXToDegree(rot.y), GetAttackSquare().nMaxHitRange,GET_COLORMANAGER->GetStepColor(pPlaryer->GetColorNumber(), pPlaryer->GetChargeTilelevel()));
 	}
