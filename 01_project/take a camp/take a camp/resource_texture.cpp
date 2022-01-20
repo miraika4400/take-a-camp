@@ -104,6 +104,7 @@ const std::string CResourceTexture::m_aTexPath[CResourceTexture::TEXTURE_MAX]
 	"./data/Textures/tutorial_paint.png",			   // 塗り説明用
 	"./data/Textures/tutorial_attack.png",			   // 攻撃説明用
 	"./data/Textures/tutorial_finalattack.png",		   // 必殺技説明用
+	"./data/Textures/title_back.png",				   // タイトル戻る用
 };
 
 // テクスチャのパス
