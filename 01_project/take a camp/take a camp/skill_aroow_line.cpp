@@ -45,7 +45,6 @@ CSkillArrowLine * CSkillArrowLine::Create(const D3DXVECTOR3 pos, const float fAn
 	{
 		//初期化処理
 		pSkillArrowLine->Init();
-
 		//位置設定
 		pSkillArrowLine->SetPos(pos);
 		//向き設定
@@ -99,10 +98,7 @@ void CSkillArrowLine::Update(void)
 //===================================
 void CSkillArrowLine::Draw(void)
 {
-
 	//ビルボードの描画処理
 	CBillboard::Draw();;
-
-
 }
 

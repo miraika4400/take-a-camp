@@ -38,8 +38,7 @@ public:
 	HRESULT Init(void);		// 初期化
 	void	Update(void);	// 更新
 
-
-	void	SetDeath(void) { m_bDeath = true; }
+	void	SetDeath(void) { m_bDeath = true; }		
 	void	SetLife(int nLife) { m_nTile = nLife; }		// ライフセッター
 	void	AddLife(int nLife) { m_nTile += nLife; }	// ライフ加算
 	int 	GetLife(void) { return m_nTile; }			// ライフゲッター

@@ -9,7 +9,6 @@
 // インクルード
 //=============================
 #include "kill_count.h"
-#include "number.h"
 #include "player.h"
 
 //*****************************
@@ -22,7 +21,6 @@ int CKillCount::m_nTotalKill[MAX_PLAYER] = {};
 //=============================
 CKillCount::CKillCount()
 {
-	memset(&pNumber,0,sizeof(pNumber));
 	memset(&m_nKillCount, 0, sizeof(m_nKillCount));
 	m_nKillCount = 0;
 

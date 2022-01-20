@@ -39,35 +39,40 @@ public:
 		MOVE_STATE_REVERSE,		//逆移動状態
 	}MOVE_STATE;
 
+	//*****************************
 	//メンバ関数
+	//*****************************
 	CMoveTile();
 	~CMoveTile();
 
 	HRESULT Init(void);
 	void Update(void);
 
+	bool GetReversal(void) { return m_bReversal; }	//移動方向
+	void SetReversal(bool Reversal) { m_bReversal = Reversal; }
+	virtual void MoveRot(bool bReversal) = 0;
+	virtual void TileCheck(void) = 0;
+	void HitTile(void);								// 他のタイルとの当たり判定
+
+
+	//*****************************
 	//変数の取得設定
-	
+	//*****************************
 	// ステート
 	void SetState(MOVE_STATE state) { m_MoveState = state; }
 	MOVE_STATE GetState(void) { return m_MoveState; }
 	// 移動量
 	void SetMove(D3DXVECTOR3 move) { m_Move = move; }
 	D3DXVECTOR3 GetMove(void) { return m_Move; }
-	//移動方向
-	bool GetReversal(void) { return m_bReversal; }
-	void SetReversal(bool Reversal) { m_bReversal = Reversal; }
-	virtual void MoveRot(bool bReversal) = 0;
-	virtual void TileCheck(void) = 0;
-	void HitTile(void);						// 他のタイルとの当たり判定
 
 private:
 	void HitPlayerAction(CPlayer*pPlayer);	// プレイヤーが乗っているか
 	void HitPlayerActionRelease(CPlayer*pPlayer);		// プレイヤーが降りたか
 
 	void Move(void);						// 移動処理
-
+	//*****************************
 	// メンバ変数
+	//*****************************
 	bool			m_bStep;		// 載っているフラグ
 	MOVE_STATE		m_MoveState;	// タイルのステート
 	D3DXVECTOR3		m_Move;			// 移動量

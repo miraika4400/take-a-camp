@@ -9,7 +9,6 @@
 //=============================================================================
 #include "map.h"
 #include "player.h"
-#include "needle_tile.h"
 #include "item.h"
 #include <time.h>
 #include "chara_select.h"
@@ -20,12 +19,10 @@
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define COLOR_TILE_PLUS_HEIGHT (0.0f)				// カラータイル生成時ひとつ生成するたびに生成位置を高くする
-#define COLOR_TILE_INIT_HEIGHT (-TILE_SIZE_Y/2)	// カラータイル初めの高さ
-//#define COLOR_TILE_PLUS_HEIGHT 50.0f // カラータイル生成時ひとつ生成するたびに生成位置を高くする
-//#define COLOR_TILE_INIT_HEIGHT 500.0f // カラータイル初めの高さ
-#define MAX_ITEM_SPAWN_COUNT (60*10)	// アイテムスポーンの最大カウント
-#define MAX_ITEM (3)					// マップ上の最大個数
+#define COLOR_TILE_PLUS_HEIGHT	(0.0f)				// カラータイル生成時ひとつ生成するたびに生成位置を高くする
+#define COLOR_TILE_INIT_HEIGHT	(-TILE_SIZE_Y/2)	// カラータイル初めの高さ
+#define MAX_ITEM_SPAWN_COUNT	(60*10)				// アイテムスポーンの最大カウント
+#define MAX_ITEM				(3)					// マップ上の最大個数
 
 //=============================================================================
 // 静的メンバー変数
@@ -58,7 +55,6 @@ CMap * CMap::Create(CMapManager::MAP_TYPE MapType)
 	pMap = new CMap;
     if (pMap != NULL)
     {
-  
         pMap->m_MapType = MapType;
 		//マップ情報取得
 		pMap->SetMapData(CMapManager::GetMapData(MapType));

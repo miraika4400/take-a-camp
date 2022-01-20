@@ -145,5 +145,4 @@ void CSkillTrump::PosChange(void)
 		//Ž€–Sƒtƒ‰ƒO‚ð—§‚Ä‚é
 		m_bDeath = true;
 	}
-
 }

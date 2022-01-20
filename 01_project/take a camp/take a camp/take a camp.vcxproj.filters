@@ -477,9 +477,6 @@
     <ClCompile Include="skill_arrow_rain.cpp">
       <Filter>ソース ファイル\09_Effect\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="attack_knight.cpp">
-      <Filter>ソース ファイル\09_Effect\Attack</Filter>
-    </ClCompile>
     <ClCompile Include="skill_arrow_rain.cpp">
       <Filter>ソース ファイル\09_Effect\Attack</Filter>
     </ClCompile>
@@ -500,6 +497,9 @@
     </ClCompile>
     <ClCompile Include="titleback_ui.cpp">
       <Filter>ソース ファイル\10_Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="attack_knight.cpp">
+      <Filter>ソース ファイル\07_GameModel\Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

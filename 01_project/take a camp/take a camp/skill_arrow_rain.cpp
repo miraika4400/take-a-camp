@@ -18,9 +18,9 @@
 //*****************************
 //マクロ定義
 //*****************************
-#define ARROW_CIRCLE (D3DXVECTOR3(1.0f,1.5f,1.0f))
-#define ARROW_RAIN_SPEED (2.0f)	//エフェクトのスピード
-#define ARROW_LIFE (2)
+#define ARROW_CIRCLE		(D3DXVECTOR3(1.0f,1.5f,1.0f))
+#define ARROW_RAIN_SPEED	(2.0f)							// エフェクトのスピード
+#define ARROW_LIFE			(2)								// ライフ
 
 //=============================================================================
 //コンストラクタ
