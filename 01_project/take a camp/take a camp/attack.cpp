@@ -68,6 +68,7 @@ CAttackBased * CAttackBased::Create(CPlayer * pPlayer, CResourceCharacter::CHARA
 	//メモリ確保
 	CAttackBased* pAttack = NULL;
 
+	//タイプ攻撃クラスを変更
 	switch (Type)
 	{
 	case CResourceCharacter::CHARACTER_KNIGHT:
@@ -91,13 +92,6 @@ CAttackBased * CAttackBased::Create(CPlayer * pPlayer, CResourceCharacter::CHARA
 	default:
 		break;
 	}
-
-	//pAttack = new CAttackBased;
-	//if (pAttack != NULL)
-	//{
-	//	pAttack->SetPlayer(pPlayer);		//プレイヤークラス取得
-	//	pAttack->Init();					//初期化処理
-	//}
 	return pAttack;
 }
 

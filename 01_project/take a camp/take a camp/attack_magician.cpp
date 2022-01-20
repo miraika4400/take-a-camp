@@ -69,6 +69,7 @@ void CAttackMagician::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
 
 //=============================================================================
 // SEçƒê∂
+// Author:ç≤ì°ÈDãI
 //=============================================================================
 void CAttackMagician::PlaySE(void)
 {

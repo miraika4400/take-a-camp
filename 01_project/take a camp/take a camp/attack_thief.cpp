@@ -66,6 +66,7 @@ void CAttackThief::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
 
 //=============================================================================
 // SEçƒê∂
+// Author:ç≤ì°ÈDãI
 //=============================================================================
 void CAttackThief::PlaySE(void)
 {

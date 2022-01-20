@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // 攻撃範囲タイプ騎士 [attack_knight.cpp]
-// Author : 吉田悠人
+// Author : 齋藤大行
 //
 //=============================================================================
 
@@ -9,11 +9,7 @@
 // ヘッダファイルのインクルード
 //=============================================================================
 #include "attack_knight.h"
-#include "tile.h"
 #include "player.h"
-#include "attack.h"
-#include "skill_effect.h"
-#include "skill_circle.h"
 #include "color_manager.h"
 #include "sound.h"
 #include "skill_effect.h"
@@ -69,6 +65,7 @@ void CAttackKnight::CreateEffect(D3DXVECTOR3 pos, ATTACK_STATE state)
 
 //=============================================================================
 // SE再生
+// Author:佐藤颯紀
 //=============================================================================
 void CAttackKnight::PlaySE(void)
 {

@@ -9,7 +9,6 @@
 // インクルード
 //******************************
 #include "move_tile.h"
-#include "game.h"
 #include "player.h"
 #include "collision.h"
 

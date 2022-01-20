@@ -10,33 +10,18 @@
 //******************************
 #include "player.h"
 #include "manager.h"
-#include "renderer.h"
 #include "keyboard.h"
 #include "joypad.h"
 #include "collision.h"
-#include "debug_log.h"
 #include "act_range.h"
-#include "tile.h"
-#include "number_array.h"
 #include "color_manager.h"
-#include "bullet.h"
 #include "attack.h"
-#include "attack_knight.h"
-#include "resource_shader.h"
-#include "light.h"
-#include "camera_base.h"
 #include "motion.h"
-#include "resource_texture.h"
 #include "color_tile.h"
 #include "chara_select.h"
 #include "kill_count.h"
 #include "particle.h"
-#include "resource_model_hierarchy.h"
 #include "all_skill_gauge.h"
-#include "base_Cylinder.h"
-#include "skill_circle.h"
-#include "skill_effect.h"
-#include "resource_attack.h"
 #include "tutorial.h"
 #include "sound.h"
 
@@ -351,6 +336,7 @@ void CPlayer::Draw(void)
 
 //******************************
 // 死亡処理
+// Author:吉田 悠人
 //******************************
 void CPlayer::Death(void)
 {
@@ -378,17 +364,13 @@ void CPlayer::Death(void)
 		m_pActRange->SetDeath(true);
 		//攻撃状態の初期化
 		m_pAttack->SetState(CAttackBased::ATTACK_STATE_NORMAL);
-
-		////透明にする
-		//m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
-		////位置セット
-		//SetPos(m_RespawnPos);
 	}
 
 }
 
 //******************************
 // 移動処理
+// Author:吉田 悠人
 //******************************
 void CPlayer::Move(void)
 {
@@ -431,6 +413,7 @@ void CPlayer::Move(void)
 
 //******************************
 // 攻撃時の向き処理
+// Author:吉田 悠人
 //******************************
 void CPlayer::AttackRot(void)
 {
@@ -495,6 +478,7 @@ void CPlayer::AttackRot(void)
 
 //******************************
 // 操作移動処理
+// Author:吉田 悠人
 //******************************
 void CPlayer::ControlMove(void)
 {
@@ -581,6 +565,7 @@ void CPlayer::ControlMove(void)
 
 //******************************
 // 向きの管理処理
+// Author：佐藤颯紀
 //******************************
 void CPlayer::ManageRot(void)
 {
@@ -607,6 +592,7 @@ void CPlayer::ManageRot(void)
 
 //******************************
 // 攻撃処理
+// Author:吉田悠人・佐藤颯紀
 //******************************
 void CPlayer::Attack(void)
 {
@@ -673,6 +659,7 @@ void CPlayer::Attack(void)
 
 //******************************
 // 必殺処理
+// Author：佐藤颯紀
 //******************************
 void CPlayer::AttackFinal(void)
 {
@@ -756,6 +743,7 @@ void CPlayer::AttackFinal(void)
 
 //******************************
 // 無敵状態セッター処理
+// Author:吉田悠人
 //******************************
 void CPlayer::SetInvincible(bool bInvincible)
 {
@@ -767,6 +755,7 @@ void CPlayer::SetInvincible(bool bInvincible)
 
 //******************************
 // 死亡時の倒れる処理
+// Author:吉田悠人
 //******************************
 void CPlayer::DeathFallOver(void)
 {
@@ -815,6 +804,7 @@ void CPlayer::DeathFallOver(void)
 
 //******************************
 // リスポーン処理
+// Author:吉田悠人
 //******************************
 void CPlayer::Respawn(void)
 {
@@ -848,6 +838,7 @@ void CPlayer::Respawn(void)
 
 //******************************
 // 無敵処理
+// Author:吉田悠人
 //******************************
 void CPlayer::Invincible(void)
 {
@@ -879,6 +870,7 @@ void CPlayer::Invincible(void)
 
 //******************************
 // ステート管理
+// Author:吉田悠人
 //******************************
 void CPlayer::ManageState(void)
 {
@@ -963,6 +955,7 @@ void CPlayer::ManageState(void)
 
 //******************************
 // アイテムステートの管理
+// Author:吉田悠人
 //******************************
 void CPlayer::ManageItemState(void)
 {
@@ -1010,6 +1003,7 @@ void CPlayer::ManageItemState(void)
 //==========================================================
 // チュートリアル時のフェーズによって操作を制限する処理
 // nTutorialphase：制限したい行動のフェーズ
+// Author:伊藤陽梧
 //==========================================================
 bool CPlayer::TutorialControll(int nTutorialphase)
 {

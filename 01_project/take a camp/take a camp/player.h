@@ -14,7 +14,6 @@
 //*****************************
 #include "main.h"
 #include "player_model.h"
-#include "resource_character.h"
 
 //*****************************
 // 前方宣言
@@ -25,7 +24,6 @@ class CAttackBased;
 class CMotion;
 class CKillCount;
 class CAllskillgauge;
-class CTutorial;
 
 //*****************************
 // クラス定義
@@ -198,7 +196,8 @@ private:
 	D3DXVECTOR3  m_RespawnPos;			// リスポーン位置
 	CAllskillgauge * m_pAllSkillgauge;	// 必殺技ゲージ
 	int m_nChargeTilelevel;				// チャージ開始タイルの塗り段階
-	int	m_nFallOverCout;			// 倒れるまでのカウント
+	int	m_nFallOverCout;				// 倒れるまでのカウント
+	
 	// モーション用変数
 	CMotion *m_apMotion[CResourceCharacter::MOTION_MAX];  // アニメーションポインタ
 
