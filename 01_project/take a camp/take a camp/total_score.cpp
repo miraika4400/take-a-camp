@@ -25,7 +25,7 @@
 #define KILL_POS_Y		(600.0f)
 #define SCORE_SPACE		(SCREEN_WIDTH/4)
 #define TOTAL_BG_SIZE	(D3DXVECTOR3(320.0f,650.0f,0.0f))
-#define CHARACTER_POLYGON_POS_Y 320.0f
+#define CHARACTER_POLYGON_POS_Y (320.0f)
 //==================================
 // コンストラクタ
 //==================================

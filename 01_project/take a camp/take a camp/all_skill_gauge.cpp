@@ -15,8 +15,8 @@
 //==================================
 // マクロ定義
 //==================================
-#define SKILLGAUGE_SIZE (D3DXVECTOR3(20.0f, 20.0f, 0.0f))  // スキルゲージの大きさ
-#define DEFAULT_COLOR (D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f))  // 色の初期値
+#define SKILLGAUGE_SIZE (D3DXVECTOR3(20.0f, 20.0f, 0.0f))		// スキルゲージの大きさ
+#define DEFAULT_COLOR	(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f))		// 色の初期値
 
 //==================================
 // コンストラクタ

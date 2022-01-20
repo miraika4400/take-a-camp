@@ -25,7 +25,7 @@
 #define KERNING_DIVISION (3.6f)								// 間隔を割る数(間隔をいじるときは個々の数値を変えて)
 #define ODD_NUMBER_DIVISION (2.0f * KERNING_DIVISION)		// 奇数を割る数
 #define EVEN_NUMBER_DIVISION (20.0f * KERNING_DIVISION)	    // 偶数を割る数
-#define NUMBER_POS_Y 35.0f
+#define NUMBER_POS_Y (35.0f)
 
 //==================================
 // コンストラクタ

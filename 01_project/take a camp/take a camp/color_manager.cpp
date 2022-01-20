@@ -13,7 +13,7 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define COLOR_DATA_PATH "data/Text/color_data.txt"
+#define COLOR_DATA_PATH ("data/Text/color_data.txt")
 
 //*****************************
 // 静的メンバ変数宣言

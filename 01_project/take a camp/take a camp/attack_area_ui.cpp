@@ -15,11 +15,11 @@
 // マクロ定義
 //=============================================================================
 #define LEVEL_CHANGE_COUNT (100)
-#define SIZE (D3DXVECTOR3(1260.0f,1944,0.0f)/5.5f)
-#define COLOR (D3DXCOLOR(1.0f,1.0f,1.0f,0.9f))
-#define TEX_ANIM_MAX_U (3)                        // 順位テクスチャ分割数*縦
-#define FADE_MINUS_VALUE (0.03f) // フェード時減算値
-#define FADE_ADD_VALUE (FADE_MINUS_VALUE/2.0f) // フェード時減算値
+#define SIZE	(D3DXVECTOR3(1260.0f,1944,0.0f)/5.5f)
+#define COLOR	(D3DXCOLOR(1.0f,1.0f,1.0f,0.9f))
+#define TEX_ANIM_MAX_U		(3)                       // 順位テクスチャ分割数*縦
+#define FADE_MINUS_VALUE	(0.03f)					// フェード時減算値
+#define FADE_ADD_VALUE		(FADE_MINUS_VALUE/2.0f) // フェード時減算値
 //=============================================================================
 // コンストラクタ
 //=============================================================================
@@ -87,12 +87,12 @@ HRESULT CAttackAreaUi::Init(void)
 
     float fU = 1.0f / TEX_ANIM_MAX_U;
 
+	//UV設定
     D3DXVECTOR2 uv[NUM_VERTEX];
     uv[0] = D3DXVECTOR2(fU*0.0f, 0.0f);
     uv[1] = D3DXVECTOR2(fU*0.0f + fU, 0.0f);
     uv[2] = D3DXVECTOR2(fU*0.0f, 1.0f);
     uv[3] = D3DXVECTOR2(fU*0.0f + fU, 1.0f);
-
     SetTextureUV(uv);
 
 	SetSize(SIZE);

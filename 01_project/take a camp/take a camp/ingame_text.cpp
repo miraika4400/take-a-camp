@@ -18,7 +18,7 @@
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define REMAINING_TEXT_SIZE D3DXVECTOR3(460.0f,120.0f,0.0f)	// サイズ
+#define REMAINING_TEXT_SIZE (D3DXVECTOR3(460.0f,120.0f,0.0f))	// サイズ
 #define REMAINING_TIME (60)		// 表示タイム
 #define NUMBER_SIZE (D3DXVECTOR3(60, 60, 0))				// 数値サイズ
 #define TEXT_MOVE_BASIC (D3DXVECTOR3(20.0f, 0.0f, 0.0f))	// 基本移動量

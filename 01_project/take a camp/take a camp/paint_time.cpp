@@ -16,8 +16,8 @@
 //******************************
 // マクロ定義
 //******************************
-#define COLOR D3DXCOLOR(0.8f,0.8f,0.8f,GetAlpha())
-#define ALPHA_RATE 0.1f
+#define COLOR		(D3DXCOLOR(0.8f,0.8f,0.8f,GetAlpha()))
+#define ALPHA_RATE	(0.1f)
 
 //******************************
 // コンストラクタ
@@ -26,7 +26,6 @@ CPaintTime::CPaintTime()
 {
 	m_nCntFrame = 0;
 	m_nFrame = 0;
-	
 }
 
 //******************************

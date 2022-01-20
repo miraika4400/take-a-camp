@@ -30,7 +30,6 @@
 #include "chara_select.h"
 #include "total_result.h"
 #include "tile_factory.h"
-#include "resource_character.h"
 #include "stage_select.h"
 #include "stage_texture.h"
 #include "resource_text.h"

@@ -36,12 +36,12 @@
 #define BACK_GAUGE_SIZE (40)                                             // バックゲージサイズ
 #define BACK_GAUGE_COLOR (D3DXCOLOR(1.0f,1.0f,1.0f,1.0f))                // バックゲージカラー
 #define GAUGE_POS_Y (710.0f)                                             // ゲージ座標Y
-#define MIN_POINT 1.0f                                                   // 0点でもゲージを出すため最低値の加算
-#define START_RATE 0.0008f                                                // スタート時のゲージ係数
-#define ANNOUNCEMENT_RATE 0.1f                                           // 順位発表時のゲージ係数
-#define RANK_ANNOUNCEMENT_COUNT 100                                      // 順位発表カウント
-#define EXPLOSION_POS_1 D3DXVECTOR3(SCREEN_WIDTH,SCREEN_HEIGHT,0.0f)
-#define EXPLOSION_POS_2 D3DXVECTOR3(0.0f,SCREEN_HEIGHT,0.0f)
+#define MIN_POINT (1.0f)                                                   // 0点でもゲージを出すため最低値の加算
+#define START_RATE (0.0008f)                                                // スタート時のゲージ係数
+#define ANNOUNCEMENT_RATE (0.1f)                                           // 順位発表時のゲージ係数
+#define RANK_ANNOUNCEMENT_COUNT (100)                                      // 順位発表カウント
+#define EXPLOSION_POS_1 (D3DXVECTOR3(SCREEN_WIDTH,SCREEN_HEIGHT,0.0f))
+#define EXPLOSION_POS_2 (D3DXVECTOR3(0.0f,SCREEN_HEIGHT,0.0f))
 #define CHARACTER_POLYGON_SIZE (DEFAULT_CHARACTER_POLYGON_SIZE*0.7f)
 #define CHARACTER_HEIGHT_DIST ((SCREEN_HEIGHT - CHARACTER_POLYGON_SIZE.y / 2.0f)-20.0f/2.0f)
 #define CHARACTER_HEIGHT_ADD (15.0f)

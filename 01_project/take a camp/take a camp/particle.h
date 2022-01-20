@@ -92,7 +92,7 @@ private:
 	D3DXVECTOR3	  m_posOld;		  // 初期位置
 
 
-	CPlayer*	  m_pPlayer;		  // プレイヤーのポインタ
+	CPlayer*	  m_pPlayer;	  // プレイヤーのポインタ
 	int           m_nLife;        //寿命
 	int			  m_nPattern;	  //アニメーションのパターン
 	int			  m_nEffectId;	  //エフェクトのiD

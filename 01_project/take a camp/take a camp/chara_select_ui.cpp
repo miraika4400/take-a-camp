@@ -21,18 +21,18 @@
 //=============================
 // マクロ定義
 //=============================
-#define BACK_SIZE D3DXVECTOR3(320.0f,720.0f,0.0f)            // ボードサイズ
-#define CONTOROll_ICON_SIZE D3DXVECTOR3(180.0f,180.0f,0.0f)  // コントローラーアイコンのサイズ
-#define PLAYERNUMBER_SIZE D3DXVECTOR3(240.0f,60.0f,0.0f)     // プレイヤー番号のサイズ
-#define READY_SIZE D3DXVECTOR3(48.0f*5.0f,18.6f*5.0f,0.0f)            // ボードサイズ
-#define PLAYERNUMBER_TEX_ANIM_MAX_X 1                        // 順位テクスチャ分割数*横
-#define PLAYERNUMBER_TEX_ANIM_MAX_Y 4                        // 順位テクスチャ分割数*縦
-#define ANIMATION_INTERVAL 15                                // アニメーション移行フレーム数
-#define UI_SPACE 320.0f                                      // UI間の左右のスペース
-#define BACK_DEFAULT_COLOR D3DXCOLOR(0.7f,0.7f,0.7f,1.0f)    // デフォルトのカラー
-#define PLAYER_NUMBER_POS_Y 60.0f                            // 
-#define CHARACTER_MODEL_POS_Y 350.0f                         // 
-#define READY_ICON_POS_Y  450.0f                             // 
+#define BACK_SIZE (D3DXVECTOR3(320.0f,720.0f,0.0f))				// ボードサイズ
+#define CONTOROll_ICON_SIZE (D3DXVECTOR3(180.0f,180.0f,0.0f))	// コントローラーアイコンのサイズ
+#define PLAYERNUMBER_SIZE (D3DXVECTOR3(240.0f,60.0f,0.0f))		// プレイヤー番号のサイズ
+#define READY_SIZE (D3DXVECTOR3(48.0f*5.0f,18.6f*5.0f,0.0f))	// ボードサイズ
+#define PLAYERNUMBER_TEX_ANIM_MAX_X (1)							// 順位テクスチャ分割数*横
+#define PLAYERNUMBER_TEX_ANIM_MAX_Y (4)							// 順位テクスチャ分割数*縦
+#define ANIMATION_INTERVAL	(15)								// アニメーション移行フレーム数
+#define UI_SPACE			(320.0f)							// UI間の左右のスペース
+#define BACK_DEFAULT_COLOR (D3DXCOLOR(0.7f,0.7f,0.7f,1.0f))		// デフォルトのカラー
+#define PLAYER_NUMBER_POS_Y (60.0f)                            // 
+#define CHARACTER_MODEL_POS_Y (350.0f)                         // 
+#define READY_ICON_POS_Y  (450.0f)                             // 
 #define STATUS_SIZE (D3DXVECTOR3(1089.0f,192.0f,0.0f)*0.26f) // 
 #define STATUS_POS_Y (570.0f)                                // 
 #define STATUS_POS_Y_OFFSET (STATUS_SIZE.y*1.1f)             // 
