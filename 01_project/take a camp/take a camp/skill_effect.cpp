@@ -82,7 +82,7 @@ void CSkill_effect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const 
 
 	case SKILLTYPE_LANCER:
 
-		CParticle::Create(pos + THUKI_SKIIL_POSSHIFT, THUKI_SKIIL_MOVE, size, nlife, col3, 0.05f, pPlayer ,CParticle::PARTICLE_THUKI);
+		//CParticle::Create(pos + THUKI_SKIIL_POSSHIFT, THUKI_SKIIL_MOVE, size, nlife, col3, 0.05f, D3DXToDegree(pPlayer->GetRotDest().y), pPlayer ,CParticle::PARTICLE_THUKI);
 
 		break;
 
@@ -107,7 +107,7 @@ void CSkill_effect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const 
 
 	case SKILLTYPE_THIER:
 		
-		CParticle::Create(pos + SLASH_SKIIL_POSSHIFT, SLASH_SKIIL_MOVE, size, nlife, col3, 0.05f, pPlayer ,CParticle::PARTICLE_SLASH);
+		CParticle::Create(pos + SLASH_SKIIL_POSSHIFT, SLASH_SKIIL_MOVE, size, nlife, col3, 0.05f, D3DXToDegree(pPlayer->GetRotDest().y), pPlayer ,CParticle::PARTICLE_SLASH);
 		
 		break;
 
