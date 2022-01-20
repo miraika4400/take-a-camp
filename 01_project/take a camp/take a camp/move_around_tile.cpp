@@ -60,6 +60,12 @@ HRESULT CAroundTile::Init(void)
 	//テクスチャ用ポリゴン
 	m_Texture = CScene3d::Create(GetPos(), D3DXVECTOR3(TILE_ONE_SIDE - 2, 0.0f, TILE_ONE_SIDE - 2));
 	m_Texture->BindTexture(CResourceTexture::GetTexture(CResourceTexture::TEXTURE_MOVE_TILE));
+	D3DXVECTOR2 uv[NUM_VERTEX];
+	uv[0] = D3DXVECTOR2(0,1);
+	uv[1] = D3DXVECTOR2(0,0);
+	uv[2] = D3DXVECTOR2(1,1);
+	uv[3] = D3DXVECTOR2(1,0);
+	m_Texture->SetTextureUV(uv);
 	m_Texture->SetColor(TILE_DEFAULT_COLOR);
 	m_Texture->SetPriority(OBJTYPE_MAP);
 
@@ -112,7 +118,7 @@ void CAroundTile::TileCheck(void)
 	//現在位置
 	D3DXVECTOR3 pos = GetPos();
 
-	if (CTile::GetHitTile(D3DXVECTOR3(pos.x , pos.y, pos.z + TILE_ONE_SIDE)) != nullptr)
+	if (CTile::GetHitTile(D3DXVECTOR3(pos.x , pos.y, pos.z - TILE_ONE_SIDE)) != nullptr)
 	{
 		//移動方向反転
 		SetReversal(false);
