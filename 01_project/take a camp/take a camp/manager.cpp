@@ -349,7 +349,7 @@ void CManager::Update(void)
 #ifdef _DEBUG
 	if (m_pInputKeyboard != NULL)
 	{
-		if (m_pInputKeyboard->GetKeyTrigger(DIK_NUMPAD0))
+		if (m_pInputKeyboard->GetKeyTrigger(DIK_0))
 		{
 			CCollision::SetDrawFlag(true^ CCollision::GetDrawFlag());
 		}
@@ -401,6 +401,7 @@ void CManager::SetMode(MODE mode)
 		// NULLƒNƒŠƒA
 		m_pGame = NULL;
 		// ƒQ[ƒ€BGM’âŽ~
+		m_pSound->Stop(CSound::LABEL_BGM_GAME);
 		m_pSound->Stop(CSound::LABEL_BGM_GAME_LIMIT);
 		break;
 

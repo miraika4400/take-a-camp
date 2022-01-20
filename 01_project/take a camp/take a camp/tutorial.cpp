@@ -13,7 +13,6 @@
 #include "renderer.h"
 #include "polygon.h"
 #include "keyboard.h"
-#include "mouse.h"
 #include "joypad.h"
 #include "fade.h"
 #include "resource_texture.h"
@@ -34,6 +33,7 @@
 #include "map.h"
 #include "resource_map.h"
 #include "dummy.h"
+#include "titleback_ui.h"
 
 //=============================
 // マクロ定義
@@ -43,7 +43,7 @@
 #define TARGET_KILL (3)																// スキルで倒す人数
 #define ADD_TEXTWINDOWRANGE (10.0f)													// テキストウィンドウの範囲を加算する値
 #define TEXTWINDOW_COLOR (D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.2f))						// テキストウィンドウの色
-#define TEXTSHOWTIME (90)															// テキストを表示する時間
+#define TEXTSHOWTIME (150)															// テキストを表示する時間
 #define TEXTTEXTURE_SIZE (D3DXVECTOR3(640.0f, 60.0f, 0.0f))							// テキストのテクスチャのサイズ
 #define TEXT_POS (D3DXVECTOR3(TEXTTEXTURE_SIZE.x / 4.0f, 100.0f, 0.0f))				// テキストのテクスチャの座標
 #define TEXT_ADD_POS (D3DXVECTOR3(0.0f, TEXTTEXTURE_SIZE.y / 2.0f, 0.0f))			// テキストのテクスチャの加算する座標
@@ -165,6 +165,9 @@ HRESULT CTutorial::Init()
 	pSound->Stop(CSound::LABEL_BGM_SELECT);
 	// BGM再生
 	pSound->Play(CSound::LABEL_BGM_GAME);
+
+	// タイトル戻る用のテクスチャの生成
+	CTitlebackui::Create();
 
 	for (int nCount = 0; nCount < (int)PHASE_FINISH; nCount++)
 	{
@@ -356,6 +359,18 @@ void CTutorial::Update()
 			// テキストのクリアと次のテキスト表示
 			m_pText->ClearText();
 			m_bNextText = false;
+		}
+
+		// ジョイパッドの取得
+		CInputJoypad* pJoypad = CManager::GetJoypad();
+		for (int nCount = 0; nCount < XUSER_MAX_COUNT; nCount++)
+		{
+			if (pJoypad->GetButtonState(XINPUT_GAMEPAD_A, CInputJoypad::BUTTON_TRIGGER, nCount))
+			{
+				// テキストのクリアと次のテキスト表示
+				m_pText->ClearText();
+				m_bNextText = false;
+			}
 		}
 	}
 

@@ -496,7 +496,10 @@
       <Filter>ソース ファイル\09_Effect</Filter>
     </ClCompile>
     <ClCompile Include="warp_effect.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\09_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="titleback_ui.cpp">
+      <Filter>ソース ファイル\10_Ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -853,6 +856,9 @@
     </ClInclude>
     <ClInclude Include="warp_effect.h">
       <Filter>ヘッダー ファイル\09_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="titleback_ui.h">
+      <Filter>ヘッダー ファイル\10_Ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

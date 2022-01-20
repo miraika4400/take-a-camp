@@ -153,6 +153,9 @@ public:
 	int GetChargeTilelevel(void) { return m_nChargeTilelevel; }
 	//プレイヤーの色 
 	void SetColor(D3DXCOLOR color) { m_color = color; }
+
+    int GetControllNum(void) { return m_nControllNum; }
+    bool GetControllFlag(void) { return m_bController; }
 private:
 	void Move(void);			// 移動処理
 	void AttackRot(void);		// 攻撃時の向き処理
