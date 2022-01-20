@@ -43,7 +43,7 @@
 #define TARGET_KILL (3)																// スキルで倒す人数
 #define ADD_TEXTWINDOWRANGE (10.0f)													// テキストウィンドウの範囲を加算する値
 #define TEXTWINDOW_COLOR (D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.2f))						// テキストウィンドウの色
-#define TEXTSHOWTIME (90)															// テキストを表示する時間
+#define TEXTSHOWTIME (150)															// テキストを表示する時間
 #define TEXTTEXTURE_SIZE (D3DXVECTOR3(640.0f, 60.0f, 0.0f))							// テキストのテクスチャのサイズ
 #define TEXT_POS (D3DXVECTOR3(TEXTTEXTURE_SIZE.x / 4.0f, 100.0f, 0.0f))				// テキストのテクスチャの座標
 #define TEXT_ADD_POS (D3DXVECTOR3(0.0f, TEXTTEXTURE_SIZE.y / 2.0f, 0.0f))			// テキストのテクスチャの加算する座標
