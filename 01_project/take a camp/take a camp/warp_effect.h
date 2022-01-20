@@ -41,6 +41,9 @@ public:
 	void	Draw(void);
 
 private:
+
+	void	CreateEffect(void);
+
 	//*****************************
 	// メンバ変数
 	//*****************************
@@ -48,6 +51,6 @@ private:
 	D3DXVECTOR3 m_GoalPos;	//目的の位置
 	D3DXVECTOR3 m_move;		//移動量
 	D3DXCOLOR   m_col;		//色
-
+	int nCreateCount;		//エフェクトを作るまでのカウント
 };
 #endif

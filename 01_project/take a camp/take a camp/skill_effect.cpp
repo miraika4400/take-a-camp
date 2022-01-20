@@ -18,7 +18,7 @@
 #include "skill_trump.h"
 #include "skill_arrow_rain.h"
 #include "particle.h"
-
+#include "player.h"
 //=============================================================================
 // É}ÉNÉçíËã`
 //=============================================================================
@@ -82,6 +82,8 @@ void CSkill_effect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const 
 
 	case SKILLTYPE_LANCER:
 
+		CParticle::Create(pos + THUKI_SKIIL_POSSHIFT, THUKI_SKIIL_MOVE, size, nlife, col3, 0.05f, pPlayer ,CParticle::PARTICLE_THUKI);
+
 		break;
 
 	case SKILLTYPE_MAGICIAN:
@@ -105,8 +107,7 @@ void CSkill_effect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const 
 
 	case SKILLTYPE_THIER:
 		
-
-				CParticle::Create(pos + SLASH_SKIIL_POSSHIFT, EXPLOSION_SKIIL_MOVE, size, nlife, col3, 0.05f, CParticle::PARTICLE_SLASH);
+		CParticle::Create(pos + SLASH_SKIIL_POSSHIFT, SLASH_SKIIL_MOVE, size, nlife, col3, 0.05f, pPlayer ,CParticle::PARTICLE_SLASH);
 		
 		break;
 

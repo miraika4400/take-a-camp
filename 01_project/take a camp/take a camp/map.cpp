@@ -118,7 +118,7 @@ void CMap::MapCreate(void)
     
     // 床生成
     CModel::Create(D3DXVECTOR3(0.0f, -14.0f, 0.0f), CResourceModel::MODEL_DESK, D3DXVECTOR3(0.6f, 0.6f, 0.6f))->SetPriority(OBJTYPE_MAP);
-    CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), (CResourceModel::MODEL_TYPE)(CResourceModel::MODEL_DESK_STAGE1 + m_MapType), D3DXVECTOR3(0.4f, 0.4f, 0.4f))->SetPriority(OBJTYPE_MAP);
+    if(m_MapType != CMapManager::MAP_TYPE_TUTORIAL) CModel::Create(D3DXVECTOR3(0.0f, -13.0f, 0.0f), (CResourceModel::MODEL_TYPE)(CResourceModel::MODEL_DESK_STAGE1 + m_MapType), D3DXVECTOR3(0.4f, 0.4f, 0.4f))->SetPriority(OBJTYPE_MAP);
 
 	//マップデータがあるか
 	if (&m_MapData != NULL)
