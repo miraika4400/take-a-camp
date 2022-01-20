@@ -29,13 +29,13 @@ CParticle::CParticle()
 {
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_col = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
 	m_nLife = 0;
 	m_type = PARTICLE_SQUARE;
 	m_bFadeoutFlag = true;
 	m_fRotAngle = 0.0f;
+
 	m_fFadeout = 0.0f; 
 	m_nPattern = 0;
 	m_nAnimation = 0;
@@ -59,7 +59,7 @@ CParticle::~CParticle()
 //******************************
 // クリエイト
 //******************************
-CParticle * CParticle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, const D3DXVECTOR3 size, const int nLife, const D3DXCOLOR col,const float fadeout, CPlayer * pPlayer, const PARTICLE_TYPE type)
+CParticle * CParticle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, const D3DXVECTOR3 size, const int nLife, const D3DXCOLOR col,const float fadeout, const float fAngle, CPlayer * pPlayer, const PARTICLE_TYPE type)
 {
 	// メモリの確保
 	CParticle *pParticle;
@@ -76,12 +76,12 @@ CParticle * CParticle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, con
 
 	pParticle->m_move = move;                // 移動量
 	pParticle->m_size = size;				 // サイズ代入
-	pParticle->m_rot = pParticle->m_pPlayer->GetRotDest();
 	pParticle->SetSize(size);                // サイズ
 	pParticle->m_nLife = nLife;				 // 寿命
 	pParticle->m_col = col;					 // 代入
 	pParticle->m_fFadeout = fadeout;		 // フェードアウト
 	pParticle->m_fRotAngle = 0.0f;           // 回転角度
+
 	pParticle->SetColor(col);                // カラー設定
 	//pParticle->SetAngle((float)(rand() % 360));       // 回転角度をランダム
 	pParticle->SetAddMode(false);             // 加算合成
@@ -113,32 +113,15 @@ CParticle * CParticle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, con
 		break;
 
 	case PARTICLE_SLASH:
-		pParticle->m_pos = pos;					      // 初期位置代入
+		pParticle->SetPos (pos);					      // 初期位置代入
 		pParticle->SetAngle((float)(rand() % 360));       // 回転角度をランダム
 		pParticle->SetTextureManualUV(TEXTURE_ANIMA_PATTERN, pParticle->m_nPattern);
 		break;
 		
 	case PARTICLE_THUKI:
-		pParticle->m_pos = pos;					      // 初期位置代入
-		pParticle->m_fRotAngle = D3DXToDegree(pParticle->m_rot.y);
+		pParticle->SetPos(pos);					      // 初期位置代入
 		
-			if (pParticle->m_fRotAngle == 0.0f)
-			{
-				pParticle->SetAngle(pParticle->m_fRotAngle - 90.0f);
-			}
-			if (pParticle->m_fRotAngle == 90.0f)
-			{
-				pParticle->SetAngle(pParticle->m_fRotAngle + 90.0f);
-			}
-			if (pParticle->m_fRotAngle == 180.0f)
-			{
-				pParticle->SetAngle(pParticle->m_fRotAngle - 90.0f);
-			}
-			if (pParticle->m_fRotAngle == 270.0f)
-			{
-				pParticle->SetAngle(pParticle->m_fRotAngle + 90.0f);
-			}
-		
+		pParticle->SetAngle(fAngle);
 		pParticle->SetTextureManualUV(TEXTURE_ANIMA_PATTERN, pParticle->m_nPattern);
 		break;
 		
@@ -242,9 +225,9 @@ void CParticle::Update(void)
 				{
 
 			
-					CParticle * pPar = CParticle::Create(m_pos, SLASH_SKIIL_MOVE, m_size, m_nLife, m_col, 0.05f, pPlayer, CParticle::PARTICLE_SLASH);
+					CParticle * pPar = CParticle::Create(GetPos(), SLASH_SKIIL_MOVE, m_size, m_nLife, m_col, 0.05, D3DXToDegree(pPlayer->GetRotDest().y), pPlayer, CParticle::PARTICLE_SLASH);
 					pPar->m_nEffectId = m_nEffectId + 1;
-					SetPos(D3DXVECTOR3(m_pos.x + (float)(rand() % 14 - 7), m_pos.y, m_pos.z + (float)(rand() % 14 - 7)));
+					SetPos(D3DXVECTOR3(GetPos().x + (float)(rand() % 14 - 7), GetPos().y, GetPos().z + (float)(rand() % 14 - 7)));
 
 				}
 
@@ -260,7 +243,7 @@ void CParticle::Update(void)
 
 	case PARTICLE_THUKI:
 			
-			SetPos(m_pos);
+			SetPos(GetPos());
 		if (m_nAnimation >= TEXTURE_ANIMA_THUKI_LATE)
 		{
 			SetTextureManualUV(TEXTURE_ANIMA_PATTERN, m_nPattern);

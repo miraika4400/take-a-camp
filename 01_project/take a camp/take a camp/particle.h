@@ -22,7 +22,7 @@
 #define TEXTURE_ANIMA_PATTERN (20)
 
 #define TEXTURE_ANIMA_LATE (1)
-#define TEXTURE_ANIMA_THUKI_LATE (5)
+#define TEXTURE_ANIMA_THUKI_LATE (2)
 #define TEXTURE_ANIMA_CREATE_POINT (8)
 #define EFFECT_NUM_MAX (10)
 #define EFFECT_MAX (8)
@@ -67,7 +67,7 @@ public:
 
 	// static
 	static CParticle *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, const D3DXVECTOR3 size, const int nLife,
-		const D3DXCOLOR col,const float fadeout,  CPlayer * pPlayer, const PARTICLE_TYPE type = PARTICLE_SQUARE); // クラス生成
+		const D3DXCOLOR col,const float fadeout, const float fAngle, CPlayer * pPlayer, const PARTICLE_TYPE type = PARTICLE_SQUARE); // クラス生成
 
 	HRESULT Init(void); // 初期化
 	void Uninit(void);  // 終了
@@ -88,7 +88,6 @@ private:
 	LPDIRECT3DTEXTURE9 m_apTexture[PARTICLE_MAX]; // テクスチャ
 	D3DXVECTOR3   m_move;	 	  // 移動量
 	D3DXVECTOR3   m_size;		  // 大きさ
-	D3DXVECTOR3	  m_pos;		  // 位置
 	D3DXVECTOR3	  m_rot;		  // 位置
 	D3DXVECTOR3	  m_posOld;		  // 初期位置
 
@@ -100,6 +99,7 @@ private:
 	static int    m_nEffectIdAII; //エフェクトの総数
 	int			  m_nAnimation;   //アニメーションの時間カウント
 	float		  m_fRotAngle;	  // 回転角度
+	
 	float		  m_fFadeout;	  // フェードアウト　
 	bool		  m_bFadeoutFlag; // フェードアウトのフラグ
 	bool          m_bAnimation;	  // アニメーションしていいか
