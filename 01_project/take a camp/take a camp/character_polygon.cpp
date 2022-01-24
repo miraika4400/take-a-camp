@@ -116,7 +116,7 @@ void CCharacterPolygon::Update(void)
 	case CCharacterPolygon::MODE_ROTATION:
 		// ƒ‚ƒfƒ‹‚ÌXVˆ—
 
-		m_pCharacterModel->SetRot(m_pCharacterModel->GetRot() + CHARACTER_ADD_ROT);
+		//m_pCharacterModel->SetRot(m_pCharacterModel->GetRot() + CHARACTER_ADD_ROT);
 
 		break;
 	default:
