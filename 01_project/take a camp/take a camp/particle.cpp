@@ -33,7 +33,6 @@ CParticle::CParticle()
 	m_type = PARTICLE_SQUARE;
 	m_bFadeoutFlag = true;
 	m_fRotAngle = 0.0f;
-
 	m_fFadeout = 0.0f; 
 	m_nPattern = 0;
 	m_nAnimation = 0;
@@ -133,8 +132,6 @@ CParticle * CParticle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, con
 //******************************
 HRESULT CParticle::Init(void)
 {
-
-	
 
 	if (FAILED(CBillboard::Init()))
 	{

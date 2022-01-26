@@ -52,29 +52,34 @@ void CSkill_effect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const 
 	//タイプごとに生成処理
 	switch (type)
 	{
+		//ナイト
 	case SKILLTYPE_KNIGHT:
 		CSkill_circle::Create(pos, size+ NORMAL_SKIIL_SIZESHIFT, col1, nlife, CSkill_circle::EFFECTTYPE_SKIIL, pPlayer);
 		CSkill_circle::Create(pos, size , col3, nlife, CSkill_circle::EFFECTTYPE_SKIILMINI, pPlayer);
 		break;
 
+		//アーチャー
 	case SKILLTYPE_ARCHER:
 		CSkillArrowRain::Create(pos + ARCHER_CREATE_POS, col1 , pPlayer);
 		break;
 
+		//ウィザード
 	case SKILLTYPE_WIZARD:
 		CSkill_circle::Create(pos + EXPLOSION_SKIIL_METEOR_IMPACT_POS, size - EXPLOSION_SKIIL_METEOR_IMPACT_SIZE + EXPLOSION_SKIIL_METEOR_IMPACT_SIZESHIFT, col3, nlife, CSkill_circle::EFFECTTYPE_IMPACT, pPlayer);
 		break;
 
+		//ウィザード必殺
 	case SKILLTYPE_WIZARD_FINALATTACK:
 		CSkill_circle::Create(pos, size - EXPLOSION_SKIIL_CENTER_SIZE + EXPLOSION_SKIIL_CENTER_SIZESHIFT, col3, nlife, CSkill_circle::EFFECTTYPE_METEOR_CENTER, pPlayer);
 		CSkill_circle::Create(pos, size + EXPLOSION_SKIIL_IMPACT_SIZE - EXPLOSION_SKIIL_IMPACT_SIZESHIFT, col2, nlife, CSkill_circle::EFFECTTYPE_METEOR_IMPACT, pPlayer);
 		CSkill_circle::Create(pos, size, col3, nlife, CSkill_circle::EFFECTTYPE_METEOR, pPlayer);
 		break;
 
+		//ランサー
 	case SKILLTYPE_LANCER:
 
 		break;
-
+		//奇術師
 	case SKILLTYPE_MAGICIAN:
 		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(-45), D3DXToRadian(60)), col1);
 		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(-45), D3DXToRadian(50)), col1);
@@ -93,6 +98,7 @@ void CSkill_effect::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const 
 		CSkillTrump::Create(D3DXVECTOR3(pos.x, pos.y + 5, pos.z), size, D3DXVECTOR3(0, D3DXToRadian(-135), D3DXToRadian(40)), col1);
 		break;
 
+		//盗賊
 	case SKILLTYPE_THIER:		
 		CParticle::Create(pos + SLASH_SKIIL_POSSHIFT, SLASH_SKIIL_MOVE, size, nlife, col3, 0.05f, D3DXToDegree(pPlayer->GetRotDest().y), pPlayer ,CParticle::PARTICLE_SLASH);
 		break;

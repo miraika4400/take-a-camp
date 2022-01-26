@@ -102,10 +102,10 @@ public:
 	virtual void Update(void);  // 更新
 	virtual	void Draw(void);    // 描画
 	
-	LPDIRECT3DTEXTURE9 GetTexture(int nIndex) { return m_apTexture[nIndex]; }
-	bool GetEffectTrigger(void) {return m_bEffectTrigger;}
-	void		SetPlayer(CPlayer* pPlayer) { m_pPlayer = pPlayer; }
-	CPlayer*	GetPlayer(void) { return m_pPlayer; }
+	LPDIRECT3DTEXTURE9 GetTexture(int nIndex) { return m_apTexture[nIndex]; }//テクスチャ所得
+			
+	void		SetPlayer(CPlayer* pPlayer) { m_pPlayer = pPlayer; }	//プレイヤーのポインタ設定
+	CPlayer*	GetPlayer(void) { return m_pPlayer; }					//プレイヤーのポインタ所得
 private:
 	//============
 	// メンバ変数
